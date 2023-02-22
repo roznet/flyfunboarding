@@ -18,12 +18,6 @@ namespace PKPass;
 
 use ZipArchive;
 
-use Exception;
-
-class PKPassException extends Exception
-{
-
-}
 /**
  * Class PKPass.
  */
@@ -95,10 +89,14 @@ class PKPass
      * @param string|bool $certificatePath
      * @param string|bool $certificatePassword
      */
-    public function __construct($certificatePath = null, $certificatePassword = null)
+    public function __construct($certificatePath = null, $certificatePassword = null, $wwdr = null)
     {
-        $this->tempPath = sys_get_temp_dir();
-        $this->wwdrCertPath = __DIR__ . '/certs/AppleWWDRCA.pem';
+	    $this->tempPath = sys_get_temp_dir();
+	    if ($wwdr) {
+		    $this->wwdrCertPath = $wwdr;
+	    }else{
+		    $this->wwdrCertPath = __DIR__ . '/certs/AppleWWDRCA.pem';
+	    }
 
         if ($certificatePath) {
             $this->setCertificatePath($certificatePath);
