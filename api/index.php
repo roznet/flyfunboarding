@@ -13,6 +13,9 @@ if (isset($_GET['url'])) {
 	if ($action == "pass") {
 		$boardingPass = new BoardingPass();
 		$boardingPass->create_pass(true);
+	}else if ($action == "airport") {
+		$airport = new Airport($parts[2]);
+		print_r($airport->getInfo());
 	}
 }
 ?>
