@@ -1,8 +1,11 @@
 <?php
 
 class Airport {
+    
 	public string $icao;
-	private static $db = null;
+    private static $db = null;
+
+    private array $info = [];
 	public function __construct(string $icao) {
 		// make icao uppercase
 		$this->icao = strtoupper($icao);
@@ -11,7 +14,8 @@ class Airport {
 		}
 	}
 
-	public function getInfo() {
+    public function getInfo() {
+        if (empty($this->info)) {
 		// load airport info from sqlite database in table airports
 		// return array with airport info
 		//
@@ -21,7 +25,26 @@ class Airport {
 		$sth = self::$db->prepare($sql);
 		$sth->execute([':icao' => $this->icao]);
 		$result = $sth->fetch(PDO::FETCH_ASSOC);
-		return $result;
-	}
+        $this->info = $result;
+        }
+        return $this->info;
+    }
+
+    public function getCity() {
+        $info = $this->getInfo();
+        return $info['municipality'];
+    }
+
+    public function getCountry() {
+        $info = $this->getInfo();
+        return $info['iso_country'];
+    }
+    public function getIcao() {
+        return $this->icao;
+    }
+    public function getName() {
+        $info = $this->getInfo();
+        return $info['name'];
+    }
 }
 ?>	
