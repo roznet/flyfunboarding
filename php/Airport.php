@@ -34,7 +34,6 @@ class Airport {
         $info = $this->getInfo();
         return $info['municipality'];
     }
-
     public function getCountry() {
         $info = $this->getInfo();
         return $info['iso_country'];
@@ -46,5 +45,15 @@ class Airport {
         $info = $this->getInfo();
         return $info['name'];
     }
+    public function fitName(int $maxlen): string{
+        $name = $this->getName();
+        if (strlen($name) < $maxlen) {
+            return $name;
+        }else if (strlen($this->getCity()) < $maxlen) {
+            return $this->getCity();
+        }
+
+        return $name;
+    }
+
 }
-?>	

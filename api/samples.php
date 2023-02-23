@@ -7,14 +7,14 @@ $sample_aircraft_json = '{
 
 $sample_flight_json = '{
     "origin": "EGTF",
-    "destination": "LFMD",
+    "destination": "LFQA",
     "gate": "1",
     "flightNumber": "N122DR",
     "aircraft": {
     "registration": "N122DR",
     "type": "Cirrus SR22T"
     },
-    "date": "2021-06-01 12:00:00",
+    "scheduledDepartureDate": "2021-06-01 12:00:00",
     "flightTime": "PT1H30M"
 }';
 
@@ -28,5 +28,6 @@ $sample_passenger_json = '{
 $sample_aircraft = Aircraft::fromJson(json_decode($sample_aircraft_json, true));
 $sample_flight = Flight::fromJson(json_decode($sample_flight_json, true));
 $sample_passenger = Passenger::fromJson(json_decode($sample_passenger_json, true));
-?>
 
+
+?>

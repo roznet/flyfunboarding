@@ -16,5 +16,13 @@ class Passenger {
         $passenger->lastName = $json['lastName'];
         return $passenger;
     }
+
+    function toJson() {
+        return [
+            "formattedName" => $this->formattedName,
+            "firstName" => $this->firstName,
+            "middleName" => $this->middleName,
+            "lastName" => $this->lastName
+        ];
+    }
 }
-?>

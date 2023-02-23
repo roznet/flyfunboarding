@@ -49,25 +49,25 @@ class BoardingPass {
             'teamIdentifier' => 'M7QSSF3624',
 
             'backgroundColor' => 'rgb(189,144,71)',
-            'logoText' => 'Brice FlyFun Airline',
+            'logoText' => 'Brice Airline',
             'relevantDate' => date('Y-m-d\TH:i:sP')
         ];
         $boardingpass = ['transitType' => 'PKTransitTypeAir'];
         $boardingpass[ 'headerFields' ] = [
+            $this->textField('seat', 'Seat', '1B'),
             $this->textField('flight', 'Flight', $this->flight->flightNumber),
         ];
 
         $boardingpass[ 'primaryFields' ] = [
-            $this->textField('origin', $this->flight->origin->getName(), $this->flight->origin->getIcao()),
-            $this->textField('destination', $this->flight->destination->getName(), $this->flight->destination->getIcao()),
+            $this->textField('origin', $this->flight->origin->fitName(20), $this->flight->origin->getIcao()),
+            $this->textField('destination', $this->flight->destination->fitName(20), $this->flight->destination->getIcao()),
         ];
 
         $boardingpass[ 'secondaryFields' ] = [
-            $this->textField('gate', 'Gate', $this->flight->gate),
-            $this->textField('seat', 'Seat', '1B'),
+            $this->textField('passenger-name', 'Passenger', $this->passenger->formattedName),
         ];
         $boardingpass['auxiliaryFields'] = [
-            $this->dateField('date', 'Date', $this->flight->date),
+            $this->dateField('date', 'Departs', $this->flight->scheduledDepartureDate),
             $this->dateIntervalField('flightTime', 'Flight Time', $this->flight->flightTime),
         ];
 
@@ -76,11 +76,11 @@ class BoardingPass {
         ];
 
         $data['boardingPass'] = $boardingpass;
-
+        $json_payload = json_encode($this->flight->toJson());
         $data['barcode'] = [
             'format' => 'PKBarcodeFormatQR',
-            'message' => 'Flight-GateF12-ID6643679AH7B',
-            'messageEncoding' => 'iso-8859-1',
+            'message' => $json_payload,
+            'messageEncoding' => 'iso-8859-1'
             ];
 
 		
@@ -96,95 +96,4 @@ class BoardingPass {
 		return '../images/' . $image;
 	}
 
-	function create_sample_pass() {
-
-		$data = [
-	    'description' => 'Boarding pass',
-	    'formatVersion' => 1,
-	    'organizationName' => 'FlyFun Boarding Pass',
-	    'passTypeIdentifier' => 'pass.net.ro-z.flyfunboardingpass', // Change this!
-	    'serialNumber' => '12345678',
-	    'teamIdentifier' => 'M7QSSF3624', // Change this!
-	    'boardingPass' => [
-		    'headerFields' => [
-			    [
-				    'key' => 'flight',
-				    'label' => 'Flight',
-				    'value' => 'N122DR',
-			    ],
-		    ],
-		'primaryFields' => [
-		    [
-			'key' => 'origin',
-			'label' => 'Fairoaks',
-			'value' => 'EGTF',
-		    ],
-		    [
-			'key' => 'destination',
-			'label' => 'Cannes',
-			'value' => 'LFMD',
-		    ],
-		],
-		'secondaryFields' => [
-		    [
-			'key' => 'gate',
-			'label' => 'Gate',
-			'value' => '1',
-		    ],
-		    [
-			'key' => 'seat',
-			'label' => 'Seat',
-			'value' => '1A',
-		    ],
-		    [
-			'key' => 'flight',
-			'label' => 'Flight',
-			'value' => 'N122DR',
-		    ],
-		    [
-			'key' => 'date',
-			'label' => 'Departure Time',
-			'value' => '07/06/2023 10:22',
-		    ],
-		],
-		'auxiliaryFields' => [
-			[
-				'key' => 'class',
-				'label' => 'Class',
-				'value' => 'Top First',
-			],
-			[
-				'key' => 'boardinggroup',
-				'label' => 'Boarding',
-				'value' => 'Group 1',
-			],
-		],
-		'backFields' => [
-		    [
-			'key' => 'passenger-name',
-			'label' => 'Passenger',
-			'value' => 'Brice Rosenzweig',
-		    ],
-		],
-		'transitType' => 'PKTransitTypeAir',
-	    ],
-	    'barcode' => [
-		    
-		'format' => 'PKBarcodeFormatQR',
-		'message' => 'Flight-GateF12-ID6643679AH7B',
-		'messageEncoding' => 'iso-8859-1',
-	    ],
-	    'backgroundColor' => 'rgb(189,144,71)',
-	    'logoText' => 'Brice FlyFun Airline',
-	    'relevantDate' => date('Y-m-d\TH:i:sP')
-		];
-		$pass = $this->create_pkpass();
-		$pass->setData($data);
-		$pass->addFile($this->image_path('icon.png'));
-		$pass->addFile($this->image_path('icon@2x.png'));
-		$pass->addFile($this->image_path('logo.png'));
-		$pass->create(true);
-
-	}
 }
-?>

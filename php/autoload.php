@@ -10,4 +10,3 @@ function php_autoload($class_name) {
 	}
 }
 spl_autoload_register('php_autoload');
-?>

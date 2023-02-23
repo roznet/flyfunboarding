@@ -11,5 +11,11 @@ class Aircraft {
         $aircraft->type = $json['type'];
         return $aircraft;
     }
+
+    function toJson() : array {
+        return [
+            'registration' => $this->registration,
+            'type' => $this->type
+        ];
+    }
 }
-?>
