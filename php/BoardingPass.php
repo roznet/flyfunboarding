@@ -4,12 +4,14 @@ use PKPass\PKPass;
 
 class BoardingPass {
 
-	public Passenger $passenger;
-	public Flight $flight;
+	private Passenger $passenger;
+    private Flight $flight;
+    public Ticket $ticket;
 
-    function __construct(Passenger $passenger, Flight $flight) {
-        $this->passenger = $passenger;
-        $this->flight = $flight;
+    function __construct(Ticket $ticket) {
+        $this->ticket = $ticket;
+        $this->passenger = $ticket->passenger;
+        $this->flight = $ticket->flight;
     }
 
 	private function create_pkpass() : PKPass {
@@ -54,7 +56,7 @@ class BoardingPass {
         ];
         $boardingpass = ['transitType' => 'PKTransitTypeAir'];
         $boardingpass[ 'headerFields' ] = [
-            $this->textField('seat', 'Seat', '1B'),
+            $this->textField('seat', 'Seat', $this->ticket->seatNumber),
             $this->textField('flight', 'Flight', $this->flight->flightNumber),
         ];
 
@@ -65,6 +67,7 @@ class BoardingPass {
 
         $boardingpass[ 'secondaryFields' ] = [
             $this->textField('passenger-name', 'Passenger', $this->passenger->formattedName),
+            $this->textField('group', 'Group', '1'),
         ];
         $boardingpass['auxiliaryFields'] = [
             $this->dateField('date', 'Departs', $this->flight->scheduledDepartureDate),
@@ -76,7 +79,7 @@ class BoardingPass {
         ];
 
         $data['boardingPass'] = $boardingpass;
-        $json_payload = json_encode($this->flight->toJson());
+        $json_payload = json_encode($this->ticket->toJson());
         $data['barcode'] = [
             'format' => 'PKBarcodeFormatQR',
             'message' => $json_payload,

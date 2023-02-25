@@ -19,14 +19,14 @@ if (isset($_GET['url'])) {
     
     if ($action == "pass") {
         include_once( 'samples.php' );
-        $boardingPass = new BoardingPass($sample_passenger, $sample_flight);
+        $boardingPass = new BoardingPass($sample_ticket);
         $boardingPass->create_pass();
 	}else if ($action == "airport") {
 		$airport = new Airport($parts[2]);
         print(json_encode($airport->getInfo()));
     }else if ($action == "samples") {
         include_once( 'samples.php' );
-        print(json_encode([ "aircrafts" => [$sample_aircraft->toJson()], "flights" => [$sample_flight->toJson()], "passengers" => [$sample_passenger->toJson()]]));
+        print(json_encode([ "aircrafts" => [$sample_aircraft->toJson()], "flights" => [$sample_flight->toJson()], "passengers" => [$sample_passenger->toJson()], "tickets" => [$sample_ticket->toJson()]]));
     } else {
             print( "Invalid action");
     }
