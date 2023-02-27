@@ -6,6 +6,7 @@ class Passenger {
     public $firstName;
     public $middleName;
     public $lastName;
+    public $passenger_id;
 
     // create from json
     static function fromJson($json) {
