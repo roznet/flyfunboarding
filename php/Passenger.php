@@ -6,7 +6,7 @@ class Passenger {
     public $firstName;
     public $middleName;
     public $lastName;
-    public $passenger_id;
+    public int $passenger_id;
 
     // create from json
     static function fromJson($json) {
@@ -15,16 +15,26 @@ class Passenger {
         $passenger->firstName = $json['firstName'];
         $passenger->middleName = $json['middleName'];
         $passenger->lastName = $json['lastName'];
+        if( isset($json['passenger_id']) ) {
+            $passenger->passenger_id = $json['passenger_id'];
+        }else{
+            $passenger->passenger_id = -1;
+        }
+
         return $passenger;
     }
 
     function toJson() {
-        return [
+        $rv = [
             "formattedName" => $this->formattedName,
             "firstName" => $this->firstName,
             "middleName" => $this->middleName,
             "lastName" => $this->lastName
         ];
+        if( $this->passenger_id != -1 ) {
+            $rv['passenger_id'] = $this->passenger_id;
+        }
+        return $rv;
     }
 
     function uniqueIdentifer() {

@@ -80,9 +80,20 @@ class MyFlyFunDb {
     // Passengers
     public function createOrUpdatePassenger(Passenger $passenger) {
         $json = json_encode($passenger->toJson());
-        $stmt = mysqli_prepare($this->db, "INSERT INTO Passengers (passenger_id, json_data) VALUES (?, ?) ON DUPLICATE KEY UPDATE json_data = VALUES(json_data)");
-        $stmt->bind_param("is", $passenger->passenger_id, $json);
+        $stmt = mysqli_prepare($this->db, "INSERT INTO Passengers (json_data) VALUES (?) ON DUPLICATE KEY UPDATE json_data = VALUES(json_data)");
+        $stmt->bind_param("s",  $json);
         $stmt->execute();
+    }
+
+    public function listPassengers() : array {
+        $result = mysqli_query($this->db, "SELECT * FROM Passengers");
+        $passengers = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $passenger = Passenger::fromJson(json_decode($row['json_data'], true));
+            $passenger->passenger_id = $row['passenger_id'];
+            $passengers[] = $passenger->toJson();
+        }
+        return $passengers;
     }
 
 }
