@@ -1,15 +1,13 @@
 <?php
 
-class AirportController {
+class AirportController extends Controller {
 
     function index() {
         if (isset($_GET['icao'])){
             $this->airportFromIcao($_GET['icao']);
-            return true;
+        }else{
+            $this->terminate(400, "Bad Request, Airport not found");
         }
-
-        return false;
-
     }
 
     function info($params) {
@@ -23,6 +21,11 @@ class AirportController {
 
     private function airportFromIcao(string $icao) {
         $airport = new Airport($icao);
+        $info = $airport->getInfo();
+        if ($info == null) {
+            $this->terminate(400, "Bad Request, Airport not found");
+        }
+        $this->contentType("application/json");
         print(json_encode($airport->getInfo()));
     }
 }

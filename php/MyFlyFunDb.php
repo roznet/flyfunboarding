@@ -25,36 +25,34 @@ class MyFlyFunDb {
     }
 
     public function dropTables(){
-        mysqli_query($this->db, "DROP TABLE IF EXISTS Flights");
-        mysqli_query($this->db, "DROP TABLE IF EXISTS Passengers");
-        mysqli_query($this->db, "DROP TABLE IF EXISTS Tickets");
-        mysqli_query($this->db, "DROP TABLE IF EXISTS BoardingPasses");
-        mysqli_query($this->db, "DROP TABLE IF EXISTS Aircrafts");
+        $tables = [
+            "Flights",
+            "Passengers",
+            "Tickets",
+            "BoardingPasses",
+            "Aircrafts",
+        ];
+
+        foreach ($tables as $table) {
+            mysqli_query($this->db, "DROP TABLE IF EXISTS $table");
+        }
     }
 
     public function createTableIfNecessary() {
-        // create flight table and check error
-        mysqli_query($this->db, "CREATE TABLE IF NOT EXISTS Flights (flight_id INT NOT NULL AUTO_INCREMENT, aircraft_id INT NOT NULL, json_data JSON, PRIMARY KEY (flight_id))");
-        if (mysqli_errno($this->db)) {
-            die("Error creating Flights table: " . mysqli_error($this->db));
-        }
+        // refactor current function to create tables from an array of string of queries
+        $queries = [
+            "CREATE TABLE IF NOT EXISTS Flights (flight_id INT NOT NULL AUTO_INCREMENT, aircraft_id INT NOT NULL, json_data JSON, PRIMARY KEY (flight_id))",
+            "CREATE TABLE IF NOT EXISTS BoardingPasses (boarding_pass_id INT NOT NULL AUTO_INCREMENT, ticket_id INT NOT NULL, json_data JSON, PRIMARY KEY (boarding_pass_id))",
+            "CREATE TABLE IF NOT EXISTS Passengers (passenger_id INT NOT NULL AUTO_INCREMENT, json_data JSON, PRIMARY KEY (passenger_id))",
+            "CREATE TABLE IF NOT EXISTS Tickets (ticket_id INT NOT NULL AUTO_INCREMENT, passenger_id INT NOT NULL, flight_id INT NOT NULL, seat VARCHAR(10), PRIMARY KEY (ticket_id))",
+            "CREATE TABLE IF NOT EXISTS Aircrafts (aircraft_id INT NOT NULL AUTO_INCREMENT, registration VARCHAR(32) UNIQUE, json_data JSON, PRIMARY KEY (aircraft_id))",
+        ];
 
-        // create passenger table and check error
-        mysqli_query($this->db, "CREATE TABLE IF NOT EXISTS Passengers (passenger_id INT NOT NULL AUTO_INCREMENT, json_data JSON, PRIMARY KEY (passenger_id))");
-        if (mysqli_errno($this->db)) {
-            die("Error creating Passengers table: " . mysqli_error($this->db));
-        }
-
-        // create ticket table and check error
-        mysqli_query($this->db, "CREATE TABLE IF NOT EXISTS Tickets (ticket_id INT NOT NULL AUTO_INCREMENT, passenger_id INT NOT NULL, flight_id INT NOT NULL, seat VARCHAR(10), PRIMARY KEY (ticket_id))");
-        if (mysqli_errno($this->db)) {
-            die("Error creating Tickets table: " . mysqli_error($this->db));
-        }
-
-        // create aircraft table and check error
-        mysqli_query($this->db, "CREATE TABLE IF NOT EXISTS Aircrafts (aircraft_id INT NOT NULL AUTO_INCREMENT, registration VARCHAR(32) UNIQUE, json_data JSON, PRIMARY KEY (aircraft_id))");
-        if (mysqli_errno($this->db)) {
-            die("Error creating Aircrafts table: " . mysqli_error($this->db));
+        foreach ($queries as $query) {
+            mysqli_query($this->db, $query);
+            if (mysqli_errno($this->db)) {
+                die("Error creating table: " . mysqli_error($this->db));
+            }
         }
     }
 

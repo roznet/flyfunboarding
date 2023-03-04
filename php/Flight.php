@@ -10,22 +10,6 @@ class Flight {
     public DateInterval $flightTime; 
 
 
-    function mysqlCreateTable() {
-        $sql = 'CREATE TABLE flights (
-            flight_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-            flight_identifer VARCHAR(64) NOT NULL,
-            origin VARCHAR(32) NOT NULL,
-            destination VARCHAR(32) NOT NULL,
-            gate VARCHAR(4) NOT NULL,
-            flightNumber VARCHAR(64) NOT NULL,
-            aircraft VARCHAR(10) NOT NULL,
-            date DATETIME NOT NULL,
-            flightTime TIME NOT NULL
-        )';
-        // 
-        return $sql;
-    }
-
     function uniqueFlightIdentifier() : string {
         // EGTFLFMDN122DR202012311200
         return $this->origin->icao . $this->destination->icao . $this->aircraft->registration . $this->scheduledDepartureDate->format('YmdHi');
