@@ -20,13 +20,16 @@ class Controller {
         return $json;
     }
 
-    function paramByPositionOrGet($params, $name, $position){
+    function paramByPositionOrGet($params, $name, $position, $optional = false){
         if ( isset($params[$position]) ) {
             return $params[$position];
         }else if( isset($_GET[$name]) ){
             return $_GET[$name];
         }
-        $this->terminate(400, 'Bad request missing parameter: ' . $name);
-        
+        if( !$optional ){
+            $this->terminate(400, 'Bad request missing parameter: ' . $name);
+        }else{
+            return null;
+        }
     }
 }

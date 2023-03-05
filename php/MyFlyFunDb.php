@@ -150,8 +150,17 @@ class MyFlyFunDb {
         }
     }
 
-    private function list($table) : array {
-        $result = mysqli_query($this->db, "SELECT * FROM $table");
+    private function list($table, $where = []) : array {
+        $sql = "SELECT * FROM $table";
+        if( count($where) > 0 ) {
+            $clause = [];
+            foreach( $where as $key => $value ) {
+                $clause[] = $key . ' = ' . $value;
+            }
+            $sql .= ' WHERE ' . implode(' AND ', $clause);
+        }
+
+        $result = mysqli_query($this->db, $sql);
         $objects = [];
         while ($row = mysqli_fetch_assoc($result)) {
             $json = json_decode($row['json_data'], true);
@@ -213,6 +222,33 @@ class MyFlyFunDb {
     // Flights
     public function createOrUpdateFlight(Flight $flight) {
         $this->createOrUpdate("Flights", $flight);
+    }
+
+    public function listFlights(int $aircraft_id = -1) : array {
+        if( $aircraft_id != -1 ) {
+            return $this->list("Flights", ["aircraft_id" => $aircraft_id]);
+        }
+        return $this->list("Flights");
+    }
+
+    public function getFlight($flight_id, $json = true) {
+        return $this->get("Flights", $flight_id, $json);
+    }
+
+    // Tickets
+    public function createOrUpdateTicket(Ticket $ticket) {
+        $this->createOrUpdate("Tickets", $ticket);
+    }
+
+    public function getTicket($ticket_id, $json = true) {
+        return $this->get("Tickets", $ticket_id, $json);
+    }
+
+    public function listTickets($flight_id = -1) {
+        if( $flight_id != -1 ) {
+            return $this->list("Tickets", ["flight_id" => $flight_id]);
+        }
+        return $this->list("Tickets");
     }
 
 }

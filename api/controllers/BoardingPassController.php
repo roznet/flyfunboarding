@@ -1,13 +1,17 @@
 <?php
 
-class BoardingPassController {
+class BoardingPassController extends Controller {
 
-    public function index() {
-        include_once( 'samples.php' );
-        $boardingPass = new BoardingPass($sample_ticket);
+    public function index($params) {
+        $this->validateMethod('GET');
+
+        $ticket_id = $this->paramByPositionOrGet($params, 'ticket_id', 0);
+        $ticket = MyFlyFunDb::$shared->getTicket($ticket_id, false);
+        if( is_null($ticket) ) {
+            $this->terminate(400, 'Ticket not found');
+        }
+        $boardingPass = new BoardingPass($ticket);
         $boardingPass->create_pass();
     }
 
-    public function list() {
-    }
 }
