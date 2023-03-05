@@ -16,4 +16,18 @@ class PassengerController extends Controller {
         $this->contentType('application/json');
         echo $json;
     }
+
+    public function index($params) {
+        $this->validateMethod('GET');
+        $passenger_id = $this->paramByPositionOrGet($params, 'passenger_id', 0);
+
+        $passenger = MyFlyFunDb::$shared->getPassenger($passenger_id);
+        if ($passenger ) {
+            $json = json_encode($passenger);
+            $this->contentType('application/json');
+            echo $json;
+        } else {
+            $this->terminate(404, 'Passenger not found');
+        }
+    }
 }

@@ -8,33 +8,23 @@ class Passenger {
     public $lastName;
     public int $passenger_id;
 
+    public static $jsonKeys = [
+        'formattedName' => 'string',
+        'firstName' => 'string',
+        'middleName' => 'string',
+        'lastName' => 'string',
+        'passenger_id' => 'integer'
+    ];
+    public static $jsonValuesOptionalDefaults = [
+        'passenger_id' => -1
+    ];
     // create from json
     static function fromJson($json) {
-        $passenger = new Passenger();
-        $passenger->formattedName = $json['formattedName'];
-        $passenger->firstName = $json['firstName'];
-        $passenger->middleName = $json['middleName'];
-        $passenger->lastName = $json['lastName'];
-        if( isset($json['passenger_id']) ) {
-            $passenger->passenger_id = $json['passenger_id'];
-        }else{
-            $passenger->passenger_id = -1;
-        }
-
-        return $passenger;
+        return JsonHelper::fromJson($json, 'Passenger');
     }
 
     function toJson() {
-        $rv = [
-            "formattedName" => $this->formattedName,
-            "firstName" => $this->firstName,
-            "middleName" => $this->middleName,
-            "lastName" => $this->lastName
-        ];
-        if( $this->passenger_id != -1 ) {
-            $rv['passenger_id'] = $this->passenger_id;
-        }
-        return $rv;
+        return JsonHelper::toJson($this);
     }
 
     function uniqueIdentifer() {

@@ -21,8 +21,8 @@ $sample_flight_json = '{
 }';
 
 $sample_flight_json = '{
-    "origin": "EGTF",
-    "destination": "EBOS",
+    "origin": { "icao":"EGTF"},
+    "destination": {"icao":"EBOS"},
     "gate": "1",
     "flightNumber": "N122DR",
     "aircraft": {
@@ -48,8 +48,8 @@ $sample_ticket_json = '{
         "formattedName": "Mr. John M Doe"
     },
     "flight": {
-        "origin": "EGTF",
-        "destination": "EBOS",
+    "origin": { "icao":"EGTF"},
+    "destination": {"icao":"EBOS"},
         "gate": "1",
         "flightNumber": "N122DR",
         "aircraft": {

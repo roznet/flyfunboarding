@@ -3,16 +3,20 @@
 class Airport {
     
 	public string $icao;
+    private array $info = [];
+
     private static $db = null;
 
-    private array $info = [];
-	public function __construct(string $icao) {
+	public function __construct(string $icao = 'EGLL') {
 		// make icao uppercase
 		$this->icao = strtoupper($icao);
 		if (self::$db == null) {
 			self::$db = new PDO('sqlite:../python/airports.db');
 		}
-	}
+    }
+
+    public static $jsonKeys = ['icao' => 'string'];
+    public static $jsonValuesOptionalDefaults = [];
 
     public function getInfo() {
         if (empty($this->info)) {

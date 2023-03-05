@@ -1,6 +1,7 @@
 <?php
 
-class DbController {
+class DbController extends Controller {
+
     public function setup() {
         print( "setting up". PHP_EOL);
         MyFlyFunDb::$shared->setup();

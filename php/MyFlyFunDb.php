@@ -9,6 +9,9 @@
 //
 //      
 class MyFlyFunDb {
+
+    const MISSING_ID = -1;
+
     public static $shared = null;
     public $db;
     public function __construct() {
@@ -74,6 +77,19 @@ class MyFlyFunDb {
         }
         return $aircrafts;
     }
+    public function getAircraft($aircraft_id) {
+        $stmt = mysqli_prepare($this->db, "SELECT * FROM Aircrafts WHERE aircraft_id = ?");
+        $stmt->bind_param("i", $aircraft_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows == 0) {
+            return null;
+        }
+        $row = $result->fetch_assoc();
+        $aircraft = Aircraft::fromJson(json_decode($row['json_data'], true));
+        $aircraft->aircraft_id = $row['aircraft_id'];
+        return $aircraft;
+    }
 
     // Passengers
     public function createOrUpdatePassenger(Passenger $passenger) {
@@ -92,6 +108,20 @@ class MyFlyFunDb {
             $passengers[] = $passenger->toJson();
         }
         return $passengers;
+    }
+
+    public function getPassenger($passsenger_id) {
+        $stmt = mysqli_prepare($this->db, "SELECT * FROM Passengers WHERE passenger_id = ?");
+        $stmt->bind_param("i", $passsenger_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows == 0) {
+            return null;
+        }
+        $row = $result->fetch_assoc();
+        $passenger = Passenger::fromJson(json_decode($row['json_data'], true));
+        $passenger->passenger_id = $row['passenger_id'];
+        return $passenger;
     }
 
 }

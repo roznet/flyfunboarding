@@ -19,4 +19,14 @@ class Controller {
         $json = json_decode(file_get_contents("php://input"), true);
         return $json;
     }
+
+    function paramByPositionOrGet($params, $name, $position){
+        if ( isset($params[$position]) ) {
+            return $params[$position];
+        }else if( isset($_GET[$name]) ){
+            return $_GET[$name];
+        }
+        $this->terminate(400, 'Bad request missing parameter: ' . $name);
+        
+    }
 }
