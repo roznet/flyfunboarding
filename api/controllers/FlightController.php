@@ -2,16 +2,21 @@
 
 class FlightController extends Controller
 {
-    public function create() {
+    public function plan($params) {
         $this->validateMethod('POST');
 
-        $json = $this->getJsonPostBody();
-        if (!isset($json['aircraft']['aircraft_id'])) {
-            $this->terminate(400, 'Missing aircraft_id');
+        $aircraft_id = $this->paramByPositionOrGet($params, 'aircraft_id', 0);
+        $aircraft = MyFlyFunDb::$shared->getAircraft($aircraft_id, false);
+        
+        if (is_null($aircraft)) {
+            $this->terminate(400, 'Aircraft does not exist');
         }
-        $aircraft_id = $json['aircraft']['aircraft_id'];
+
+        $json = $this->getJsonPostBody();
+        $json['aircraft'] = $aircraft->toJson();
         $flight = Flight::fromJson($json);
-        MyFlyFunDb::$shared->createFlight($flight, $aircraft_id);
+        $flight->aircraft_id = $aircraft_id;
+        MyFlyFunDb::$shared->createOrUpdateFlight($flight);
     }
 }
 

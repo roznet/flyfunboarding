@@ -7,6 +7,11 @@ class Ticket {
     // this is calculated from the flight and passenger
     public string $ticket_id;
 
+    function uniqueIdentifier() : array {
+        // EGTFLFMD_N122DR_202012311200
+        $tag = $this->flight->uniqueIdentifier()['flightIdentifier'] . '_' . $this->passenger->uniqueIdentifier()['passengerIdentifier'];
+        return [ 'ticket_identifier' => $tag ];
+    }
     static public function issue(Passenger $passenger, Flight $flight, string $seatNumber, int $ticket_id = -1) : Ticket {
         $ticket = new Ticket();
         $ticket->passenger = $passenger;

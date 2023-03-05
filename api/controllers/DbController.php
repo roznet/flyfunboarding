@@ -13,4 +13,8 @@ class DbController extends Controller {
         print_r($_POST);
     }
 
+    public function reset() {
+        MyFlyFunDb::$shared->forceSetup();
+    }
+
 }

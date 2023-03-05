@@ -8,12 +8,14 @@ class Flight {
     public Aircraft $aircraft;
     public DateTime $scheduledDepartureDate;
     public DateInterval $flightTime; 
-    public int $flight_id;
+    public int $flight_id = -1;
+    public int $aircraft_id = -1;
 
 
-    function uniqueFlightIdentifier() : string {
-        // EGTFLFMDN122DR202012311200
-        return $this->origin->icao . $this->destination->icao . $this->aircraft->registration . $this->scheduledDepartureDate->format('YmdHi');
+    function uniqueIdentifier() : array {
+        // EGTFLFMD_N122DR_202012311200
+        $tag = $this->origin->icao . $this->destination->icao . '_' . $this->aircraft->registration . '_' . $this->scheduledDepartureDate->format('YmdHi');
+        return [ 'flight_identifier' => $tag ];
     }
 
     public static $jsonKeys = [

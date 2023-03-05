@@ -27,16 +27,27 @@ class MyFlyFunDb {
         $this->createTableIfNecessary();
     }
 
-    public function dropTables(){
-        $tables = [
-            "Flights",
-            "Passengers",
-            "Tickets",
-            "BoardingPasses",
-            "Aircrafts",
-        ];
+    static $standardTables = [
+            "Flights" => [ "link" => [ "Aircrafts" ] ],
+            "Passengers" => [],
+            "Tickets" => [ "link" => [ "Passengers", "Flights" ] ],
+            "Aircrafts" => []
+    ];
 
-        foreach ($tables as $table) {
+    private function tableToId($table) {
+        return substr(strtolower($table), 0, -1) . '_id';
+    }
+    private function tableToIdentifier($table) {
+        return substr(strtolower($table), 0, -1) . '_identifier';
+    }
+    private function tableToClass($table) {
+        return ucfirst(substr($table, 0, -1));
+    }
+
+    public function dropTables(){
+        $tables = MyFlyFunDb::$standardTables;
+
+        foreach (array_keys($tables) as $table ) {
             mysqli_query($this->db, "DROP TABLE IF EXISTS $table");
         }
     }
@@ -45,13 +56,31 @@ class MyFlyFunDb {
         // refactor current function to create tables from an array of string of queries
         $queries = [
             "CREATE TABLE IF NOT EXISTS Flights (flight_id INT NOT NULL AUTO_INCREMENT, aircraft_id INT NOT NULL, json_data JSON, PRIMARY KEY (flight_id))",
-            "CREATE TABLE IF NOT EXISTS BoardingPasses (boarding_pass_id INT NOT NULL AUTO_INCREMENT, ticket_id INT NOT NULL, json_data JSON, PRIMARY KEY (boarding_pass_id))",
             "CREATE TABLE IF NOT EXISTS Passengers (passenger_id INT NOT NULL AUTO_INCREMENT, json_data JSON, PRIMARY KEY (passenger_id))",
             "CREATE TABLE IF NOT EXISTS Tickets (ticket_id INT NOT NULL AUTO_INCREMENT, passenger_id INT NOT NULL, flight_id INT NOT NULL, seat VARCHAR(10), PRIMARY KEY (ticket_id))",
             "CREATE TABLE IF NOT EXISTS Aircrafts (aircraft_id INT NOT NULL AUTO_INCREMENT, registration VARCHAR(32) UNIQUE, json_data JSON, PRIMARY KEY (aircraft_id))",
         ];
+        $queries = [];
+        foreach (MyFlyFunDb::$standardTables as $table => $tableInfo) {
+            // generate id name: lowercase table name without the last character if it's an s
+            $table_id =  $this->tableToId($table);
+            $identifier = $this->tableToIdentifier($table);
+            $links = [];
+            if (isset($tableInfo['link'])) {
+                $links = $tableInfo['link'];
+            }
+            $columns = [ $table_id . " INT NOT NULL AUTO_INCREMENT", $identifier . " VARCHAR(255) UNIQUE" ];
+            foreach( $links as $link ) {
+                $link_id = $this->tableToId($link);
+                $columns[] = $link_id . " INT NOT NULL";
+            }
+            $columns[] = "json_data JSON";
+            $columns[] = "PRIMARY KEY ({$table_id})" ;
+            $queries[] = "CREATE TABLE IF NOT EXISTS $table (" . implode(", ", $columns) . ")";
+        }
 
         foreach ($queries as $query) {
+            echo $query . PHP_EOL;
             mysqli_query($this->db, $query);
             if (mysqli_errno($this->db)) {
                 die("Error creating table: " . mysqli_error($this->db));
@@ -59,69 +88,131 @@ class MyFlyFunDb {
         }
     }
 
-    // Aircrafts
-    //
-    public function createOrUpdateAircraft(Aircraft $aircraft) {
-        $json = json_encode($aircraft->toJson());
-        $stmt = mysqli_prepare($this->db, "INSERT INTO Aircrafts (registration, json_data) VALUES (?, ?) ON DUPLICATE KEY UPDATE json_data = VALUES(json_data)");
-        $stmt->bind_param("ss", $aircraft->registration, $json);
-        $stmt->execute();
-    }
-    public function listAircrafts() : array {
-        $result = mysqli_query($this->db, "SELECT * FROM Aircrafts");
-        $aircrafts = [];
-        while ($row = mysqli_fetch_assoc($result)) {
-            $aircraft = Aircraft::fromJson(json_decode($row['json_data'], true));
-            $aircraft->aircraft_id = $row['aircraft_id'];
-            $aircrafts[] = $aircraft->toJson();
+    private function createOrUpdate($table, $object) {
+        $json = json_encode($object->toJson());
+
+        $table_id = $this->tableToId($table);
+        $identifier = $this->tableToIdentifier($table);
+    
+        $tableInfo = MyFlyFunDb::$standardTables[$table];
+        $links = [];
+        if (isset($tableInfo['link'])) {
+            $links = $tableInfo['link'];
         }
-        return $aircrafts;
+
+        $types =  ['s'];
+        $values = [$json];
+        $cols = ['json_data'];
+
+        foreach( $links as $link ) {
+            $link_id = $this->tableToId($link);
+            $types[] = "i";
+            $values[] = $object->$link_id;
+            $cols[] = $link_id;
+        }
+        
+        if( $object->$table_id == MyFlyFunDb::MISSING_ID ) {
+            foreach ($object->uniqueIdentifier() as $key => $value) {
+                if( $key == $identifier ) {
+                    $types[] = "s";
+                    $values[] = $value;
+                    $cols[] = $key;
+                }
+            }
+
+            $sql = "INSERT INTO $table (" . implode(", ", $cols) . ") VALUES (" . implode(", ", array_fill(0, count($cols), "?")) . ") ON DUPLICATE KEY UPDATE json_data = VALUES(json_data)";
+            $stmt = mysqli_prepare($this->db, $sql);
+            $stmt->bind_param(implode("", $types), ...$values);
+            $stmt->execute();
+            $object->$table_id = mysqli_insert_id($this->db);
+        }else{
+            $types[] = "i";
+            $values[] = $object->$table_id;
+
+            $sql = "UPDATE $table SET " . implode(", ", array_map(function($col) { return $col . " = ?"; }, $cols)) . " WHERE $table_id = ?";
+            $stmt = mysqli_prepare($this->db, $sql);
+            $stmt->bind_param(implode("", $types), ...$values);
+            $stmt->execute();
+        }
+        
+        if (mysqli_errno($this->db)) {
+            die("Error creating table: " . mysqli_error($this->db));
+        }
     }
-    public function getAircraft($aircraft_id) {
-        $stmt = mysqli_prepare($this->db, "SELECT * FROM Aircrafts WHERE aircraft_id = ?");
-        $stmt->bind_param("i", $aircraft_id);
+
+    private function addLinks($table, $object, $row) {
+        $tableInfo = MyFlyFunDb::$standardTables[$table];
+        if (isset($tableInfo['link'])) {
+            foreach ($tableInfo['link'] as $link) {
+                $link_id = $this->tableToId($link);
+                $object->$link_id = $row[$link_id];
+            }
+        }
+    }
+
+    private function list($table) : array {
+        $result = mysqli_query($this->db, "SELECT * FROM $table");
+        $objects = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $json = json_decode($row['json_data'], true);
+            $object = JsonHelper::fromJson($json, $this->tableToClass($table));
+            $tableId = $this->tableToId($table);
+            $object->$tableId = $row[$tableId];
+            $this->addLinks($table, $object, $row);
+            $objects[] = $object->toJson();
+        }
+        return $objects;
+    }
+
+    private function get($table,$id,$returnJson) {
+        $stmt = mysqli_prepare($this->db, "SELECT * FROM $table WHERE " . $this->tableToId($table) . " = ?");
+        $stmt->bind_param("i", $id);
         $stmt->execute();
         $result = $stmt->get_result();
         if ($result->num_rows == 0) {
             return null;
         }
         $row = $result->fetch_assoc();
-        $aircraft = Aircraft::fromJson(json_decode($row['json_data'], true));
-        $aircraft->aircraft_id = $row['aircraft_id'];
-        return $aircraft;
+        $json = json_decode($row['json_data'], true);
+        $object = JsonHelper::fromJson($json, $this->tableToClass($table));
+        $tableId = $this->tableToId($table);
+        $object->$tableId = $row[$tableId];
+        $this->addLinks($table, $object, $row);
+        if( $returnJson ) {
+            return $object->toJson();
+        }else{
+            return $object;
+        }
+    }
+
+    // Aircrafts
+    //
+    public function createOrUpdateAircraft(Aircraft $aircraft) {
+        $this->createOrUpdate("Aircrafts", $aircraft);
+    }
+    public function listAircrafts() : array {
+        return $this->list("Aircrafts");
+    }
+    public function getAircraft($aircraft_id, $returnJson = true) {
+        return $this->get("Aircrafts", $aircraft_id, $returnJson);
     }
 
     // Passengers
     public function createOrUpdatePassenger(Passenger $passenger) {
-        $json = json_encode($passenger->toJson());
-        $stmt = mysqli_prepare($this->db, "INSERT INTO Passengers (json_data) VALUES (?) ON DUPLICATE KEY UPDATE json_data = VALUES(json_data)");
-        $stmt->bind_param("s",  $json);
-        $stmt->execute();
+        $this->createOrUpdate("Passengers", $passenger);
     }
 
     public function listPassengers() : array {
-        $result = mysqli_query($this->db, "SELECT * FROM Passengers");
-        $passengers = [];
-        while ($row = mysqli_fetch_assoc($result)) {
-            $passenger = Passenger::fromJson(json_decode($row['json_data'], true));
-            $passenger->passenger_id = $row['passenger_id'];
-            $passengers[] = $passenger->toJson();
-        }
-        return $passengers;
+        return $this->list("Passengers");
     }
 
-    public function getPassenger($passsenger_id) {
-        $stmt = mysqli_prepare($this->db, "SELECT * FROM Passengers WHERE passenger_id = ?");
-        $stmt->bind_param("i", $passsenger_id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        if ($result->num_rows == 0) {
-            return null;
-        }
-        $row = $result->fetch_assoc();
-        $passenger = Passenger::fromJson(json_decode($row['json_data'], true));
-        $passenger->passenger_id = $row['passenger_id'];
-        return $passenger;
+    public function getPassenger($passsenger_id, $json = true) {
+        return $this->get("Passengers", $passsenger_id, $json);
+    }
+
+    // Flights
+    public function createOrUpdateFlight(Flight $flight) {
+        $this->createOrUpdate("Flights", $flight);
     }
 
 }
