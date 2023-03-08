@@ -88,7 +88,13 @@ class MyFlyFunDb {
         }
     }
 
+    private function validateAirline() {
+        if( $this->airline_id == -1 ) {
+            die("Airline not set");
+        }
+    }
     private function createOrUpdate($table, $object) {
+        $this->validateAirline();
         $json = json_encode($object->toJson());
 
         $table_id = $this->tableToId($table);
@@ -100,9 +106,9 @@ class MyFlyFunDb {
             $links = $tableInfo['link'];
         }
 
-        $types =  ['s'];
-        $values = [$json];
-        $cols = ['json_data'];
+        $types =  ['si'];
+        $values = [$json, $this->airline_id];
+        $cols = ['json_data','airline_id'];
 
         foreach( $links as $link ) {
             $link_id = $this->tableToId($link);
@@ -151,14 +157,15 @@ class MyFlyFunDb {
     }
 
     private function list($table, $where = []) : array {
+        $this->validateAirline();
         $sql = "SELECT * FROM $table";
+        $clause = [ 'airline_id = ' . $this->airline_id];
         if( count($where) > 0 ) {
-            $clause = [];
             foreach( $where as $key => $value ) {
                 $clause[] = $key . ' = ' . $value;
             }
-            $sql .= ' WHERE ' . implode(' AND ', $clause);
         }
+        $sql .= ' WHERE ' . implode(' AND ', $clause);
 
         $result = mysqli_query($this->db, $sql);
         $objects = [];
@@ -174,8 +181,9 @@ class MyFlyFunDb {
     }
 
     private function get($table,$id,$returnJson) {
-        $stmt = mysqli_prepare($this->db, "SELECT * FROM $table WHERE " . $this->tableToId($table) . " = ?");
-        $stmt->bind_param("i", $id);
+        $this->validateAirline();
+        $stmt = mysqli_prepare($this->db, "SELECT * FROM $table WHERE " . $this->tableToId($table) . " = ? AND airline_id = ?" );
+        $stmt->bind_param("ii", $id, $this->airline_id);
         $stmt->execute();
         $result = $stmt->get_result();
         if ($result->num_rows == 0) {
