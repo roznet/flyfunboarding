@@ -14,6 +14,8 @@ class MyFlyFunDb {
 
     public static $shared = null;
     public $db;
+    public $airline_id = -1;
+
     public function __construct() {
         $config = Config::$shared;
         $this->db = mysqli_connect( $config['db_host'], $config['db_username'], $config['db_password'], $config['database'] );
@@ -26,7 +28,6 @@ class MyFlyFunDb {
         $this->dropTables();
         $this->createTableIfNecessary();
     }
-
     static $standardTables = [
             "Flights" => [ "link" => [ "Aircrafts" ] ],
             "Passengers" => [],
@@ -50,17 +51,14 @@ class MyFlyFunDb {
         foreach (array_keys($tables) as $table ) {
             mysqli_query($this->db, "DROP TABLE IF EXISTS $table");
         }
+
+        mysqli_query($this->db, "DROP TABLE IF EXISTS Airlines");
     }
 
     public function createTableIfNecessary() {
         // refactor current function to create tables from an array of string of queries
-        $queries = [
-            "CREATE TABLE IF NOT EXISTS Flights (flight_id INT NOT NULL AUTO_INCREMENT, aircraft_id INT NOT NULL, json_data JSON, PRIMARY KEY (flight_id))",
-            "CREATE TABLE IF NOT EXISTS Passengers (passenger_id INT NOT NULL AUTO_INCREMENT, json_data JSON, PRIMARY KEY (passenger_id))",
-            "CREATE TABLE IF NOT EXISTS Tickets (ticket_id INT NOT NULL AUTO_INCREMENT, passenger_id INT NOT NULL, flight_id INT NOT NULL, seat VARCHAR(10), PRIMARY KEY (ticket_id))",
-            "CREATE TABLE IF NOT EXISTS Aircrafts (aircraft_id INT NOT NULL AUTO_INCREMENT, registration VARCHAR(32) UNIQUE, json_data JSON, PRIMARY KEY (aircraft_id))",
-        ];
         $queries = [];
+        $queries = [ "CREATE TABLE IF NOT EXISTS Airlines (airline_id INT NOT NULL AUTO_INCREMENT, json_data JSON, apple_identifier VARCHAR(1024), PRIMARY KEY (airline_id))" ];
         foreach (MyFlyFunDb::$standardTables as $table => $tableInfo) {
             // generate id name: lowercase table name without the last character if it's an s
             $table_id =  $this->tableToId($table);
@@ -75,7 +73,9 @@ class MyFlyFunDb {
                 $columns[] = $link_id . " INT NOT NULL";
             }
             $columns[] = "json_data JSON";
+            $columns[] = "airline_id INT NOT NULL";
             $columns[] = "PRIMARY KEY ({$table_id})" ;
+            $columns[] = "FOREIGN KEY (airline_id) REFERENCES Airlines(airline_id)";
             $queries[] = "CREATE TABLE IF NOT EXISTS $table (" . implode(", ", $columns) . ")";
         }
 
@@ -192,6 +192,47 @@ class MyFlyFunDb {
         }else{
             return $object;
         }
+    }
+
+    // Airlines
+    //
+    public function createOrUpdateAirline($json) {
+        $airline = JsonHelper::fromJson($json, Airline::class);
+        $sql = 'INSERT INTO Airlines (apple_identifier, json_data) VALUES (?, ?) ON DUPLICATE KEY UPDATE json_data = VALUES(json_data)';
+        $stmt = mysqli_prepare($this->db, $sql);
+        $json_str = json_encode($json);
+        $stmt->bind_param("ss", $airline->apple_identifier, $json_str);
+        $stmt->execute();
+        return $airline->toJson();
+    }
+
+    public function getAirlineByAppleIdentifier($apple_identifier){
+        $sql = "SELECT * FROM Airlines WHERE apple_identifier = ?";
+        $stmt = mysqli_prepare($this->db, $sql);
+        $stmt->bind_param("s", $apple_identifier);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows == 0) {
+            return null;
+        }
+        $row = $result->fetch_assoc();
+        $object = JsonHelper::fromJson(json_decode($row['json_data'], true), Airline::class);
+        $object->airline_id = $row['airline_id'];
+        return $object;
+    }
+    public function getAirline($airline_id){
+        $sql = "SELECT * FROM Airlines WHERE airline_id = ?";
+        $stmt = mysqli_prepare($this->db, $sql);
+        $stmt->bind_param("i", $airline_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows == 0) {
+            return null;
+        }
+        $row = $result->fetch_assoc();
+        $object = JsonHelper::fromJson(json_decode($row['json_data'], true), Airline::class);
+        $object->airline_id = $row['airline_id'];
+        return $object;
     }
 
     // Aircrafts

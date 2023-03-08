@@ -12,7 +12,8 @@ class Controller {
     }
    function validateMethod( $method ) {
        if ( $_SERVER['REQUEST_METHOD'] != $method ) {
-           $this->terminate(405, 'Method not allowed');
+           $method = $_SERVER['REQUEST_METHOD'];
+           $this->terminate(405, "Method $method not allowed");
       }
    }
     function getJsonPostBody() {

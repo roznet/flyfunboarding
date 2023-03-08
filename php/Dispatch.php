@@ -22,6 +22,20 @@ class Dispatch {
             print("Invalid Version");
             return false;
         }
+
+        // if second part is airline with a number, check it and remove it
+        if ($urlParts[0] == 'airline' && preg_match('/[0-9]+/', $urlParts[1]) && count($urlParts) > 2) {
+            $airline_id = $urlParts[1];
+            $urlParts = array_slice($urlParts, 2);
+            $airline = MyFlyFunDb::$shared->getAirline($airline_id);
+            if( !$airline->validate()) {
+                http_response_code(401);
+                die("Invalid Bearer Token");
+            }
+            MyFlyFunDb::$shared->airline_id = $airline_id;
+        }else{
+            $airline_id = -1;
+        }
         // Then check if controller exists
         $controller = array_shift($urlParts);
 
