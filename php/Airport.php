@@ -42,6 +42,16 @@ class Airport {
         $info = $this->getInfo();
         return $info['iso_country'];
     }
+    public function getLocation() {
+        $info = $this->getInfo();
+        if (empty($info['latitude_deg']) || empty($info['longitude_deg'])) {
+            return null;
+        }
+        return [
+            'latitude' => $info['latitude_deg'],
+            'longitude' => $info['longitude_deg'],
+        ];
+    }
     public function getIcao() {
         return $this->icao;
     }

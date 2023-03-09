@@ -67,16 +67,34 @@ class BoardingPass {
 
         $boardingpass[ 'secondaryFields' ] = [
             $this->textField('passenger-name', 'Passenger', $this->passenger->formattedName),
-            $this->textField('group', 'Group', '1'),
+            $this->textField('gate', 'Gate', $this->flight->gate),
         ];
         $boardingpass['auxiliaryFields'] = [
             $this->dateField('date', 'Departs', $this->flight->scheduledDepartureDate),
             $this->dateIntervalField('flightTime', 'Flight Time', $this->flight->flightTime),
+
         ];
 
         $boardingpass['backFields'] = [
             $this->textField('passenger-name', 'Passenger', $this->passenger->formattedName),
         ];
+
+        $locations = [];
+        $originLocation = $this->flight->origin->getLocation();
+        if( !is_null($originLocation) ) {
+            $originLocation['relevantText'] = 'Welcome to '.$this->flight->origin->getName();
+            $locations[] = $originLocation;
+        }
+        if( $this->flight->destination->icao != $this->flight->origin->icao ) {
+            $destinationLocation = $this->flight->destination->getLocation();
+            if( !is_null($destinationLocation) ) {
+                $destinationLocation['relevantText'] = 'Thank you for flying with us to '.$this->flight->destination->getName();
+                $locations[] = $destinationLocation;
+            }
+        }
+        if( count($locations) > 0 ) {
+            $boardingpass['locations'] = $locations;
+        }
 
         $data['boardingPass'] = $boardingpass;
         $json_payload = json_encode($this->ticket->toJson());
