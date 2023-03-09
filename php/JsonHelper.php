@@ -61,7 +61,7 @@ class JsonHelper {
         }
         foreach ($obj::$jsonKeys as $key => $type) {
             $val = JsonHelper::valueToJson($obj, $key, $type, $defaults);
-            if( $val != null ){
+            if( $val !== null ){
                 $rv[$key] = $val;
             }
         }

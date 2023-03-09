@@ -93,6 +93,9 @@ class MyFlyFunDb {
             die("Airline not set");
         }
     }
+    private function uniqueIdentifier(string $identifier) : string {
+        return $this->airline_id . '.' . $identifier;
+    }
     private function createOrUpdate($table, $object) {
         $this->validateAirline();
         $json = json_encode($object->toJson());
@@ -121,7 +124,7 @@ class MyFlyFunDb {
             foreach ($object->uniqueIdentifier() as $key => $value) {
                 if( $key == $identifier ) {
                     $types[] = "s";
-                    $values[] = $value;
+                    $values[] = $this->uniqueIdentifier($value);
                     $cols[] = $key;
                 }
             }
