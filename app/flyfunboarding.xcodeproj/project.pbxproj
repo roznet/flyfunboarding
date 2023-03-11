@@ -1,0 +1,685 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		4269B3EA29BBC84C009891C6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4269B3E929BBC84C009891C6 /* Assets.xcassets */; };
+		4269B3ED29BBC84C009891C6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4269B3EC29BBC84C009891C6 /* Preview Assets.xcassets */; };
+		4269B3F729BBC84D009891C6 /* flyfunboardingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4269B3F629BBC84D009891C6 /* flyfunboardingTests.swift */; };
+		4269B40129BBC84D009891C6 /* flyfunboardingUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4269B40029BBC84D009891C6 /* flyfunboardingUITests.swift */; };
+		4269B40329BBC84D009891C6 /* flyfunboardingUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4269B40229BBC84D009891C6 /* flyfunboardingUITestsLaunchTests.swift */; };
+		4269B41929BBCA9D009891C6 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4269B41829BBCA9D009891C6 /* ContentView.swift */; };
+		4269B41B29BBCAB6009891C6 /* FlyFunBoardingApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4269B41A29BBCAB6009891C6 /* FlyFunBoardingApp.swift */; };
+		4269B42329BC75CA009891C6 /* RZData in Frameworks */ = {isa = PBXBuildFile; productRef = 4269B42229BC75CA009891C6 /* RZData */; };
+		4269B42529BC75CA009891C6 /* RZUtils in Frameworks */ = {isa = PBXBuildFile; productRef = 4269B42429BC75CA009891C6 /* RZUtils */; };
+		4269B42729BC75CA009891C6 /* RZUtilsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4269B42629BC75CA009891C6 /* RZUtilsSwift */; };
+		4269B42929BC75CA009891C6 /* RZUtilsUniversal in Frameworks */ = {isa = PBXBuildFile; productRef = 4269B42829BC75CA009891C6 /* RZUtilsUniversal */; };
+		4269B42B29BC75E9009891C6 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4269B42A29BC75E9009891C6 /* Settings.swift */; };
+		4269B42E29BC77B3009891C6 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4269B42D29BC77B3009891C6 /* Log.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		4269B3F329BBC84D009891C6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4269B3DA29BBC84C009891C6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4269B3E129BBC84C009891C6;
+			remoteInfo = flyfunboarding;
+		};
+		4269B3FD29BBC84D009891C6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4269B3DA29BBC84C009891C6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4269B3E129BBC84C009891C6;
+			remoteInfo = flyfunboarding;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		4269B3E229BBC84C009891C6 /* flyfunboarding.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = flyfunboarding.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4269B3E929BBC84C009891C6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		4269B3EC29BBC84C009891C6 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		4269B3F229BBC84D009891C6 /* flyfunboardingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = flyfunboardingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4269B3F629BBC84D009891C6 /* flyfunboardingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = flyfunboardingTests.swift; sourceTree = "<group>"; };
+		4269B3FC29BBC84D009891C6 /* flyfunboardingUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = flyfunboardingUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4269B40029BBC84D009891C6 /* flyfunboardingUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = flyfunboardingUITests.swift; sourceTree = "<group>"; };
+		4269B40229BBC84D009891C6 /* flyfunboardingUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = flyfunboardingUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		4269B40F29BBC9A9009891C6 /* flyfunboarding.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = flyfunboarding.entitlements; sourceTree = "<group>"; };
+		4269B41829BBCA9D009891C6 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContentView.swift; path = Source/ContentView.swift; sourceTree = "<group>"; };
+		4269B41A29BBCAB6009891C6 /* FlyFunBoardingApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FlyFunBoardingApp.swift; path = Source/FlyFunBoardingApp.swift; sourceTree = "<group>"; };
+		4269B42A29BC75E9009891C6 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Settings.swift; path = Source/Settings.swift; sourceTree = "<group>"; };
+		4269B42D29BC77B3009891C6 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Log.swift; path = Source/Log.swift; sourceTree = "<group>"; };
+		4269B42F29BCA00B009891C6 /* FlyFunBoarding-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "FlyFunBoarding-Bridging-Header.h"; path = "Source/FlyFunBoarding-Bridging-Header.h"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		4269B3DF29BBC84C009891C6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4269B42529BC75CA009891C6 /* RZUtils in Frameworks */,
+				4269B42329BC75CA009891C6 /* RZData in Frameworks */,
+				4269B42929BC75CA009891C6 /* RZUtilsUniversal in Frameworks */,
+				4269B42729BC75CA009891C6 /* RZUtilsSwift in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4269B3EF29BBC84D009891C6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4269B3F929BBC84D009891C6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		4269B3D929BBC84C009891C6 = {
+			isa = PBXGroup;
+			children = (
+				4269B3E429BBC84C009891C6 /* flyfunboarding */,
+				4269B3F529BBC84D009891C6 /* flyfunboardingTests */,
+				4269B3FF29BBC84D009891C6 /* flyfunboardingUITests */,
+				4269B3E329BBC84C009891C6 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		4269B3E329BBC84C009891C6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4269B3E229BBC84C009891C6 /* flyfunboarding.app */,
+				4269B3F229BBC84D009891C6 /* flyfunboardingTests.xctest */,
+				4269B3FC29BBC84D009891C6 /* flyfunboardingUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		4269B3E429BBC84C009891C6 /* flyfunboarding */ = {
+			isa = PBXGroup;
+			children = (
+				4269B41629BBCA6D009891C6 /* UserInterface */,
+				4269B41429BBCA5E009891C6 /* Model */,
+				4269B41329BBCA54009891C6 /* App */,
+				4269B40F29BBC9A9009891C6 /* flyfunboarding.entitlements */,
+				4269B3E929BBC84C009891C6 /* Assets.xcassets */,
+				4269B3EB29BBC84C009891C6 /* Preview Content */,
+			);
+			path = flyfunboarding;
+			sourceTree = "<group>";
+		};
+		4269B3EB29BBC84C009891C6 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				4269B3EC29BBC84C009891C6 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		4269B3F529BBC84D009891C6 /* flyfunboardingTests */ = {
+			isa = PBXGroup;
+			children = (
+				4269B3F629BBC84D009891C6 /* flyfunboardingTests.swift */,
+			);
+			path = flyfunboardingTests;
+			sourceTree = "<group>";
+		};
+		4269B3FF29BBC84D009891C6 /* flyfunboardingUITests */ = {
+			isa = PBXGroup;
+			children = (
+				4269B40029BBC84D009891C6 /* flyfunboardingUITests.swift */,
+				4269B40229BBC84D009891C6 /* flyfunboardingUITestsLaunchTests.swift */,
+			);
+			path = flyfunboardingUITests;
+			sourceTree = "<group>";
+		};
+		4269B41329BBCA54009891C6 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				4269B42F29BCA00B009891C6 /* FlyFunBoarding-Bridging-Header.h */,
+				4269B41A29BBCAB6009891C6 /* FlyFunBoardingApp.swift */,
+				4269B42A29BC75E9009891C6 /* Settings.swift */,
+				4269B42D29BC77B3009891C6 /* Log.swift */,
+			);
+			name = App;
+			sourceTree = "<group>";
+		};
+		4269B41429BBCA5E009891C6 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		4269B41629BBCA6D009891C6 /* UserInterface */ = {
+			isa = PBXGroup;
+			children = (
+				4269B41829BBCA9D009891C6 /* ContentView.swift */,
+			);
+			name = UserInterface;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		4269B3E129BBC84C009891C6 /* flyfunboarding */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4269B40629BBC84D009891C6 /* Build configuration list for PBXNativeTarget "flyfunboarding" */;
+			buildPhases = (
+				4269B3DE29BBC84C009891C6 /* Sources */,
+				4269B3DF29BBC84C009891C6 /* Frameworks */,
+				4269B3E029BBC84C009891C6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = flyfunboarding;
+			packageProductDependencies = (
+				4269B42229BC75CA009891C6 /* RZData */,
+				4269B42429BC75CA009891C6 /* RZUtils */,
+				4269B42629BC75CA009891C6 /* RZUtilsSwift */,
+				4269B42829BC75CA009891C6 /* RZUtilsUniversal */,
+			);
+			productName = flyfunboarding;
+			productReference = 4269B3E229BBC84C009891C6 /* flyfunboarding.app */;
+			productType = "com.apple.product-type.application";
+		};
+		4269B3F129BBC84D009891C6 /* flyfunboardingTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4269B40929BBC84D009891C6 /* Build configuration list for PBXNativeTarget "flyfunboardingTests" */;
+			buildPhases = (
+				4269B3EE29BBC84D009891C6 /* Sources */,
+				4269B3EF29BBC84D009891C6 /* Frameworks */,
+				4269B3F029BBC84D009891C6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4269B3F429BBC84D009891C6 /* PBXTargetDependency */,
+			);
+			name = flyfunboardingTests;
+			productName = flyfunboardingTests;
+			productReference = 4269B3F229BBC84D009891C6 /* flyfunboardingTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		4269B3FB29BBC84D009891C6 /* flyfunboardingUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4269B40C29BBC84D009891C6 /* Build configuration list for PBXNativeTarget "flyfunboardingUITests" */;
+			buildPhases = (
+				4269B3F829BBC84D009891C6 /* Sources */,
+				4269B3F929BBC84D009891C6 /* Frameworks */,
+				4269B3FA29BBC84D009891C6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4269B3FE29BBC84D009891C6 /* PBXTargetDependency */,
+			);
+			name = flyfunboardingUITests;
+			productName = flyfunboardingUITests;
+			productReference = 4269B3FC29BBC84D009891C6 /* flyfunboardingUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		4269B3DA29BBC84C009891C6 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1420;
+				LastUpgradeCheck = 1420;
+				TargetAttributes = {
+					4269B3E129BBC84C009891C6 = {
+						CreatedOnToolsVersion = 14.2;
+						LastSwiftMigration = 1420;
+					};
+					4269B3F129BBC84D009891C6 = {
+						CreatedOnToolsVersion = 14.2;
+						TestTargetID = 4269B3E129BBC84C009891C6;
+					};
+					4269B3FB29BBC84D009891C6 = {
+						CreatedOnToolsVersion = 14.2;
+						TestTargetID = 4269B3E129BBC84C009891C6;
+					};
+				};
+			};
+			buildConfigurationList = 4269B3DD29BBC84C009891C6 /* Build configuration list for PBXProject "flyfunboarding" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 4269B3D929BBC84C009891C6;
+			packageReferences = (
+				4269B42129BC75CA009891C6 /* XCRemoteSwiftPackageReference "rzutils" */,
+			);
+			productRefGroup = 4269B3E329BBC84C009891C6 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				4269B3E129BBC84C009891C6 /* flyfunboarding */,
+				4269B3F129BBC84D009891C6 /* flyfunboardingTests */,
+				4269B3FB29BBC84D009891C6 /* flyfunboardingUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		4269B3E029BBC84C009891C6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4269B3ED29BBC84C009891C6 /* Preview Assets.xcassets in Resources */,
+				4269B3EA29BBC84C009891C6 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4269B3F029BBC84D009891C6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4269B3FA29BBC84D009891C6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		4269B3DE29BBC84C009891C6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4269B42B29BC75E9009891C6 /* Settings.swift in Sources */,
+				4269B41929BBCA9D009891C6 /* ContentView.swift in Sources */,
+				4269B42E29BC77B3009891C6 /* Log.swift in Sources */,
+				4269B41B29BBCAB6009891C6 /* FlyFunBoardingApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4269B3EE29BBC84D009891C6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4269B3F729BBC84D009891C6 /* flyfunboardingTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4269B3F829BBC84D009891C6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4269B40329BBC84D009891C6 /* flyfunboardingUITestsLaunchTests.swift in Sources */,
+				4269B40129BBC84D009891C6 /* flyfunboardingUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		4269B3F429BBC84D009891C6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4269B3E129BBC84C009891C6 /* flyfunboarding */;
+			targetProxy = 4269B3F329BBC84D009891C6 /* PBXContainerItemProxy */;
+		};
+		4269B3FE29BBC84D009891C6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4269B3E129BBC84C009891C6 /* flyfunboarding */;
+			targetProxy = 4269B3FD29BBC84D009891C6 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		4269B40429BBC84D009891C6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		4269B40529BBC84D009891C6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		4269B40729BBC84D009891C6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = flyfunboarding/flyfunboarding.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"flyfunboarding/Preview Content\"";
+				DEVELOPMENT_TEAM = M7QSSF3624;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = FlyFunBoarding;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "net.ro-z.flyfunboarding";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "flyfunboarding/Source/FlyFunBoarding-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		4269B40829BBC84D009891C6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = flyfunboarding/flyfunboarding.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"flyfunboarding/Preview Content\"";
+				DEVELOPMENT_TEAM = M7QSSF3624;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = FlyFunBoarding;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "net.ro-z.flyfunboarding";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "flyfunboarding/Source/FlyFunBoarding-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		4269B40A29BBC84D009891C6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M7QSSF3624;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "net.ro-z.flyfunboardingTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/flyfunboarding.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/flyfunboarding";
+			};
+			name = Debug;
+		};
+		4269B40B29BBC84D009891C6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M7QSSF3624;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "net.ro-z.flyfunboardingTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/flyfunboarding.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/flyfunboarding";
+			};
+			name = Release;
+		};
+		4269B40D29BBC84D009891C6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M7QSSF3624;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "net.ro-z.flyfunboardingUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = flyfunboarding;
+			};
+			name = Debug;
+		};
+		4269B40E29BBC84D009891C6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M7QSSF3624;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "net.ro-z.flyfunboardingUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = flyfunboarding;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4269B3DD29BBC84C009891C6 /* Build configuration list for PBXProject "flyfunboarding" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4269B40429BBC84D009891C6 /* Debug */,
+				4269B40529BBC84D009891C6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4269B40629BBC84D009891C6 /* Build configuration list for PBXNativeTarget "flyfunboarding" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4269B40729BBC84D009891C6 /* Debug */,
+				4269B40829BBC84D009891C6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4269B40929BBC84D009891C6 /* Build configuration list for PBXNativeTarget "flyfunboardingTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4269B40A29BBC84D009891C6 /* Debug */,
+				4269B40B29BBC84D009891C6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4269B40C29BBC84D009891C6 /* Build configuration list for PBXNativeTarget "flyfunboardingUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4269B40D29BBC84D009891C6 /* Debug */,
+				4269B40E29BBC84D009891C6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		4269B42129BC75CA009891C6 /* XCRemoteSwiftPackageReference "rzutils" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/roznet/rzutils";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		4269B42229BC75CA009891C6 /* RZData */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4269B42129BC75CA009891C6 /* XCRemoteSwiftPackageReference "rzutils" */;
+			productName = RZData;
+		};
+		4269B42429BC75CA009891C6 /* RZUtils */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4269B42129BC75CA009891C6 /* XCRemoteSwiftPackageReference "rzutils" */;
+			productName = RZUtils;
+		};
+		4269B42629BC75CA009891C6 /* RZUtilsSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4269B42129BC75CA009891C6 /* XCRemoteSwiftPackageReference "rzutils" */;
+			productName = RZUtilsSwift;
+		};
+		4269B42829BC75CA009891C6 /* RZUtilsUniversal */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4269B42129BC75CA009891C6 /* XCRemoteSwiftPackageReference "rzutils" */;
+			productName = RZUtilsUniversal;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 4269B3DA29BBC84C009891C6 /* Project object */;
+}
