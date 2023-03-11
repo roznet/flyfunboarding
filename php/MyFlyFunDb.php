@@ -206,15 +206,27 @@ class MyFlyFunDb {
     }
 
     // Airlines
-    //
+    // creation and update of airline is special because we need to check for existing airline on the apple_identifier
     public function createOrUpdateAirline($json) {
         $airline = JsonHelper::fromJson($json, Airline::class);
-        $sql = 'INSERT INTO Airlines (apple_identifier, json_data) VALUES (?, ?) ON DUPLICATE KEY UPDATE json_data = VALUES(json_data)';
-        $stmt = mysqli_prepare($this->db, $sql);
-        $json_str = json_encode($json);
-        $stmt->bind_param("ss", $airline->apple_identifier, $json_str);
-        $stmt->execute();
-        return $airline->toJson();
+        $existing = $this->getAirlineByAppleIdentifier($airline->apple_identifier);
+        if( $existing != null ) {
+            $airline->airline_id = $existing->airline_id;
+            $sql = 'UPDATE Airlines SET json_data = ? WHERE airline_id = ?';
+            $stmt = mysqli_prepare($this->db, $sql);
+            $json_str = json_encode($json);
+            $stmt->bind_param("si", $json_str, $airline->airline_id);
+            $stmt->execute();
+            return $airline;
+        }else{
+            $sql = 'INSERT INTO Airlines (apple_identifier, json_data) VALUES (?, ?) ON DUPLICATE KEY UPDATE json_data = VALUES(json_data)';
+            $stmt = mysqli_prepare($this->db, $sql);
+            $json_str = json_encode($json);
+            $stmt->bind_param("ss", $airline->apple_identifier, $json_str);
+            $stmt->execute();
+            $airline->airline_id = mysqli_insert_id($this->db);
+            return $airline;
+        }
     }
 
     public function getAirlineByAppleIdentifier($apple_identifier){

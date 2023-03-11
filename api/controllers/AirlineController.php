@@ -5,9 +5,13 @@ class AirlineController extends Controller {
     function create() {
         $this->validateMethod( 'POST' );
         $json = $this->getJsonPostBody();
-        print_r($json);
 
-        MyFlyFunDb::$shared->createOrUpdateAirline($json);
+        $airline = MyFlyFunDb::$shared->createOrUpdateAirline($json);
+        if( $airline == null ) {
+            http_response_code(400);
+            die("Invalid Airline");
+        }
+        echo json_encode($airline->toJson());
     }
 
     function index($params){

@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4245DB1929BCBDB6004B9953 /* secrets.json in Resources */ = {isa = PBXBuildFile; fileRef = 4245DB1829BCBDB5004B9953 /* secrets.json */; };
+		4245DB1C29BCBE40004B9953 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4245DB1B29BCBE40004B9953 /* Secrets.swift */; };
+		4260042B29BCDD7A003E0433 /* InitialSigninView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4260042A29BCDD7A003E0433 /* InitialSigninView.swift */; };
+		4260042D29BCF2D0003E0433 /* AirlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4260042C29BCF2D0003E0433 /* AirlineView.swift */; };
+		4260042F29BCF415003E0433 /* AccountStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4260042E29BCF415003E0433 /* AccountStatus.swift */; };
+		4260043129BCF66D003E0433 /* AirlineViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4260043029BCF66D003E0433 /* AirlineViewModel.swift */; };
 		4269B3EA29BBC84C009891C6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4269B3E929BBC84C009891C6 /* Assets.xcassets */; };
 		4269B3ED29BBC84C009891C6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4269B3EC29BBC84C009891C6 /* Preview Assets.xcassets */; };
 		4269B3F729BBC84D009891C6 /* flyfunboardingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4269B3F629BBC84D009891C6 /* flyfunboardingTests.swift */; };
@@ -20,6 +26,13 @@
 		4269B42929BC75CA009891C6 /* RZUtilsUniversal in Frameworks */ = {isa = PBXBuildFile; productRef = 4269B42829BC75CA009891C6 /* RZUtilsUniversal */; };
 		4269B42B29BC75E9009891C6 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4269B42A29BC75E9009891C6 /* Settings.swift */; };
 		4269B42E29BC77B3009891C6 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4269B42D29BC77B3009891C6 /* Log.swift */; };
+		4269B43529BCA4EA009891C6 /* sample_aircrafts.json in Resources */ = {isa = PBXBuildFile; fileRef = 4269B43029BCA4EA009891C6 /* sample_aircrafts.json */; };
+		4269B43629BCA4EA009891C6 /* sample_flights.json in Resources */ = {isa = PBXBuildFile; fileRef = 4269B43129BCA4EA009891C6 /* sample_flights.json */; };
+		4269B43729BCA4EA009891C6 /* sample_airline.json in Resources */ = {isa = PBXBuildFile; fileRef = 4269B43229BCA4EA009891C6 /* sample_airline.json */; };
+		4269B43829BCA4EA009891C6 /* sample_passengers.json in Resources */ = {isa = PBXBuildFile; fileRef = 4269B43329BCA4EA009891C6 /* sample_passengers.json */; };
+		4269B43929BCA4EA009891C6 /* sample_tickets.json in Resources */ = {isa = PBXBuildFile; fileRef = 4269B43429BCA4EA009891C6 /* sample_tickets.json */; };
+		4269B43C29BCB0A9009891C6 /* Airline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4269B43B29BCB0A9009891C6 /* Airline.swift */; };
+		4269B43E29BCB1E6009891C6 /* RemoteService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4269B43D29BCB1E6009891C6 /* RemoteService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +53,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4245DB1829BCBDB5004B9953 /* secrets.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = secrets.json; sourceTree = "<group>"; };
+		4245DB1B29BCBE40004B9953 /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Secrets.swift; path = Source/Secrets.swift; sourceTree = "<group>"; };
+		4245DB1D29BCC450004B9953 /* rzutils */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = rzutils; path = ../../../public/rzutils; sourceTree = "<group>"; };
+		4260042A29BCDD7A003E0433 /* InitialSigninView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialSigninView.swift; sourceTree = "<group>"; };
+		4260042C29BCF2D0003E0433 /* AirlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AirlineView.swift; path = Source/AirlineView.swift; sourceTree = "<group>"; };
+		4260042E29BCF415003E0433 /* AccountStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AccountStatus.swift; path = Source/AccountStatus.swift; sourceTree = "<group>"; };
+		4260043029BCF66D003E0433 /* AirlineViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AirlineViewModel.swift; path = Source/AirlineViewModel.swift; sourceTree = "<group>"; };
 		4269B3E229BBC84C009891C6 /* flyfunboarding.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = flyfunboarding.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4269B3E929BBC84C009891C6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4269B3EC29BBC84C009891C6 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -54,6 +74,13 @@
 		4269B42A29BC75E9009891C6 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Settings.swift; path = Source/Settings.swift; sourceTree = "<group>"; };
 		4269B42D29BC77B3009891C6 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Log.swift; path = Source/Log.swift; sourceTree = "<group>"; };
 		4269B42F29BCA00B009891C6 /* FlyFunBoarding-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "FlyFunBoarding-Bridging-Header.h"; path = "Source/FlyFunBoarding-Bridging-Header.h"; sourceTree = "<group>"; };
+		4269B43029BCA4EA009891C6 /* sample_aircrafts.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = sample_aircrafts.json; sourceTree = "<group>"; };
+		4269B43129BCA4EA009891C6 /* sample_flights.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = sample_flights.json; sourceTree = "<group>"; };
+		4269B43229BCA4EA009891C6 /* sample_airline.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = sample_airline.json; sourceTree = "<group>"; };
+		4269B43329BCA4EA009891C6 /* sample_passengers.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = sample_passengers.json; sourceTree = "<group>"; };
+		4269B43429BCA4EA009891C6 /* sample_tickets.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = sample_tickets.json; sourceTree = "<group>"; };
+		4269B43B29BCB0A9009891C6 /* Airline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Airline.swift; path = Source/Airline.swift; sourceTree = "<group>"; };
+		4269B43D29BCB1E6009891C6 /* RemoteService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RemoteService.swift; path = Source/RemoteService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,9 +112,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4245DB1A29BCBDC0004B9953 /* SupportingFiles */ = {
+			isa = PBXGroup;
+			children = (
+				4245DB1829BCBDB5004B9953 /* secrets.json */,
+				4269B42F29BCA00B009891C6 /* FlyFunBoarding-Bridging-Header.h */,
+			);
+			name = SupportingFiles;
+			sourceTree = "<group>";
+		};
 		4269B3D929BBC84C009891C6 = {
 			isa = PBXGroup;
 			children = (
+				4245DB1D29BCC450004B9953 /* rzutils */,
 				4269B3E429BBC84C009891C6 /* flyfunboarding */,
 				4269B3F529BBC84D009891C6 /* flyfunboardingTests */,
 				4269B3FF29BBC84D009891C6 /* flyfunboardingUITests */,
@@ -108,11 +145,13 @@
 		4269B3E429BBC84C009891C6 /* flyfunboarding */ = {
 			isa = PBXGroup;
 			children = (
+				4269B43A29BCB08D009891C6 /* RemoteService */,
 				4269B41629BBCA6D009891C6 /* UserInterface */,
 				4269B41429BBCA5E009891C6 /* Model */,
 				4269B41329BBCA54009891C6 /* App */,
 				4269B40F29BBC9A9009891C6 /* flyfunboarding.entitlements */,
 				4269B3E929BBC84C009891C6 /* Assets.xcassets */,
+				4245DB1A29BCBDC0004B9953 /* SupportingFiles */,
 				4269B3EB29BBC84C009891C6 /* Preview Content */,
 			);
 			path = flyfunboarding;
@@ -121,6 +160,11 @@
 		4269B3EB29BBC84C009891C6 /* Preview Content */ = {
 			isa = PBXGroup;
 			children = (
+				4269B43029BCA4EA009891C6 /* sample_aircrafts.json */,
+				4269B43229BCA4EA009891C6 /* sample_airline.json */,
+				4269B43129BCA4EA009891C6 /* sample_flights.json */,
+				4269B43329BCA4EA009891C6 /* sample_passengers.json */,
+				4269B43429BCA4EA009891C6 /* sample_tickets.json */,
 				4269B3EC29BBC84C009891C6 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
@@ -146,10 +190,10 @@
 		4269B41329BBCA54009891C6 /* App */ = {
 			isa = PBXGroup;
 			children = (
-				4269B42F29BCA00B009891C6 /* FlyFunBoarding-Bridging-Header.h */,
 				4269B41A29BBCAB6009891C6 /* FlyFunBoardingApp.swift */,
 				4269B42A29BC75E9009891C6 /* Settings.swift */,
 				4269B42D29BC77B3009891C6 /* Log.swift */,
+				4245DB1B29BCBE40004B9953 /* Secrets.swift */,
 			);
 			name = App;
 			sourceTree = "<group>";
@@ -157,6 +201,7 @@
 		4269B41429BBCA5E009891C6 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				4269B43B29BCB0A9009891C6 /* Airline.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -165,8 +210,20 @@
 			isa = PBXGroup;
 			children = (
 				4269B41829BBCA9D009891C6 /* ContentView.swift */,
+				4260042A29BCDD7A003E0433 /* InitialSigninView.swift */,
+				4260043029BCF66D003E0433 /* AirlineViewModel.swift */,
+				4260042C29BCF2D0003E0433 /* AirlineView.swift */,
+				4260042E29BCF415003E0433 /* AccountStatus.swift */,
 			);
 			name = UserInterface;
+			sourceTree = "<group>";
+		};
+		4269B43A29BCB08D009891C6 /* RemoteService */ = {
+			isa = PBXGroup;
+			children = (
+				4269B43D29BCB1E6009891C6 /* RemoteService.swift */,
+			);
+			name = RemoteService;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -176,6 +233,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4269B40629BBC84D009891C6 /* Build configuration list for PBXNativeTarget "flyfunboarding" */;
 			buildPhases = (
+				4245DB1729BCB98C004B9953 /* Run Script Validate Secrets.json */,
 				4269B3DE29BBC84C009891C6 /* Sources */,
 				4269B3DF29BBC84C009891C6 /* Frameworks */,
 				4269B3E029BBC84C009891C6 /* Resources */,
@@ -283,8 +341,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4269B43929BCA4EA009891C6 /* sample_tickets.json in Resources */,
+				4269B43729BCA4EA009891C6 /* sample_airline.json in Resources */,
 				4269B3ED29BBC84C009891C6 /* Preview Assets.xcassets in Resources */,
+				4269B43829BCA4EA009891C6 /* sample_passengers.json in Resources */,
+				4269B43629BCA4EA009891C6 /* sample_flights.json in Resources */,
+				4245DB1929BCBDB6004B9953 /* secrets.json in Resources */,
 				4269B3EA29BBC84C009891C6 /* Assets.xcassets in Resources */,
+				4269B43529BCA4EA009891C6 /* sample_aircrafts.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -304,15 +368,44 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		4245DB1729BCB98C004B9953 /* Run Script Validate Secrets.json */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script Validate Secrets.json";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "SECRETS=$SRCROOT/flyfunboarding/secrets.json\nSAMPLE_SECRETS=$SRCROOT/flyfunboarding/secrets.sample.json\n\nif [ -f $SECRETS ]; then\n    echo \"Checked $SECRETS\"\nelse\n    if [ -f $SAMPLE_SECRETS ]; then\n        echo \"Creating $SECRETS\"\n        /bin/cp $SAMPLE_SECRETS $SECRETS\n    fi\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		4269B3DE29BBC84C009891C6 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				4269B42B29BC75E9009891C6 /* Settings.swift in Sources */,
+				4269B43E29BCB1E6009891C6 /* RemoteService.swift in Sources */,
+				4245DB1C29BCBE40004B9953 /* Secrets.swift in Sources */,
 				4269B41929BBCA9D009891C6 /* ContentView.swift in Sources */,
+				4260043129BCF66D003E0433 /* AirlineViewModel.swift in Sources */,
+				4260042D29BCF2D0003E0433 /* AirlineView.swift in Sources */,
+				4260042F29BCF415003E0433 /* AccountStatus.swift in Sources */,
 				4269B42E29BC77B3009891C6 /* Log.swift in Sources */,
+				4269B43C29BCB0A9009891C6 /* Airline.swift in Sources */,
 				4269B41B29BBCAB6009891C6 /* FlyFunBoardingApp.swift in Sources */,
+				4260042B29BCDD7A003E0433 /* InitialSigninView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

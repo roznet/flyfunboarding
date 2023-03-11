@@ -1,0 +1,31 @@
+[
+	{
+	    "origin": {"icao":"EGTF"},
+	    "destination": {"icao":"EBOS"},
+	    "gate": "Hangar Cafe",
+	    "flightNumber": "MAF01",
+	    "aircraft": {
+		"registration": "NSR22T",
+		"type": "Cirrus SR22T",
+		"aircraft_id": 1
+	    },
+	    "scheduledDepartureDate": "2023-05-06T09:00:00+00:00",
+	    "flightTime": "PT1H0M0S",
+	    "uniqueIdentifier": "EGTFEBOS_NSR22T_202305060900"
+	},
+	{
+	    "origin": {"icao":"EBOS"},
+	    "destination": {"icao":"EGTF"},
+	    "gate": "General Aviation Terminal",
+	    "flightNumber": "MAF02",
+	    "aircraft": {
+		"registration": "NSR22T",
+		"type": "Cirrus SR22T",
+		"aircraft_id": 1
+	    },
+	    "scheduledDepartureDate": "2023-05-07T09:00:00+00:00",
+	    "flightTime": "PT1H0M0S",
+	    "uniqueIdentifier": "EBOSEGTF_NSR22T_202305070900"
+	}
+]
+
