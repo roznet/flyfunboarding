@@ -26,26 +26,34 @@
 
 
 import Foundation
+import OSLog
 
 class Samples {
     private static func object<Type : Codable>(resource : String) -> Type? {
         if let url = Bundle.main.url(forResource: resource, withExtension: "json"),
-           let data = try? Data(contentsOf: url),
-           let rv = try? JSONDecoder().decode(Type.self, from: data) {
-            return rv
-        }else{
-            return nil
+           let data = try? Data(contentsOf: url) {
+            do {
+                let rv = try JSONDecoder().decode(Type.self, from: data)
+                
+                return rv
+            }catch{
+                Logger.app.error("failed to parse \(error)")
+            }
         }
+        return nil
     }
     
     private static func array<Type : Codable>(resource : String) -> [Type] {
         if let url = Bundle.main.url(forResource: resource, withExtension: "json"),
-           let data = try? Data(contentsOf: url),
-           let rv = try? JSONDecoder().decode([Type].self, from: data) {
-            return rv
-        }else{
-            return []
+           let data = try? Data(contentsOf: url) {
+            do {
+                let rv = try JSONDecoder().decode([Type].self, from: data)
+                return rv
+            }catch{
+                Logger.app.error("failed to parse \(error)")
+            }
         }
+        return []
     }
     
     static var aircrafts : [Aircraft] {
@@ -58,5 +66,9 @@ class Samples {
     
     static var airline : Airline? {
         return self.object(resource: "sample_airline")
+    }
+    
+    static var passengers : [Passenger] {
+        return self.array(resource: "sample_passengers")
     }
 }

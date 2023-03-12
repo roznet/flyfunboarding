@@ -38,7 +38,6 @@ class AircraftListViewModel : ObservableObject {
     }
     
     func retrieveAircraft() {
-        Logger.app.info("yo")
         if syncWithRemote {
             RemoteService.shared.retrieveAircraftList(){
                 aircrafts in

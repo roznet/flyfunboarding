@@ -26,15 +26,50 @@
 
 
 import SwiftUI
+import Contacts
+import SwiftUIKit
+import OSLog
 
 struct PassengerListView: View {
+    @State var showPicker = false
+    @StateObject var passengerListViewModel = PassengerListViewModel(passengers: [])
+    
     var body: some View {
-        Text("My Passengers")
+        ZStack {
+            ContactPicker(showPicker: $showPicker, onSelectContact: selectedContact)
+            NavigationStack {
+                List(passengerListViewModel.passengers) { passenger in
+                    VStack(alignment: .leading) {
+                        Text(passenger.formattedName).font(.body)
+                    }.padding(.bottom)
+                }
+            }
+            .toolbar {
+                ToolbarItemGroup(placement: .bottomBar) {
+                    Button(action: { self.showPicker.toggle() }){
+                        VStack {
+                            Image(systemName: "person.badge.plus")
+                            Text("Add")
+                        }
+                    }
+                }
+            }
+            .onAppear{
+                self.passengerListViewModel.retrievePassengers()
+            }
+        }
+    }
+    
+    func selectedContact(_ contact : CNContact) {
+        let passenger = Passenger(contact: contact)
+        self.passengerListViewModel.add(passenger: passenger) {
+            _ in
+        }
     }
 }
 
 struct PassengerListView_Previews: PreviewProvider {
     static var previews: some View {
-        PassengerListView()
+        PassengerListView(passengerListViewModel: PassengerListViewModel(passengers: Samples.passengers, syncWithRemote: false))
     }
 }

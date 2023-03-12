@@ -37,23 +37,23 @@ struct AircraftListView: View {
                     Text(aircraft.type).font(.body)
                 }.padding(.bottom)
             }
-            .toolbar {
-                ToolbarItemGroup(placement: .bottomBar) {
-                    Spacer()
-                    Button(action: add){
-                        VStack {
-                            Image(systemName: "plus.circle")
-                            Text("Add")
-                        }
-                    }.padding()
-                    Button(action: delete) {
-                        VStack {
-                            Image(systemName: "minus.circle")
-                            Text("Delete")
-                        }
+        }
+        .toolbar {
+            ToolbarItemGroup(placement: .bottomBar) {
+                Spacer()
+                Button(action: add){
+                    VStack {
+                        Image(systemName: "plus.circle")
+                        Text("Add")
                     }
-                    Spacer()
+                }.padding()
+                Button(action: delete) {
+                    VStack {
+                        Image(systemName: "minus.circle")
+                        Text("Delete")
+                    }
                 }
+                Spacer()
             }
         }
         .onAppear {

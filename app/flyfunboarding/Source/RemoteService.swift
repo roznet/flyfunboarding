@@ -37,10 +37,21 @@ extension Airline {
 class RemoteService {
     static let shared = RemoteService()
     
-    typealias Completion = (Bool) -> Void
+   //MARK: - url and point helpers
+    private func point(api : String, airline: Airline? = nil) -> String? {
+        if let airlineId = airline?.airlineId {
+            // if we have airline need valid number
+            guard airlineId > 0 else { return nil }
+            let rv = ("airline/\(airlineId)/" as NSString).appendingPathComponent(api)
+            return rv
+        }else{
+            return api
+        }
+    }
     
-    func url(point : String, queryItems : [URLQueryItem] = []) -> URL? {
-        if let url = URL(string: point, relativeTo: Secrets.shared.flyfunBaseUrl ),
+    private func url(point : String, queryItems : [URLQueryItem] = []) -> URL? {
+        let baseUrl = Secrets.shared.flyfunBaseUrl
+        if let url = URL(string: point, relativeTo: baseUrl ),
            var components = URLComponents(url: url, resolvingAgainstBaseURL: true) {
             if queryItems.count > 0 {
                 components.queryItems = queryItems
@@ -50,8 +61,8 @@ class RemoteService {
         }
         return nil
     }
-    
-    func jsonPostRequest(point: String, data : Codable, airline: Airline? = nil, queryItems: [URLQueryItem]) -> URLRequest? {
+    //MARK: - request helpers
+    private func jsonPostRequest(point: String, data : Codable, airline: Airline? = nil, queryItems: [URLQueryItem]) -> URLRequest? {
         guard let url = self.url(point: point, queryItems: queryItems)
         else { return nil }
         
@@ -71,14 +82,12 @@ class RemoteService {
         return nil
     }
     
-    func retrieveCurrentAirline(completion : @escaping (Airline?) -> Void) {
-        guard let airline = Settings.shared.currentAirline,
-              let airlineId = airline.airlineId,
-              let url = self.url(point: "airline/\(airlineId)")
+    private func registerObject<Type:Codable>(point: String, object: Type, completion: @escaping (Type?) -> Void) {
+        guard let airline = Settings.shared.currentAirline
         else { completion(nil); return }
         
-        var request = URLRequest(url: url)
-        request.setValue(airline.authorizationBearer, forHTTPHeaderField: "Authorization")
+        guard let request = self.jsonPostRequest(point: point, data: object, airline: airline, queryItems: []) else { completion(nil); return }
+        
         URLSession.shared.dataTask(with: request){
             data, response, error in
             guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200
@@ -88,18 +97,22 @@ class RemoteService {
                 return
             }
             guard let data = data else { completion(nil); return }
-            
-            let airline = try? JSONDecoder().decode(Airline.self, from: data)
-            completion(airline)
+           
+            do {
+                let retrieved = try JSONDecoder().decode(Type.self, from: data)
+                if let str = String(data: data, encoding: .utf8) {
+                    Logger.net.info("Data: \(str)")
+                }
+                completion(retrieved)
+            }catch{
+                Logger.net.error("Failed to decode \(error)")
+                completion(nil)
+            }
         }.resume()
-        
-                
     }
-
     private func retrieveObject<Type : Decodable>(point: String, completion: @escaping (Type?) -> Void) {
         guard let airline = Settings.shared.currentAirline,
-              let airlineId = airline.airlineId,
-              let url = self.url(point: "airline/\(airlineId)/\(point)")
+              let url = self.url(point: point)
         else { completion(nil); return }
         
         var request = URLRequest(url: url)
@@ -113,41 +126,56 @@ class RemoteService {
                 return
             }
             guard let data = data else { completion(nil); return }
-            
-            let aircraft = try? JSONDecoder().decode(Type.self, from: data)
-            completion(aircraft)
+           
+            do {
+                let retrieved = try JSONDecoder().decode(Type.self, from: data)
+                /*if let str = String(data: data, encoding: .utf8) {
+                    Logger.net.info("Data: \(str)")
+                }*/
+                completion(retrieved)
+            }catch{
+                Logger.net.error("Failed to decode \(error)")
+                completion(nil)
+            }
         }.resume()
     }
+    
 
+    
+    //MARK: - api calls
+    func retrieveCurrentAirline(completion : @escaping (Airline?) -> Void) {
+        guard let airline = Settings.shared.currentAirline,
+              let airlineId = airline.airlineId
+        else { completion(nil); return }
+        
+        self.retrieveObject(point: "airline/\(airlineId)", completion: completion)
+    }
+    
     func retrieveAircraftList(completion : @escaping ([Aircraft]?) -> Void) {
-        self.retrieveObject(point: "aircraft/list", completion: completion)
+        guard let point = self.point(api: "aircraft/list", airline: Settings.shared.currentAirline) else { completion(nil); return }
+        self.retrieveObject(point: point, completion: completion)
+    }
+
+    func retrievePassengerList(completion : @escaping ([Passenger]?) -> Void) {
+        guard let point = self.point(api: "passenger/list", airline: Settings.shared.currentAirline) else { completion(nil); return }
+        self.retrieveObject(point: point, completion: completion)
+    }
+
+    func registerPassenger(passenger : Passenger, completion: @escaping (Passenger?) -> Void) {
+        guard let point = self.point(api: "passenger/create", airline: Settings.shared.currentAirline) else { completion(nil); return }
+        self.registerObject(point: point, object: passenger, completion: completion)
     }
     
     func registerAirline(airline : Airline, completion : @escaping (Airline?) -> Void) {
-        if let request = self.jsonPostRequest(point: "airline/create", data: airline, airline: airline, queryItems: []) {
-            
-            URLSession.shared.dataTask(with: request) {
-                data, response, error in
-                guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200
-                else {
-                    Logger.net.error("Failed \(String(describing: response))")
-                    completion(nil)
-                    return
-                }
-                guard let data = data
-                else {
-                    Logger.net.error("Didn't get an airline back")
-                    completion(nil)
-                    return
-                }
-                let airline = try? JSONDecoder().decode(Airline.self, from: data)
-                // if fail, call with nil
-                if let airline = airline, let airlineId = airline.airlineId {
-                    Logger.net.info("register airline with \(airlineId) for \(airline.appleIdentifier)")
-                    Settings.shared.currentAirline = airline
-                }
-                completion(airline)
-            }.resume()
+        self.registerObject(point: "airline/create", object: airline) { airline in
+            if let airline = airline, let airlineId = airline.airlineId {
+                Logger.net.info("register airline with \(airlineId) for \(airline.appleIdentifier)")
+                Settings.shared.currentAirline = airline
+            }
+            completion(airline)
         }
     }
+    
+
+            
 }

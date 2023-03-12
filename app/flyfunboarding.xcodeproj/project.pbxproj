@@ -11,6 +11,8 @@
 		4208E4AD29BDF5F100E2A5FC /* AircraftViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4208E4AC29BDF5F100E2A5FC /* AircraftViewModel.swift */; };
 		4208E4AF29BDF6D400E2A5FC /* Samples.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4208E4AE29BDF6D400E2A5FC /* Samples.swift */; };
 		4208E4B129BDFDC700E2A5FC /* AircraftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4208E4B029BDFDC700E2A5FC /* AircraftView.swift */; };
+		4208E4B829BE29B100E2A5FC /* SwiftUIKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4208E4B729BE29B100E2A5FC /* SwiftUIKit */; };
+		4208E4BA29BE2E3D00E2A5FC /* PassengerListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4208E4B929BE2E3D00E2A5FC /* PassengerListViewModel.swift */; };
 		4245DB1929BCBDB6004B9953 /* secrets.json in Resources */ = {isa = PBXBuildFile; fileRef = 4245DB1829BCBDB5004B9953 /* secrets.json */; };
 		4245DB1C29BCBE40004B9953 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4245DB1B29BCBE40004B9953 /* Secrets.swift */; };
 		4260042D29BCF2D0003E0433 /* AirlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4260042C29BCF2D0003E0433 /* AirlineView.swift */; };
@@ -70,6 +72,7 @@
 		4208E4AC29BDF5F100E2A5FC /* AircraftViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AircraftViewModel.swift; path = Source/AircraftViewModel.swift; sourceTree = "<group>"; };
 		4208E4AE29BDF6D400E2A5FC /* Samples.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Samples.swift; path = Source/Samples.swift; sourceTree = "<group>"; };
 		4208E4B029BDFDC700E2A5FC /* AircraftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AircraftView.swift; path = Source/AircraftView.swift; sourceTree = "<group>"; };
+		4208E4B929BE2E3D00E2A5FC /* PassengerListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PassengerListViewModel.swift; path = Source/PassengerListViewModel.swift; sourceTree = "<group>"; };
 		4245DB1829BCBDB5004B9953 /* secrets.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = secrets.json; sourceTree = "<group>"; };
 		4245DB1B29BCBE40004B9953 /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Secrets.swift; path = Source/Secrets.swift; sourceTree = "<group>"; };
 		4245DB1D29BCC450004B9953 /* rzutils */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = rzutils; path = ../../../public/rzutils; sourceTree = "<group>"; };
@@ -117,6 +120,7 @@
 				4269B42529BC75CA009891C6 /* RZUtils in Frameworks */,
 				4269B42329BC75CA009891C6 /* RZData in Frameworks */,
 				4269B42929BC75CA009891C6 /* RZUtilsUniversal in Frameworks */,
+				4208E4B829BE29B100E2A5FC /* SwiftUIKit in Frameworks */,
 				4269B42729BC75CA009891C6 /* RZUtilsSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -154,7 +158,7 @@
 				4260043029BCF66D003E0433 /* AirlineViewModel.swift */,
 				4260043429BD186A003E0433 /* AircraftListViewModel.swift */,
 				4208E4AC29BDF5F100E2A5FC /* AircraftViewModel.swift */,
-				4208E4AE29BDF6D400E2A5FC /* Samples.swift */,
+				4208E4B929BE2E3D00E2A5FC /* PassengerListViewModel.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -164,6 +168,7 @@
 			children = (
 				4260044829BDD40E003E0433 /* AirlineSettingsView.swift */,
 				4260044D29BDD4DC003E0433 /* ToggleTextField.swift */,
+				4208E4AE29BDF6D400E2A5FC /* Samples.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -311,6 +316,7 @@
 				4269B42429BC75CA009891C6 /* RZUtils */,
 				4269B42629BC75CA009891C6 /* RZUtilsSwift */,
 				4269B42829BC75CA009891C6 /* RZUtilsUniversal */,
+				4208E4B729BE29B100E2A5FC /* SwiftUIKit */,
 			);
 			productName = flyfunboarding;
 			productReference = 4269B3E229BBC84C009891C6 /* flyfunboarding.app */;
@@ -387,6 +393,7 @@
 			mainGroup = 4269B3D929BBC84C009891C6;
 			packageReferences = (
 				4269B42129BC75CA009891C6 /* XCRemoteSwiftPackageReference "rzutils" */,
+				4208E4B629BE29B100E2A5FC /* XCRemoteSwiftPackageReference "SwiftUIKit" */,
 			);
 			productRefGroup = 4269B3E329BBC84C009891C6 /* Products */;
 			projectDirPath = "";
@@ -477,6 +484,7 @@
 				4260043729BD18B9003E0433 /* Aircraft.swift in Sources */,
 				4260042F29BCF415003E0433 /* AccountModel.swift in Sources */,
 				4260044929BDD40E003E0433 /* AirlineSettingsView.swift in Sources */,
+				4208E4BA29BE2E3D00E2A5FC /* PassengerListViewModel.swift in Sources */,
 				4260044E29BDD4DC003E0433 /* ToggleTextField.swift in Sources */,
 				4269B42E29BC77B3009891C6 /* Log.swift in Sources */,
 				4260043329BD1829003E0433 /* AircraftListView.swift in Sources */,
@@ -817,6 +825,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		4208E4B629BE29B100E2A5FC /* XCRemoteSwiftPackageReference "SwiftUIKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/youjinp/SwiftUIKit.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		4269B42129BC75CA009891C6 /* XCRemoteSwiftPackageReference "rzutils" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/roznet/rzutils";
@@ -828,6 +844,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		4208E4B729BE29B100E2A5FC /* SwiftUIKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4208E4B629BE29B100E2A5FC /* XCRemoteSwiftPackageReference "SwiftUIKit" */;
+			productName = SwiftUIKit;
+		};
 		4269B42229BC75CA009891C6 /* RZData */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4269B42129BC75CA009891C6 /* XCRemoteSwiftPackageReference "rzutils" */;

@@ -42,15 +42,15 @@ struct AirlineView: View {
                     .padding(.trailing)
             }
             TabView(selection: $selectedTab) {
-                AircraftListView()
-                    .tabItem {
-                        Image(systemName: "airplane")
-                        Text("Airplanes")
-                    }
                 PassengerListView()
                     .tabItem {
                         Image(systemName: "person")
                         Text("Passengers")
+                    }
+                AircraftListView()
+                    .tabItem {
+                        Image(systemName: "airplane")
+                        Text("Airplanes")
                     }
                 FlightListView()
                     .tabItem {

@@ -23,24 +23,39 @@
 //  SOFTWARE.
 //
 
+
+
 import Foundation
+import SwiftUI
+import Contacts
 
-
-class Aircraft: Codable, Identifiable {
-    var registration: String
-    var type: String
-    var aircraft_id: Int?
+class PassengerListViewModel : ObservableObject {
+    @Published var passengers : [Passenger] = []
+    var syncWithRemote : Bool = true
     
-    enum CodingKeys: String, CodingKey {
-        case registration, type, aircraft_id
+    init(passengers : [Passenger], syncWithRemote: Bool = true) {
+        self.passengers = passengers
+        self.syncWithRemote = syncWithRemote
+    }
+
+    func retrievePassengers() {
+        if self.syncWithRemote {
+            RemoteService.shared.retrievePassengerList() {
+                passengers in
+                DispatchQueue.main.async {
+                    self.passengers = passengers ?? []
+                }
+            }
+        }
     }
     
-    var id : Int { return aircraft_id ?? registration.hashValue }
-    
-    init(registration: String, type: String, aircraft_id: Int? = nil) {
-        self.registration = registration
-        self.type = type
-        self.aircraft_id = aircraft_id
+    func add(passenger: Passenger, completion: @escaping (Passenger?) -> Void) {
+        RemoteService.shared.registerPassenger(passenger: passenger) {
+            _ in
+            // Does not matter if failed or not, just retrieve
+            self.retrievePassengers()
+        }
     }
+    
     
 }

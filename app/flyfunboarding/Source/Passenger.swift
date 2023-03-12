@@ -26,7 +26,68 @@
 
 
 import Foundation
+import Contacts
 
-struct Passenger : Codable {
+struct Passenger : Codable, Identifiable {
+    //raw information
+    var firstName : String
+    var middleName : String
+    var lastName : String
     
+    var formattedName : String
+    
+    var passenger_id : Int?
+    var identifier : String
+    
+    var id : Int { return passenger_id ?? identifier.hashValue }
+    
+    enum CodingKeys: String, CodingKey {
+        case firstName, middleName, lastName, formattedName, passenger_id, identifier
+    }
+
+    init(contact : CNContact){
+        self.firstName = contact.givenName
+        self.middleName = contact.middleName
+        self.lastName = contact.familyName
+        self.identifier = contact.identifier
+        self.passenger_id = nil
+        
+        var nameComponents = PersonNameComponents()
+        nameComponents.givenName = self.firstName
+        nameComponents.middleName = self.middleName
+        nameComponents.familyName = self.lastName
+        self.formattedName = nameComponents.formatted()
+    }
+    var personNameComponents : PersonNameComponents {
+        get {
+            var ret = PersonNameComponents()
+            ret.givenName = self.firstName
+            ret.familyName = self.lastName
+            ret.middleName = self.middleName
+            return ret
+        }
+        set {
+            self.firstName = newValue.givenName ?? ""
+            self.lastName = newValue.familyName ?? ""
+            self.middleName = newValue.middleName ?? ""
+            self.formattedName = newValue.formatted()
+        }
+    }
+
+    mutating func syncWithContact() {
+        if let contact = self.retrieveContact() {
+            self.firstName = contact.givenName
+            self.lastName = contact.familyName
+            self.middleName = contact.middleName
+            self.formattedName = self.personNameComponents.formatted()
+        }
+    }
+
+    func retrieveContact() -> CNContact? {
+        let store = CNContactStore()
+        let keys = [CNContactGivenNameKey, CNContactMiddleNameKey, CNContactFamilyNameKey, CNContactPhoneNumbersKey, CNContactEmailAddressesKey, CNContactThumbnailImageDataKey]
+        let contact = try? store.unifiedContact(withIdentifier: self.identifier, keysToFetch: keys as [CNKeyDescriptor])
+        return contact
+    }
+   
 }

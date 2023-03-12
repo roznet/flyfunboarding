@@ -19,7 +19,14 @@ class AircraftController extends Controller {
         $this->validateMethod( 'POST' );
         $json = $this->getJsonPostBody();
         $aircraft = Aircraft::fromJson($json);
-        MyFlyFunDb::$shared->createOrUpdateAircraft($aircraft);
+        $aircraft = MyFlyFunDb::$shared->createOrUpdateAircraft($aircraft);
+        if($aircraft !== null){
+            $json = json_encode($aircraft);
+            $this->contentType('application/json');
+            echo( $json );
+        } else {
+            $this->terminate(500, 'Error creating aircraft');
+        }
     }
 
     public function list() {

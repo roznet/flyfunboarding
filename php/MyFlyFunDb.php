@@ -145,8 +145,10 @@ class MyFlyFunDb {
         }
         
         if (mysqli_errno($this->db)) {
+            http_response_code(500);
             die("Error creating table: " . mysqli_error($this->db));
         }
+        return $object;
     }
 
     private function addLinks($table, $object, $row) {
@@ -261,7 +263,7 @@ class MyFlyFunDb {
     // Aircrafts
     //
     public function createOrUpdateAircraft(Aircraft $aircraft) {
-        $this->createOrUpdate("Aircrafts", $aircraft);
+        return $this->createOrUpdate("Aircrafts", $aircraft);
     }
     public function listAircrafts() : array {
         return $this->list("Aircrafts");
@@ -272,7 +274,7 @@ class MyFlyFunDb {
 
     // Passengers
     public function createOrUpdatePassenger(Passenger $passenger) {
-        $this->createOrUpdate("Passengers", $passenger);
+        return $this->createOrUpdate("Passengers", $passenger);
     }
 
     public function listPassengers() : array {
@@ -285,7 +287,7 @@ class MyFlyFunDb {
 
     // Flights
     public function createOrUpdateFlight(Flight $flight) {
-        $this->createOrUpdate("Flights", $flight);
+        return $this->createOrUpdate("Flights", $flight);
     }
 
     public function listFlights(int $aircraft_id = -1) : array {
@@ -301,7 +303,7 @@ class MyFlyFunDb {
 
     // Tickets
     public function createOrUpdateTicket(Ticket $ticket) {
-        $this->createOrUpdate("Tickets", $ticket);
+        return $this->createOrUpdate("Tickets", $ticket);
     }
 
     public function getTicket($ticket_id, $json = true) {

@@ -6,7 +6,14 @@ class PassengerController extends Controller {
 
         $json = $this->getJsonPostBody();
         $passenger = Passenger::fromJson($json);
-        MyFlyFunDb::$shared->createOrUpdatePassenger($passenger);
+        $passenger = MyFlyFunDb::$shared->createOrUpdatePassenger($passenger);
+        if($passenger !== null){
+            $json = json_encode($passenger);
+            $this->contentType('application/json');
+            echo $json;
+        } else {
+            $this->terminate(500, 'Error creating passenger');
+        }
     }
 
     public function list() {
