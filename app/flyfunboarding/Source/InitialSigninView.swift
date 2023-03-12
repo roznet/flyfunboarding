@@ -1,9 +1,28 @@
+//  MIT License
 //
-//  InitialSigninView.swift
-//  flyfunboarding
+//  Created on 12/03/2023 for flyfunboarding
 //
-//  Created by Brice Rosenzweig on 11/03/2023.
+//  Copyright (c) 2023 Brice Rosenzweig
 //
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in all
+//  copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//  SOFTWARE.
+//
+
 
 import SwiftUI
 import AuthenticationServices
@@ -63,33 +82,36 @@ struct InitialSigninView: View {
         .padding()
     }
 
+    func register(authorization : ASAuthorization) {
+        if let appleCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
+            let userIdentifier = appleCredential.user
+            let fullName = appleCredential.fullName
+            
+            Settings.shared.userIdentifier = userIdentifier
+            Settings.shared.userFullName = fullName
+            let airline = Airline(airlineName: self.airlineName,
+                                  appleIdentifier: userIdentifier,
+                                  airlineId: nil)
+            RemoteService.shared.registerAirline(airline: airline){
+                remoteAirline in
+                if let aId = remoteAirline?.airlineId, aId > 0 {
+                    Settings.shared.airlineId = aId
+                    self.accountStatus.signedIn = true
+                }
+            }
+        }
+    }
+    
     func signInButton(_ style: SignInWithAppleButton.Style) -> some View {
         SignInWithAppleButton(
             onRequest: { request in
-                request.requestedScopes = [.fullName ]
+                request.requestedScopes = [.fullName]
             },
             onCompletion: { result in
                 switch result {
                 case .success(let authorization):
                     // Handle autorization
-                    Logger.app.info("authorization \(authorization)")
-                    if let appleCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
-                        let userIdentifier = appleCredential.user
-                        let fullName = appleCredential.fullName
-                        
-                        //let token = appleCredential.identityToken
-                        
-                        Settings.shared.userIdentifier = userIdentifier
-                        Settings.shared.userFullName = fullName
-                        let airline = Airline(airlineName: self.airlineName, appleIdentifier: userIdentifier, airlineId: nil)
-                        RemoteService.shared.registerAirline(airline: airline){
-                            remoteAirline in
-                            if let aId = remoteAirline?.airlineId, aId > 0 {
-                                Settings.shared.airlineId = aId
-                                self.accountStatus.signedIn = true
-                            }
-                        }
-                    }
+                    self.register(authorization: authorization)
                     break
                 case .failure(let error):
                     // Handle error

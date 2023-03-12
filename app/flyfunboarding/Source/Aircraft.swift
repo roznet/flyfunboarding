@@ -23,37 +23,22 @@
 //  SOFTWARE.
 //
 
-
 import Foundation
 
-struct Airline: Codable{
-    let airlineName : String
-    let appleIdentifier : String
-    let airlineId : Int? 
 
+class Aircraft: Codable {
+    var registration: String
+    var type: String
+    var aircraft_id: Int
+    
     enum CodingKeys: String, CodingKey {
-        case airlineName = "airline_name"
-        case appleIdentifier = "apple_identifier"
-        case airlineId = "airline_id"
+        case registration, type, aircraft_id
     }
-   
-    init() {
-        self.airlineName = ""
-        self.appleIdentifier = ""
-        self.airlineId = nil
+    
+    init(registration: String, type: String, aircraft_id: Int = -1) {
+        self.registration = registration
+        self.type = type
+        self.aircraft_id = aircraft_id
     }
-   
-    init(airlineName : String, appleIdentifier : String, airlineId : Int?) {
-        self.airlineId = airlineId
-        self.appleIdentifier = appleIdentifier
-        self.airlineName = airlineName
-    }
-    var validAirline : Bool {
-        if let airlineId = self.airlineId, airlineId > 0 {
-            return true
-        }
-        return false
-    }
+    
 }
-
-

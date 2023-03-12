@@ -9,10 +9,17 @@
 /* Begin PBXBuildFile section */
 		4245DB1929BCBDB6004B9953 /* secrets.json in Resources */ = {isa = PBXBuildFile; fileRef = 4245DB1829BCBDB5004B9953 /* secrets.json */; };
 		4245DB1C29BCBE40004B9953 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4245DB1B29BCBE40004B9953 /* Secrets.swift */; };
-		4260042B29BCDD7A003E0433 /* InitialSigninView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4260042A29BCDD7A003E0433 /* InitialSigninView.swift */; };
 		4260042D29BCF2D0003E0433 /* AirlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4260042C29BCF2D0003E0433 /* AirlineView.swift */; };
 		4260042F29BCF415003E0433 /* AccountStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4260042E29BCF415003E0433 /* AccountStatus.swift */; };
 		4260043129BCF66D003E0433 /* AirlineViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4260043029BCF66D003E0433 /* AirlineViewModel.swift */; };
+		4260043329BD1829003E0433 /* AircraftListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4260043229BD1829003E0433 /* AircraftListView.swift */; };
+		4260043529BD186A003E0433 /* AircraftListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4260043429BD186A003E0433 /* AircraftListViewModel.swift */; };
+		4260043729BD18B9003E0433 /* Aircraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4260043629BD18B9003E0433 /* Aircraft.swift */; };
+		4260043F29BDCA72003E0433 /* InitialSigninView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4260043E29BDCA72003E0433 /* InitialSigninView.swift */; };
+		4260044129BDCAF8003E0433 /* Passenger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4260044029BDCAF8003E0433 /* Passenger.swift */; };
+		4260044329BDCBE2003E0433 /* PassengerListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4260044229BDCBE2003E0433 /* PassengerListView.swift */; };
+		4260044529BDD0F9003E0433 /* FlightListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4260044429BDD0F9003E0433 /* FlightListView.swift */; };
+		4260044729BDD127003E0433 /* TicketListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4260044629BDD127003E0433 /* TicketListView.swift */; };
 		4269B3EA29BBC84C009891C6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4269B3E929BBC84C009891C6 /* Assets.xcassets */; };
 		4269B3ED29BBC84C009891C6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4269B3EC29BBC84C009891C6 /* Preview Assets.xcassets */; };
 		4269B3F729BBC84D009891C6 /* flyfunboardingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4269B3F629BBC84D009891C6 /* flyfunboardingTests.swift */; };
@@ -56,10 +63,17 @@
 		4245DB1829BCBDB5004B9953 /* secrets.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = secrets.json; sourceTree = "<group>"; };
 		4245DB1B29BCBE40004B9953 /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Secrets.swift; path = Source/Secrets.swift; sourceTree = "<group>"; };
 		4245DB1D29BCC450004B9953 /* rzutils */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = rzutils; path = ../../../public/rzutils; sourceTree = "<group>"; };
-		4260042A29BCDD7A003E0433 /* InitialSigninView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialSigninView.swift; sourceTree = "<group>"; };
 		4260042C29BCF2D0003E0433 /* AirlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AirlineView.swift; path = Source/AirlineView.swift; sourceTree = "<group>"; };
 		4260042E29BCF415003E0433 /* AccountStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AccountStatus.swift; path = Source/AccountStatus.swift; sourceTree = "<group>"; };
 		4260043029BCF66D003E0433 /* AirlineViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AirlineViewModel.swift; path = Source/AirlineViewModel.swift; sourceTree = "<group>"; };
+		4260043229BD1829003E0433 /* AircraftListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AircraftListView.swift; path = Source/AircraftListView.swift; sourceTree = "<group>"; };
+		4260043429BD186A003E0433 /* AircraftListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AircraftListViewModel.swift; path = Source/AircraftListViewModel.swift; sourceTree = "<group>"; };
+		4260043629BD18B9003E0433 /* Aircraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Aircraft.swift; path = Source/Aircraft.swift; sourceTree = "<group>"; };
+		4260043E29BDCA72003E0433 /* InitialSigninView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InitialSigninView.swift; path = Source/InitialSigninView.swift; sourceTree = "<group>"; };
+		4260044029BDCAF8003E0433 /* Passenger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Passenger.swift; path = Source/Passenger.swift; sourceTree = "<group>"; };
+		4260044229BDCBE2003E0433 /* PassengerListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PassengerListView.swift; path = Source/PassengerListView.swift; sourceTree = "<group>"; };
+		4260044429BDD0F9003E0433 /* FlightListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FlightListView.swift; path = Source/FlightListView.swift; sourceTree = "<group>"; };
+		4260044629BDD127003E0433 /* TicketListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TicketListView.swift; path = Source/TicketListView.swift; sourceTree = "<group>"; };
 		4269B3E229BBC84C009891C6 /* flyfunboarding.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = flyfunboarding.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4269B3E929BBC84C009891C6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4269B3EC29BBC84C009891C6 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -202,6 +216,8 @@
 			isa = PBXGroup;
 			children = (
 				4269B43B29BCB0A9009891C6 /* Airline.swift */,
+				4260043629BD18B9003E0433 /* Aircraft.swift */,
+				4260044029BDCAF8003E0433 /* Passenger.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -209,11 +225,16 @@
 		4269B41629BBCA6D009891C6 /* UserInterface */ = {
 			isa = PBXGroup;
 			children = (
+				4260043E29BDCA72003E0433 /* InitialSigninView.swift */,
+				4260042E29BCF415003E0433 /* AccountStatus.swift */,
 				4269B41829BBCA9D009891C6 /* ContentView.swift */,
-				4260042A29BCDD7A003E0433 /* InitialSigninView.swift */,
 				4260043029BCF66D003E0433 /* AirlineViewModel.swift */,
 				4260042C29BCF2D0003E0433 /* AirlineView.swift */,
-				4260042E29BCF415003E0433 /* AccountStatus.swift */,
+				4260043429BD186A003E0433 /* AircraftListViewModel.swift */,
+				4260043229BD1829003E0433 /* AircraftListView.swift */,
+				4260044229BDCBE2003E0433 /* PassengerListView.swift */,
+				4260044429BDD0F9003E0433 /* FlightListView.swift */,
+				4260044629BDD127003E0433 /* TicketListView.swift */,
 			);
 			name = UserInterface;
 			sourceTree = "<group>";
@@ -396,16 +417,23 @@
 			buildActionMask = 2147483647;
 			files = (
 				4269B42B29BC75E9009891C6 /* Settings.swift in Sources */,
+				4260044529BDD0F9003E0433 /* FlightListView.swift in Sources */,
+				4260044329BDCBE2003E0433 /* PassengerListView.swift in Sources */,
 				4269B43E29BCB1E6009891C6 /* RemoteService.swift in Sources */,
+				4260044729BDD127003E0433 /* TicketListView.swift in Sources */,
+				4260044129BDCAF8003E0433 /* Passenger.swift in Sources */,
 				4245DB1C29BCBE40004B9953 /* Secrets.swift in Sources */,
 				4269B41929BBCA9D009891C6 /* ContentView.swift in Sources */,
 				4260043129BCF66D003E0433 /* AirlineViewModel.swift in Sources */,
+				4260043F29BDCA72003E0433 /* InitialSigninView.swift in Sources */,
 				4260042D29BCF2D0003E0433 /* AirlineView.swift in Sources */,
+				4260043529BD186A003E0433 /* AircraftListViewModel.swift in Sources */,
+				4260043729BD18B9003E0433 /* Aircraft.swift in Sources */,
 				4260042F29BCF415003E0433 /* AccountStatus.swift in Sources */,
 				4269B42E29BC77B3009891C6 /* Log.swift in Sources */,
+				4260043329BD1829003E0433 /* AircraftListView.swift in Sources */,
 				4269B43C29BCB0A9009891C6 /* Airline.swift in Sources */,
 				4269B41B29BBCAB6009891C6 /* FlyFunBoardingApp.swift in Sources */,
-				4260042B29BCDD7A003E0433 /* InitialSigninView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
