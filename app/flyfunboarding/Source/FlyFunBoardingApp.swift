@@ -28,11 +28,21 @@ import SwiftUI
 import OSLog
 import RZUtilsSwift
 import AuthenticationServices
+import FMDB
 
 @main
 struct FlyFunBoardingApp: App {
+    static public var knownAirports : KnownAirports? = nil
+    public static let worker = DispatchQueue(label: "net.ro-z.flightlogstats.worker")
+    public static var db : FMDatabase = FMDatabase()
+    
     init() {
         Secrets.shared = Secrets(url: Bundle.main.url(forResource: "secrets", withExtension: "json"))
+        FlyFunBoardingApp.db = FMDatabase(url: Bundle.main.url(forResource: "airports", withExtension: "db"))
+        FlyFunBoardingApp.db.open()
+        FlyFunBoardingApp.worker.async {
+            FlyFunBoardingApp.knownAirports = KnownAirports(db: FlyFunBoardingApp.db)
+        }
     }
     
     var body: some Scene {

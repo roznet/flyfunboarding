@@ -13,6 +13,10 @@
 		4208E4B129BDFDC700E2A5FC /* AircraftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4208E4B029BDFDC700E2A5FC /* AircraftView.swift */; };
 		4208E4B829BE29B100E2A5FC /* SwiftUIKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4208E4B729BE29B100E2A5FC /* SwiftUIKit */; };
 		4208E4BA29BE2E3D00E2A5FC /* PassengerListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4208E4B929BE2E3D00E2A5FC /* PassengerListViewModel.swift */; };
+		4208E4BD29BE4E7400E2A5FC /* RZFlight in Frameworks */ = {isa = PBXBuildFile; productRef = 4208E4BC29BE4E7400E2A5FC /* RZFlight */; };
+		4208E4BF29BE524E00E2A5FC /* airports.db in Resources */ = {isa = PBXBuildFile; fileRef = 4208E4BE29BE524E00E2A5FC /* airports.db */; };
+		4208E4C229BE5A1E00E2A5FC /* KnownAirports.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4208E4C129BE5A1E00E2A5FC /* KnownAirports.swift */; };
+		4208E4C529BE5CB300E2A5FC /* KDTree in Frameworks */ = {isa = PBXBuildFile; productRef = 4208E4C429BE5CB300E2A5FC /* KDTree */; };
 		4245DB1929BCBDB6004B9953 /* secrets.json in Resources */ = {isa = PBXBuildFile; fileRef = 4245DB1829BCBDB5004B9953 /* secrets.json */; };
 		4245DB1C29BCBE40004B9953 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4245DB1B29BCBE40004B9953 /* Secrets.swift */; };
 		4260042D29BCF2D0003E0433 /* AirlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4260042C29BCF2D0003E0433 /* AirlineView.swift */; };
@@ -73,9 +77,10 @@
 		4208E4AE29BDF6D400E2A5FC /* Samples.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Samples.swift; path = Source/Samples.swift; sourceTree = "<group>"; };
 		4208E4B029BDFDC700E2A5FC /* AircraftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AircraftView.swift; path = Source/AircraftView.swift; sourceTree = "<group>"; };
 		4208E4B929BE2E3D00E2A5FC /* PassengerListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PassengerListViewModel.swift; path = Source/PassengerListViewModel.swift; sourceTree = "<group>"; };
+		4208E4BE29BE524E00E2A5FC /* airports.db */ = {isa = PBXFileReference; lastKnownFileType = file; name = airports.db; path = python/airports.db; sourceTree = "<group>"; };
+		4208E4C129BE5A1E00E2A5FC /* KnownAirports.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = KnownAirports.swift; path = Source/KnownAirports.swift; sourceTree = "<group>"; };
 		4245DB1829BCBDB5004B9953 /* secrets.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = secrets.json; sourceTree = "<group>"; };
 		4245DB1B29BCBE40004B9953 /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Secrets.swift; path = Source/Secrets.swift; sourceTree = "<group>"; };
-		4245DB1D29BCC450004B9953 /* rzutils */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = rzutils; path = ../../../public/rzutils; sourceTree = "<group>"; };
 		4260042C29BCF2D0003E0433 /* AirlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AirlineView.swift; path = Source/AirlineView.swift; sourceTree = "<group>"; };
 		4260042E29BCF415003E0433 /* AccountModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AccountModel.swift; path = Source/AccountModel.swift; sourceTree = "<group>"; };
 		4260043029BCF66D003E0433 /* AirlineViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AirlineViewModel.swift; path = Source/AirlineViewModel.swift; sourceTree = "<group>"; };
@@ -121,7 +126,9 @@
 				4269B42329BC75CA009891C6 /* RZData in Frameworks */,
 				4269B42929BC75CA009891C6 /* RZUtilsUniversal in Frameworks */,
 				4208E4B829BE29B100E2A5FC /* SwiftUIKit in Frameworks */,
+				4208E4BD29BE4E7400E2A5FC /* RZFlight in Frameworks */,
 				4269B42729BC75CA009891C6 /* RZUtilsSwift in Frameworks */,
+				4208E4C529BE5CB300E2A5FC /* KDTree in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -145,6 +152,7 @@
 		4245DB1A29BCBDC0004B9953 /* SupportingFiles */ = {
 			isa = PBXGroup;
 			children = (
+				4208E4BE29BE524E00E2A5FC /* airports.db */,
 				4245DB1829BCBDB5004B9953 /* secrets.json */,
 				4269B42F29BCA00B009891C6 /* FlyFunBoarding-Bridging-Header.h */,
 			);
@@ -192,7 +200,6 @@
 		4269B3D929BBC84C009891C6 = {
 			isa = PBXGroup;
 			children = (
-				4245DB1D29BCC450004B9953 /* rzutils */,
 				4269B3E429BBC84C009891C6 /* flyfunboarding */,
 				4269B3F529BBC84D009891C6 /* flyfunboardingTests */,
 				4269B3FF29BBC84D009891C6 /* flyfunboardingUITests */,
@@ -272,6 +279,7 @@
 				4269B43B29BCB0A9009891C6 /* Airline.swift */,
 				4260043629BD18B9003E0433 /* Aircraft.swift */,
 				4260044029BDCAF8003E0433 /* Passenger.swift */,
+				4208E4C129BE5A1E00E2A5FC /* KnownAirports.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -302,6 +310,7 @@
 			buildConfigurationList = 4269B40629BBC84D009891C6 /* Build configuration list for PBXNativeTarget "flyfunboarding" */;
 			buildPhases = (
 				4245DB1729BCB98C004B9953 /* Run Script Validate Secrets.json */,
+				4208E4C029BE529400E2A5FC /* Run Script Validate Airports.db */,
 				4269B3DE29BBC84C009891C6 /* Sources */,
 				4269B3DF29BBC84C009891C6 /* Frameworks */,
 				4269B3E029BBC84C009891C6 /* Resources */,
@@ -317,6 +326,8 @@
 				4269B42629BC75CA009891C6 /* RZUtilsSwift */,
 				4269B42829BC75CA009891C6 /* RZUtilsUniversal */,
 				4208E4B729BE29B100E2A5FC /* SwiftUIKit */,
+				4208E4BC29BE4E7400E2A5FC /* RZFlight */,
+				4208E4C429BE5CB300E2A5FC /* KDTree */,
 			);
 			productName = flyfunboarding;
 			productReference = 4269B3E229BBC84C009891C6 /* flyfunboarding.app */;
@@ -394,6 +405,8 @@
 			packageReferences = (
 				4269B42129BC75CA009891C6 /* XCRemoteSwiftPackageReference "rzutils" */,
 				4208E4B629BE29B100E2A5FC /* XCRemoteSwiftPackageReference "SwiftUIKit" */,
+				4208E4BB29BE4E7400E2A5FC /* XCRemoteSwiftPackageReference "rzflight" */,
+				4208E4C329BE5CB300E2A5FC /* XCRemoteSwiftPackageReference "KDTree" */,
 			);
 			productRefGroup = 4269B3E329BBC84C009891C6 /* Products */;
 			projectDirPath = "";
@@ -417,6 +430,7 @@
 				4269B43829BCA4EA009891C6 /* sample_passengers.json in Resources */,
 				4269B43629BCA4EA009891C6 /* sample_flights.json in Resources */,
 				4245DB1929BCBDB6004B9953 /* secrets.json in Resources */,
+				4208E4BF29BE524E00E2A5FC /* airports.db in Resources */,
 				4269B3EA29BBC84C009891C6 /* Assets.xcassets in Resources */,
 				4269B43529BCA4EA009891C6 /* sample_aircrafts.json in Resources */,
 			);
@@ -439,6 +453,25 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		4208E4C029BE529400E2A5FC /* Run Script Validate Airports.db */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script Validate Airports.db";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "AIRPORTDB=$SRCROOT/flyfunboarding/python/airports.db\n\nif [ -f $AIRPORTDB ]; then\n    echo \"Checked $AIRPORTDB\"\nelse\n    echo \"Creating empty $AIRPORTDB\"\n    sqlite3 $AIRPORTDB \"\" \".quit\"\nfi\n\n";
+		};
 		4245DB1729BCB98C004B9953 /* Run Script Validate Secrets.json */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -472,6 +505,7 @@
 				4260044729BDD127003E0433 /* TicketListView.swift in Sources */,
 				4260044129BDCAF8003E0433 /* Passenger.swift in Sources */,
 				4245DB1C29BCBE40004B9953 /* Secrets.swift in Sources */,
+				4208E4C229BE5A1E00E2A5FC /* KnownAirports.swift in Sources */,
 				4269B41929BBCA9D009891C6 /* MainView.swift in Sources */,
 				4260043129BCF66D003E0433 /* AirlineViewModel.swift in Sources */,
 				4208E4AD29BDF5F100E2A5FC /* AircraftViewModel.swift in Sources */,
@@ -833,6 +867,22 @@
 				kind = branch;
 			};
 		};
+		4208E4BB29BE4E7400E2A5FC /* XCRemoteSwiftPackageReference "rzflight" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/roznet/rzflight";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+		4208E4C329BE5CB300E2A5FC /* XCRemoteSwiftPackageReference "KDTree" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Bersaelor/KDTree.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 		4269B42129BC75CA009891C6 /* XCRemoteSwiftPackageReference "rzutils" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/roznet/rzutils";
@@ -848,6 +898,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4208E4B629BE29B100E2A5FC /* XCRemoteSwiftPackageReference "SwiftUIKit" */;
 			productName = SwiftUIKit;
+		};
+		4208E4BC29BE4E7400E2A5FC /* RZFlight */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4208E4BB29BE4E7400E2A5FC /* XCRemoteSwiftPackageReference "rzflight" */;
+			productName = RZFlight;
+		};
+		4208E4C429BE5CB300E2A5FC /* KDTree */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4208E4C329BE5CB300E2A5FC /* XCRemoteSwiftPackageReference "KDTree" */;
+			productName = KDTree;
 		};
 		4269B42229BC75CA009891C6 /* RZData */ = {
 			isa = XCSwiftPackageProductDependency;
