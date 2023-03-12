@@ -96,7 +96,9 @@ struct InitialSigninView: View {
                 remoteAirline in
                 if let aId = remoteAirline?.airlineId, aId > 0 {
                     Settings.shared.airlineId = aId
-                    self.accountStatus.signedIn = true
+                    DispatchQueue.main.async {
+                        self.accountStatus.signedIn = true
+                    }
                 }
             }
         }

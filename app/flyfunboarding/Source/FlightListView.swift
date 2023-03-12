@@ -28,63 +28,19 @@
 import SwiftUI
 import RZFlight
 import RZData
-import CoreLocation
 
-class MatchedAirport : ObservableObject {
-    typealias AirportCoord = KnownAirports.AirportCoord
-    
-    @Published var suggestions : [AirportCoord] = []
-    private var coord = CLLocationCoordinate2D(latitude: 51.50, longitude: 0.12)
-   
-    private var searching : Bool = false
-    
-    func autocomplete(_ text : String) {
-        DispatchQueue.synchronized(self){
-            guard self.searching else { return }
-            self.searching = true
-        }
-        
-        FlyFunBoardingApp.worker.async {
-            if let found = FlyFunBoardingApp.knownAirports?.nearestDescriptions(coord: self.coord, needle: text, count: 20) {
-                DispatchQueue.main.async {
-                    DispatchQueue.synchronized(self){
-                        self.suggestions = found
-                        self.searching = true
-                    }
-                }
-            }else{
-                self.searching = false
-            }
-        }
-    }
-}
 struct FlightListView: View {
     @State private var flightDate = Date.now
     @State private var departureAirport = "EGTF"
-    @State private var departureDescription = "Fairoaks"
-    @ObservedObject private var matchedAiports = MatchedAirport()
+    @State private var destinationAirport = "LFAT"
     var body: some View {
         VStack {
             DatePicker("Flight Departure", selection: $flightDate)
-            HStack(alignment: .firstTextBaseline) {
-                Text("Departure Airport")
-                VStack {
-                    TextField("ICAO Name", text: $departureAirport).textFieldStyle(.roundedBorder)
-                        .onChange(of: departureAirport){ newValue in
-                            matchedAiports.autocomplete(newValue)
-                        }
-                    Text(departureDescription).font(.footnote)
-                }
-            }
-            List(matchedAiports.suggestions, id: \.self) { suggestion in
-                ZStack {
-                    Text("\(suggestion.ident) - \(suggestion.name)")
-                }.onTapGesture {
-                    self.departureAirport = suggestion.ident
-                    self.departureDescription = suggestion.name
-                }
-            }
+            AirportPicker(labelText: "Departure", icao: $departureAirport, name: "Fairoaks")
+            AirportPicker(labelText: "Destination", icao: $destinationAirport, name: "Le Touquet")
+            Spacer()
         }
+        
     }
 }
 

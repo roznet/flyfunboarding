@@ -30,6 +30,7 @@ import FMDB
 import KDTree
 import CoreLocation
 import RZFlight
+import MapKit
 
 class KnownAirports {
     
@@ -68,7 +69,12 @@ class KnownAirports {
         }
         
         func matches(_ needle : String) -> Bool {
-            return self.ident.contains(needle) || self.name.contains(needle)
+            let lc = needle.lowercased()
+            return self.ident.lowercased().contains(lc) || self.name.lowercased().contains(lc)
+        }
+        
+        func distance(to: CLLocationCoordinate2D) -> CLLocationDistance {
+            return MKMapPoint(CLLocationCoordinate2D(latitude: latitude_deg, longitude: longiture_deg)).distance(to: MKMapPoint(to))
         }
     }
     let tree : KDTree<AirportCoord>
