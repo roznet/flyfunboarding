@@ -28,7 +28,7 @@ import Foundation
 import AuthenticationServices
 import OSLog
 
-class AccountStatus : ObservableObject {
+class AccountModel : ObservableObject {
     
     @Published var signedIn : Bool = false
     

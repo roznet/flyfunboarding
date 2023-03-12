@@ -24,21 +24,31 @@
 //
 
 
-import SwiftUI
-import OSLog
-import RZUtilsSwift
-import AuthenticationServices
 
-@main
-struct FlyFunBoardingApp: App {
-    init() {
-        Secrets.shared = Secrets(url: Bundle.main.url(forResource: "secrets", withExtension: "json"))
-    }
+import SwiftUI
+
+struct AirlineSettingsView: View {
+    @EnvironmentObject var accountStatus : AccountModel
+    @Environment(\.dismiss) var dismiss
     
-    var body: some Scene {
-        WindowGroup {
-            MainView()
+    var body : some View {
+        VStack {
+            Button("Done") {
+                dismiss()
+            }
+            Spacer()
+            Button("Signout", action: signOut)
+            Spacer()
         }
     }
     
+    func signOut() {
+        
+    }
+}
+
+struct AirlineSettingsView_Previews: PreviewProvider {
+    static var previews: some View {
+        AirlineSettingsView()
+    }
 }

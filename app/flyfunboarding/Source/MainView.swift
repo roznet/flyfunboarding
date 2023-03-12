@@ -29,8 +29,8 @@ import AuthenticationServices
 import OSLog
 
 
-struct ContentView: View {
-    @StateObject private var accountStatus : AccountStatus = AccountStatus()
+struct MainView: View {
+    @StateObject private var accountStatus : AccountModel = AccountModel()
     
     var body: some View {
         if accountStatus.signedIn {
@@ -44,6 +44,6 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     
     static var previews: some View {
-        ContentView()
+        MainView()
     }
 }

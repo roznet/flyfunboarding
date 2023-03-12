@@ -31,7 +31,7 @@ import OSLog
 struct InitialSigninView: View {
     @Environment(\.colorScheme) var colorScheme
     
-    @EnvironmentObject var accountStatus : AccountStatus
+    @EnvironmentObject var accountStatus : AccountModel
     
     @State private var airlineName : String = Settings.shared.airlineName
     @State private var isTextFieldEmpty : Bool =  Settings.shared.airlineName.isEmpty

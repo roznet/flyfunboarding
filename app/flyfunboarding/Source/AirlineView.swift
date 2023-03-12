@@ -27,79 +27,17 @@
 import SwiftUI
 import OSLog
 
-struct ToggledTextField: View {
-    @Binding var text : String
-    @Binding var isEditing : Bool
 
-    var image : Image
 
-    @ViewBuilder
-    var textfield : some View {
-        if self.isEditing {
-            TextField("Airline Name", text: $text)
-                .textFieldStyle(.roundedBorder)
-        }else{
-            TextField("Airline Name", text: $text)
-                .textFieldStyle(.plain)
-                .disabled(true)
-        }
-    }
-
-    var icon : Image {
-        if self.isEditing {
-            return Image(systemName: "square.and.arrow.down")
-                .renderingMode(.template)
-        }else{
-            return Image(systemName: "square.and.pencil")
-                .renderingMode(.template)
-        }
-    }
-    func toggle() {
-        if self.isEditing {
-            Logger.ui.info("Save airline name")
-        }
-        self.isEditing = !self.isEditing
-    }
-    
-    @ViewBuilder
-    var header : some View {
-        HStack {
-            image
-                .resizable()
-                .frame(width: 50.0, height: 50.0)
-                .foregroundColor(.accentColor)
-                .padding(.leading)
-            textfield
-            Button(action: toggle){
-                icon
-            }.padding(.trailing)
-        }
-    }
-   
-    var body: some View {
-            header
-    }
-}
-struct AirlineSettingsView: View {
-    @Environment(\.dismiss) var dismiss
-    
-    var body : some View {
-        Button("Done") {
-            dismiss()
-        }
-        
-    }
-}
 struct AirlineView: View {
-    @EnvironmentObject var accountStatus : AccountStatus
+    @EnvironmentObject var accountStatus : AccountModel
     @StateObject var airlineViewModel = AirlineViewModel()
-    @State private var isEditingAirlineName : Bool = false
     @State private var selectedTab = "Aircraft"
    
     var body: some View {
         VStack {
             HStack {
-                ToggledTextField(text: $airlineViewModel.airlineName, isEditing: $isEditingAirlineName, image: Image("FlyFunLogo"))
+                ToggledTextField(text: $airlineViewModel.airlineName, image: Image("FlyFunLogo"))
                 settingsButton
                     .padding(.trailing)
             }
@@ -169,8 +107,8 @@ struct AirlineView_Previews: PreviewProvider {
             .environmentObject(createAccountStatus())
     }
 
-    static func createAccountStatus() -> AccountStatus {
-        let rv = AccountStatus()
+    static func createAccountStatus() -> AccountModel {
+        let rv = AccountModel()
         rv.signedIn = true
         return rv
     }

@@ -1,0 +1,83 @@
+//  MIT License
+//
+//  Created on 12/03/2023 for flyfunboarding
+//
+//  Copyright (c) 2023 Brice Rosenzweig
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in all
+//  copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//  SOFTWARE.
+//
+
+import SwiftUI
+
+struct ToggledTextField: View {
+    @Binding var text : String
+    @State private var isEditing: Bool = false
+
+    var image : Image
+
+    @ViewBuilder
+    var textfield : some View {
+        if self.isEditing {
+            TextField("Airline Name", text: $text)
+                .textFieldStyle(.roundedBorder)
+        }else{
+            TextField("Airline Name", text: $text)
+                .textFieldStyle(.plain)
+                .disabled(true)
+        }
+    }
+
+    var icon : Image {
+        if self.isEditing {
+            return Image(systemName: "square.and.arrow.down")
+                .renderingMode(.template)
+        }else{
+            return Image(systemName: "square.and.pencil")
+                .renderingMode(.template)
+        }
+    }
+    func toggle() {
+        self.isEditing.toggle()
+    }
+    
+    @ViewBuilder
+    var header : some View {
+        HStack {
+            image
+                .resizable()
+                .frame(width: 50.0, height: 50.0)
+                .foregroundColor(.accentColor)
+                .padding(.leading)
+            textfield
+            Button(action: toggle){
+                icon
+            }.padding(.trailing)
+        }
+    }
+   
+    var body: some View {
+            header
+    }
+}
+
+struct ToggleTextField_Previews: PreviewProvider {
+    static var previews: some View {
+        ToggledTextField(text: .constant("hello"), image: Image("FlyFunLogo"))
+    }
+}
