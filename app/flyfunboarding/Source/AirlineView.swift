@@ -102,7 +102,6 @@ struct AirlineView: View {
 
 struct AirlineView_Previews: PreviewProvider {
     static var previews: some View {
-            
         AirlineView(airlineViewModel: createAirlineViewModel())
             .environmentObject(createAccountStatus())
     }
@@ -114,9 +113,7 @@ struct AirlineView_Previews: PreviewProvider {
     }
     
     static func createAirlineViewModel() -> AirlineViewModel {
-        if let url = Bundle.main.url(forResource: "sample_airline", withExtension: "json"),
-           let data = try? Data(contentsOf: url),
-           let airline = try? JSONDecoder().decode(Airline.self, from: data) {
+        if let airline = Samples.airline {
             let viewModel = AirlineViewModel(airline: airline)
             return viewModel
         }else{

@@ -26,16 +26,16 @@
 import Foundation
 
 
-class Aircraft: Codable {
+class Aircraft: Codable, Identifiable {
     var registration: String
     var type: String
-    var aircraft_id: Int
+    var aircraft_id: Int?
     
     enum CodingKeys: String, CodingKey {
         case registration, type, aircraft_id
     }
     
-    init(registration: String, type: String, aircraft_id: Int = -1) {
+    init(registration: String, type: String, aircraft_id: Int? = nil) {
         self.registration = registration
         self.type = type
         self.aircraft_id = aircraft_id

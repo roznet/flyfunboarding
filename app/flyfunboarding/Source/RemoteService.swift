@@ -95,6 +95,33 @@ class RemoteService {
         
                 
     }
+
+    private func retrieveObject<Type : Decodable>(point: String, completion: @escaping (Type?) -> Void) {
+        guard let airline = Settings.shared.currentAirline,
+              let airlineId = airline.airlineId,
+              let url = self.url(point: "airline/\(airlineId)/\(point)")
+        else { completion(nil); return }
+        
+        var request = URLRequest(url: url)
+        request.setValue(airline.authorizationBearer, forHTTPHeaderField: "Authorization")
+        URLSession.shared.dataTask(with: request){
+            data, response, error in
+            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200
+            else {
+                Logger.net.error("Failed \(String(describing: response))")
+                completion(nil)
+                return
+            }
+            guard let data = data else { completion(nil); return }
+            
+            let aircraft = try? JSONDecoder().decode(Type.self, from: data)
+            completion(aircraft)
+        }.resume()
+    }
+
+    func retrieveAircraftList(completion : @escaping ([Aircraft]?) -> Void) {
+        self.retrieveObject(point: "aircraft/list", completion: completion)
+    }
     
     func registerAirline(airline : Airline, completion : @escaping (Airline?) -> Void) {
         if let request = self.jsonPostRequest(point: "airline/create", data: airline, airline: airline, queryItems: []) {

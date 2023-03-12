@@ -26,3 +26,7 @@
 
 
 import Foundation
+
+struct Passenger : Codable {
+    
+}

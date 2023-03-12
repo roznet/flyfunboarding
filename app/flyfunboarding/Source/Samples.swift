@@ -24,28 +24,39 @@
 //
 
 
-import Foundation
-import SwiftUI
-import OSLog
 
-class AircraftListViewModel : ObservableObject {
-    @Published var aircrafts : [Aircraft] = []
-    var syncWithRemote : Bool = true
-    
-    init(aircrafts : [Aircraft], syncWithRemote: Bool = true) {
-        self.syncWithRemote = syncWithRemote
-        self.aircrafts = aircrafts
+import Foundation
+
+class Samples {
+    private static func object<Type : Codable>(resource : String) -> Type? {
+        if let url = Bundle.main.url(forResource: resource, withExtension: "json"),
+           let data = try? Data(contentsOf: url),
+           let rv = try? JSONDecoder().decode(Type.self, from: data) {
+            return rv
+        }else{
+            return nil
+        }
     }
     
-    func retrieveAircraft() {
-        Logger.app.info("yo")
-        if syncWithRemote {
-            RemoteService.shared.retrieveAircraftList(){
-                aircrafts in
-                DispatchQueue.main.async {
-                    self.aircrafts = aircrafts ?? []
-                }
-            }
+    private static func array<Type : Codable>(resource : String) -> [Type] {
+        if let url = Bundle.main.url(forResource: resource, withExtension: "json"),
+           let data = try? Data(contentsOf: url),
+           let rv = try? JSONDecoder().decode([Type].self, from: data) {
+            return rv
+        }else{
+            return []
         }
+    }
+    
+    static var aircrafts : [Aircraft] {
+        return self.array(resource: "sample_aircrafts")
+    }
+    
+    static var aircraft : Aircraft {
+        return self.aircrafts[0]
+    }
+    
+    static var airline : Airline? {
+        return self.object(resource: "sample_airline")
     }
 }

@@ -24,15 +24,56 @@
 //
 
 import SwiftUI
+import OSLog
 
 struct AircraftListView: View {
+    @StateObject  var aircraftListViewModel = AircraftListViewModel(aircrafts: [])
+    
     var body: some View {
-        Text("My Aircrafts")
+        NavigationStack {
+            List(aircraftListViewModel.aircrafts) { aircraft in
+                VStack(alignment: .leading) {
+                    Text(aircraft.registration).font(.headline)
+                    Text(aircraft.type).font(.body)
+                }.padding(.bottom)
+            }
+            .toolbar {
+                ToolbarItemGroup(placement: .bottomBar) {
+                    Spacer()
+                    Button(action: add){
+                        VStack {
+                            Image(systemName: "plus.circle")
+                            Text("Add")
+                        }
+                    }.padding()
+                    Button(action: delete) {
+                        VStack {
+                            Image(systemName: "minus.circle")
+                            Text("Delete")
+                        }
+                    }
+                    Spacer()
+                }
+            }
+        }
+        .onAppear {
+            aircraftListViewModel.retrieveAircraft()
+        }
+    }
+    func add() {
+        
+    }
+    func delete() {
+        
     }
 }
 
 struct AircraftListView_Previews: PreviewProvider {
+    static var viewModel : AircraftListViewModel{
+        return AircraftListViewModel(aircrafts: Samples.aircrafts, syncWithRemote: false)
+    }
     static var previews: some View {
-        AircraftListView()
+        AircraftListView(aircraftListViewModel: self.viewModel)
     }
 }
+

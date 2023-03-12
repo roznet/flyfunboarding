@@ -24,28 +24,14 @@
 //
 
 
+
 import Foundation
 import SwiftUI
-import OSLog
 
-class AircraftListViewModel : ObservableObject {
-    @Published var aircrafts : [Aircraft] = []
-    var syncWithRemote : Bool = true
-    
-    init(aircrafts : [Aircraft], syncWithRemote: Bool = true) {
-        self.syncWithRemote = syncWithRemote
-        self.aircrafts = aircrafts
-    }
-    
-    func retrieveAircraft() {
-        Logger.app.info("yo")
-        if syncWithRemote {
-            RemoteService.shared.retrieveAircraftList(){
-                aircrafts in
-                DispatchQueue.main.async {
-                    self.aircrafts = aircrafts ?? []
-                }
-            }
-        }
+class AircraftViewModel : ObservableObject {
+    @Published var aircraft : Aircraft
+   
+    init(aircraft: Aircraft) {
+        self.aircraft = aircraft
     }
 }
