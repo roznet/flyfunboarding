@@ -1,4 +1,5 @@
 *.p12
+*.pem
 output
 .DS_Store
 samples
