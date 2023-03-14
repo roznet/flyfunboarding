@@ -1,6 +1,6 @@
 //  MIT License
 //
-//  Created on 12/03/2023 for flyfunboarding
+//  Created on 13/03/2023 for flyfunboarding
 //
 //  Copyright (c) 2023 Brice Rosenzweig
 //
@@ -23,25 +23,39 @@
 //  SOFTWARE.
 //
 
+
+
 import Foundation
+import RZFlight
 
-
-class Aircraft: Codable, Identifiable {
-    var registration: String
-    var type: String
-    var aircraft_id: Int?
-    var aircraft_identifier : String?
-    
-    enum CodingKeys: String, CodingKey {
-        case registration, type, aircraft_id, aircraft_identifier
+struct Flight : Codable, Identifiable{
+    struct ICAO : Codable, Identifiable {
+        var id : Int { return icao.hashValue }
+        var icao : String
+        
+        enum CodingKeys: CodingKey {
+            case icao
+        }
+        
+        lazy var airport : Airport? = { try? Airport(db: FlyFunBoardingApp.db, ident: self.icao) }()
     }
     
-    var id : Int { return aircraft_id ?? registration.hashValue }
+    var id : Int { return self.flight_id ?? -1 }
     
-    init(registration: String, type: String, aircraft_id: Int? = nil) {
-        self.registration = registration
-        self.type = type
-        self.aircraft_id = aircraft_id
+    var destination : ICAO
+    var origin : ICAO
+    var gate : String
+    var flightNumber : String
+    var aircraft : Aircraft
+    var scheduleDepartureDate : Date
+    var flight_id : Int?
+    
+    enum CodingKeys: CodingKey {
+        case destination
+        case origin
+        case gate
+        case flightNumber
+        case aircraft
+        case scheduleDepartureDate
     }
-    
 }

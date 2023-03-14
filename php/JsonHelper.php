@@ -65,6 +65,9 @@ class JsonHelper {
                 $rv[$key] = $val;
             }
         }
+        if( method_exists($obj, 'uniqueIdentifier') ){
+            $rv = array_merge($rv, $obj->uniqueIdentifier());
+        }
         return $rv;
     }
 }

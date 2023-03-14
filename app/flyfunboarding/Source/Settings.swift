@@ -27,6 +27,10 @@
 import Foundation
 import RZUtilsSwift
 
+extension Notification.Name {
+    static let signinStatusChanged = Notification.Name("signinStatusChanged")
+}
+
 struct Settings {
     static let service = "flyfunboarding.ro-z.net"
     static var shared : Settings = Settings()
@@ -69,7 +73,7 @@ struct Settings {
                 self.airlineId = -1
                 self.airlineName = "My Airline"
             }
-            
+            NotificationCenter.default.post(name: .signinStatusChanged, object: self)
         }
     }
     

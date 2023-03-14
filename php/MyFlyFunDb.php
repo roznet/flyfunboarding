@@ -58,7 +58,7 @@ class MyFlyFunDb {
     public function createTableIfNecessary() {
         // refactor current function to create tables from an array of string of queries
         $queries = [];
-        $queries = [ "CREATE TABLE IF NOT EXISTS Airlines (airline_id INT NOT NULL AUTO_INCREMENT, json_data JSON, apple_identifier VARCHAR(1024), PRIMARY KEY (airline_id))" ];
+        $queries = [ "CREATE TABLE IF NOT EXISTS Airlines (airline_id INT NOT NULL AUTO_INCREMENT, json_data JSON, airline_identifier VARCHAR(255) UNIQUE, PRIMARY KEY (airline_id))" ];
         foreach (MyFlyFunDb::$standardTables as $table => $tableInfo) {
             // generate id name: lowercase table name without the last character if it's an s
             $table_id =  $this->tableToId($table);
@@ -75,7 +75,7 @@ class MyFlyFunDb {
             $columns[] = "json_data JSON";
             $columns[] = "airline_id INT NOT NULL";
             $columns[] = "PRIMARY KEY ({$table_id})" ;
-            $columns[] = "FOREIGN KEY (airline_id) REFERENCES Airlines(airline_id)";
+            $columns[] = "FOREIGN KEY (airline_id) REFERENCES Airlines(airline_id) ON DELETE CASCADE";
             $queries[] = "CREATE TABLE IF NOT EXISTS $table (" . implode(", ", $columns) . ")";
         }
 
@@ -93,9 +93,15 @@ class MyFlyFunDb {
             die("Airline not set");
         }
     }
-    private function uniqueIdentifier(string $identifier) : string {
-        return $this->airline_id . '.' . $identifier;
+
+    static function uniqueIdentifier(string $identifier) : string {
+        if( Airline::$current === null ) {
+            return hash('sha256',$identifier);
+        }
+
+        return hash('sha256',Airline::$current->airline_id . '.' . $identifier);
     }
+
     private function createOrUpdate($table, $object) {
         $this->validateAirline();
         $json = json_encode($object->toJson());
@@ -120,30 +126,31 @@ class MyFlyFunDb {
             $cols[] = $link_id;
         }
         
-        if( $object->$table_id == MyFlyFunDb::MISSING_ID ) {
-            foreach ($object->uniqueIdentifier() as $key => $value) {
-                if( $key == $identifier ) {
-                    $types[] = "s";
-                    $values[] = $this->uniqueIdentifier($value);
-                    $cols[] = $key;
-                }
+        foreach ($object->uniqueIdentifier() as $key => $value) {
+            if( $key == $identifier ) {
+                $types[] = "s";
+                $values[] = $value;
+                $cols[] = $key;
             }
-
-            $sql = "INSERT INTO $table (" . implode(", ", $cols) . ") VALUES (" . implode(", ", array_fill(0, count($cols), "?")) . ") ON DUPLICATE KEY UPDATE json_data = VALUES(json_data)";
-            $stmt = mysqli_prepare($this->db, $sql);
-            $stmt->bind_param(implode("", $types), ...$values);
-            $stmt->execute();
-            $object->$table_id = mysqli_insert_id($this->db);
-        }else{
-            $types[] = "i";
-            $values[] = $object->$table_id;
-
-            $sql = "UPDATE $table SET " . implode(", ", array_map(function($col) { return $col . " = ?"; }, $cols)) . " WHERE $table_id = ?";
-            $stmt = mysqli_prepare($this->db, $sql);
-            $stmt->bind_param(implode("", $types), ...$values);
-            $stmt->execute();
         }
-        
+
+        $sql = "INSERT INTO $table (" . implode(", ", $cols) . ") VALUES (" . implode(", ", array_fill(0, count($cols), "?")) . ") ON DUPLICATE KEY UPDATE json_data = VALUES(json_data)";
+        $stmt = mysqli_prepare($this->db, $sql);
+        $stmt->bind_param(implode("", $types), ...$values);
+        $stmt->execute();
+        $object->$table_id = mysqli_insert_id($this->db);
+        // if the object was updated, we need to get the id
+        if($object->$table_id == 0) {
+            $table_id_column = $this->tableToId($table);
+            $sql = "SELECT $table_id_column FROM $table WHERE $identifier = ?";
+            $stmt = mysqli_prepare($this->db, $sql);
+            $stmt->bind_param("s", $object->uniqueIdentifier()[$identifier]);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $row = $result->fetch_assoc();
+            $object->$table_id = $row[$table_id_column];
+        }
+    
         if (mysqli_errno($this->db)) {
             http_response_code(500);
             die("Error creating table: " . mysqli_error($this->db));
@@ -187,8 +194,8 @@ class MyFlyFunDb {
 
     private function get($table,$id,$returnJson) {
         $this->validateAirline();
-        $stmt = mysqli_prepare($this->db, "SELECT * FROM $table WHERE " . $this->tableToId($table) . " = ? AND airline_id = ?" );
-        $stmt->bind_param("ii", $id, $this->airline_id);
+        $stmt = mysqli_prepare($this->db, "SELECT * FROM $table WHERE " . $this->tableToIdentifier($table) . " = ? AND airline_id = ?" );
+        $stmt->bind_param("si", $id, $this->airline_id);
         $stmt->execute();
         $result = $stmt->get_result();
         if ($result->num_rows == 0) {
@@ -221,10 +228,10 @@ class MyFlyFunDb {
             $stmt->execute();
             return $airline;
         }else{
-            $sql = 'INSERT INTO Airlines (apple_identifier, json_data) VALUES (?, ?) ON DUPLICATE KEY UPDATE json_data = VALUES(json_data)';
+            $sql = 'INSERT INTO Airlines (airline_identifier, json_data) VALUES (?, ?) ON DUPLICATE KEY UPDATE json_data = VALUES(json_data)';
             $stmt = mysqli_prepare($this->db, $sql);
             $json_str = json_encode($json);
-            $stmt->bind_param("ss", $airline->apple_identifier, $json_str);
+            $stmt->bind_param("ss", $airline->uniqueIdentifier()['airline_identifier'], $json_str);
             $stmt->execute();
             $airline->airline_id = mysqli_insert_id($this->db);
             return $airline;
@@ -232,9 +239,10 @@ class MyFlyFunDb {
     }
 
     public function getAirlineByAppleIdentifier($apple_identifier){
-        $sql = "SELECT * FROM Airlines WHERE apple_identifier = ?";
+        $airlineIdentifier = Airline::airlineIdentifierFromAppleIdentifier($apple_identifier);
+        $sql = "SELECT * FROM Airlines WHERE airline_identifier = ?";
         $stmt = mysqli_prepare($this->db, $sql);
-        $stmt->bind_param("s", $apple_identifier);
+        $stmt->bind_param("s", $airlineIdentifier);
         $stmt->execute();
         $result = $stmt->get_result();
         if ($result->num_rows == 0) {
@@ -249,6 +257,20 @@ class MyFlyFunDb {
         $sql = "SELECT * FROM Airlines WHERE airline_id = ?";
         $stmt = mysqli_prepare($this->db, $sql);
         $stmt->bind_param("i", $airline_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows == 0) {
+            return null;
+        }
+        $row = $result->fetch_assoc();
+        $object = JsonHelper::fromJson(json_decode($row['json_data'], true), Airline::class);
+        $object->airline_id = $row['airline_id'];
+        return $object;
+    }
+    public function getAirlineByAirlineIdentifier($airline_identifier){
+        $sql = "SELECT * FROM Airlines WHERE airline_identifier = ?";
+        $stmt = mysqli_prepare($this->db, $sql);
+        $stmt->bind_param("s", $airline_identifier);
         $stmt->execute();
         $result = $stmt->get_result();
         if ($result->num_rows == 0) {

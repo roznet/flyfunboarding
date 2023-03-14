@@ -8,7 +8,7 @@ class PassengerController extends Controller {
         $passenger = Passenger::fromJson($json);
         $passenger = MyFlyFunDb::$shared->createOrUpdatePassenger($passenger);
         if($passenger !== null){
-            $json = json_encode($passenger);
+            $json = json_encode($passenger->toJson());
             $this->contentType('application/json');
             echo $json;
         } else {

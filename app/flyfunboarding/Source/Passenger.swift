@@ -37,19 +37,19 @@ struct Passenger : Codable, Identifiable {
     var formattedName : String
     
     var passenger_id : Int?
-    var identifier : String
+    var apple_identifier : String
     
-    var id : Int { return passenger_id ?? identifier.hashValue }
+    var id : Int { return passenger_id ?? apple_identifier.hashValue }
     
     enum CodingKeys: String, CodingKey {
-        case firstName, middleName, lastName, formattedName, passenger_id, identifier
+        case firstName, middleName, lastName, formattedName, passenger_id, apple_identifier
     }
 
     init(contact : CNContact){
         self.firstName = contact.givenName
         self.middleName = contact.middleName
         self.lastName = contact.familyName
-        self.identifier = contact.identifier
+        self.apple_identifier = contact.identifier
         self.passenger_id = nil
         
         var nameComponents = PersonNameComponents()
@@ -86,7 +86,7 @@ struct Passenger : Codable, Identifiable {
     func retrieveContact() -> CNContact? {
         let store = CNContactStore()
         let keys = [CNContactGivenNameKey, CNContactMiddleNameKey, CNContactFamilyNameKey, CNContactPhoneNumbersKey, CNContactEmailAddressesKey, CNContactThumbnailImageDataKey]
-        let contact = try? store.unifiedContact(withIdentifier: self.identifier, keysToFetch: keys as [CNKeyDescriptor])
+        let contact = try? store.unifiedContact(withIdentifier: self.apple_identifier, keysToFetch: keys as [CNKeyDescriptor])
         return contact
     }
    

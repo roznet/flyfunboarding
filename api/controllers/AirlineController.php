@@ -17,7 +17,7 @@ class AirlineController extends Controller {
     function index($params){
         $this->validateMethod( 'GET' );
         $airline_id = $params[0];
-        $airline = MyFlyFunDb::$shared->getAirline($airline_id);
+        $airline = MyFlyFunDb::$shared->getAirlineByAirlineIdentifier($airline_id);
         if( !$airline->validate() ) {
             http_response_code(401);
             die("Invalid Bearer Token");

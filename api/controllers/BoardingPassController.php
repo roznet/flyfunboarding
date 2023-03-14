@@ -11,7 +11,14 @@ class BoardingPassController extends Controller {
             $this->terminate(400, 'Ticket not found');
         }
         $boardingPass = new BoardingPass($ticket);
-        $boardingPass->create_pass();
+        if( isset($_GET['debug']) ) {
+            $json = $boardingPass->getPassData();
+            header('Content-Type: application/json');
+            echo json_encode($json);
+        }else{
+            header('Content-Type: application/vnd.apple.pkpass');
+            $boardingPass->createPass();
+        }
     }
 
 }

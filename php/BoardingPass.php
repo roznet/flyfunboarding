@@ -41,25 +41,13 @@ class BoardingPass {
             'value' => $value->format('%H:%I'),
         ];
     }
-    function create_pass() {
-        $data = [
-            'description' => 'Boarding pass',
-            'formatVersion' => 1,
-            'organizationName' => 'FlyFun Boarding Pass',
-            'passTypeIdentifier' => 'pass.net.ro-z.flyfunboardingpass',
-            'serialNumber' => '12345678',
-            'teamIdentifier' => 'M7QSSF3624',
 
-            'backgroundColor' => 'rgb(189,144,71)',
-            'logoText' => 'Brice Airline',
-            'relevantDate' => date('Y-m-d\TH:i:sP')
-        ];
+    function boardingPassData() : array {
         $boardingpass = ['transitType' => 'PKTransitTypeAir'];
         $boardingpass[ 'headerFields' ] = [
             $this->textField('seat', 'Seat', $this->ticket->seatNumber),
             $this->textField('flight', 'Flight', $this->flight->flightNumber),
         ];
-
         $boardingpass[ 'primaryFields' ] = [
             $this->textField('origin', $this->flight->origin->fitName(20), $this->flight->origin->getIcao()),
             $this->textField('destination', $this->flight->destination->fitName(20), $this->flight->destination->getIcao()),
@@ -79,6 +67,14 @@ class BoardingPass {
             $this->textField('passenger-name', 'Passenger', $this->passenger->formattedName),
         ];
 
+        $locations = $this->locationData();
+        if( count($locations) > 0 ) {
+            $boardingpass['locations'] = $locations;
+        }
+        return $boardingpass;
+    }
+
+    function locationData() : array {
         $locations = [];
         $originLocation = $this->flight->origin->getLocation();
         if( !is_null($originLocation) ) {
@@ -92,9 +88,42 @@ class BoardingPass {
                 $locations[] = $destinationLocation;
             }
         }
-        if( count($locations) > 0 ) {
-            $boardingpass['locations'] = $locations;
+        return $locations;
+    }
+
+    function getBarcodeData() : array {
+        $payload = [];
+        $payload['ticket'] = hash('sha256', $this->ticket->identifierTag());
+        if( Airline::$current !== null){
+            $payload['signature'] = $this->airline->sign($payload['ticket']);
         }
+
+        return [
+            'format' => 'PKBarcodeFormatQR',
+            'message' => json_encode($payload),
+            'messageEncoding' => 'iso-8859-1'
+        ];
+    }
+
+    function getPassData() {
+        $data = [
+            'description' => 'Boarding pass',
+            'formatVersion' => 1,
+            'organizationName' => 'FlyFun Boarding Pass',
+            'passTypeIdentifier' => 'pass.net.ro-z.flyfunboardingpass',
+            'serialNumber' => '12345678',
+            'teamIdentifier' => 'M7QSSF3624',
+
+            'backgroundColor' => 'rgb(189,144,71)',
+            'relevantDate' => $$this->flight->scheduledDepartureDate->format('Y-m-d\TH:i:sP'),
+        ];
+        if( Airline::$current !== null){
+            $data['logoText'] = Airline::$current->name;
+        } else {
+            $data['logoText'] = 'FlyFun Airline';
+        }
+        $data['logoText'] = 'FlyFun';
+        $boardingpass = $this->boardingPassData();
 
         $data['boardingPass'] = $boardingpass;
         $json_payload = json_encode($this->ticket->toJson());
@@ -103,17 +132,21 @@ class BoardingPass {
             'message' => $json_payload,
             'messageEncoding' => 'iso-8859-1'
             ];
+        return $data;
+    }
 
+    function createPass() {
+        $data = $this->getPassData();
 		
 		$pass = $this->create_pkpass();
 		$pass->setData($data);
-		$pass->addFile($this->image_path('icon.png'));
-		$pass->addFile($this->image_path('icon@2x.png'));
-		$pass->addFile($this->image_path('logo.png'));
+		$pass->addFile($this->getImagePath('icon.png'));
+		$pass->addFile($this->getImagePath('icon@2x.png'));
+		$pass->addFile($this->getImagePath('logo.png'));
 		$pass->create(true);
     }
 
-	function image_path($image) {
+	function getImagePath($image) {
 		return '../images/' . $image;
 	}
 

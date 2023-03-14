@@ -10,8 +10,9 @@ class Airport {
 	public function __construct(string $icao = 'EGLL') {
 		// make icao uppercase
 		$this->icao = strtoupper($icao);
-		if (self::$db == null) {
-			self::$db = new PDO('sqlite:../python/airports.db');
+        if (self::$db == null) {
+            $dbpath = Config::$shared['airport_db_path'];
+			self::$db = new PDO("sqlite:$dbpath");
 		}
     }
 

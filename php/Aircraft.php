@@ -15,8 +15,12 @@ class Aircraft {
         return JsonHelper::fromJson($json, 'Aircraft');
     }
 
+    function identifierTag() : string {
+        // N122DR
+        return $this->registration;
+    }
     function uniqueIdentifier() : array {
-        return ['aircraft_identifier' => $this->registration];
+        return ['aircraft_identifier' => MyFlyFunDb::uniqueIdentifier($this->identifierTag())];
     }
 
 }

@@ -5,6 +5,8 @@ class Airline {
     public string $apple_identifier;
     public int $airline_id = -1;
 
+    static ?Airline $current = null;
+
     static array $jsonKeys = ['airline_name' => 'string', 'apple_identifier' => 'string', 'airline_id' => 'integer'];
     static array $jsonValuesOptionalDefaults = ['airline_id' => -1];
 
@@ -12,13 +14,31 @@ class Airline {
         return JsonHelper::toJson($this);
     }
 
+    function sign($data) {
+        // this is wrong, but simple method for now
+        return hash('sha256', $data);
+    }
+
+    function verify($data, $signature) {
+        return $signature == $this->sign($data);
+    }
+
     static function fromJson($json) {
         return JsonHelper::fromJson($json, Airline::class);
     }
 
-    function uniqueIdentifier() : array {
-        return ['airline_id' => $this->airline_id];
+    function identifierTag() : string {
+        return $this->apple_identifier;
     }
+    function uniqueIdentifier() : array {
+        return ['airline_identifier' => Airline::airlineIdentifierFromAppleIdentifier($this->identifierTag())];
+    }
+    // this is public static function because it will be use for example to create a new airline 
+    // in the database, and we don't have an instance of the airline yet
+    static function airlineIdentifierFromAppleIdentifier($identifier) : string {
+        return hash('sha256', $identifier);
+    }
+
 
     function validate() : bool {
         $headers = apache_request_headers();

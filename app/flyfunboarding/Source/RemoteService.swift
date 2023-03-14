@@ -82,8 +82,11 @@ class RemoteService {
         return nil
     }
     
-    private func registerObject<Type:Codable>(point: String, object: Type, completion: @escaping (Type?) -> Void) {
-        guard let airline = Settings.shared.currentAirline
+    private func registerObject<Type:Codable>(point: String, object: Type, requireAirline : Bool = true, completion: @escaping (Type?) -> Void) {
+        let airline = Settings.shared.currentAirline
+       
+        // Either do not require airline or check if set
+        guard requireAirline == false || airline != nil
         else { completion(nil); return }
         
         guard let request = self.jsonPostRequest(point: point, data: object, airline: airline, queryItems: []) else { completion(nil); return }
@@ -100,12 +103,12 @@ class RemoteService {
            
             do {
                 let retrieved = try JSONDecoder().decode(Type.self, from: data)
-                if let str = String(data: data, encoding: .utf8) {
-                    Logger.net.info("Data: \(str)")
-                }
                 completion(retrieved)
             }catch{
                 Logger.net.error("Failed to decode \(error)")
+                if let str = String(data: data, encoding: .utf8) {
+                    Logger.net.info("Data: \(str)")
+                }
                 completion(nil)
             }
         }.resume()
@@ -129,9 +132,9 @@ class RemoteService {
            
             do {
                 let retrieved = try JSONDecoder().decode(Type.self, from: data)
-                /*if let str = String(data: data, encoding: .utf8) {
+                if let str = String(data: data, encoding: .utf8) {
                     Logger.net.info("Data: \(str)")
-                }*/
+                }
                 completion(retrieved)
             }catch{
                 Logger.net.error("Failed to decode \(error)")
@@ -167,15 +170,21 @@ class RemoteService {
     }
     
     func registerAirline(airline : Airline, completion : @escaping (Airline?) -> Void) {
-        self.registerObject(point: "airline/create", object: airline) { airline in
+        self.registerObject(point: "airline/create", object: airline, requireAirline: false) { airline in
             if let airline = airline, let airlineId = airline.airlineId {
                 Logger.net.info("register airline with \(airlineId) for \(airline.appleIdentifier)")
                 Settings.shared.currentAirline = airline
+            }else{
+                Logger.net.info("Failed to register")
+                Settings.shared.currentAirline = nil
             }
             completion(airline)
         }
     }
-    
+   
+    func signOut() {
+        Settings.shared.currentAirline = nil
+    }
 
             
 }

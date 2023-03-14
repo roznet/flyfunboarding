@@ -23,18 +23,33 @@ class Dispatch {
             return false;
         }
 
-        // if second part is airline with a number, check it and remove it
-        if ($urlParts[0] == 'airline' && preg_match('/[0-9]+/', $urlParts[1]) && count($urlParts) > 2) {
-            $airline_id = $urlParts[1];
+        // check if we have an airline identifier before a valid controller
+        // else dispatch to the airline controller
+        $airline_identifier = null;
+        // first need to have at least 3 parts: airline/identifier/controller
+        if( $urlParts[0] == 'airline' && count($urlParts) > 2){
+            $check_identifier = $urlParts[1];
+            $check_controller = $urlParts[2];
+            // if the identifier is not a valid AirlineController method then we'll try it as an airline identifier
+            //
+            if( !method_exists('AirlineController', $check_controller) ){
+                $airline_identifier = $check_identifier;
+            }
+        }
+
+        if ($airline_identifier !== null) {
             $urlParts = array_slice($urlParts, 2);
-            $airline = MyFlyFunDb::$shared->getAirline($airline_id);
+            $airline = MyFlyFunDb::$shared->getAirlineByAirlineIdentifier($airline_identifier);
+            if( $airline === null ){
+                http_response_code(401);
+                die("Invalid Airline $airline_identifier");
+            }
             if( !$airline->validate()) {
                 http_response_code(401);
                 die("Invalid Bearer Token");
             }
-            MyFlyFunDb::$shared->airline_id = $airline_id;
-        }else{
-            $airline_id = -1;
+            Airline::$current = $airline;
+            MyFlyFunDb::$shared->airline_id = $airline->airline_id;
         }
         // Then check if controller exists
         $controller = array_shift($urlParts);

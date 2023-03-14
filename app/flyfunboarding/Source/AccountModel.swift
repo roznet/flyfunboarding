@@ -34,6 +34,12 @@ class AccountModel : ObservableObject {
     
     init() {
         self.validateCredential()
+        NotificationCenter.default.addObserver(forName: .signinStatusChanged, object: nil, queue: nil){
+            _ in
+            DispatchQueue.main.async {
+                self.signedIn = (Settings.shared.currentAirline != nil)
+            }
+        }
     }
     
     func validateCredential() {

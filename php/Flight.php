@@ -12,10 +12,12 @@ class Flight {
     public int $aircraft_id = -1;
 
 
+    function identifierTag() : string {
+        // EGTFLFMD.N122DR.202012311200
+        return $this->origin->icao . $this->destination->icao . '.' . $this->aircraft->registration . '.' . $this->scheduledDepartureDate->format('YmdHi');
+    }
     function uniqueIdentifier() : array {
-        // EGTFLFMD_N122DR_202012311200
-        $tag = $this->origin->icao . $this->destination->icao . '_' . $this->aircraft->registration . '_' . $this->scheduledDepartureDate->format('YmdHi');
-        return [ 'flight_identifier' => $tag ];
+        return [ 'flight_identifier' => MyFlyFunDb::uniqueIdentifier($this->identifierTag()) ];
     }
 
     public static $jsonKeys = [
@@ -25,10 +27,11 @@ class Flight {
         'flightNumber'  => 'string',
         'aircraft' => 'Aircraft',
         'scheduledDepartureDate' => 'DateTime',
-        'flightTime' => 'DateInterval'
+        'flightTime' => 'DateInterval',
+        'flight_id' => 'integer',
     ];
     public static $jsonValuesOptionalDefaults = [
-        'flight_id' => -1
+        'flight_id' => -1,
     ];
 
     public static function fromJson($json) : Flight {

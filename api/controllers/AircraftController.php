@@ -4,7 +4,7 @@ class AircraftController extends Controller {
 
     public function index($params) {
         $this->validateMethod('GET');
-        $aircraft_id = $this->paramByPositionOrGet($params, 'aircraft_id', 0);
+        $aircraft_id = $this->paramByPositionOrGet($params, 'aircraft_identifier', 0);
         $aircraft = MyFlyFunDb::$shared->getAircraft($aircraft_id);
         if ($aircraft) {
             $json = json_encode($aircraft);
@@ -21,7 +21,7 @@ class AircraftController extends Controller {
         $aircraft = Aircraft::fromJson($json);
         $aircraft = MyFlyFunDb::$shared->createOrUpdateAircraft($aircraft);
         if($aircraft !== null){
-            $json = json_encode($aircraft);
+            $json = json_encode($aircraft->toJson());
             $this->contentType('application/json');
             echo( $json );
         } else {

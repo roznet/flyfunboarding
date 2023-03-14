@@ -11,7 +11,7 @@ class FlightController extends Controller
         if (is_null($flight)) {
             $this->terminate(400, 'Flight does not exist');
         }
-        $json = json_encode($flight);
+        $json = json_encode($flight->toJson());
         $this->contentType('application/json');
         echo $json;
     }
@@ -29,8 +29,10 @@ class FlightController extends Controller
         $json = $this->getJsonPostBody();
         $json['aircraft'] = $aircraft->toJson();
         $flight = Flight::fromJson($json);
-        $flight->aircraft_id = $aircraft_id;
-        MyFlyFunDb::$shared->createOrUpdateFlight($flight);
+        $flight = MyFlyFunDb::$shared->createOrUpdateFlight($flight);
+        $json = json_encode($flight->toJson());
+        $this->contentType('application/json');
+        echo $json;
     }
 
     public function list($params) {

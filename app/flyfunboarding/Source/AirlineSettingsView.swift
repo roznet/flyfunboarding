@@ -43,7 +43,7 @@ struct AirlineSettingsView: View {
     }
     
     func signOut() {
-        
+        Settings.shared.currentAirline = nil
     }
 }
 

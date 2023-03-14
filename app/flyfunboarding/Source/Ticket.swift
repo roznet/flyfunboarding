@@ -1,6 +1,6 @@
 //  MIT License
 //
-//  Created on 12/03/2023 for flyfunboarding
+//  Created on 13/03/2023 for flyfunboarding
 //
 //  Copyright (c) 2023 Brice Rosenzweig
 //
@@ -23,25 +23,15 @@
 //  SOFTWARE.
 //
 
+
+
 import Foundation
 
-
-class Aircraft: Codable, Identifiable {
-    var registration: String
-    var type: String
-    var aircraft_id: Int?
-    var aircraft_identifier : String?
+struct Ticket {
+    var passenger : Passenger
+    var flight : Flight
+    var seatNumber : String
+    var ticket_id : Int?
     
-    enum CodingKeys: String, CodingKey {
-        case registration, type, aircraft_id, aircraft_identifier
-    }
-    
-    var id : Int { return aircraft_id ?? registration.hashValue }
-    
-    init(registration: String, type: String, aircraft_id: Int? = nil) {
-        self.registration = registration
-        self.type = type
-        self.aircraft_id = aircraft_id
-    }
     
 }

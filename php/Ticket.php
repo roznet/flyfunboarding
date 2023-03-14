@@ -9,10 +9,12 @@ class Ticket {
     public int $flight_id = -1;
     public int $passenger_id = -1;
 
+    function identifierTag() : string {
+        // EGTFLFMD.N122DR.202012311200.1234567890
+        return $this->flight->identifierTag() . '.' . $this->passenger->identifierTag();
+    }
     function uniqueIdentifier() : array {
-        // EGTFLFMD_N122DR_202012311200
-        $tag = $this->flight->uniqueIdentifier()['flight_identifier'] . '_' . $this->passenger->uniqueIdentifier()['passenger_identifier'];
-        return [ 'ticket_identifier' => $tag ];
+        return [ 'ticket_identifier' => MyFlyFunDb::uniqueIdentifier($this->identifierTag()) ];
     }
     static public function issue(Passenger $passenger, Flight $flight, string $seatNumber, int $ticket_id = -1) : Ticket {
         $ticket = new Ticket();
@@ -27,10 +29,13 @@ class Ticket {
         'passenger' => 'Passenger',
         'flight' => 'Flight',
         'seatNumber' => 'string',
-        'ticket_id' => 'integer'
+        'ticket_id' => 'integer',
+        'flight_id' => 'integer',
+        'passenger_id' => 'integer',
+
     ];
     static $jsonValuesOptionalDefaults = [
-        'ticket_id' => -1
+        'ticket_id' => -1,
     ];
     public function toJson() : array {
         return JsonHelper::toJson($this);
