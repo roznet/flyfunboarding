@@ -36,12 +36,22 @@ class Ticket {
     ];
     static $jsonValuesOptionalDefaults = [
         'ticket_id' => -1,
+        'flight_id' => -1,
+        'passenger_id' => -1,
     ];
     public function toJson() : array {
         return JsonHelper::toJson($this);
     }
 
     static public function fromJson(array $json) : Ticket {
-        return JsonHelper::fromJson($json, 'Ticket');
+        $rv = JsonHelper::fromJson($json, 'Ticket');
+        if(isset($rv->passenger->passenger_id)) {
+            $rv->passenger_id = $rv->passenger->passenger_id;
+        }
+        if(isset($rv->flight->flight_id)) {
+            $rv->flight_id = $rv->flight->flight_id;
+        }
+
+        return $rv;
     }
 }

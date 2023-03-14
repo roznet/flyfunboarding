@@ -92,10 +92,12 @@ class BoardingPass {
     }
 
     function getBarcodeData() : array {
+        $uniqueId = $this->ticket->uniqueIdentifier()['ticket_identifier'];
+        
         $payload = [];
-        $payload['ticket'] = hash('sha256', $this->ticket->identifierTag());
+        $payload['ticket'] = $uniqueId;
         if( Airline::$current !== null){
-            $payload['signature'] = $this->airline->sign($payload['ticket']);
+            $payload['signature'] = Airline::$current->sign($uniqueId);
         }
 
         return [
@@ -115,10 +117,10 @@ class BoardingPass {
             'teamIdentifier' => 'M7QSSF3624',
 
             'backgroundColor' => 'rgb(189,144,71)',
-            'relevantDate' => $$this->flight->scheduledDepartureDate->format('Y-m-d\TH:i:sP'),
+            'relevantDate' => $this->flight->scheduledDepartureDate->format('Y-m-d\TH:i:sP'),
         ];
         if( Airline::$current !== null){
-            $data['logoText'] = Airline::$current->name;
+            $data['logoText'] = Airline::$current->airline_name;
         } else {
             $data['logoText'] = 'FlyFun Airline';
         }
@@ -126,12 +128,7 @@ class BoardingPass {
         $boardingpass = $this->boardingPassData();
 
         $data['boardingPass'] = $boardingpass;
-        $json_payload = json_encode($this->ticket->toJson());
-        $data['barcode'] = [
-            'format' => 'PKBarcodeFormatQR',
-            'message' => $json_payload,
-            'messageEncoding' => 'iso-8859-1'
-            ];
+        $data['barcode'] = $this->getBarcodeData();
         return $data;
     }
 

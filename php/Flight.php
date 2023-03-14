@@ -35,7 +35,11 @@ class Flight {
     ];
 
     public static function fromJson($json) : Flight {
-        return JsonHelper::fromJson($json, 'Flight');
+        $rv = JsonHelper::fromJson($json, 'Flight');
+        if(isset($rv->aircraft->aircraft_id)) {
+            $rv->aircraft_id = $rv->aircraft->aircraft_id;
+        }
+        return $rv;
     }
 
     public function toJson() : array {

@@ -3,11 +3,26 @@
 class FlightController extends Controller
 {
 
+    public function index_delete($params) {
+        $this->validateMethod('DELETE');
+
+        $flight_id = $this->paramByPositionOrGet($params, 'flight_id', 0);
+        $flight = MyFlyFunDb::$shared->getFlight($flight_id, false);
+
+        if (is_null($flight)) {
+            $this->terminate(400, 'Flight does not exist');
+        }
+        $status = MyFlyFunDb::$shared->deleteFlight($flight);
+        $this->contentType('application/json');
+        echo json_encode(array('status' => $status, 'flight_identifier' => $flight->uniqueIdentifier()['flight_identifier']));
+    }
+    
     public function index($params) {
         $this->validateMethod('GET');
 
         $flight_id = $this->paramByPositionOrGet($params, 'flight_id', 0);
-        $flight = MyFlyFunDb::$shared->getFlight($flight_id, true);
+        $flight = MyFlyFunDb::$shared->getFlight($flight_id, false);
+
         if (is_null($flight)) {
             $this->terminate(400, 'Flight does not exist');
         }
@@ -16,7 +31,7 @@ class FlightController extends Controller
         echo $json;
     }
 
-    public function plan($params) {
+    public function plan_post($params) {
         $this->validateMethod('POST');
 
         $aircraft_id = $this->paramByPositionOrGet($params, 'aircraft_id', 0);

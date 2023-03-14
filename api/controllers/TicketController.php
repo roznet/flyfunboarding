@@ -35,9 +35,12 @@ class TicketController extends Controller {
         $json['flight'] = $flight->toJson();
         $json['passenger'] = $passenger->toJson();
         $ticket = Ticket::fromJson($json);
-        $ticket->flight_id = $flight_id;
-        $ticket->passenger_id = $passenger_id;
-        MyFlyFunDb::$shared->createOrUpdateTicket($ticket);
+        $ticket->flight_id = $flight->flight_id;
+        $ticket->passenger_id = $passenger->passenger_id;
+        $ticket = MyFlyFunDb::$shared->createOrUpdateTicket($ticket);
+        $json = json_encode($ticket->toJson());
+        $this->contentType('application/json');
+        echo $json;
     }
 
     function list($params) {

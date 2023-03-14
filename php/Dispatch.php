@@ -64,20 +64,26 @@ class Dispatch {
             // Then check if action exists, if so, call it with the rest as parameters
             // if not, check if index exists, and call it with all remaining parts as parameters
             if (isset($urlParts[0])) {
-                $action = $urlParts[0];
-            } else {
-                $action = 'index';
-            }
-            if (method_exists($controller, $action)) {
+                $actionRaw = $urlParts[0];
                 $params = array_slice($urlParts, 1);
-                return $controller->$action($params);
-            }else if (method_exists($controller, 'index')) {
-                $params = $urlParts;
-                return $controller->index($params);
             } else {
-                http_response_code(400);
-                print("Method not found");
+                $actionRaw = 'index';
+                $params = $urlParts;
             }
+            $actionWithRequestMethod = $actionRaw . "_" . strtolower($_SERVER['REQUEST_METHOD']);
+            foreach([$actionWithRequestMethod, $actionRaw] as $action){
+                if (method_exists($controller, $action)) {
+                    return $controller->$action($params);
+                }
+            }
+            // can't be part of above loop because in this case the params should be the urlParts
+            // and not the params, as the first part of urlParts is not an action but a parameter
+            if (method_exists($controller, 'index')) {
+                return $controller->index($urlParts);
+            }
+            // If we get here, the action was not found
+            http_response_code(400);
+            print("Method not found");
         } else {
             http_response_code(400);
             print("Controller not found");

@@ -16,6 +16,9 @@ class Controller {
            $this->terminate(405, "Method $method not allowed");
       }
    }
+    function checkMethod($method) {
+        return $_SERVER['REQUEST_METHOD'] == $method;
+    }
     function getJsonPostBody() {
         $json = json_decode(file_get_contents("php://input"), true);
         return $json;

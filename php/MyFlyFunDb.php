@@ -44,6 +44,9 @@ class MyFlyFunDb {
     private function tableToClass($table) {
         return ucfirst(substr($table, 0, -1));
     }
+    private function classToTable($class) {
+        return $class . 's';
+    }
 
     public function dropTables(){
         $tables = MyFlyFunDb::$standardTables;
@@ -80,7 +83,6 @@ class MyFlyFunDb {
         }
 
         foreach ($queries as $query) {
-            echo $query . PHP_EOL;
             mysqli_query($this->db, $query);
             if (mysqli_errno($this->db)) {
                 die("Error creating table: " . mysqli_error($this->db));
@@ -178,7 +180,7 @@ class MyFlyFunDb {
             }
         }
         $sql .= ' WHERE ' . implode(' AND ', $clause);
-
+        print($sql.PHP_EOL);
         $result = mysqli_query($this->db, $sql);
         $objects = [];
         while ($row = mysqli_fetch_assoc($result)) {
@@ -192,9 +194,32 @@ class MyFlyFunDb {
         return $objects;
     }
 
+    private function directGet($table,$id) {
+        $stmt = mysqli_prepare($this->db, "select * from $table where " . $this->tabletoidentifier($table) . " = ?" );
+        $stmt->bind_param("s", $id );
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows == 0) {
+            return null;
+        }
+        $row = $result->fetch_assoc();
+        if( isset($row['airline_id']) ) {
+            $airline = $this->getAirline($row['airline_id']);
+            Airline::$current = $airline;
+            MyFlyFunDb::$shared->airline_id = $airline->airline_id;
+        }
+
+        $json = json_decode($row['json_data'], true);
+        $object = jsonhelper::fromjson($json, $this->tabletoclass($table));
+        $tableid = $this->tabletoid($table);
+        $object->$tableid = $row[$tableid];
+        $this->addlinks($table, $object, $row);
+        return $object;
+    }
+
     private function get($table,$id,$returnJson) {
         $this->validateAirline();
-        $stmt = mysqli_prepare($this->db, "SELECT * FROM $table WHERE " . $this->tableToIdentifier($table) . " = ? AND airline_id = ?" );
+        $stmt = mysqli_prepare($this->db, "select * from $table where " . $this->tabletoidentifier($table) . " = ? and airline_id = ?" );
         $stmt->bind_param("si", $id, $this->airline_id);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -203,15 +228,27 @@ class MyFlyFunDb {
         }
         $row = $result->fetch_assoc();
         $json = json_decode($row['json_data'], true);
-        $object = JsonHelper::fromJson($json, $this->tableToClass($table));
-        $tableId = $this->tableToId($table);
-        $object->$tableId = $row[$tableId];
-        $this->addLinks($table, $object, $row);
+        $object = jsonhelper::fromjson($json, $this->tabletoclass($table));
+        $tableid = $this->tabletoid($table);
+        $object->$tableid = $row[$tableid];
+        $this->addlinks($table, $object, $row);
         if( $returnJson ) {
-            return $object->toJson();
+            return $object->tojson();
         }else{
             return $object;
         }
+    }
+
+    private function delete($object) : bool {
+        $this->validateAirline();
+        $table = $this->classToTable(get_class($object));
+        $id = $object->uniqueIdentifier()[$this->tableToIdentifier($table)];
+        if( $id == null ) {
+            return false;
+        }
+        $stmt = mysqli_prepare($this->db, "DELETE FROM $table WHERE " . $this->tableToIdentifier($table) . " = ? AND airline_id = ?" );
+        $stmt->bind_param("si", $id, $this->airline_id);
+        return $stmt->execute();
     }
 
     // Airlines
@@ -293,6 +330,9 @@ class MyFlyFunDb {
     public function getAircraft($aircraft_id, $returnJson = true) {
         return $this->get("Aircrafts", $aircraft_id, $returnJson);
     }
+    public function deleteAircraft(Aircraft $aircraft) : bool {
+        return $this->delete($aircraft);
+    }
 
     // Passengers
     public function createOrUpdatePassenger(Passenger $passenger) {
@@ -306,21 +346,29 @@ class MyFlyFunDb {
     public function getPassenger($passsenger_id, $json = true) {
         return $this->get("Passengers", $passsenger_id, $json);
     }
+    public function deletePassenger(Passenger $passenger) {
+        return $this->delete($passenger);
+    }
 
     // Flights
     public function createOrUpdateFlight(Flight $flight) {
         return $this->createOrUpdate("Flights", $flight);
     }
 
-    public function listFlights(int $aircraft_id = -1) : array {
-        if( $aircraft_id != -1 ) {
-            return $this->list("Flights", ["aircraft_id" => $aircraft_id]);
-        }
+    public function listFlights() : array {
         return $this->list("Flights");
+    }
+
+    public function listFlightsForAircraft(Aircraft $aircraft) : array {
+        return $this->list("Flights", ["aircraft_id" => $aircraft->aircraft_id]);
     }
 
     public function getFlight($flight_id, $json = true) {
         return $this->get("Flights", $flight_id, $json);
+    }
+
+    public function deleteflight(Flight $flight) {
+        return $this->delete($flight);
     }
 
     // Tickets
@@ -331,12 +379,15 @@ class MyFlyFunDb {
     public function getTicket($ticket_id, $json = true) {
         return $this->get("Tickets", $ticket_id, $json);
     }
+    public function directGetTicket($ticket_id) {
+        return $this->directGet("Tickets", $ticket_id);
+    }
 
-    public function listTickets($flight_id = -1) {
-        if( $flight_id != -1 ) {
-            return $this->list("Tickets", ["flight_id" => $flight_id]);
-        }
+    public function listTickets() {
         return $this->list("Tickets");
+    }
+    public function listTicketsForPassenger(Passenger $passenger) {
+        return $this->list("Tickets", ["passenger_id" => $passenger->passenger_id]);
     }
 
 }
