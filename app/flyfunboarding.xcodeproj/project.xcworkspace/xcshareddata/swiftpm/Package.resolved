@@ -32,8 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/roznet/rzflight",
       "state" : {
-        "revision" : "daa918e2413b71034df81bac61153d854b78dae2",
-        "version" : "1.0.4"
+        "branch" : "main",
+        "revision" : "daa918e2413b71034df81bac61153d854b78dae2"
       }
     },
     {

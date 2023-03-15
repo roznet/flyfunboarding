@@ -180,7 +180,6 @@ class MyFlyFunDb {
             }
         }
         $sql .= ' WHERE ' . implode(' AND ', $clause);
-        print($sql.PHP_EOL);
         $result = mysqli_query($this->db, $sql);
         $objects = [];
         while ($row = mysqli_fetch_assoc($result)) {

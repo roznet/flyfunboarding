@@ -30,10 +30,10 @@ import OSLog
 
 
 struct AirlineView: View {
-    @EnvironmentObject var accountStatus : AccountModel
+    @EnvironmentObject var accountModel : AccountModel
     @StateObject var airlineViewModel = AirlineViewModel()
     @State private var selectedTab = "Aircraft"
-   
+    
     var body: some View {
         VStack {
             HStack {
@@ -45,28 +45,27 @@ struct AirlineView: View {
                 PassengerListView()
                     .tabItem {
                         Image(systemName: "person")
-                        Text("Passengers")
+                        Text(NSLocalizedString("Passengers", comment: "tabItem"))
                     }
                 AircraftListView()
                     .tabItem {
                         Image(systemName: "airplane")
-                        Text("Airplanes")
+                        Text(NSLocalizedString("Airplanes", comment: "tabItem"))
                     }
                 FlightListView()
                     .tabItem {
                         Image(systemName: "network")
-                        Text("Flights")
+                        Text(NSLocalizedString("Flights", comment: "tabItem"))
                     }
                 TicketListView()
                     .tabItem {
                         Image(systemName: "wallet.pass")
-                        Text("Tickets")
+                        Text(NSLocalizedString("Tickets", comment: "tabItem"))
                     }
-                
             }
         }
     }
-   
+                             
     @State var settingsPresented = false
     var settingsButton : some View {
         return Button(action: {
@@ -80,33 +79,17 @@ struct AirlineView: View {
     }
   
     func signOut() {
-        self.accountStatus.signedIn = false
-        
-    }
-    func forceRegister() {
-        if let identifier = Settings.shared.userIdentifier {
-            let airline = Airline(airlineName: Settings.shared.airlineName,
-                                  appleIdentifier: identifier,
-                                  airlineId: nil)
-            RemoteService.shared.registerAirline(airline: airline) {
-                found in
-                if let found = found {
-                    DispatchQueue.main.async {
-                        self.airlineViewModel.airline = found
-                    }
-                }
-            }
-        }
+        self.accountModel.signedIn = false
     }
 }
 
 struct AirlineView_Previews: PreviewProvider {
     static var previews: some View {
         AirlineView(airlineViewModel: createAirlineViewModel())
-            .environmentObject(createAccountStatus())
+            .environmentObject(createAccountModel())
     }
 
-    static func createAccountStatus() -> AccountModel {
+    static func createAccountModel() -> AccountModel {
         let rv = AccountModel()
         rv.signedIn = true
         return rv

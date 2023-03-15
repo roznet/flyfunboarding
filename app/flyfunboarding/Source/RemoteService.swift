@@ -39,10 +39,9 @@ class RemoteService {
     
    //MARK: - url and point helpers
     private func point(api : String, airline: Airline? = nil) -> String? {
-        if let airlineId = airline?.airlineId {
+        if let airlineIdentifier = airline?.airlineIdentifier {
             // if we have airline need valid number
-            guard airlineId > 0 else { return nil }
-            let rv = ("airline/\(airlineId)/" as NSString).appendingPathComponent(api)
+            let rv = ("airline/\(airlineIdentifier)/" as NSString).appendingPathComponent(api)
             return rv
         }else{
             return api
@@ -83,11 +82,13 @@ class RemoteService {
     }
     
     private func registerObject<Type:Codable>(point: String, object: Type, requireAirline : Bool = true, completion: @escaping (Type?) -> Void) {
-        let airline = Settings.shared.currentAirline
-       
-        // Either do not require airline or check if set
-        guard requireAirline == false || airline != nil
-        else { completion(nil); return }
+        var airline : Airline? = nil
+        if requireAirline {
+            airline = Settings.shared.currentAirline
+            
+            guard airline != nil
+            else { completion(nil); return }
+        }
         
         guard let request = self.jsonPostRequest(point: point, data: object, airline: airline, queryItems: []) else { completion(nil); return }
         
@@ -103,9 +104,10 @@ class RemoteService {
            
             do {
                 let retrieved = try JSONDecoder().decode(Type.self, from: data)
+                Logger.net.info("registered successful \(point)")
                 completion(retrieved)
             }catch{
-                Logger.net.error("Failed to decode \(error)")
+                Logger.net.error("Failed to decode \(point) with error: \(error)")
                 if let str = String(data: data, encoding: .utf8) {
                     Logger.net.info("Data: \(str)")
                 }
@@ -132,12 +134,13 @@ class RemoteService {
            
             do {
                 let retrieved = try JSONDecoder().decode(Type.self, from: data)
+                Logger.net.info("retrieved successful \(point)")
+                completion(retrieved)
+            }catch{
+                Logger.net.error("Failed to decode \(point) with error: \(error)")
                 if let str = String(data: data, encoding: .utf8) {
                     Logger.net.info("Data: \(str)")
                 }
-                completion(retrieved)
-            }catch{
-                Logger.net.error("Failed to decode \(error)")
                 completion(nil)
             }
         }.resume()
@@ -148,10 +151,10 @@ class RemoteService {
     //MARK: - api calls
     func retrieveCurrentAirline(completion : @escaping (Airline?) -> Void) {
         guard let airline = Settings.shared.currentAirline,
-              let airlineId = airline.airlineId
+              let airlineIdentifier = airline.airlineIdentifier
         else { completion(nil); return }
         
-        self.retrieveObject(point: "airline/\(airlineId)", completion: completion)
+        self.retrieveObject(point: "airline/\(airlineIdentifier)", completion: completion)
     }
     
     func retrieveAircraftList(completion : @escaping ([Aircraft]?) -> Void) {
@@ -167,6 +170,11 @@ class RemoteService {
     func registerPassenger(passenger : Passenger, completion: @escaping (Passenger?) -> Void) {
         guard let point = self.point(api: "passenger/create", airline: Settings.shared.currentAirline) else { completion(nil); return }
         self.registerObject(point: point, object: passenger, completion: completion)
+    }
+    
+    func registerAircraft(aircraft: Aircraft, completion: @escaping (Aircraft?) -> Void) {
+        guard let point = self.point(api: "aircraft/create", airline: Settings.shared.currentAirline) else { return }
+        self.registerObject(point: point, object: aircraft, completion: completion)
     }
     
     func registerAirline(airline : Airline, completion : @escaping (Airline?) -> Void) {

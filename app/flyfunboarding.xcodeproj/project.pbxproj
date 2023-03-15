@@ -55,6 +55,8 @@
 		42E58E1929BFD45000185971 /* airports.db in Resources */ = {isa = PBXBuildFile; fileRef = 42E58E1829BFD45000185971 /* airports.db */; };
 		42E58E1B29BFE36900185971 /* Flight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E58E1A29BFE36900185971 /* Flight.swift */; };
 		42E58E1D29BFE67100185971 /* Ticket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E58E1C29BFE67100185971 /* Ticket.swift */; };
+		42E58E2029C2590200185971 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 42E58E2229C2590200185971 /* Localizable.strings */; };
+		42E58E2529C25A2F00185971 /* AircraftRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E58E2429C25A2F00185971 /* AircraftRowView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -121,6 +123,9 @@
 		42E58E1829BFD45000185971 /* airports.db */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = airports.db; path = python/airports.db; sourceTree = "<group>"; };
 		42E58E1A29BFE36900185971 /* Flight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Flight.swift; path = Source/Flight.swift; sourceTree = "<group>"; };
 		42E58E1C29BFE67100185971 /* Ticket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Ticket.swift; path = Source/Ticket.swift; sourceTree = "<group>"; };
+		42E58E2129C2590200185971 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		42E58E2329C2590700185971 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		42E58E2429C25A2F00185971 /* AircraftRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AircraftRowView.swift; path = Source/AircraftRowView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -161,11 +166,12 @@
 				42E58E1829BFD45000185971 /* airports.db */,
 				4245DB1829BCBDB5004B9953 /* secrets.json */,
 				4269B42F29BCA00B009891C6 /* FlyFunBoarding-Bridging-Header.h */,
+				42E58E2229C2590200185971 /* Localizable.strings */,
 			);
 			name = SupportingFiles;
 			sourceTree = "<group>";
 		};
-		4260044A29BDD494003E0433 /* Models */ = {
+		4260044A29BDD494003E0433 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
 				4260042E29BCF415003E0433 /* AccountModel.swift */,
@@ -174,7 +180,7 @@
 				4208E4AC29BDF5F100E2A5FC /* AircraftViewModel.swift */,
 				4208E4B929BE2E3D00E2A5FC /* PassengerListViewModel.swift */,
 			);
-			name = Models;
+			name = ViewModels;
 			sourceTree = "<group>";
 		};
 		4260044B29BDD49B003E0433 /* Helpers */ = {
@@ -190,11 +196,12 @@
 		4260044C29BDD4A1003E0433 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				4260043E29BDCA72003E0433 /* InitialSigninView.swift */,
 				4269B41829BBCA9D009891C6 /* MainView.swift */,
+				4260043E29BDCA72003E0433 /* InitialSigninView.swift */,
 				4260042C29BCF2D0003E0433 /* AirlineView.swift */,
 				4260044829BDD40E003E0433 /* AirlineSettingsView.swift */,
 				4260043229BD1829003E0433 /* AircraftListView.swift */,
+				42E58E2429C25A2F00185971 /* AircraftRowView.swift */,
 				4260044229BDCBE2003E0433 /* PassengerListView.swift */,
 				4260044429BDD0F9003E0433 /* FlightListView.swift */,
 				4260044629BDD127003E0433 /* TicketListView.swift */,
@@ -229,7 +236,7 @@
 			children = (
 				4269B41629BBCA6D009891C6 /* UserInterface */,
 				4269B43A29BCB08D009891C6 /* RemoteService */,
-				4269B41429BBCA5E009891C6 /* Model */,
+				4269B41429BBCA5E009891C6 /* DataModels */,
 				4269B41329BBCA54009891C6 /* App */,
 				4269B40F29BBC9A9009891C6 /* flyfunboarding.entitlements */,
 				4269B3E929BBC84C009891C6 /* Assets.xcassets */,
@@ -280,7 +287,7 @@
 			name = App;
 			sourceTree = "<group>";
 		};
-		4269B41429BBCA5E009891C6 /* Model */ = {
+		4269B41429BBCA5E009891C6 /* DataModels */ = {
 			isa = PBXGroup;
 			children = (
 				4208E4C129BE5A1E00E2A5FC /* KnownAirports.swift */,
@@ -290,14 +297,14 @@
 				42E58E1A29BFE36900185971 /* Flight.swift */,
 				42E58E1C29BFE67100185971 /* Ticket.swift */,
 			);
-			name = Model;
+			name = DataModels;
 			sourceTree = "<group>";
 		};
 		4269B41629BBCA6D009891C6 /* UserInterface */ = {
 			isa = PBXGroup;
 			children = (
 				4260044B29BDD49B003E0433 /* Helpers */,
-				4260044A29BDD494003E0433 /* Models */,
+				4260044A29BDD494003E0433 /* ViewModels */,
 				4260044C29BDD4A1003E0433 /* Views */,
 			);
 			name = UserInterface;
@@ -409,6 +416,7 @@
 			knownRegions = (
 				en,
 				Base,
+				fr,
 			);
 			mainGroup = 4269B3D929BBC84C009891C6;
 			packageReferences = (
@@ -438,6 +446,7 @@
 				4269B3ED29BBC84C009891C6 /* Preview Assets.xcassets in Resources */,
 				4269B43829BCA4EA009891C6 /* sample_passengers.json in Resources */,
 				4269B43629BCA4EA009891C6 /* sample_flights.json in Resources */,
+				42E58E2029C2590200185971 /* Localizable.strings in Resources */,
 				4245DB1929BCBDB6004B9953 /* secrets.json in Resources */,
 				42E58E1929BFD45000185971 /* airports.db in Resources */,
 				4269B3EA29BBC84C009891C6 /* Assets.xcassets in Resources */,
@@ -516,6 +525,7 @@
 				4208E4C929BE785000E2A5FC /* AirportPicker.swift in Sources */,
 				4245DB1C29BCBE40004B9953 /* Secrets.swift in Sources */,
 				4208E4C229BE5A1E00E2A5FC /* KnownAirports.swift in Sources */,
+				42E58E2529C25A2F00185971 /* AircraftRowView.swift in Sources */,
 				4269B41929BBCA9D009891C6 /* MainView.swift in Sources */,
 				4260043129BCF66D003E0433 /* AirlineViewModel.swift in Sources */,
 				4208E4AD29BDF5F100E2A5FC /* AircraftViewModel.swift in Sources */,
@@ -570,6 +580,18 @@
 			targetProxy = 4269B3FD29BBC84D009891C6 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		42E58E2229C2590200185971 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				42E58E2129C2590200185971 /* en */,
+				42E58E2329C2590700185971 /* fr */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		4269B40429BBC84D009891C6 /* Debug */ = {
@@ -883,7 +905,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/roznet/rzflight";
 			requirement = {
-				branch = master;
+				branch = main;
 				kind = branch;
 			};
 		};

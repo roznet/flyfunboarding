@@ -50,8 +50,13 @@ class AccountModel : ObservableObject {
                 var newStatus = false
                 switch credentialState {
                 case .authorized:
-                    Logger.app.info("User logged in")
+                    Logger.app.info("User logged in \(user)")
                     newStatus = true
+                    if Settings.shared.airlineIdentifier == nil {
+                        Logger.app.error("Logged in but airlineIdentifier missing")
+                        newStatus = false
+                    }
+                        
                 case .revoked, .notFound, .transferred:
                     Logger.app.info("User not logged in")
                 default:

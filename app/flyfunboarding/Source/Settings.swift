@@ -40,6 +40,7 @@ struct Settings {
         case user_identifier = "user_identifier"
         case user_full_name = "user_full_name"
         case airline_id = "airline_id"
+        case airline_identifier = "airline_identifier"
         
     }
     
@@ -55,10 +56,18 @@ struct Settings {
     @CodableSecureStorage(key: Key.user_identifier, service: Self.service)
     var userIdentifier : String?
     
+    @CodableSecureStorage(key: Key.airline_identifier, service: Self.service)
+    var airlineIdentifier : String?
+    
     var currentAirline : Airline? {
         get {
-            guard let identifier = self.userIdentifier, self.airlineId > 0 else { return nil }
-            let rv = Airline(airlineName: self.airlineName, appleIdentifier: identifier, airlineId: self.airlineId)
+            guard
+                let airlineIdentifier = self.airlineIdentifier,
+                let identifier = self.userIdentifier,
+                self.airlineId > 0
+            else { return nil }
+            
+            let rv = Airline(airlineName: self.airlineName, appleIdentifier: identifier, airlineId: self.airlineId, airlineIdentifier: airlineIdentifier)
             return rv
         }
         set {
@@ -67,11 +76,13 @@ struct Settings {
                     self.userIdentifier = airline.appleIdentifier
                     self.airlineName = airline.airlineName
                     self.airlineId = airline.airlineId ?? -1
+                    self.airlineIdentifier = airline.airlineIdentifier
                 }
             }else if newValue == nil {
                 self.userIdentifier = nil
                 self.airlineId = -1
                 self.airlineName = "My Airline"
+                self.airlineIdentifier = nil
             }
             NotificationCenter.default.post(name: .signinStatusChanged, object: self)
         }

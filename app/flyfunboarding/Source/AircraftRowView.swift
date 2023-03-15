@@ -1,6 +1,6 @@
 //  MIT License
 //
-//  Created on 12/03/2023 for flyfunboarding
+//  Created on 15/03/2023 for flyfunboarding
 //
 //  Copyright (c) 2023 Brice Rosenzweig
 //
@@ -24,26 +24,16 @@
 //
 
 
+
+import Foundation
 import SwiftUI
-import AuthenticationServices
-import OSLog
 
-
-struct MainView: View {
-    @StateObject private var accountModel : AccountModel = AccountModel()
-    
+struct AircraftRowView : View {
+    var aircraft : Aircraft
     var body: some View {
-        if accountModel.signedIn {
-            AirlineView().environmentObject(accountModel)
-        }else{
-            InitialSigninView().environmentObject(accountModel)
-        }
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    
-    static var previews: some View {
-        MainView()
+        VStack(alignment: .leading) {
+            Text(aircraft.registration).font(.headline)
+            Text(aircraft.type).font(.body)
+        }.padding(.bottom)
     }
 }

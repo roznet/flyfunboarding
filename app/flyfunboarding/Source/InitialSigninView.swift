@@ -42,18 +42,18 @@ struct InitialSigninView: View {
                 Image("FlyFunLogo")
                     .imageScale(.large)
                     .foregroundColor(.accentColor)
-                Text("Welcome to FlyFun Boarding")
+                Text(NSLocalizedString("Welcome to FlyFun Boarding", comment: ""))
                     .font(.title)
                     .bold()
                     .multilineTextAlignment(.center)
                     .padding()
-                Text("To create your Airline, and start issuing boarding pass, give it a name and Sign In With Apple").multilineTextAlignment(.center)
+                Text(NSLocalizedString("To create your Airline, and start issuing boarding pass, give it a name and Sign In With Apple", comment: "")).multilineTextAlignment(.center)
             }
             Spacer()
             VStack{
                 HStack{
-                    Text( "Airline Name")
-                    TextField("My Airline", text: $airlineName)
+                    Text( NSLocalizedString("Airline Name", comment: ""))
+                    TextField(NSLocalizedString("My Airline", comment: ""), text: $airlineName)
                         .textFieldStyle(.roundedBorder)
                         .onChange(of: airlineName) {
                             value in
@@ -64,7 +64,7 @@ struct InitialSigninView: View {
             Spacer()
             VStack {
                 if isTextFieldEmpty {
-                    Text("Enter a name to enable sign in")
+                    Text(NSLocalizedString("Enter a name to enable sign in", comment: ""))
                         .foregroundColor(.secondary)
                 }else{
                     if colorScheme.self == .dark {
@@ -91,16 +91,22 @@ struct InitialSigninView: View {
             Settings.shared.userFullName = fullName
             let airline = Airline(airlineName: self.airlineName,
                                   appleIdentifier: userIdentifier,
-                                  airlineId: nil)
+                                  airlineId: nil,
+                                  airlineIdentifier: nil
+            )
             RemoteService.shared.registerAirline(airline: airline){
                 remoteAirline in
-                if let aId = remoteAirline?.airlineId, aId > 0 {
-                    Settings.shared.airlineId = aId
+                if let remoteAirline = remoteAirline {
+                    Settings.shared.currentAirline = remoteAirline
                     DispatchQueue.main.async {
                         self.accountStatus.signedIn = true
                     }
+                }else{
+                    Logger.net.error("Failed to register airline?")
+                    self.accountStatus.signedIn = false
                 }
             }
+           
         }
     }
     

@@ -25,6 +25,8 @@
 
 
 import Foundation
+import OSLog
+
 
 class AirlineViewModel : ObservableObject {
     @Published var airline : Airline
@@ -33,17 +35,12 @@ class AirlineViewModel : ObservableObject {
         get { return self.airline.airlineName }
         set {
             if newValue != self.airline.airlineName {
-                self.airline = Airline(airlineName: newValue, appleIdentifier: self.airline.appleIdentifier, airlineId: self.airline.airlineId)
+                self.airline = self.airline.withNewName(name: newValue)
             }
         }
     }
     var appleIdentifier : String {
         get { return self.airline.appleIdentifier }
-        set {
-            if newValue != self.airline.appleIdentifier {
-                self.airline = Airline(airlineName: self.airline.airlineName, appleIdentifier: newValue, airlineId: self.airline.airlineId)
-            }
-        }
     }
    
     init(airline : Airline) {
@@ -54,10 +51,13 @@ class AirlineViewModel : ObservableObject {
         airline = Settings.shared.currentAirline ?? Airline()
         RemoteService.shared.retrieveCurrentAirline() {
             airline in
-            if let airline = airline {
+            if let airline = airline, let airlineIdentifier = airline.airlineIdentifier {
+                Logger.net.info("Retrieved airline \(airlineIdentifier)")
                 DispatchQueue.main.async {
                     self.airline = airline
                 }
+            }else{
+                Logger.net.error("Failed to retrieved current Airline")
             }
         }
     }

@@ -29,30 +29,38 @@ import Foundation
 struct Airline: Codable{
     let airlineName : String
     let appleIdentifier : String
-    let airlineId : Int? 
+    let airlineId : Int?
+    let airlineIdentifier : String?
 
     enum CodingKeys: String, CodingKey {
         case airlineName = "airline_name"
         case appleIdentifier = "apple_identifier"
         case airlineId = "airline_id"
+        case airlineIdentifier = "airline_identifier"
     }
    
     init() {
         self.airlineName = ""
         self.appleIdentifier = ""
         self.airlineId = nil
+        self.airlineIdentifier = nil
     }
    
-    init(airlineName : String, appleIdentifier : String, airlineId : Int?) {
+    init(airlineName : String, appleIdentifier : String, airlineId : Int?, airlineIdentifier : String?) {
         self.airlineId = airlineId
         self.appleIdentifier = appleIdentifier
         self.airlineName = airlineName
+        self.airlineIdentifier = airlineIdentifier
     }
     var validAirline : Bool {
-        if let airlineId = self.airlineId, airlineId > 0 {
+        if self.airlineIdentifier != nil, let airlineId = self.airlineId, airlineId > 0 {
             return true
         }
         return false
+    }
+    
+    func withNewName(name: String) -> Airline {
+        return Airline(airlineName: name, appleIdentifier: self.appleIdentifier, airlineId: self.airlineId, airlineIdentifier: self.airlineIdentifier)
     }
 }
 
