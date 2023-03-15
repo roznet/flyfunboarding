@@ -26,7 +26,17 @@
 
 import Foundation
 import RZUtilsSwift
+import OSLog
 
 extension Secrets {
-    public var flyfunBaseUrl : URL { return URL(string: self["flyfun_api_url"] ?? "")! }
+    public var flyfunBaseUrl : URL {
+        #if targetEnvironment(simulator)
+        #warning("Using local website in the simulator")
+        return URL(string: self["flyfun_api_url_simulator"] ?? "")!
+        #else
+        return URL(string: self["flyfun_api_url"] ?? "")!
+        #endif
+        
+        
+    }
 }
