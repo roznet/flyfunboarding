@@ -1,6 +1,6 @@
 //  MIT License
 //
-//  Created on 12/03/2023 for flyfunboarding
+//  Created on 15/03/2023 for flyfunboarding
 //
 //  Copyright (c) 2023 Brice Rosenzweig
 //
@@ -27,14 +27,41 @@
 
 import SwiftUI
 
-struct AircraftCellView: View {
+struct AircraftEditView: View {
+    @StateObject var aircraftModel : AircraftViewModel
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack(alignment: .leading) {
+            HStack {
+                Text(NSLocalizedString("Registration", comment: "Aircraft")).font(.headline)
+                TextField("Registration", text: $aircraftModel.registration).textFieldStyle(.roundedBorder)
+            }
+            HStack {
+                Text(NSLocalizedString("Type", comment: "Aircraft")).font(.headline)
+                TextField("Type", text: $aircraftModel.type).textFieldStyle(.roundedBorder)
+            }
+            HStack {
+                Button(action: save) {
+                    Text(NSLocalizedString("Save", comment: "Button"))
+                }
+                Button(action: cancel) {
+                    Text(NSLocalizedString("Cancel", comment: "Button"))
+                }
+            }
+        }.padding(.bottom)
+    }
+    func cancel() {
+        print("Dismiss")
+    }
+
+    func save() {
+        print("Save")
     }
 }
 
-struct AircraftCellView_Previews: PreviewProvider {
+
+struct AircraftView_Previews: PreviewProvider {
     static var previews: some View {
-        AircraftCellView()
+        AircraftEditView(aircraftModel: AircraftViewModel(aircraft: Samples.aircraft))
     }
 }

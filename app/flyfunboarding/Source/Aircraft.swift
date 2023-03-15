@@ -38,10 +38,18 @@ class Aircraft: Codable, Identifiable {
     
     var id : Int { return aircraft_id ?? registration.hashValue }
     
-    init(registration: String, type: String, aircraft_id: Int? = nil) {
+    init(registration: String, type: String, aircraft_id: Int? = nil, aircraft_identifier: String? = nil) {
         self.registration = registration
         self.type = type
         self.aircraft_id = aircraft_id
+        self.aircraft_identifier = aircraft_identifier
     }
+
+    func with(newRegistration: String, newType: String) -> Aircraft {
+        return Aircraft(registration: newRegistration, type: newType, aircraft_id: self.aircraft_id, aircraft_identifier: self.aircraft_identifier)
+    }
+
+    
+    
     
 }

@@ -54,7 +54,7 @@ class BoardingPass {
         ];
 
         $boardingpass[ 'secondaryFields' ] = [
-            $this->textField('passenger-name', 'Passenger', $this->passenger->formattedName),
+            $this->textField('passenger-name', 'Name', $this->passenger->formattedName),
             $this->textField('gate', 'Gate', $this->flight->gate),
         ];
         $boardingpass['auxiliaryFields'] = [
@@ -124,7 +124,6 @@ class BoardingPass {
         } else {
             $data['logoText'] = 'FlyFun Airline';
         }
-        $data['logoText'] = 'FlyFun';
         $boardingpass = $this->boardingPassData();
 
         $data['boardingPass'] = $boardingpass;

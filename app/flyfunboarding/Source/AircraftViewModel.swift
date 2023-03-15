@@ -29,9 +29,26 @@ import Foundation
 import SwiftUI
 
 class AircraftViewModel : ObservableObject {
-    @Published var aircraft : Aircraft
+    @Published var registration :String
+    @Published var type :String
+    
+    private var originalAircraft : Aircraft
+
+    var aircraft : Aircraft {
+        get {
+            return self.originalAircraft.with(newRegistration: self.registration, newType: self.type)
+        }
+        set {
+            self.originalAircraft = newValue
+            self.registration = newValue.registration
+            self.type = newValue.type
+        }
+    }
    
     init(aircraft: Aircraft) {
-        self.aircraft = aircraft
+        self.registration = aircraft.registration
+        self.type = aircraft.type
+        self.originalAircraft = aircraft
+        
     }
 }

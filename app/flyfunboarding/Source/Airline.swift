@@ -59,8 +59,8 @@ struct Airline: Codable{
         return false
     }
     
-    func withNewName(name: String) -> Airline {
-        return Airline(airlineName: name, appleIdentifier: self.appleIdentifier, airlineId: self.airlineId, airlineIdentifier: self.airlineIdentifier)
+    func with(newName: String) -> Airline {
+        return Airline(airlineName: newName, appleIdentifier: self.appleIdentifier, airlineId: self.airlineId, airlineIdentifier: self.airlineIdentifier)
     }
 }
 

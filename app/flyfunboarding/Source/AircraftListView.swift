@@ -27,36 +27,6 @@ import SwiftUI
 import OSLog
 
 
-struct AircraftDetailView: View {
-    @State var aircraft : Aircraft
-    var body: some View {
-        VStack(alignment: .leading) {
-            HStack {
-                Text(NSLocalizedString("Registration", comment: "Aircraft")).font(.headline)
-                Text(aircraft.registration).font(.body)
-            }
-            HStack {
-                Text(NSLocalizedString(aircraft.type, comment: "Aircraft")).font(.body)
-                Text(aircraft.type).font(.body)
-            }
-            HStack {
-                Button(action: save) {
-                    Text(NSLocalizedString("Save", comment: "Button"))
-                }
-                Button(action: cancel) {
-                    Text(NSLocalizedString("Cancel", comment: "Button"))
-                }
-            }
-        }.padding(.bottom)
-    }
-    func cancel() {
-        print("Dismiss")
-    }
-
-    func save() {
-        print("Save")
-    }
-}
 
 struct AircraftListView: View {
     @StateObject  var aircraftListViewModel = AircraftListViewModel(aircrafts: [])
@@ -64,7 +34,7 @@ struct AircraftListView: View {
     var body: some View {
         NavigationStack {
             List(aircraftListViewModel.aircrafts) { aircraft in
-                NavigationLink(destination: AircraftDetailView(aircraft: aircraft)) {
+                NavigationLink(destination: AircraftEditView(aircraftModel: AircraftViewModel(aircraft: aircraft))) {
                     AircraftRowView(aircraft: aircraft)
                 }
             }.navigationTitle(NSLocalizedString("Aircraft", comment: "Aircraft"))

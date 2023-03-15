@@ -35,7 +35,7 @@ class AirlineViewModel : ObservableObject {
         get { return self.airline.airlineName }
         set {
             if newValue != self.airline.airlineName {
-                self.airline = self.airline.withNewName(name: newValue)
+                self.airline = self.airline.with(newName: newValue)
             }
         }
     }
