@@ -61,7 +61,7 @@ class MyFlyFunDb {
     public function createTableIfNecessary() {
         // refactor current function to create tables from an array of string of queries
         $queries = [];
-        $queries = [ "CREATE TABLE IF NOT EXISTS Airlines (airline_id INT NOT NULL AUTO_INCREMENT, json_data JSON, airline_identifier VARCHAR(255) UNIQUE, PRIMARY KEY (airline_id))" ];
+        $queries = [ "CREATE TABLE IF NOT EXISTS Airlines (airline_id INT NOT NULL AUTO_INCREMENT, json_data JSON, airline_identifier VARCHAR(255) UNIQUE, modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, PRIMARY KEY (airline_id))" ];
         foreach (MyFlyFunDb::$standardTables as $table => $tableInfo) {
             // generate id name: lowercase table name without the last character if it's an s
             $table_id =  $this->tableToId($table);
@@ -77,6 +77,7 @@ class MyFlyFunDb {
             }
             $columns[] = "json_data JSON";
             $columns[] = "airline_id INT NOT NULL";
+            $columns[] = "modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP";
             $columns[] = "PRIMARY KEY ({$table_id})" ;
             $columns[] = "FOREIGN KEY (airline_id) REFERENCES Airlines(airline_id) ON DELETE CASCADE";
             $queries[] = "CREATE TABLE IF NOT EXISTS $table (" . implode(", ", $columns) . ")";
