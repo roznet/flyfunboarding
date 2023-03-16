@@ -1,6 +1,6 @@
 //  MIT License
 //
-//  Created on 13/03/2023 for flyfunboarding
+//  Created on 16/03/2023 for flyfunboarding
 //
 //  Copyright (c) 2023 Brice Rosenzweig
 //
@@ -25,28 +25,24 @@
 
 
 
-import Foundation
-import RZUtilsSwift
-import OSLog
+import SwiftUI
 
-struct Ticket : Codable, Identifiable {
-    var passenger : Passenger
-    var flight : Flight
-    var seatNumber : String
-    var ticket_id : Int?
-    var ticket_identifier : String?
-    
-    var id : Int { return self.ticket_id ?? -1 }
-    
-    var url : URL? {
-        if let identifier = ticket_identifier {
-            let baseUrl = Secrets.shared.flyfunBaseUrl
-            let point = "boardingPass/\(identifier)"
-            if let url = URL(string: point, relativeTo: baseUrl ) {
-                Logger.app.info("Sharing \(url.absoluteURL)")
-                return url.absoluteURL
+struct TicketRowView: View {
+    var ticket : Ticket
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text(ticket.passenger.formattedName)
+            HStack {
+                Text(ticket.flight.origin.icao)
+                Text(ticket.flight.destination.icao)
             }
         }
-        return nil
+    }
+}
+
+struct TicketRowView_Previews: PreviewProvider {
+    static var previews: some View {
+        let tickets = Samples.tickets
+        TicketRowView(ticket: tickets[0])
     }
 }

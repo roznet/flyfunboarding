@@ -1,6 +1,6 @@
 //  MIT License
 //
-//  Created on 13/03/2023 for flyfunboarding
+//  Created on 16/03/2023 for flyfunboarding
 //
 //  Copyright (c) 2023 Brice Rosenzweig
 //
@@ -26,27 +26,26 @@
 
 
 import Foundation
-import RZUtilsSwift
+import SwiftUI
 import OSLog
 
-struct Ticket : Codable, Identifiable {
-    var passenger : Passenger
-    var flight : Flight
-    var seatNumber : String
-    var ticket_id : Int?
-    var ticket_identifier : String?
+class TicketListViewModel : ObservableObject {
+    @Published var tickets = [Ticket]()
+    var syncWithRemote : Bool = true
     
-    var id : Int { return self.ticket_id ?? -1 }
+    init(tickets: [Ticket], syncWithRemote: Bool = true) {
+        self.tickets = tickets
+        self.syncWithRemote = syncWithRemote
+    }
     
-    var url : URL? {
-        if let identifier = ticket_identifier {
-            let baseUrl = Secrets.shared.flyfunBaseUrl
-            let point = "boardingPass/\(identifier)"
-            if let url = URL(string: point, relativeTo: baseUrl ) {
-                Logger.app.info("Sharing \(url.absoluteURL)")
-                return url.absoluteURL
+    func retrieveTickets() {
+        if self.syncWithRemote {
+            RemoteService.shared.retrieveTicketList() {
+                tickets in
+                DispatchQueue.main.async {
+                    self.tickets = tickets ?? []
+                }
             }
         }
-        return nil
     }
 }

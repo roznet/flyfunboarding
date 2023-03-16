@@ -55,6 +55,9 @@
 		42D9406A29C3C3D800622CF3 /* FlightListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D9406929C3C3D800622CF3 /* FlightListViewModel.swift */; };
 		42D9406C29C3C75600622CF3 /* FlightRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D9406B29C3C75600622CF3 /* FlightRowView.swift */; };
 		42D9406F29C3C87B00622CF3 /* FlightViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D9406E29C3C87B00622CF3 /* FlightViewModel.swift */; };
+		42D9407129C3D0B700622CF3 /* TicketListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D9407029C3D0B700622CF3 /* TicketListViewModel.swift */; };
+		42D9407329C3D37A00622CF3 /* TicketRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D9407229C3D37A00622CF3 /* TicketRowView.swift */; };
+		42D9407529C3D48300622CF3 /* TicketEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D9407429C3D48300622CF3 /* TicketEditView.swift */; };
 		42E58E1929BFD45000185971 /* airports.db in Resources */ = {isa = PBXBuildFile; fileRef = 42E58E1829BFD45000185971 /* airports.db */; };
 		42E58E1B29BFE36900185971 /* Flight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E58E1A29BFE36900185971 /* Flight.swift */; };
 		42E58E1D29BFE67100185971 /* Ticket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E58E1C29BFE67100185971 /* Ticket.swift */; };
@@ -126,6 +129,9 @@
 		42D9406929C3C3D800622CF3 /* FlightListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FlightListViewModel.swift; path = Source/FlightListViewModel.swift; sourceTree = "<group>"; };
 		42D9406B29C3C75600622CF3 /* FlightRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FlightRowView.swift; path = Source/FlightRowView.swift; sourceTree = "<group>"; };
 		42D9406E29C3C87B00622CF3 /* FlightViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FlightViewModel.swift; path = Source/FlightViewModel.swift; sourceTree = "<group>"; };
+		42D9407029C3D0B700622CF3 /* TicketListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TicketListViewModel.swift; path = Source/TicketListViewModel.swift; sourceTree = "<group>"; };
+		42D9407229C3D37A00622CF3 /* TicketRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TicketRowView.swift; path = Source/TicketRowView.swift; sourceTree = "<group>"; };
+		42D9407429C3D48300622CF3 /* TicketEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TicketEditView.swift; path = Source/TicketEditView.swift; sourceTree = "<group>"; };
 		42E58E1829BFD45000185971 /* airports.db */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = airports.db; path = python/airports.db; sourceTree = "<group>"; };
 		42E58E1A29BFE36900185971 /* Flight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Flight.swift; path = Source/Flight.swift; sourceTree = "<group>"; };
 		42E58E1C29BFE67100185971 /* Ticket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Ticket.swift; path = Source/Ticket.swift; sourceTree = "<group>"; };
@@ -187,6 +193,7 @@
 				4208E4B929BE2E3D00E2A5FC /* PassengerListViewModel.swift */,
 				42D9406929C3C3D800622CF3 /* FlightListViewModel.swift */,
 				42D9406E29C3C87B00622CF3 /* FlightViewModel.swift */,
+				42D9407029C3D0B700622CF3 /* TicketListViewModel.swift */,
 			);
 			name = ViewModels;
 			sourceTree = "<group>";
@@ -216,6 +223,8 @@
 				42D9406B29C3C75600622CF3 /* FlightRowView.swift */,
 				4260044429BDD0F9003E0433 /* FlightListView.swift */,
 				4260044629BDD127003E0433 /* TicketListView.swift */,
+				42D9407229C3D37A00622CF3 /* TicketRowView.swift */,
+				42D9407429C3D48300622CF3 /* TicketEditView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -532,6 +541,7 @@
 				42D9406829C3C35B00622CF3 /* FlightEditView.swift in Sources */,
 				4260044729BDD127003E0433 /* TicketListView.swift in Sources */,
 				4260044129BDCAF8003E0433 /* Passenger.swift in Sources */,
+				42D9407329C3D37A00622CF3 /* TicketRowView.swift in Sources */,
 				4208E4C929BE785000E2A5FC /* AirportPicker.swift in Sources */,
 				4245DB1C29BCBE40004B9953 /* Secrets.swift in Sources */,
 				4208E4C229BE5A1E00E2A5FC /* KnownAirports.swift in Sources */,
@@ -548,9 +558,11 @@
 				426A29E129C26ABD00CACB19 /* AircraftEditView.swift in Sources */,
 				4260043729BD18B9003E0433 /* Aircraft.swift in Sources */,
 				42D9406A29C3C3D800622CF3 /* FlightListViewModel.swift in Sources */,
+				42D9407529C3D48300622CF3 /* TicketEditView.swift in Sources */,
 				4260042F29BCF415003E0433 /* AccountModel.swift in Sources */,
 				42D9406F29C3C87B00622CF3 /* FlightViewModel.swift in Sources */,
 				4260044929BDD40E003E0433 /* AirlineSettingsView.swift in Sources */,
+				42D9407129C3D0B700622CF3 /* TicketListViewModel.swift in Sources */,
 				4208E4BA29BE2E3D00E2A5FC /* PassengerListViewModel.swift in Sources */,
 				4260044E29BDD4DC003E0433 /* ToggleTextField.swift in Sources */,
 				4269B42E29BC77B3009891C6 /* Log.swift in Sources */,

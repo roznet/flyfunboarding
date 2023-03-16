@@ -71,6 +71,7 @@ struct FlightListView: View {
 
 struct FlightListView_Previews: PreviewProvider {
     static var previews: some View {
-        FlightListView()
+        let sample = Samples.flights
+        FlightListView(flightListViewModel: FlightListViewModel(flights: sample, syncWithRemote: false))
     }
 }

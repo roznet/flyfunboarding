@@ -74,4 +74,7 @@ class Samples {
     static var flights : [Flight] {
         return self.array(resource: "sample_flights")
     }
+    static var tickets : [Ticket] {
+        return self.array(resource: "sample_tickets")
+    }
 }

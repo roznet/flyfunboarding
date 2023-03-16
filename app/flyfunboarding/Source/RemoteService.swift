@@ -193,6 +193,11 @@ class RemoteService {
         guard let point = self.point(api: "flight/list", airline: Settings.shared.currentAirline) else { completion(nil); return }
         self.retrieveObject(point: point, completion: completion)
     }
+
+    func retrieveTicketList(completion : @escaping ([Ticket]?) -> Void) {
+        guard let point = self.point(api: "ticket/list", airline: Settings.shared.currentAirline) else { completion(nil); return }
+        self.retrieveObject(point: point, completion: completion)
+    }
     
     func registerAirline(airline : Airline, completion : @escaping (Airline?) -> Void) {
         self.registerObject(point: "airline/create", object: airline, requireAirline: false) { airline in

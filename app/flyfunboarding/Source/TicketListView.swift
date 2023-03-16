@@ -28,8 +28,19 @@
 import SwiftUI
 
 struct TicketListView: View {
+    @StateObject var ticketListViewModel = TicketListViewModel(tickets: [])
+
     var body: some View {
-        Text("My Tickets")
+        NavigationStack {
+            List(ticketListViewModel.tickets) { ticket in
+                NavigationLink(destination: { TicketEditView(ticket: ticket) } ) {
+                    TicketRowView(ticket: ticket)
+                }
+            }
+        }
+        .onAppear() {
+            self.ticketListViewModel.retrieveTickets()
+        }
     }
 }
 
