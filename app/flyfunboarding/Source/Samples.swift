@@ -33,7 +33,7 @@ class Samples {
         if let url = Bundle.main.url(forResource: resource, withExtension: "json"),
            let data = try? Data(contentsOf: url) {
             do {
-                let rv = try JSONDecoder().decode(Type.self, from: data)
+                let rv = try RemoteService.decoder.decode(Type.self, from: data)
                 
                 return rv
             }catch{
@@ -47,7 +47,7 @@ class Samples {
         if let url = Bundle.main.url(forResource: resource, withExtension: "json"),
            let data = try? Data(contentsOf: url) {
             do {
-                let rv = try JSONDecoder().decode([Type].self, from: data)
+                let rv = try RemoteService.decoder.decode([Type].self, from: data)
                 return rv
             }catch{
                 Logger.app.error("failed to parse \(error)")
@@ -70,5 +70,8 @@ class Samples {
     
     static var passengers : [Passenger] {
         return self.array(resource: "sample_passengers")
+    }
+    static var flights : [Flight] {
+        return self.array(resource: "sample_flights")
     }
 }

@@ -1,6 +1,6 @@
 //  MIT License
 //
-//  Created on 13/03/2023 for flyfunboarding
+//  Created on 16/03/2023 for flyfunboarding
 //
 //  Copyright (c) 2023 Brice Rosenzweig
 //
@@ -25,40 +25,22 @@
 
 
 
-import Foundation
-import RZFlight
+import SwiftUI
 
-struct Flight : Codable, Identifiable{
-    struct ICAO : Codable, Identifiable {
-        var id : Int { return icao.hashValue }
-        var icao : String
-        
-        enum CodingKeys: CodingKey {
-            case icao
-        }
-        
-        lazy var airport : Airport? = { try? Airport(db: FlyFunBoardingApp.db, ident: self.icao) }()
+struct FlightRowView: View {
+    var flight : Flight
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text(flight.origin.icao)
+            Text(flight.destination.icao)
+            
+        }.padding(.bottom)
     }
-    
-    var id : Int { return self.flight_id ?? -1 }
-    
-    var destination : ICAO
-    var origin : ICAO
-    var gate : String
-    var flightNumber : String
-    var aircraft : Aircraft
-    var scheduledDepartureDate : Date
-    var flight_id : Int?
-    var flight_identifier : String?
-    
-    enum CodingKeys: CodingKey {
-        case destination
-        case origin
-        case gate
-        case flightNumber
-        case aircraft
-        case scheduledDepartureDate
-        case flight_id
-        case flight_identifier
+}
+
+struct FlightRowView_Previews: PreviewProvider {
+    static var previews: some View {
+        let flights = Samples.flights
+        FlightRowView(flight: flights[0])
     }
 }

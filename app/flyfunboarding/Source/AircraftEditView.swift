@@ -37,8 +37,8 @@ struct AircraftEditView: View {
                 TextField("Registration", text: $aircraftModel.registration).textFieldStyle(.roundedBorder)
             }
             HStack {
-                Text(NSLocalizedString("Type", comment: "Aircraft")).font(.headline)
                 TextField("Type", text: $aircraftModel.type).textFieldStyle(.roundedBorder)
+                Text(NSLocalizedString("Type", comment: "Aircraft")).font(.headline)
             }
             HStack {
                 Button(action: save) {

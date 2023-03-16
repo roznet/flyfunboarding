@@ -30,16 +30,41 @@ import RZFlight
 import RZData
 
 struct FlightListView: View {
-    @State private var flightDate = Date.now
-    @State private var departureAirport = "EGTF"
-    @State private var destinationAirport = "LFAT"
+    @StateObject var flightListViewModel = FlightListViewModel(flights: [])
     var body: some View {
-        VStack {
-            DatePicker("Flight Departure", selection: $flightDate)
-            AirportPicker(labelText: "Departure", icao: $departureAirport, name: "Fairoaks")
-            AirportPicker(labelText: "Destination", icao: $destinationAirport, name: "Le Touquet")
-            Spacer()
+        NavigationStack {
+            List(flightListViewModel.flights) { flight in
+                NavigationLink(destination: FlightEditView(flightModel: FlightViewModel(flight:flight))) {
+                    FlightRowView(flight: flight)
+                }
+            }.navigationTitle("Flights")
         }
+        .toolbar {
+            ToolbarItemGroup(placement: .bottomBar) {
+                Spacer()
+                Button(action: add) {
+                    VStack {
+                        Image(systemName: "plus.circle")
+                        Text("Add")
+                    }
+                }.padding()
+                Button(action: delete) {
+                    VStack {
+                        Image(systemName: "minus.circle")
+                        Text("Delete")
+                    }
+                }
+                Spacer()
+            }
+        }
+        .onAppear {
+            flightListViewModel.retrieveFlights()
+        }
+    }
+    func add() {
+        
+    }
+    func delete() {
         
     }
 }

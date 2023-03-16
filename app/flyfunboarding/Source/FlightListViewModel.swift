@@ -1,6 +1,6 @@
 //  MIT License
 //
-//  Created on 13/03/2023 for flyfunboarding
+//  Created on 16/03/2023 for flyfunboarding
 //
 //  Copyright (c) 2023 Brice Rosenzweig
 //
@@ -26,39 +26,26 @@
 
 
 import Foundation
-import RZFlight
+import SwiftUI
+import OSLog
 
-struct Flight : Codable, Identifiable{
-    struct ICAO : Codable, Identifiable {
-        var id : Int { return icao.hashValue }
-        var icao : String
-        
-        enum CodingKeys: CodingKey {
-            case icao
-        }
-        
-        lazy var airport : Airport? = { try? Airport(db: FlyFunBoardingApp.db, ident: self.icao) }()
+class FlightListViewModel : ObservableObject {
+    @Published var flights : [Flight] = []
+    var syncWithRemote : Bool = true
+    
+    init(flights : [Flight], syncWithRemote: Bool = true) {
+        self.syncWithRemote = syncWithRemote
+        self.flights = flights
     }
     
-    var id : Int { return self.flight_id ?? -1 }
-    
-    var destination : ICAO
-    var origin : ICAO
-    var gate : String
-    var flightNumber : String
-    var aircraft : Aircraft
-    var scheduledDepartureDate : Date
-    var flight_id : Int?
-    var flight_identifier : String?
-    
-    enum CodingKeys: CodingKey {
-        case destination
-        case origin
-        case gate
-        case flightNumber
-        case aircraft
-        case scheduledDepartureDate
-        case flight_id
-        case flight_identifier
+    func retrieveFlights() {
+        if syncWithRemote {
+            RemoteService.shared.retrieveFlightList(){
+                flights in
+                DispatchQueue.main.async {
+                    self.flights = flights ?? []
+                }
+            }
+        }
     }
 }

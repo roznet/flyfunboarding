@@ -37,6 +37,18 @@ extension Airline {
 class RemoteService {
     static let shared = RemoteService()
     
+    static let decoder : JSONDecoder = {
+        let rv = JSONDecoder()
+        rv.dateDecodingStrategy = .iso8601
+        return rv
+    }()
+    
+    static let encoder : JSONEncoder = {
+        let rv = JSONEncoder()
+        rv.dateEncodingStrategy = .iso8601
+        return rv
+    }()
+    
    //MARK: - url and point helpers
     private func point(api : String, airline: Airline? = nil) -> String? {
         if let airlineIdentifier = airline?.airlineIdentifier {
@@ -66,7 +78,7 @@ class RemoteService {
         else { return nil }
         
         do {
-            let data = try JSONEncoder().encode(data)
+            let data = try RemoteService.encoder.encode(data)
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
             request.httpBody = data
@@ -103,7 +115,7 @@ class RemoteService {
             guard let data = data else { completion(nil); return }
            
             do {
-                let retrieved = try JSONDecoder().decode(Type.self, from: data)
+                let retrieved = try RemoteService.decoder.decode(Type.self, from: data)
                 Logger.net.info("registered successful \(point)")
                 completion(retrieved)
             }catch{
@@ -133,7 +145,7 @@ class RemoteService {
             guard let data = data else { completion(nil); return }
            
             do {
-                let retrieved = try JSONDecoder().decode(Type.self, from: data)
+                let retrieved = try RemoteService.decoder.decode(Type.self, from: data)
                 Logger.net.info("retrieved successful \(point)")
                 completion(retrieved)
             }catch{
@@ -175,6 +187,11 @@ class RemoteService {
     func registerAircraft(aircraft: Aircraft, completion: @escaping (Aircraft?) -> Void) {
         guard let point = self.point(api: "aircraft/create", airline: Settings.shared.currentAirline) else { return }
         self.registerObject(point: point, object: aircraft, completion: completion)
+    }
+
+    func retrieveFlightList(completion : @escaping ([Flight]?) -> Void) {
+        guard let point = self.point(api: "flight/list", airline: Settings.shared.currentAirline) else { completion(nil); return }
+        self.retrieveObject(point: point, completion: completion)
     }
     
     func registerAirline(airline : Airline, completion : @escaping (Airline?) -> Void) {
