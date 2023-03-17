@@ -7,7 +7,6 @@ class Flight {
     public string $flightNumber;
     public Aircraft $aircraft;
     public DateTime $scheduledDepartureDate;
-    public DateInterval $flightTime; 
     public int $flight_id = -1;
     public int $aircraft_id = -1;
 
@@ -27,7 +26,6 @@ class Flight {
         'flightNumber'  => 'string',
         'aircraft' => 'Aircraft',
         'scheduledDepartureDate' => 'DateTime',
-        'flightTime' => 'DateInterval',
         'flight_id' => 'integer',
     ];
     public static $jsonValuesOptionalDefaults = [

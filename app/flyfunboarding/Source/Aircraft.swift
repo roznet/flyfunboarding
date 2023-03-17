@@ -26,7 +26,14 @@
 import Foundation
 
 
-class Aircraft: Codable, Identifiable {
+class Aircraft: Codable, Identifiable, Hashable,Equatable {
+    static func == (lhs: Aircraft, rhs: Aircraft) -> Bool {
+        return lhs.registration == rhs.registration
+    }
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(self.registration)
+    }
+    
     var registration: String
     var type: String
     var aircraft_id: Int?

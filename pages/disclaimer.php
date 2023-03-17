@@ -130,4 +130,52 @@ if( file_exists($disclaimer_file) ){
 }
 ?>
 
+<?php
+$get_pass = false;
+$current_url = $_SERVER['REQUEST_URI'];
+$parsedUrl = parse_url($current_url);
+print_r($parsedUrl);
+
+if( false ){
+    $current_url = $_SERVER['REQUEST_URI'];
+    $parsedUrl = parse_url($current_url);
+    if(isset($parsedUrl['path'])){
+        $path = $parsedUrl['path'];
+        $path = str_replace('pages/disclaimer.php',"api/boardingPass/{$pass_identifier}",$path);
+        $pass_url = $path;
+    }else{
+        print_r($parsedUrl);
+    }
+}
+if($get_pass) {
+?>
+<form>
+  <label>
+    <input type="checkbox" id="agree-checkbox">
+    I agree to the terms and conditions
+  </label>
+  <button id="submit-btn" disabled>Submit</button>
+</form>
+
+<script>
+  const agreeCheckbox = document.getElementById('agree-checkbox');
+  const submitBtn = document.getElementById('submit-btn');
+
+  agreeCheckbox.addEventListener('change', function() {
+    if (agreeCheckbox.checked) {
+      submitBtn.disabled = false;
+    } else {
+      submitBtn.disabled = true;
+    }
+  });
+
+  submitBtn.addEventListener('click', function() {
+    // Replace "URL" with the specific URL you want to trigger
+      window.location.href = "<?php print($pass_url); ?>"
+  });
+</script>
+<?php
+}
+?>
+
 </div>

@@ -31,6 +31,7 @@ struct FlightEditView: View {
     @StateObject var flightModel : FlightViewModel
     var body: some View {
         VStack {
+            AircraftPicker(registration: flightModel.flight.aircraft.registration)
             DatePicker("Flight Departure", selection: $flightModel.scheduledDepartureDate)
             AirportPicker(labelText: "Departure", icao: $flightModel.origin, name: "Fairoaks")
             AirportPicker(labelText: "Destination", icao: $flightModel.destination, name: "Le Touquet")
