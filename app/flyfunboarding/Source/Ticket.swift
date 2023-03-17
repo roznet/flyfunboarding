@@ -38,7 +38,7 @@ struct Ticket : Codable, Identifiable {
     
     var id : Int { return self.ticket_id ?? -1 }
     
-    var url : URL? {
+    var downloadPassUrl : URL? {
         if let identifier = ticket_identifier {
             let baseUrl = Secrets.shared.flyfunBaseUrl
             let point = "boardingPass/\(identifier)"
@@ -48,5 +48,18 @@ struct Ticket : Codable, Identifiable {
             }
         }
         return nil
+    }
+
+    var disclaimerUrl : URL? {
+        if let identifier = ticket_identifier {
+            let baseUrl = Secrets.shared.flyfunBaseUrl.absoluteString.replacing("/api", with: "/pages")
+            let point = "disclaimer.php?ticket=\(identifier)"
+            if let url = URL(string: point, relativeTo: URL(string: baseUrl) ) {
+                Logger.app.info("Sharing \(url.absoluteURL)")
+                return url.absoluteURL
+            }
+        }
+        return nil
+
     }
 }

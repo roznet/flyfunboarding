@@ -34,7 +34,7 @@ class BoardingPass {
         ];
     }
 
-    private function dateIntervalField(string $key, string $label, DateInterval $value) {
+    function dateIntervalField(string $key, string $label, DateInterval $value) {
         return [
             'key' => $key,
             'label' => $label,
@@ -59,7 +59,6 @@ class BoardingPass {
         ];
         $boardingpass['auxiliaryFields'] = [
             $this->dateField('date', 'Departs', $this->flight->scheduledDepartureDate),
-            $this->dateIntervalField('flightTime', 'Flight Time', $this->flight->flightTime),
 
         ];
 

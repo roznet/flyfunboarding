@@ -36,13 +36,30 @@ struct TicketEditView: View {
                 Text(ticket.flight.origin.icao)
                 Text(ticket.flight.destination.icao)
             }
-            Button(action: shareLink) {
-                Text("Share")
+            HStack {
+                Button(action: downloadFile) {
+                    Text("Share")
+                }
+                Button(action: issueTicket) {
+                    Text("Issue")
+                }
             }
         }
     }
-    func shareLink() {
-        if let url = ticket.url {
+    
+    func issueTicket() {
+        if let url = ticket.disclaimerUrl {
+            guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                  let window = scene.windows.first else {
+                return
+            }
+            
+            let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+            window.rootViewController?.present(activityVC, animated: true, completion: nil)
+        }
+    }
+    func downloadFile() {
+        if let url = ticket.downloadPassUrl {
             guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
                   let window = scene.windows.first else {
                 return

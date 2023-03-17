@@ -8,7 +8,7 @@ class BoardingPassController extends Controller {
         $ticket_id = $this->paramByPositionOrGet($params, 'ticket_id', 0);
         $ticket = MyFlyFunDb::$shared->directGetTicket($ticket_id);
         if( is_null($ticket) ) {
-            $this->terminate(400, 'Ticket not found');
+            $this->terminate(400, 'Ticket not found '.$ticket_id);
         }
         $boardingPass = new BoardingPass($ticket);
         if( isset($_GET['debug']) ) {

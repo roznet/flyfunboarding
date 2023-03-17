@@ -195,7 +195,8 @@ class MyFlyFunDb {
     }
 
     private function directGet($table,$id) {
-        $stmt = mysqli_prepare($this->db, "select * from $table where " . $this->tabletoidentifier($table) . " = ?" );
+        $sql = "select * from $table where " . $this->tabletoidentifier($table) . " = ?"; 
+        $stmt = mysqli_prepare($this->db,$sql);
         $stmt->bind_param("s", $id );
         $stmt->execute();
         $result = $stmt->get_result();

@@ -106,6 +106,22 @@ h2 {
   margin-bottom: 10px;
 }
 
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#submit-link {
+    margin-top: 10px;
+    opacity: 0.5;
+}
+
 </style>
 </head>
 <body>
@@ -121,6 +137,61 @@ h2 {
     </div>
 </div>
 
+<div class="acknowledge">
+<?php
+$get_pass = false;
+
+if( isset($_GET['ticket']) && preg_match('/^[a-zA-Z0-9]+/',$_GET['ticket']) ){
+    $pass_identifier = $_GET['ticket'];
+    $current_url = $_SERVER['REQUEST_URI'];
+    $parsedUrl = parse_url($current_url);
+    if(isset($parsedUrl['path'])){
+        $path = $parsedUrl['path'];
+        $path = str_replace('pages/disclaimer.php',"api/boardingPass/{$pass_identifier}",$path);
+        $pass_url = $path;
+        $get_pass = true;
+        #print("<p><a href='{$pass_url}'>Click here to get your boarding pass</a></p>");
+    }else{
+        print_r($parsedUrl);
+    }
+}
+if($get_pass) {
+    $img_url = "../images/AddToApple/{$chosen_language}/badge.svg" ;
+?>
+<form>
+  <label>
+    <input type="checkbox" id="agree-checkbox">
+    I agree to the terms and conditions
+  </label>
+  <a id="submit-link" href="#" download>
+  <img id="submit-img" src="<?php echo $img_url; ?>" alt="Add to Apple Wallet" width="100">
+  </a>
+</form>
+
+<script>
+        const agreeCheckbox = document.getElementById('agree-checkbox');
+    const submitLink = document.getElementById('submit-link');
+    const submitImg = document.getElementById('submit-img');
+
+  agreeCheckbox.addEventListener('change', function() {
+      if (agreeCheckbox.checked) {
+          submitLink.style.opacity = 1;
+          submitImg.style.opacity = 1;
+          submitLink.href = "<?php echo $pass_url; ?>";
+      } else {
+          submitLink.style.opacity = 0.5;
+          submitImg.style.opacity = 0.5;
+          
+          submitLink.removeAttribute('href');
+    }
+  });
+
+</script>
+<?php
+}
+?>
+
+</div>
 <div class="disclaimer">
 <?php
 if( file_exists($disclaimer_file) ){
@@ -129,53 +200,5 @@ if( file_exists($disclaimer_file) ){
     echo "No disclaimer available for this language {$chosen_language} {$disclaimer_file}.";
 }
 ?>
-
-<?php
-$get_pass = false;
-$current_url = $_SERVER['REQUEST_URI'];
-$parsedUrl = parse_url($current_url);
-print_r($parsedUrl);
-
-if( false ){
-    $current_url = $_SERVER['REQUEST_URI'];
-    $parsedUrl = parse_url($current_url);
-    if(isset($parsedUrl['path'])){
-        $path = $parsedUrl['path'];
-        $path = str_replace('pages/disclaimer.php',"api/boardingPass/{$pass_identifier}",$path);
-        $pass_url = $path;
-    }else{
-        print_r($parsedUrl);
-    }
-}
-if($get_pass) {
-?>
-<form>
-  <label>
-    <input type="checkbox" id="agree-checkbox">
-    I agree to the terms and conditions
-  </label>
-  <button id="submit-btn" disabled>Submit</button>
-</form>
-
-<script>
-  const agreeCheckbox = document.getElementById('agree-checkbox');
-  const submitBtn = document.getElementById('submit-btn');
-
-  agreeCheckbox.addEventListener('change', function() {
-    if (agreeCheckbox.checked) {
-      submitBtn.disabled = false;
-    } else {
-      submitBtn.disabled = true;
-    }
-  });
-
-  submitBtn.addEventListener('click', function() {
-    // Replace "URL" with the specific URL you want to trigger
-      window.location.href = "<?php print($pass_url); ?>"
-  });
-</script>
-<?php
-}
-?>
-
 </div>
+
