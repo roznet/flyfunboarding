@@ -30,10 +30,27 @@ import SwiftUI
 
 struct AircraftRowView : View {
     var aircraft : Aircraft
+    var selected : Bool = false
     var body: some View {
-        VStack(alignment: .leading) {
-            Text(aircraft.registration).font(.headline)
-            Text(aircraft.type).font(.body)
+        HStack {
+            VStack(alignment: .leading) {
+                Text(aircraft.registration).font(.headline)
+                Text(aircraft.type).font(.body)
+            }.padding(.leading)
+            Spacer()
+            if self.selected {
+                Image(systemName: "checkmark.circle").padding(.trailing)
+            }
         }.padding(.bottom)
+    }
+}
+
+struct AircraftRowView_Previews: PreviewProvider {
+    static var previews: some View {
+        let aircrafts = Samples.aircrafts
+        VStack {
+            AircraftRowView(aircraft: aircrafts[0])
+            AircraftRowView(aircraft: aircrafts[1], selected: true)
+        }
     }
 }

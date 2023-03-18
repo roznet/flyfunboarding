@@ -34,8 +34,9 @@ import MapKit
 
 class KnownAirports {
     
-    struct AirportCoord : KDTreePoint, Hashable {
+    struct AirportCoord : KDTreePoint, Hashable, Identifiable {
         internal static var dimensions: Int = 2
+        var id: String { return self.ident }
         
         init(coord : CLLocationCoordinate2D){
             ident = ""

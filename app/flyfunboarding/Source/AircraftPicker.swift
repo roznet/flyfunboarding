@@ -26,6 +26,7 @@
 
 
 import SwiftUI
+import OSLog
 
 class MatchedAircraft : ObservableObject {
     private var aircrafts : [Aircraft] = []
@@ -38,63 +39,61 @@ class MatchedAircraft : ObservableObject {
         } else {
             self.aircrafts = []
             self.suggestions = []
-            RemoteService.shared.retrieveAircraftList() { found in
-                if let aircrafts = found {
-                    DispatchQueue.main.async {
-                        self.aircrafts = aircrafts
-                        self.suggestions = aircrafts
-                    }
+        }
+    }
+    func retrieveAircrafts() {
+        RemoteService.shared.retrieveAircraftList() { found in
+            if let aircrafts = found {
+                DispatchQueue.main.async {
+                    self.aircrafts = aircrafts
+                    self.suggestions = aircrafts
                 }
             }
         }
     }
     func shouldAutocomplete(_ text : String) -> Bool {
-        if suggestions.count == 1 && suggestions.first!.registration == text {
-            return false
-        }
         return true
     }
     func autocomplete(_ text : String) {
-        for aircraft in aircrafts {
-            var found : [Aircraft] = []
-            if aircraft.registration.contains(text) {
-                found.append(aircraft)
-            }
-            self.suggestions = found
+        self.suggestions = aircrafts.sorted {
+            $0.registration.score(word: text) > $1.registration.score(word: text)
         }
     }
 }
-
 struct AircraftPicker: View {
-    @ObservedObject private var matchedAircrafts : MatchedAircraft
+    @StateObject private var matchedAircrafts = MatchedAircraft()
     @State private var selectedAircraftRegistration : String
     @State private var showPopup : Bool = false
+    @FocusState private var isFocused : Bool
 
-    init(registration: String, aircrafts: [Aircraft]? = nil) {
+    init(registration: String) {
         self.selectedAircraftRegistration = registration
-        self.matchedAircrafts = MatchedAircraft(aircrafts: aircrafts)
     }
-
 
     var body: some View {
         VStack {
             HStack(alignment: .firstTextBaseline) {
                 Text("Aircraft Registration")
                 TextField("Registration", text: $selectedAircraftRegistration )
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .focused($isFocused)
+                    .textFieldStyle(.roundedBorder)
                     .onChange(of: selectedAircraftRegistration) { newValue in
-                        if matchedAircrafts.shouldAutocomplete(newValue) {
-                            matchedAircrafts.autocomplete(newValue)
-                        }
+                        self.showPopup = true
+                        matchedAircrafts.autocomplete(newValue)
                     }
                     .onTapGesture {
                         self.showPopup = true
+                        self.matchedAircrafts.autocomplete(self.selectedAircraftRegistration)
+                    }
+                    .onChange(of: isFocused) { isFocused in
+                        showPopup = isFocused
+                        self.matchedAircrafts.retrieveAircrafts()
                     }
             }
         }
         if showPopup {
             VStack {
-                List(matchedAircrafts.suggestions, id: \.self) { aircraft in
+                List(matchedAircrafts.suggestions) { aircraft in
                     AircraftRowView(aircraft: aircraft)
                         .onTapGesture {
                             self.selectedAircraftRegistration = aircraft.registration
@@ -109,6 +108,6 @@ struct AircraftPicker: View {
 struct AircraftPicker_Previews: PreviewProvider {
     static var previews: some View {
         let aircrafts = Samples.aircrafts
-        AircraftPicker(registration: "N", aircrafts: aircrafts)
+        AircraftPicker(registration: "N")
     }
 }

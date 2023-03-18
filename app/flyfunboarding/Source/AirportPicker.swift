@@ -27,6 +27,7 @@
 
 import SwiftUI
 import CoreLocation
+import OSLog
 
 class MatchedAirport : ObservableObject {
     typealias AirportCoord = KnownAirports.AirportCoord
@@ -37,15 +38,15 @@ class MatchedAirport : ObservableObject {
     private var searching : Bool = false
     
     func shouldAutocomplete(_ text : String) -> Bool {
-        if suggestions.count == 1 && suggestions.first!.ident == text {
+        /*if suggestions.count == 1 && suggestions.first!.ident == text {
             return false
-        }
+        }*/
         return true
     }
     
     func autocomplete(_ text : String) {
         DispatchQueue.synchronized(self){
-            guard self.searching else { return }
+            guard !self.searching else { return }
             self.searching = true
         }
         
@@ -54,7 +55,7 @@ class MatchedAirport : ObservableObject {
                 DispatchQueue.main.async {
                     DispatchQueue.synchronized(self){
                         self.suggestions = found
-                        self.searching = true
+                        self.searching = false
                     }
                 }
             }else{
@@ -64,18 +65,21 @@ class MatchedAirport : ObservableObject {
     }
 }
 struct AirportPicker: View {
-    @ObservedObject private var matchedAiports = MatchedAirport()
+    @StateObject var matchedAiports = MatchedAirport()
     var labelText : String
     @Binding var icao : String
     @State var name : String
     @State private var showPopup = false
+    @FocusState var isFocused : Bool
     
     var body: some View {
         VStack {
             HStack(alignment: .firstTextBaseline) {
                 Text(self.labelText)
                 VStack {
-                    TextField("ICAO", text: $icao).textFieldStyle(.roundedBorder)
+                    TextField("ICAO", text: $icao)
+                        .focused($isFocused)
+                        .textFieldStyle(.roundedBorder)
                         .onChange(of: icao) { newValue in
                             if matchedAiports.shouldAutocomplete(newValue) {
                                 matchedAiports.autocomplete(newValue)
@@ -84,6 +88,16 @@ struct AirportPicker: View {
                         .onTapGesture {
                             self.showPopup = true
                             matchedAiports.autocomplete(self.icao)
+                        }
+                        .onChange(of: isFocused){ isFocused in
+                            if isFocused {
+                                Logger.ui.info("focused")
+                                self.showPopup = true
+                                
+                            }else{
+                                Logger.ui.info("not focused")
+                                self.showPopup = false
+                            }
                         }
                     Text(name)
                         .font(.footnote)
@@ -105,8 +119,8 @@ struct AirportPicker: View {
                         self.showPopup = false
                     }
                 }
-                //.frame(maxHeight: 320.0)
                 .listStyle(.insetGrouped)
+                .frame(maxHeight: 320.0)
             }
         }
     }

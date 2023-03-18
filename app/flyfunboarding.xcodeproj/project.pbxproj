@@ -59,6 +59,7 @@
 		42D9407329C3D37A00622CF3 /* TicketRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D9407229C3D37A00622CF3 /* TicketRowView.swift */; };
 		42D9407529C3D48300622CF3 /* TicketEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D9407429C3D48300622CF3 /* TicketEditView.swift */; };
 		42D9407729C4FCAC00622CF3 /* AircraftPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D9407629C4FCAC00622CF3 /* AircraftPicker.swift */; };
+		42D9407929C6617200622CF3 /* SwiftStringScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D9407829C6617200622CF3 /* SwiftStringScore.swift */; };
 		42E58E1929BFD45000185971 /* airports.db in Resources */ = {isa = PBXBuildFile; fileRef = 42E58E1829BFD45000185971 /* airports.db */; };
 		42E58E1B29BFE36900185971 /* Flight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E58E1A29BFE36900185971 /* Flight.swift */; };
 		42E58E1D29BFE67100185971 /* Ticket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E58E1C29BFE67100185971 /* Ticket.swift */; };
@@ -134,6 +135,7 @@
 		42D9407229C3D37A00622CF3 /* TicketRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TicketRowView.swift; path = Source/TicketRowView.swift; sourceTree = "<group>"; };
 		42D9407429C3D48300622CF3 /* TicketEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TicketEditView.swift; path = Source/TicketEditView.swift; sourceTree = "<group>"; };
 		42D9407629C4FCAC00622CF3 /* AircraftPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AircraftPicker.swift; path = Source/AircraftPicker.swift; sourceTree = "<group>"; };
+		42D9407829C6617200622CF3 /* SwiftStringScore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SwiftStringScore.swift; path = Source/SwiftStringScore.swift; sourceTree = "<group>"; };
 		42E58E1829BFD45000185971 /* airports.db */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = airports.db; path = python/airports.db; sourceTree = "<group>"; };
 		42E58E1A29BFE36900185971 /* Flight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Flight.swift; path = Source/Flight.swift; sourceTree = "<group>"; };
 		42E58E1C29BFE67100185971 /* Ticket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Ticket.swift; path = Source/Ticket.swift; sourceTree = "<group>"; };
@@ -304,6 +306,7 @@
 				4269B42A29BC75E9009891C6 /* Settings.swift */,
 				4269B42D29BC77B3009891C6 /* Log.swift */,
 				4245DB1B29BCBE40004B9953 /* Secrets.swift */,
+				42D9407829C6617200622CF3 /* SwiftStringScore.swift */,
 			);
 			name = App;
 			sourceTree = "<group>";
@@ -542,6 +545,7 @@
 				4260044329BDCBE2003E0433 /* PassengerListView.swift in Sources */,
 				4269B43E29BCB1E6009891C6 /* RemoteService.swift in Sources */,
 				42D9406829C3C35B00622CF3 /* FlightEditView.swift in Sources */,
+				42D9407929C6617200622CF3 /* SwiftStringScore.swift in Sources */,
 				4260044729BDD127003E0433 /* TicketListView.swift in Sources */,
 				4260044129BDCAF8003E0433 /* Passenger.swift in Sources */,
 				42D9407329C3D37A00622CF3 /* TicketRowView.swift in Sources */,
