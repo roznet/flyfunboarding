@@ -24,6 +24,7 @@
 //
 
 import Foundation
+import CryptoKit
 
 
 class Aircraft: Codable, Identifiable, Hashable,Equatable {
@@ -57,6 +58,9 @@ class Aircraft: Codable, Identifiable, Hashable,Equatable {
     }
 
     
-    
+    func uniqueIdentifier() -> String? {
+        let tag = self.registration
+        return SHA256.hash(string: tag)?.hashString
+    }
     
 }

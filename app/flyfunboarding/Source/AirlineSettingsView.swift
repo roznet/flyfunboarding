@@ -37,7 +37,7 @@ struct AirlineSettingsView: View {
                 dismiss()
             }
             Spacer()
-            Button("Signout", action: signOut)
+            Button("Signout", action: signOut).standardButton()
             Spacer()
         }
     }

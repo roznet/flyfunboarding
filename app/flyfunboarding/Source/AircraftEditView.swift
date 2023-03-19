@@ -33,21 +33,27 @@ struct AircraftEditView: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
-                Text(NSLocalizedString("Registration", comment: "Aircraft")).font(.headline)
+                Text(NSLocalizedString("Registration", comment: "Aircraft"))
+                    .standardFieldLabel()
                 TextField("Registration", text: $aircraftModel.registration).textFieldStyle(.roundedBorder)
             }
             HStack {
-                TextField("Type", text: $aircraftModel.type).textFieldStyle(.roundedBorder)
-                Text(NSLocalizedString("Type", comment: "Aircraft")).font(.headline)
+                Text(NSLocalizedString("Type", comment: "Aircraft"))
+                    .standardFieldLabel()
+                TextField("Type", text: $aircraftModel.type)
+                    .standardStyle()
             }
             HStack {
+                Spacer()
                 Button(action: save) {
                     Text(NSLocalizedString("Save", comment: "Button"))
-                }
+                }.standardButton()
                 Button(action: cancel) {
                     Text(NSLocalizedString("Cancel", comment: "Button"))
-                }
+                }.standardButton()
+                Spacer()
             }
+            Spacer()
         }.padding(.bottom)
     }
     func cancel() {

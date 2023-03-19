@@ -13,7 +13,9 @@ class Flight {
 
     function identifierTag() : string {
         // EGTFLFMD.N122DR.202012311200
-        return $this->origin->icao . $this->destination->icao . '.' . $this->aircraft->registration . '.' . $this->scheduledDepartureDate->format('YmdHi');
+        $gmt = $this->scheduledDepartureDate->setTimezone(new DateTimeZone('GMT'));
+
+        return $this->origin->icao . $this->destination->icao . '.' . $this->aircraft->registration . '.' . $gmt->format('YmdHi');
     }
     function uniqueIdentifier() : array {
         return [ 'flight_identifier' => MyFlyFunDb::uniqueIdentifier($this->identifierTag()) ];

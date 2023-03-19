@@ -38,24 +38,25 @@ struct FlightListView: View {
                     FlightRowView(flight: flight)
                 }
             }.navigationTitle("Flights")
-        }
-        .toolbar {
-            ToolbarItemGroup(placement: .bottomBar) {
-                Spacer()
-                Button(action: add) {
-                    VStack {
-                        Image(systemName: "plus.circle")
-                        Text("Add")
-                    }
-                }.padding()
-                Button(action: delete) {
-                    VStack {
-                        Image(systemName: "minus.circle")
-                        Text("Delete")
+            
+                .toolbar {
+                    ToolbarItemGroup(placement: .bottomBar) {
+                        Spacer()
+                        Button(action: add) {
+                            VStack {
+                                Image(systemName: "plus.circle")
+                                Text("Add")
+                            }
+                        }.padding()
+                        Button(action: delete) {
+                            VStack {
+                                Image(systemName: "minus.circle")
+                                Text("Delete")
+                            }
+                        }
+                        Spacer()
                     }
                 }
-                Spacer()
-            }
         }
         .onAppear {
             flightListViewModel.retrieveFlights()

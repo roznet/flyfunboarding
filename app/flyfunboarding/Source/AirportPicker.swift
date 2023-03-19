@@ -71,6 +71,7 @@ struct AirportPicker: View {
     @State var name : String
     @State private var showPopup = false
     @FocusState var isFocused : Bool
+    @State var editIsDisabled : Bool = false
     
     var body: some View {
         VStack {
@@ -78,8 +79,9 @@ struct AirportPicker: View {
                 Text(self.labelText)
                 VStack {
                     TextField("ICAO", text: $icao)
+                        .standardStyle()
+                        .disabled(editIsDisabled)
                         .focused($isFocused)
-                        .textFieldStyle(.roundedBorder)
                         .onChange(of: icao) { newValue in
                             if matchedAiports.shouldAutocomplete(newValue) {
                                 matchedAiports.autocomplete(newValue)
@@ -104,7 +106,7 @@ struct AirportPicker: View {
                 }
             }
             
-            if showPopup {
+            if showPopup && !editIsDisabled {
                 List(matchedAiports.suggestions, id: \.self) { suggestion in
                     VStack(alignment: .leading) {
                         HStack(alignment: .firstTextBaseline) {

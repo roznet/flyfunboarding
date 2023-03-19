@@ -40,7 +40,7 @@ struct PassengerListView: View {
             NavigationStack {
                 List(passengerListViewModel.passengers) { passenger in
                     VStack(alignment: .leading) {
-                        Text(passenger.formattedName).font(.body)
+                        Text(passenger.formattedName).standardFieldValue()
                     }.padding(.bottom)
                 }
             }

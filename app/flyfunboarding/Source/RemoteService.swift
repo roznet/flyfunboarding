@@ -36,7 +36,10 @@ extension Airline {
 
 class RemoteService {
     static let shared = RemoteService()
-    
+   
+    init() {
+        Logger.net.info("Connected to \(Secrets.shared.flyfunBaseUrl) ")
+    }
     static let decoder : JSONDecoder = {
         let rv = JSONDecoder()
         rv.dateDecodingStrategy = .iso8601
@@ -108,7 +111,7 @@ class RemoteService {
             data, response, error in
             guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200
             else {
-                Logger.net.error("Failed \(String(describing: response))")
+                Logger.net.error("Failed code \(String(describing: response))")
                 completion(nil)
                 return
             }
@@ -188,6 +191,12 @@ class RemoteService {
         guard let point = self.point(api: "aircraft/create", airline: Settings.shared.currentAirline) else { return }
         self.registerObject(point: point, object: aircraft, completion: completion)
     }
+    func scheduleFlight(flight: Flight, completion: @escaping (Flight?) -> Void) {
+        guard let point = self.point(api: "flight/plan", airline: Settings.shared.currentAirline) else { return }
+        self.registerObject(point: point, object: flight, completion: completion)
+    }
+    
+    
 
     func retrieveFlightList(completion : @escaping ([Flight]?) -> Void) {
         guard let point = self.point(api: "flight/list", airline: Settings.shared.currentAirline) else { completion(nil); return }

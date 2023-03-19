@@ -32,18 +32,28 @@ class FlightViewModel : ObservableObject {
     @Published var origin : String
     @Published var destination : String
     @Published var scheduledDepartureDate : Date
+    @Published var aircraftRegistration : String
+    @Published var gate : String
+    @Published var flightNumber : String
     
     private var originalFlight : Flight
     
     var flight : Flight {
         get {
-            return originalFlight
+            return originalFlight.with(destination: Flight.ICAO(icao: self.destination),
+                                       origin: Flight.ICAO(icao: self.origin),
+                                       gate: self.gate,
+                                       flightNumber: self.flightNumber,
+                                       aircraft: nil,
+                                       scheduledDepartureDate: self.scheduledDepartureDate)
         }
         set {
             self.originalFlight = newValue
             self.origin = newValue.origin.icao
             self.destination = newValue.destination.icao
             self.scheduledDepartureDate = newValue.scheduledDepartureDate
+            self.gate = newValue.gate
+            self.flightNumber = newValue.flightNumber
         }
     }
     
@@ -52,6 +62,8 @@ class FlightViewModel : ObservableObject {
         self.origin = flight.origin.icao
         self.destination = flight.destination.icao
         self.scheduledDepartureDate = flight.scheduledDepartureDate
-        
+        self.aircraftRegistration = flight.aircraft.registration
+        self.gate = flight.gate
+        self.flightNumber = flight.flightNumber
     }
 }

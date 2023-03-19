@@ -27,6 +27,7 @@
 
 import Foundation
 import RZFlight
+import CryptoKit
 
 struct Flight : Codable, Identifiable{
     struct ICAO : Codable, Identifiable {
@@ -61,4 +62,28 @@ struct Flight : Codable, Identifiable{
         case flight_id
         case flight_identifier
     }
+    
+    func with(destination: ICAO? = nil, origin: ICAO? = nil,
+              gate: String? = nil, flightNumber: String? = nil,
+              aircraft: Aircraft? = nil, scheduledDepartureDate: Date? = nil) -> Flight {
+        let rv = Flight(destination: destination ?? self.destination,
+                        origin: origin ?? self.origin,
+                        gate: gate ?? self.gate,
+                        flightNumber: flightNumber ?? self.flightNumber,
+                        aircraft: aircraft ?? self.aircraft,
+                        scheduledDepartureDate: scheduledDepartureDate ?? self.scheduledDepartureDate,
+                        flight_id: self.flight_id, flight_identifier: self.flight_identifier)
+        return rv
+    }
+    // Needs to be kept consistent with PHP service class
+    func uniqueIdentifier() -> String? {
+        let dateFormatter = DateFormatter()
+        
+        let tag = String(format: "%@%@.%@.%@", self.origin.icao, self.destination.icao,
+                         self.aircraft.registration,
+                         dateFormatter.string(from: self.scheduledDepartureDate))
+        
+        return SHA256.hash(string: tag)?.hashString
+    }
+
 }

@@ -1,6 +1,6 @@
 //  MIT License
 //
-//  Created on 15/03/2023 for flyfunboarding
+//  Created on 19/03/2023 for flyfunboarding
 //
 //  Copyright (c) 2023 Brice Rosenzweig
 //
@@ -28,29 +28,23 @@
 import Foundation
 import SwiftUI
 
-struct AircraftRowView : View {
-    var aircraft : Aircraft
-    var selected : Bool = false
-    var body: some View {
-        HStack {
-            VStack(alignment: .leading) {
-                Text(aircraft.registration).standardFieldLabel()
-                Text(aircraft.type).standardFieldValue()
-            }.padding(.leading)
-            Spacer()
-            if self.selected {
-                Image(systemName: "checkmark.circle").padding(.trailing)
-            }
-        }.padding(.bottom)
+extension TextField {
+    func standardStyle() -> some View {
+        return self.textFieldStyle(.roundedBorder)
     }
 }
 
-struct AircraftRowView_Previews: PreviewProvider {
-    static var previews: some View {
-        let aircrafts = Samples.aircrafts
-        VStack {
-            AircraftRowView(aircraft: aircrafts[0])
-            AircraftRowView(aircraft: aircrafts[1], selected: true)
-        }
+extension Text {
+    func standardFieldLabel() -> some View {
+        return self.font(.headline)
+    }
+    func standardFieldValue() -> some View {
+        return self.font(.body)
+    }
+}
+
+extension Button {
+    func standardButton() -> some View {
+        return self.buttonStyle(.bordered)
     }
 }

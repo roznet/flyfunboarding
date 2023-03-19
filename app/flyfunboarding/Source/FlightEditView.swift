@@ -26,24 +26,64 @@
 
 
 import SwiftUI
+import OSLog
 
 struct FlightEditView: View {
     @StateObject var flightModel : FlightViewModel
+    @Environment(\.dismiss) var dismiss
+    @State var editIsDisabled : Bool = false
+    
     var body: some View {
         VStack {
-            AircraftPicker(registration: flightModel.flight.aircraft.registration)
+            AircraftPicker(aircraftRegistration: $flightModel.aircraftRegistration)
+                .disabled(self.editIsDisabled)
             DatePicker("Flight Departure", selection: $flightModel.scheduledDepartureDate)
+                .disabled(self.editIsDisabled)
             AirportPicker(labelText: "Departure", icao: $flightModel.origin, name: "Fairoaks")
-            AirportPicker(labelText: "Destination", icao: $flightModel.destination, name: "Le Touquet")
+                .disabled(self.editIsDisabled)
+            AirportPicker(labelText: "Destination", icao: $flightModel.destination, name: "Le Touquet", editIsDisabled: self.editIsDisabled)
+            HStack {
+                Text("Gate")
+                    .standardFieldLabel()
+                TextField("Gate", text: $flightModel.gate)
+                    .standardStyle()
+                    .disabled(self.editIsDisabled)
+            }
+            HStack {
+                Text("Flight Number")
+                    .standardFieldLabel()
+                TextField("Gate", text: $flightModel.flightNumber)
+                    .standardStyle()
+                    .disabled(self.editIsDisabled)
+                    
+            }
+            if !self.editIsDisabled {
+                Button("Schedule", action: schedule)
+                    .standardButton()
+            }
             Spacer()
         }
         
+    }
+    func schedule() {
+        let newFlight = self.flightModel.flight
+        RemoteService.shared.scheduleFlight(flight: newFlight){
+            f in
+            if let f = f {
+                Logger.ui.info( "Scheduled \(f)")
+            }else{
+                Logger.ui.error("Failed to schedule flight")
+            }
+            DispatchQueue.main.async {
+                //dismiss()
+            }
+        }
     }
 }
 
 struct FlightEditView_Previews: PreviewProvider {
     static var previews: some View {
         let flights = Samples.flights
-        FlightEditView(flightModel: FlightViewModel(flight: flights[0]))
+        FlightEditView(flightModel: FlightViewModel(flight: flights[0]), editIsDisabled: false)
     }
 }

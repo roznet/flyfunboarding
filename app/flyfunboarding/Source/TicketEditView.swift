@@ -31,31 +31,30 @@ struct TicketEditView: View {
     var ticket : Ticket
     var body: some View {
         VStack(alignment: .leading) {
-            Text(ticket.passenger.formattedName)
-            HStack {
-                Text(ticket.flight.origin.icao)
-                Text(ticket.flight.destination.icao)
+            HStack(alignment: .firstTextBaseline) {
+                Text("Passenger")
+                    .standardFieldLabel()
+                Text(ticket.passenger.formattedName)
+                    .standardFieldValue()
+                    .padding(.bottom)
             }
-            HStack {
+            FlightEditView(flightModel: FlightViewModel(flight: ticket.flight), editIsDisabled: true)
+            HStack(alignment: .center) {
+                Spacer()
                 Button(action: downloadFile) {
                     Text("Share")
                 }
                 Button(action: issueTicket) {
-                    Text("Issue")
-                }
+                    Text("Open in Safari")
+                }.padding(.leading)
+                Spacer()
             }
         }
     }
     
     func issueTicket() {
         if let url = ticket.disclaimerUrl {
-            guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                  let window = scene.windows.first else {
-                return
-            }
-            
-            let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)
-            window.rootViewController?.present(activityVC, animated: true, completion: nil)
+            UIApplication.shared.open(url)
         }
     }
     func downloadFile() {

@@ -171,6 +171,13 @@ class MyFlyFunDb {
         }
     }
 
+    // Query example with a join
+    // SELECT p.passenger_id, p.json_data, COUNT(t.flight_id) 
+    // FROM Passengers p
+    // LEFT JOIN Tickets t ON p.passenger_id  = t.passenger_id
+    // GROUP BY p.passenger_id
+    //
+    //
     private function list($table, $where = []) : array {
         $this->validateAirline();
         $sql = "SELECT * FROM $table";
@@ -193,6 +200,10 @@ class MyFlyFunDb {
         }
         return $objects;
     }
+
+    // Function to get all row from a table, with optional $where array and doing
+    // a left join on links in the $link argument with a count
+    //function listStats($table, $where = [], $link = []) {
 
     private function directGet($table,$id) {
         $sql = "select * from $table where " . $this->tabletoidentifier($table) . " = ?"; 

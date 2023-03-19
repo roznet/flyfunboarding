@@ -62,28 +62,27 @@ class MatchedAircraft : ObservableObject {
 }
 struct AircraftPicker: View {
     @StateObject private var matchedAircrafts = MatchedAircraft()
-    @State private var selectedAircraftRegistration : String
+    @Binding var aircraftRegistration : String
     @State private var showPopup : Bool = false
     @FocusState private var isFocused : Bool
-
-    init(registration: String) {
-        self.selectedAircraftRegistration = registration
-    }
+    @State var editIsDisabled : Bool = false
 
     var body: some View {
         VStack {
             HStack(alignment: .firstTextBaseline) {
                 Text("Aircraft Registration")
-                TextField("Registration", text: $selectedAircraftRegistration )
+                    .standardFieldLabel()
+                TextField("Registration", text: $aircraftRegistration )
+                    .standardStyle()
+                    .disabled(self.editIsDisabled)
                     .focused($isFocused)
-                    .textFieldStyle(.roundedBorder)
-                    .onChange(of: selectedAircraftRegistration) { newValue in
+                    .onChange(of: aircraftRegistration) { newValue in
                         self.showPopup = true
                         matchedAircrafts.autocomplete(newValue)
                     }
                     .onTapGesture {
                         self.showPopup = true
-                        self.matchedAircrafts.autocomplete(self.selectedAircraftRegistration)
+                        self.matchedAircrafts.autocomplete(self.aircraftRegistration)
                     }
                     .onChange(of: isFocused) { isFocused in
                         showPopup = isFocused
@@ -96,7 +95,7 @@ struct AircraftPicker: View {
                 List(matchedAircrafts.suggestions) { aircraft in
                     AircraftRowView(aircraft: aircraft)
                         .onTapGesture {
-                            self.selectedAircraftRegistration = aircraft.registration
+                            self.aircraftRegistration = aircraft.registration
                             self.showPopup = false
                         }
                 }
@@ -107,7 +106,7 @@ struct AircraftPicker: View {
 
 struct AircraftPicker_Previews: PreviewProvider {
     static var previews: some View {
-        let aircrafts = Samples.aircrafts
-        AircraftPicker(registration: "N")
+        //let aircrafts = Samples.aircrafts
+        AircraftPicker(aircraftRegistration: .constant("N122DR"))
     }
 }
