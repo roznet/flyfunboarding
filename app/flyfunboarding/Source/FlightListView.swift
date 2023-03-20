@@ -31,11 +31,19 @@ import RZData
 
 struct FlightListView: View {
     @StateObject var flightListViewModel = FlightListViewModel(flights: [])
+    @State private var navPath = NavigationPath()
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $navPath) {
             List(flightListViewModel.flights) { flight in
-                NavigationLink(destination: FlightEditView(flightModel: FlightViewModel(flight:flight))) {
+                NavigationLink(destination: FlightEditView(flightModel: FlightViewModel(flight:flight, mode: .amend),
+                                                           flightListModel: self.flightListViewModel)) {
                     FlightRowView(flight: flight)
+                }
+            }
+            .navigationDestination(for: Int.self) {
+                i in
+                if i == 0 {
+                    self.addFlightView()
                 }
             }
             .navigationTitle("Flights")
@@ -63,10 +71,17 @@ struct FlightListView: View {
         }
     }
     func add() {
+        self.navPath.append(0)
         
     }
     func delete() {
         
+    }
+    
+    func addFlightView() -> some View {
+        let flight = self.flightListViewModel.flights.first?.with(scheduledDepartureDate: Date()) ?? Flight.defaultFlight
+        
+        return FlightEditView(flightModel: FlightViewModel(flight: flight, mode: .schedule), flightListModel: self.flightListViewModel)
     }
 }
 

@@ -33,6 +33,8 @@ class FlightListViewModel : ObservableObject {
     @Published var flights : [Flight] = []
     var syncWithRemote : Bool = true
     
+    static var empty = FlightListViewModel(flights: [], syncWithRemote: false)
+    
     init(flights : [Flight], syncWithRemote: Bool = true) {
         self.syncWithRemote = syncWithRemote
         self.flights = flights

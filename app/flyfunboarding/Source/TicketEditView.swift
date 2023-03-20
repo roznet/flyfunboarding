@@ -38,7 +38,9 @@ struct TicketEditView: View {
                     .standardFieldValue()
                     .padding(.bottom)
             }
-            FlightEditView(flightModel: FlightViewModel(flight: ticket.flight), editIsDisabled: true)
+            FlightEditView(flightModel: FlightViewModel(flight: ticket.flight, mode: .amend),
+                           flightListModel: FlightListViewModel.empty,
+                           editIsDisabled: true)
             HStack(alignment: .center) {
                 Spacer()
                 Button(action: downloadFile) {

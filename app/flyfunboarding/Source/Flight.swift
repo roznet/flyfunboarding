@@ -86,4 +86,12 @@ struct Flight : Codable, Identifiable{
         return SHA256.hash(string: tag)?.hashString
     }
 
+    static var defaultFlight : Flight {
+        return Flight(destination: ICAO(icao: "EGTF"),
+                      origin: ICAO(icao: "LFAT"),
+                      gate: "",
+                      flightNumber: "",
+                      aircraft: Aircraft.defaultAircraft,
+                      scheduledDepartureDate: Date())
+    }
 }

@@ -12,8 +12,8 @@ class Controller {
     }
    function validateMethod( $method ) {
        if ( $_SERVER['REQUEST_METHOD'] != $method ) {
-           $method = $_SERVER['REQUEST_METHOD'];
-           $this->terminate(405, "Method $method not allowed");
+           $got = $_SERVER['REQUEST_METHOD'];
+           $this->terminate(405, "Method $got not allowed, expected $method");
       }
    }
     function checkMethod($method) {

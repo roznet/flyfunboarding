@@ -78,6 +78,13 @@ class Dispatch {
             }
             // can't be part of above loop because in this case the params should be the urlParts
             // and not the params, as the first part of urlParts is not an action but a parameter
+            $actionRaw = 'index';
+            $actionWithRequestMethod = 'index_' . strtolower($_SERVER['REQUEST_METHOD']);
+            foreach([$actionWithRequestMethod, $actionRaw] as $action){
+                if (method_exists($controller, $action)) {
+                    return $controller->$action($urlParts);
+                }
+            }
             if (method_exists($controller, 'index')) {
                 return $controller->index($urlParts);
             }

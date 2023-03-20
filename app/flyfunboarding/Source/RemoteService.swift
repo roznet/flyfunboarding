@@ -95,7 +95,25 @@ class RemoteService {
         }
         return nil
     }
-    
+   
+    private func validateResponse(data : Data?, response: URLResponse?, error : Error?) -> Bool {
+        guard let httpResponse = response as? HTTPURLResponse
+        else {
+            Logger.net.error("Failed with error \(String(describing: error))")
+            return false
+        }
+        
+        if httpResponse.statusCode != 200 {
+            if let data = data, let message = String(data: data, encoding: .utf8) {
+                Logger.net.error( "Failed with status \(httpResponse.statusCode) and message \(message)")
+            }else{
+                Logger.net.error( "Failed with status \(httpResponse.statusCode)")
+            }
+            return false
+        }
+        
+        return true
+    }
     private func registerObject<Type:Codable>(point: String, object: Type, requireAirline : Bool = true, completion: @escaping (Type?) -> Void) {
         var airline : Airline? = nil
         if requireAirline {
@@ -109,9 +127,8 @@ class RemoteService {
         
         URLSession.shared.dataTask(with: request){
             data, response, error in
-            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200
+            guard self.validateResponse(data: data, response: response, error: error)
             else {
-                Logger.net.error("Failed code \(String(describing: response))")
                 completion(nil)
                 return
             }
@@ -139,9 +156,8 @@ class RemoteService {
         request.setValue(airline.authorizationBearer, forHTTPHeaderField: "Authorization")
         URLSession.shared.dataTask(with: request){
             data, response, error in
-            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200
+            guard self.validateResponse(data: data, response: response, error: error)
             else {
-                Logger.net.error("Failed \(String(describing: response))")
                 completion(nil)
                 return
             }
@@ -158,6 +174,28 @@ class RemoteService {
                 }
                 completion(nil)
             }
+        }.resume()
+    }
+
+    private func deleteObject(point : String, completion: @escaping (Bool) -> Void) {
+        guard let airline = Settings.shared.currentAirline,
+              let url = self.url(point: point)
+        else { completion(false); return }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+        request.setValue(airline.authorizationBearer, forHTTPHeaderField: "Authorization")
+        Logger.net.info("Delete \(url)")
+        URLSession.shared.dataTask(with: request) {
+            data, response, error in
+            guard self.validateResponse(data: data, response: response, error: error)
+            else {
+                completion(false)
+                return
+            }
+
+            Logger.net.info("deleted successful \(point)")
+            completion(true)
         }.resume()
     }
     
@@ -191,11 +229,26 @@ class RemoteService {
         guard let point = self.point(api: "aircraft/create", airline: Settings.shared.currentAirline) else { return }
         self.registerObject(point: point, object: aircraft, completion: completion)
     }
+    
+    //MARK: - Flights
     func scheduleFlight(flight: Flight, completion: @escaping (Flight?) -> Void) {
-        guard let point = self.point(api: "flight/plan", airline: Settings.shared.currentAirline) else { return }
+        guard let aircraftId = flight.aircraft.aircraft_identifier
+        else { completion(nil); return }
+        guard let point = self.point(api: "flight/plan/\(aircraftId)", airline: Settings.shared.currentAirline) else { return }
         self.registerObject(point: point, object: flight, completion: completion)
     }
-    
+    func amendFlight(flight: Flight, completion: @escaping (Flight?)->Void) {
+        guard let flightId = flight.flight_identifier
+        else { completion(nil); return }
+        guard let point = self.point(api: "flight/amend/\(flightId)", airline: Settings.shared.currentAirline) else { return }
+        self.registerObject(point: point, object: flight, completion: completion)
+    }
+    func deleteFlight(flight: Flight, completion: @escaping (Bool)->Void) {
+        guard let flightId = flight.flight_identifier
+        else { completion(false); return }
+        guard let point = self.point(api: "flight/\(flightId)", airline: Settings.shared.currentAirline) else { return }
+        self.deleteObject(point: point, completion: completion)
+    }
     
 
     func retrieveFlightList(completion : @escaping ([Flight]?) -> Void) {

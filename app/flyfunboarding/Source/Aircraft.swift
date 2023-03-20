@@ -63,4 +63,8 @@ class Aircraft: Codable, Identifiable, Hashable,Equatable {
         return SHA256.hash(string: tag)?.hashString
     }
     
+    static var defaultAircraft : Aircraft {
+        return Aircraft(registration: "N", type: "Cirrus SR22T")
+    }
+    
 }

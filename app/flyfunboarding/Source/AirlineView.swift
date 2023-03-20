@@ -32,7 +32,7 @@ import OSLog
 struct AirlineView: View {
     @EnvironmentObject var accountModel : AccountModel
     @StateObject var airlineViewModel = AirlineViewModel()
-    @State private var selectedTab = "Aircraft"
+    //@State private var selectedTab = "Aircraft"
     
     var body: some View {
         VStack {
@@ -41,7 +41,7 @@ struct AirlineView: View {
                 settingsButton
                     .padding(.trailing)
             }
-            TabView(selection: $selectedTab) {
+            TabView(/*selection: $selectedTab*/) {
                 PassengerListView()
                     .tabItem {
                         Image(systemName: "person")

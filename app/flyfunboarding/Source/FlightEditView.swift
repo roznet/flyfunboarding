@@ -30,13 +30,15 @@ import OSLog
 
 struct FlightEditView: View {
     @StateObject var flightModel : FlightViewModel
+    @ObservedObject var flightListModel : FlightListViewModel
     @Environment(\.dismiss) var dismiss
     @State var editIsDisabled : Bool = false
+    @State private var isPresentingConfirm : Bool = false
     
     var body: some View {
         VStack {
             AircraftPicker(aircraftRegistration: $flightModel.aircraftRegistration)
-                .disabled(self.editIsDisabled)
+                .disabled(self.editIsDisabled || self.flightModel.mode == .amend)
             DatePicker("Flight Departure", selection: $flightModel.scheduledDepartureDate)
                 .disabled(self.editIsDisabled)
             AirportPicker(labelText: "Departure", icao: $flightModel.origin, name: "Fairoaks")
@@ -58,25 +60,61 @@ struct FlightEditView: View {
                     
             }
             if !self.editIsDisabled {
-                Button("Schedule", action: schedule)
-                    .standardButton()
+                HStack {
+                    if self.flightModel.mode == .amend {
+                        Button("Delete", role: .destructive) {
+                            isPresentingConfirm = true
+                        }
+                        .standardButton()
+                        .confirmationDialog("Are you sure?", isPresented: $isPresentingConfirm){
+                            Button("Delete", role: .destructive) {
+                                delete()
+                            }
+                        }
+                    }
+                    Button(self.flightModel.mode == .schedule ? "Schedule" : "Amend", action: scheduleOrAmend)
+                        .standardButton()
+                }
             }
             Spacer()
         }
         
     }
-    func schedule() {
-        let newFlight = self.flightModel.flight
-        RemoteService.shared.scheduleFlight(flight: newFlight){
-            f in
-            if let f = f {
-                Logger.ui.info( "Scheduled \(f)")
-            }else{
-                Logger.ui.error("Failed to schedule flight")
-            }
+    private func remoteCompletion(flight : Flight?, mode : FlightViewModel.Mode) {
+        if let f = flight {
+            // update in case we get a new identifier
+            Logger.ui.info( mode == .amend ? "Amended \(f)" : "Scheduled \(f)")
             DispatchQueue.main.async {
-                //dismiss()
+                self.flightModel.flight = f
+                self.flightModel.mode = .amend
+                self.flightListModel.retrieveFlights()
             }
+        }else{
+            Logger.ui.error("Failed to schedule flight")
+        }
+        
+    }
+    func scheduleOrAmend() {
+        let newFlight = self.flightModel.flight
+        switch self.flightModel.mode {
+        case .amend:
+            RemoteService.shared.amendFlight(flight: newFlight){ self.remoteCompletion(flight: $0, mode: .schedule) }
+        case .schedule:
+            RemoteService.shared.scheduleFlight(flight: newFlight){ self.remoteCompletion(flight: $0, mode: .schedule) }
+        }
+    }
+    
+    func delete() {
+        Logger.ui.info("Delete flight")
+        RemoteService.shared.deleteFlight(flight: self.flightModel.flight){
+            result in
+            if result {
+                DispatchQueue.main.async {
+                    self.flightListModel.retrieveFlights()
+                    self.dismiss()
+                }
+            }
+                    
         }
     }
 }
@@ -84,6 +122,8 @@ struct FlightEditView: View {
 struct FlightEditView_Previews: PreviewProvider {
     static var previews: some View {
         let flights = Samples.flights
-        FlightEditView(flightModel: FlightViewModel(flight: flights[0]), editIsDisabled: false)
+        FlightEditView(flightModel: FlightViewModel(flight: flights[0], mode: .schedule),
+                       flightListModel: FlightListViewModel(flights: flights, syncWithRemote: false),
+                       editIsDisabled: false)
     }
 }
