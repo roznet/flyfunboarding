@@ -31,6 +31,24 @@ class FlightController extends Controller
         echo $json;
     }
 
+    public function check_post($params) {
+        $this->validateMethod('POST');
+
+        $flight_id = $this->paramByPositionOrGet($params, 'flight_id', 0);
+        $flight = MyFlyFunDb::$shared->getFlight($flight_id, false);
+
+        if (is_null($flight)) {
+            $this->terminate(400, 'Flight does not exist');
+        }
+
+        $json = $this->getJsonPostBody();
+        $newflight = Flight::fromJson($json);
+        $checked = $flight->verifySame($newflight);
+        $json = json_encode($checked);
+        $this->contentType('application/json');
+        echo $json;
+    }
+
     public function plan_post($params) {
         $this->validateMethod('POST');
 

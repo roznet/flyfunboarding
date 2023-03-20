@@ -37,26 +37,26 @@ struct FlightListView: View {
                 NavigationLink(destination: FlightEditView(flightModel: FlightViewModel(flight:flight))) {
                     FlightRowView(flight: flight)
                 }
-            }.navigationTitle("Flights")
-            
-                .toolbar {
-                    ToolbarItemGroup(placement: .bottomBar) {
-                        Spacer()
-                        Button(action: add) {
-                            VStack {
-                                Image(systemName: "plus.circle")
-                                Text("Add")
-                            }
-                        }.padding()
-                        Button(action: delete) {
-                            VStack {
-                                Image(systemName: "minus.circle")
-                                Text("Delete")
-                            }
+            }
+            .navigationTitle("Flights")
+            .toolbar {
+                ToolbarItemGroup(placement: .bottomBar) {
+                    Spacer()
+                    Button(action: add) {
+                        VStack {
+                            Image(systemName: "plus.circle")
+                            Text("Add")
                         }
-                        Spacer()
+                    }.padding()
+                    Button(action: delete) {
+                        VStack {
+                            Image(systemName: "minus.circle")
+                            Text("Delete")
+                        }
                     }
+                    Spacer()
                 }
+            }
         }
         .onAppear {
             flightListViewModel.retrieveFlights()

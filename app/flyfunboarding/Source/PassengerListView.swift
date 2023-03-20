@@ -44,16 +44,6 @@ struct PassengerListView: View {
                     }.padding(.bottom)
                 }
             }
-            .toolbar {
-                ToolbarItemGroup(placement: .bottomBar) {
-                    Button(action: { self.showPicker.toggle() }){
-                        VStack {
-                            Image(systemName: "person.badge.plus")
-                            Text("Add")
-                        }
-                    }
-                }
-            }
             .onAppear{
                 self.passengerListViewModel.retrievePassengers()
             }

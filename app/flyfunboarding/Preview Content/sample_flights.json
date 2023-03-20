@@ -6,10 +6,10 @@
 	    "flightNumber": "MAF01",
 	    "aircraft": {
 		"registration": "NSR22T",
-		"type": "Cirrus SR22T",
+		"type": "Cirrus SR22T"
 	    },
 	    "scheduledDepartureDate": "2023-05-06T09:00:00+00:00",
-	    "flightTime": "PT1H0M0S",
+	    "flightTime": "PT1H0M0S"
 	},
 	{
 	    "origin": {"icao":"EBOS"},
@@ -18,10 +18,10 @@
 	    "flightNumber": "MAF02",
 	    "aircraft": {
 		"registration": "NSR22T",
-		"type": "Cirrus SR22T",
+		"type": "Cirrus SR22T"
 	    },
 	    "scheduledDepartureDate": "2023-05-07T09:00:00+00:00",
-	    "flightTime": "PT1H0M0S",
+	    "flightTime": "PT1H0M0S"
 	}
 ]
 

@@ -36,6 +36,22 @@ class FlightViewModel : ObservableObject {
     @Published var gate : String
     @Published var flightNumber : String
     
+    enum Mode {
+        case schedule
+        case amend
+    }
+    
+    var mode : Mode
+    
+    var submitText : String {
+        switch mode {
+        case .schedule:
+            return "Schedule"
+        case .amend:
+            return "Amend"
+        }
+    }
+    
     private var originalFlight : Flight
     
     var flight : Flight {
@@ -57,7 +73,7 @@ class FlightViewModel : ObservableObject {
         }
     }
     
-    init(flight : Flight) {
+    init(flight : Flight, mode : Mode) {
         self.originalFlight = flight
         self.origin = flight.origin.icao
         self.destination = flight.destination.icao
@@ -65,5 +81,6 @@ class FlightViewModel : ObservableObject {
         self.aircraftRegistration = flight.aircraft.registration
         self.gate = flight.gate
         self.flightNumber = flight.flightNumber
+        self.mode = mode
     }
 }

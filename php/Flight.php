@@ -21,6 +21,24 @@ class Flight {
         return [ 'flight_identifier' => MyFlyFunDb::uniqueIdentifier($this->identifierTag()) ];
     }
 
+    function verifySame(Flight $other ) : array {
+        $valueSame = $this->origin->icao == $other->origin->icao &&
+            $this->destination->icao == $other->destination->icao &&
+            $this->aircraft->registration == $other->aircraft->registration &&
+            $this->scheduledDepartureDate->format('YmdHi') == $other->scheduledDepartureDate->format('YmdHi');
+
+        $attributeSame = $this->gate == $other->gate &&
+            $this->flightNumber == $other->flightNumber;
+
+        $identifierSame = $this->identifierTag() == $other->identifierTag();
+
+        return [
+            'valueSame' => $valueSame,
+            'attributeSame' => $attributeSame,
+            'identifierSame' => $identifierSame,
+        ];
+    }
+
     public static $jsonKeys = [
         'origin' => 'Airport',
         'destination' => 'Airport',

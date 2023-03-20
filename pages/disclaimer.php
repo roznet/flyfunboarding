@@ -6,6 +6,11 @@ $languages_codes = array(
     'fr' => ['FR','BE','CA','CH','LU','MC','SN','TD','TG','TN','YT']
 );
 
+$languages_text = array( 
+    'en' => 'English',
+    'fr' => 'Français'
+);
+
 function language_has_disclaimer($language){
     if( file_exists("disclaimer_{$language}.html") ){
         return true;
@@ -14,8 +19,6 @@ function language_has_disclaimer($language){
 }
 // get language based on users choice or IP address
 function get_chosen_language($languages_codes,$default_language='en'){
-
-
     if(isset($_GET['lang'])){
         $lang = $_GET['lang'];
     }else{
@@ -42,8 +45,25 @@ function get_chosen_language($languages_codes,$default_language='en'){
 }
 
 $chosen_language = get_chosen_language($languages_codes);
-
 $disclaimer_file = "disclaimer_{$chosen_language}.html";
+
+
+$get_pass = false;
+
+$query = [ 'lang' => $chosen_language ];
+
+if( isset($_GET['ticket']) && preg_match('/^[a-zA-Z0-9]+/',$_GET['ticket']) ){
+    $pass_identifier = $_GET['ticket'];
+    $query['ticket'] = $pass_identifier;
+    $current_url = $_SERVER['REQUEST_URI'];
+    $parsedUrl = parse_url($current_url);
+    if(isset($parsedUrl['path'])){
+        $path = $parsedUrl['path'];
+        $path = str_replace('pages/disclaimer.php',"api/boardingPass/{$pass_identifier}",$path);
+        $pass_url = $path;
+        $get_pass = true;
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -132,32 +152,20 @@ label {
     <span class="logo-text">Fly Fun</span>
     </div>
     <div class="language-buttons">
-        <a href="?lang=en">English</a>
-        <a href="?lang=fr">Français</a>
+<?php
+foreach($languages_text as $key => $value){
+    $query['lang'] = $key;
+    $url = $_SERVER['PHP_SELF'] . '?' . http_build_query($query);
+    echo "<a href=\"{$url}\">{$value}</a>";
+}
+?>
     </div>
 </div>
-
-<div class="acknowledge">
 <?php
-$get_pass = false;
-
-if( isset($_GET['ticket']) && preg_match('/^[a-zA-Z0-9]+/',$_GET['ticket']) ){
-    $pass_identifier = $_GET['ticket'];
-    $current_url = $_SERVER['REQUEST_URI'];
-    $parsedUrl = parse_url($current_url);
-    if(isset($parsedUrl['path'])){
-        $path = $parsedUrl['path'];
-        $path = str_replace('pages/disclaimer.php',"api/boardingPass/{$pass_identifier}",$path);
-        $pass_url = $path;
-        $get_pass = true;
-        #print("<p><a href='{$pass_url}'>Click here to get your boarding pass</a></p>");
-    }else{
-        print_r($parsedUrl);
-    }
-}
 if($get_pass) {
     $img_url = "../images/AddToApple/{$chosen_language}/badge.svg" ;
 ?>
+<div class="acknowledge">
 <form>
   <label>
     <input type="checkbox" id="agree-checkbox">
