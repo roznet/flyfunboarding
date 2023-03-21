@@ -43,11 +43,28 @@ struct PassengerListView: View {
                         Text(passenger.formattedName).standardFieldValue()
                     }.padding(.bottom)
                 }
+                .navigationTitle("Passengers")
+                .toolbar {
+                    ToolbarItemGroup(placement: .automatic) {
+                        Spacer()
+                        Button(action:add) {
+                            VStack {
+                                Image(systemName: "person.fill.badge.plus")
+                                Text("Add")
+                            }
+                        }.padding()
+                        Spacer()
+                    }
+                }
             }
             .onAppear{
                 self.passengerListViewModel.retrievePassengers()
             }
         }
+    }
+    
+    func add() {
+        self.showPicker = true
     }
     
     func selectedContact(_ contact : CNContact) {

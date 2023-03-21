@@ -38,11 +38,12 @@ struct Passenger : Codable, Identifiable {
     
     var passenger_id : Int?
     var apple_identifier : String
+    var passenger_identifier : String?
     
     var id : Int { return passenger_id ?? apple_identifier.hashValue }
     
     enum CodingKeys: String, CodingKey {
-        case firstName, middleName, lastName, formattedName, passenger_id, apple_identifier
+        case firstName, middleName, lastName, formattedName, passenger_id, apple_identifier,passenger_identifier
     }
 
     init(contact : CNContact){
@@ -51,6 +52,10 @@ struct Passenger : Codable, Identifiable {
         self.lastName = contact.familyName
         self.apple_identifier = contact.identifier
         self.passenger_id = nil
+        let comp = contact.identifier.split(separator: ":")
+        if comp.count > 0 {
+            self.passenger_identifier = String(comp.first!)
+        }
         
         var nameComponents = PersonNameComponents()
         nameComponents.givenName = self.firstName

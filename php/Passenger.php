@@ -8,6 +8,7 @@ class Passenger {
     public $lastName;
     public $apple_identifier;
     public int $passenger_id = -1;  
+    public ?string $passenger_identifier = null;
 
     public static $jsonKeys = [
         'formattedName' => 'string',
