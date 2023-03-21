@@ -14,7 +14,7 @@ class FlightController extends Controller
         }
         $status = MyFlyFunDb::$shared->deleteFlight($flight);
         $this->contentType('application/json');
-        echo json_encode(array('status' => $status, 'flight_identifier' => $flight->uniqueIdentifier()['flight_identifier']));
+        echo json_encode(array('status' => $status, 'flight_identifier' => $flight->flight_identifier));
     }
     
     public function index($params) {
@@ -26,7 +26,6 @@ class FlightController extends Controller
         if (is_null($flight)) {
             $this->terminate(400, 'Flight does not exist '.$flight_id);
         }
-        print( $flight->uniqueIdentifier()['flight_identifier'] );
         $json = json_encode($flight->toJson());
 
         $this->contentType('application/json');

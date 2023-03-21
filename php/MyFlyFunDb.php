@@ -273,7 +273,8 @@ class MyFlyFunDb {
     private function delete($object) : bool {
         $this->validateAirline();
         $table = $this->classToTable(get_class($object));
-        $id = $object->uniqueIdentifier()[$this->tableToIdentifier($table)];
+        $tableIdentifier = $this->tableToIdentifier($table);
+        $id = $object->$tableIdentifier;
         if( $id == null ) {
             return false;
         }

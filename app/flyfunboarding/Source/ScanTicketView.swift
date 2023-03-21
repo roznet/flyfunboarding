@@ -26,10 +26,31 @@
 
 
 import SwiftUI
+import CodeScanner
 
 struct ScanTicketView: View {
+    @State private var isPresentingScanner = false
+    @State private var scannedString : String?
+    
     var body: some View {
-        Text("Scan Ticket")
+        VStack {
+            if let code = scannedString {
+                Text(code)
+            }
+            
+            Button("Scan Ticket") {
+                isPresentingScanner = true
+            }
+        }
+        .sheet(isPresented: $isPresentingScanner) {
+            CodeScannerView(codeTypes: [.qr], simulatedData: "0"){
+                response in
+                if case let .success(result) = response {
+                    scannedString = result.string
+                    isPresentingScanner = false
+                }
+            }
+        }
     }
 }
 

@@ -62,6 +62,7 @@
 		42D9407929C6617200622CF3 /* SwiftStringScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D9407829C6617200622CF3 /* SwiftStringScore.swift */; };
 		42D9407B29C7212800622CF3 /* StyleModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D9407A29C7212800622CF3 /* StyleModifiers.swift */; };
 		42D940B329CA28C900622CF3 /* ScanTicketView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D940B229CA28C900622CF3 /* ScanTicketView.swift */; };
+		42D940B629CA667A00622CF3 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 42D940B529CA667A00622CF3 /* CodeScanner */; };
 		42E58E1929BFD45000185971 /* airports.db in Resources */ = {isa = PBXBuildFile; fileRef = 42E58E1829BFD45000185971 /* airports.db */; };
 		42E58E1B29BFE36900185971 /* Flight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E58E1A29BFE36900185971 /* Flight.swift */; };
 		42E58E1D29BFE67100185971 /* Ticket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E58E1C29BFE67100185971 /* Ticket.swift */; };
@@ -153,6 +154,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				42D940B629CA667A00622CF3 /* CodeScanner in Frameworks */,
 				4269B42529BC75CA009891C6 /* RZUtils in Frameworks */,
 				4269B42329BC75CA009891C6 /* RZData in Frameworks */,
 				4269B42929BC75CA009891C6 /* RZUtilsUniversal in Frameworks */,
@@ -374,6 +376,7 @@
 				4208E4B729BE29B100E2A5FC /* SwiftUIKit */,
 				4208E4BC29BE4E7400E2A5FC /* RZFlight */,
 				4208E4C429BE5CB300E2A5FC /* KDTree */,
+				42D940B529CA667A00622CF3 /* CodeScanner */,
 			);
 			productName = flyfunboarding;
 			productReference = 4269B3E229BBC84C009891C6 /* flyfunboarding.app */;
@@ -454,6 +457,7 @@
 				4208E4B629BE29B100E2A5FC /* XCRemoteSwiftPackageReference "SwiftUIKit" */,
 				4208E4BB29BE4E7400E2A5FC /* XCRemoteSwiftPackageReference "rzflight" */,
 				4208E4C329BE5CB300E2A5FC /* XCRemoteSwiftPackageReference "KDTree" */,
+				42D940B429CA667A00622CF3 /* XCRemoteSwiftPackageReference "CodeScanner" */,
 			);
 			productRefGroup = 4269B3E329BBC84C009891C6 /* Products */;
 			projectDirPath = "";
@@ -965,6 +969,14 @@
 				kind = branch;
 			};
 		};
+		42D940B429CA667A00622CF3 /* XCRemoteSwiftPackageReference "CodeScanner" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/twostraws/CodeScanner";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1002,6 +1014,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4269B42129BC75CA009891C6 /* XCRemoteSwiftPackageReference "rzutils" */;
 			productName = RZUtilsUniversal;
+		};
+		42D940B529CA667A00622CF3 /* CodeScanner */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 42D940B429CA667A00622CF3 /* XCRemoteSwiftPackageReference "CodeScanner" */;
+			productName = CodeScanner;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
