@@ -37,7 +37,7 @@ struct FlightEditView: View {
     
     var body: some View {
         VStack {
-            AircraftPicker(aircraftRegistration: $flightModel.aircraftRegistration)
+            AircraftPicker(aircraftRegistration: flightModel.aircraft.registration, aircraft: $flightModel.aircraft)
                 .disabled(self.editIsDisabled || self.flightModel.mode == .amend)
             DatePicker("Flight Departure", selection: $flightModel.scheduledDepartureDate)
                 .disabled(self.editIsDisabled)
@@ -85,6 +85,9 @@ struct FlightEditView: View {
             // update in case we get a new identifier
             Logger.ui.info( mode == .amend ? "Amended \(f)" : "Scheduled \(f)")
             DispatchQueue.main.async {
+                if self.flightModel.flight.flight_identifier != f.flight_identifier {
+                    Logger.ui.info("Changed identifier")
+                }
                 self.flightModel.flight = f
                 self.flightModel.mode = .amend
                 self.flightListModel.retrieveFlights()
@@ -98,9 +101,9 @@ struct FlightEditView: View {
         let newFlight = self.flightModel.flight
         switch self.flightModel.mode {
         case .amend:
-            RemoteService.shared.amendFlight(flight: newFlight){ self.remoteCompletion(flight: $0, mode: .schedule) }
+            RemoteService.shared.amendFlight(flight: newFlight){ self.remoteCompletion(flight: $0, mode: .amend) }
         case .schedule:
-            RemoteService.shared.scheduleFlight(flight: newFlight){ self.remoteCompletion(flight: $0, mode: .schedule) }
+            RemoteService.shared.scheduleFlight(flight: newFlight.asNewFlight){ self.remoteCompletion(flight: $0, mode: .schedule) }
         }
     }
     

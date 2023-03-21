@@ -16,9 +16,11 @@ class Passenger {
         'lastName' => 'string',
         'passenger_id' => 'integer',
         'apple_identifier' => 'string',
+        'passenger_identifier' => 'string',
     ];
     public static $jsonValuesOptionalDefaults = [
         'passenger_id' => -1,
+        'passenger_identifier' => '',
     ];
     static function fromJson($json) {
         return JsonHelper::fromJson($json, 'Passenger');
@@ -28,12 +30,4 @@ class Passenger {
         return JsonHelper::toJson($this);
     }
 
-    function identifierTag() : string {
-        return $this->apple_identifier;
-    }
-
-    function uniqueIdentifier() : array{
-        // convert to upper case
-        return ['passenger_identifier' => MyFlyFunDb::uniqueIdentifier($this->identifierTag())];
-    }
 }

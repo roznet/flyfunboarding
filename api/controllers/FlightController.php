@@ -7,10 +7,10 @@ class FlightController extends Controller
         $this->validateMethod('DELETE');
 
         $flight_id = $this->paramByPositionOrGet($params, 'flight_id', 0);
-        $flight = MyFlyFunDb::$shared->getFlight($flight_id, false);
+        $flight = MyFlyFunDb::$shared->getFlight($flight_id);
 
         if (is_null($flight)) {
-            $this->terminate(400, 'Flight does not exist');
+            $this->terminate(400, 'Flight does not exist '.$flight_id);
         }
         $status = MyFlyFunDb::$shared->deleteFlight($flight);
         $this->contentType('application/json');
@@ -21,12 +21,14 @@ class FlightController extends Controller
         $this->validateMethod('GET');
 
         $flight_id = $this->paramByPositionOrGet($params, 'flight_id', 0);
-        $flight = MyFlyFunDb::$shared->getFlight($flight_id, false);
+        $flight = MyFlyFunDb::$shared->getFlight($flight_id);
 
         if (is_null($flight)) {
-            $this->terminate(400, 'Flight does not exist');
+            $this->terminate(400, 'Flight does not exist '.$flight_id);
         }
+        print( $flight->uniqueIdentifier()['flight_identifier'] );
         $json = json_encode($flight->toJson());
+
         $this->contentType('application/json');
         echo $json;
     }
@@ -35,10 +37,10 @@ class FlightController extends Controller
         $this->validateMethod('POST');
 
         $flight_id = $this->paramByPositionOrGet($params, 'flight_id', 0);
-        $flight = MyFlyFunDb::$shared->getFlight($flight_id, false);
+        $flight = MyFlyFunDb::$shared->getFlight($flight_id);
 
         if (is_null($flight)) {
-            $this->terminate(400, 'Flight does not exist');
+            $this->terminate(400, 'Flight does not exist '.$flight_id);
         }
 
         $json = $this->getJsonPostBody();
@@ -56,7 +58,7 @@ class FlightController extends Controller
         $aircraft = MyFlyFunDb::$shared->getAircraft($aircraft_id, false);
         
         if (is_null($aircraft)) {
-            $this->terminate(400, 'Aircraft does not exist');
+            $this->terminate(400, 'Aircraft does not exist '.$aircraft_id);
         }
 
         $json = $this->getJsonPostBody();
@@ -75,14 +77,12 @@ class FlightController extends Controller
         $originalFlight = MyFlyFunDb::$shared->getFlight($flight_id, false);
 
         if (is_null($originalFlight)) {
-            $this->terminate(400, 'Flight does not exist');
+            $this->terminate(400, 'Flight does not exist '.$flight_id);
         }
 
         $json = $this->getJsonPostBody();
         $json['aircraft'] = $originalFlight->aircraft->toJson();
-        if( $originalFlight->uniqueIdentifier()['flight_identifier'] != $json['flight_identifier'] ) {
-            MyFlyFunDb::$shared->deleteFlight($originalFlight);
-        }
+        $json['flight_id'] = $originalFlight->flight_id;
             
         $flight = Flight::fromJson($json);
         $flight = MyFlyFunDb::$shared->createOrUpdateFlight($flight);

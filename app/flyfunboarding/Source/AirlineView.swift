@@ -52,6 +52,11 @@ struct AirlineView: View {
                         Image(systemName: "airplane")
                         Text(NSLocalizedString("Airplanes", comment: "tabItem"))
                     }
+                ScanTicketView()
+                    .tabItem {
+                        Image(systemName: "qrcode.viewfinder")
+                        Text("Scan")
+                    }
                 FlightListView()
                     .tabItem {
                         Image(systemName: "network")

@@ -26,16 +26,63 @@
 
 
 import SwiftUI
+import OSLog
+
+struct StandardEditButtons: View {
+    @State private var isPresentingConfirm : Bool = false
+    
+    enum Mode {
+        case edit
+        case create
+    }
+    
+    private var deleteName : String
+    private var submitString : String
+    private var mode : Mode
+    
+    private var submitAction : () -> Void
+    private var deleteAction : () -> Void
+    
+    init(mode: Mode, submit: String, delete: String, submitAction: @escaping () -> Void, deleteAction: @escaping () -> Void){
+        self.mode = mode
+        self.deleteName = delete
+        self.submitString = submit
+        self.submitAction = submitAction
+        self.deleteAction = deleteAction
+    }
+    
+    var body: some View {
+        HStack {
+            Spacer()
+            if self.mode == .edit {
+                Button(self.deleteName, role: .destructive) {
+                    isPresentingConfirm = true
+                }
+                .standardButton()
+            }
+            Button(action: submitAction) {
+                Text(self.submitString)
+            }.standardButton()
+            Spacer()
+        }
+    }
+}
 
 struct AircraftEditView: View {
     @StateObject var aircraftModel : AircraftViewModel
+    @ObservedObject var aircraftListModel : AircraftListViewModel
+    @Environment(\.dismiss) var dismiss
+    
+    @State var editIsDisabled : Bool = false
+    @State var isPresentingConfirm : Bool = false
     
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
                 Text(NSLocalizedString("Registration", comment: "Aircraft"))
                     .standardFieldLabel()
-                TextField("Registration", text: $aircraftModel.registration).textFieldStyle(.roundedBorder)
+                TextField("Registration", text: $aircraftModel.registration)
+                    .standardStyle()
             }
             HStack {
                 Text(NSLocalizedString("Type", comment: "Aircraft"))
@@ -43,15 +90,12 @@ struct AircraftEditView: View {
                 TextField("Type", text: $aircraftModel.type)
                     .standardStyle()
             }
-            HStack {
-                Spacer()
-                Button(action: save) {
-                    Text(NSLocalizedString("Save", comment: "Button"))
-                }.standardButton()
-                Button(action: cancel) {
-                    Text(NSLocalizedString("Cancel", comment: "Button"))
-                }.standardButton()
-                Spacer()
+            if !self.editIsDisabled {
+                StandardEditButtons(mode: self.aircraftModel.mode,
+                                    submit: self.aircraftModel.submitText,
+                                    delete: "Delete",
+                                    submitAction: save,
+                                    deleteAction: cancel)
             }
             Spacer()
         }.padding(.bottom)
@@ -61,13 +105,26 @@ struct AircraftEditView: View {
     }
 
     func save() {
-        print("Save")
+        Logger.ui.info("Save flight")
+        RemoteService.shared.registerAircraft(aircraft: self.aircraftModel.aircraft){
+            a in
+            if let a = a{
+                let identifier = a.aircraft_identifier ?? "no id"
+                Logger.ui.info("Save success \(a.registration) \(identifier)")
+                self.aircraftModel.aircraft = a
+                self.aircraftModel.mode = .edit
+                self.aircraftListModel.retrieveAircraft()
+            }else{
+                Logger.ui.error("Failed to save aircraft")
+            }
+        }
     }
 }
 
 
 struct AircraftView_Previews: PreviewProvider {
     static var previews: some View {
-        AircraftEditView(aircraftModel: AircraftViewModel(aircraft: Samples.aircraft))
+        AircraftEditView(aircraftModel: AircraftViewModel(aircraft: Samples.aircraft, mode: .edit),
+                         aircraftListModel: AircraftListViewModel.empty)
     }
 }

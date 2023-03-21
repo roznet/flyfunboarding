@@ -9,35 +9,7 @@ class Flight {
     public DateTime $scheduledDepartureDate;
     public int $flight_id = -1;
     public int $aircraft_id = -1;
-
-
-    function identifierTag() : string {
-        // EGTFLFMD.N122DR.202012311200
-        $gmt = $this->scheduledDepartureDate->setTimezone(new DateTimeZone('GMT'));
-
-        return $this->origin->icao . $this->destination->icao . '.' . $this->aircraft->registration . '.' . $gmt->format('YmdHi');
-    }
-    function uniqueIdentifier() : array {
-        return [ 'flight_identifier' => MyFlyFunDb::uniqueIdentifier($this->identifierTag()) ];
-    }
-
-    function verifySame(Flight $other ) : array {
-        $valueSame = $this->origin->icao == $other->origin->icao &&
-            $this->destination->icao == $other->destination->icao &&
-            $this->aircraft->registration == $other->aircraft->registration &&
-            $this->scheduledDepartureDate->format('YmdHi') == $other->scheduledDepartureDate->format('YmdHi');
-
-        $attributeSame = $this->gate == $other->gate &&
-            $this->flightNumber == $other->flightNumber;
-
-        $identifierSame = $this->identifierTag() == $other->identifierTag();
-
-        return [
-            'valueSame' => $valueSame,
-            'attributeSame' => $attributeSame,
-            'identifierSame' => $identifierSame,
-        ];
-    }
+    public ?string $flight_identifier = null;
 
     public static $jsonKeys = [
         'origin' => 'Airport',
@@ -47,9 +19,11 @@ class Flight {
         'aircraft' => 'Aircraft',
         'scheduledDepartureDate' => 'DateTime',
         'flight_id' => 'integer',
+        'flight_identifier' => 'string'
     ];
     public static $jsonValuesOptionalDefaults = [
         'flight_id' => -1,
+        'flight_identifier' => ''
     ];
 
     public static function fromJson($json) : Flight {

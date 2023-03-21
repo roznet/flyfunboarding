@@ -1,6 +1,6 @@
 //  MIT License
 //
-//  Created on 12/03/2023 for flyfunboarding
+//  Created on 21/03/2023 for flyfunboarding
 //
 //  Copyright (c) 2023 Brice Rosenzweig
 //
@@ -25,42 +25,16 @@
 
 
 
-import Foundation
 import SwiftUI
 
-class AircraftViewModel : ObservableObject {
-    @Published var registration :String
-    @Published var type :String
-    typealias Mode = StandardEditButtons.Mode
-    
-    var mode : Mode
-    var submitText : String {
-        switch mode {
-        case .create:
-            return "Create"
-        case .edit:
-            return "Edit"
-        }
+struct ScanTicketView: View {
+    var body: some View {
+        Text("Scan Ticket")
     }
-    
-    private var originalAircraft : Aircraft
+}
 
-    var aircraft : Aircraft {
-        get {
-            return self.originalAircraft.with(newRegistration: self.registration, newType: self.type)
-        }
-        set {
-            self.originalAircraft = newValue
-            self.registration = newValue.registration
-            self.type = newValue.type
-        }
-    }
-   
-    init(aircraft: Aircraft, mode: Mode) {
-        self.registration = aircraft.registration
-        self.type = aircraft.type
-        self.originalAircraft = aircraft
-        self.mode = mode
-        
+struct ScanTicketView_Previews: PreviewProvider {
+    static var previews: some View {
+        ScanTicketView()
     }
 }

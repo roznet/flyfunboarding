@@ -62,11 +62,14 @@ class MatchedAircraft : ObservableObject {
 }
 struct AircraftPicker: View {
     @StateObject private var matchedAircrafts = MatchedAircraft()
-    @Binding var aircraftRegistration : String
+    @State  var aircraftRegistration : String
+    @Binding var aircraft : Aircraft
+    
     @State private var showPopup : Bool = false
     @FocusState private var isFocused : Bool
     @State var editIsDisabled : Bool = false
 
+    
     var body: some View {
         VStack {
             HStack(alignment: .firstTextBaseline) {
@@ -96,6 +99,7 @@ struct AircraftPicker: View {
                     AircraftRowView(aircraft: aircraft)
                         .onTapGesture {
                             self.aircraftRegistration = aircraft.registration
+                            self.aircraft = aircraft
                             self.showPopup = false
                         }
                 }
@@ -104,9 +108,3 @@ struct AircraftPicker: View {
     }
 }
 
-struct AircraftPicker_Previews: PreviewProvider {
-    static var previews: some View {
-        //let aircrafts = Samples.aircrafts
-        AircraftPicker(aircraftRegistration: .constant("N122DR"))
-    }
-}

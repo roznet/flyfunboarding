@@ -201,7 +201,22 @@ class RemoteService {
     
 
     
-    //MARK: - api calls
+    //MARK: - Airline
+    func registerAirline(airline : Airline, completion : @escaping (Airline?) -> Void) {
+        self.registerObject(point: "airline/create", object: airline, requireAirline: false) { airline in
+            if let airline = airline, let airlineId = airline.airlineId {
+                Logger.net.info("register airline with \(airlineId) for \(airline.appleIdentifier)")
+                Settings.shared.currentAirline = airline
+            }else{
+                Logger.net.info("Failed to register")
+                Settings.shared.currentAirline = nil
+            }
+            completion(airline)
+        }
+    }
+    func signOut() {
+        Settings.shared.currentAirline = nil
+    }
     func retrieveCurrentAirline(completion : @escaping (Airline?) -> Void) {
         guard let airline = Settings.shared.currentAirline,
               let airlineIdentifier = airline.airlineIdentifier
@@ -209,12 +224,18 @@ class RemoteService {
         
         self.retrieveObject(point: "airline/\(airlineIdentifier)", completion: completion)
     }
-    
+   
+    //MARK: - Aircrafts
     func retrieveAircraftList(completion : @escaping ([Aircraft]?) -> Void) {
         guard let point = self.point(api: "aircraft/list", airline: Settings.shared.currentAirline) else { completion(nil); return }
         self.retrieveObject(point: point, completion: completion)
     }
+    func registerAircraft(aircraft: Aircraft, completion: @escaping (Aircraft?) -> Void) {
+        guard let point = self.point(api: "aircraft/create", airline: Settings.shared.currentAirline) else { return }
+        self.registerObject(point: point, object: aircraft, completion: completion)
+    }
 
+    //MARK: - Passengers
     func retrievePassengerList(completion : @escaping ([Passenger]?) -> Void) {
         guard let point = self.point(api: "passenger/list", airline: Settings.shared.currentAirline) else { completion(nil); return }
         self.retrieveObject(point: point, completion: completion)
@@ -225,12 +246,11 @@ class RemoteService {
         self.registerObject(point: point, object: passenger, completion: completion)
     }
     
-    func registerAircraft(aircraft: Aircraft, completion: @escaping (Aircraft?) -> Void) {
-        guard let point = self.point(api: "aircraft/create", airline: Settings.shared.currentAirline) else { return }
-        self.registerObject(point: point, object: aircraft, completion: completion)
-    }
-    
     //MARK: - Flights
+    func retrieveFlightList(completion : @escaping ([Flight]?) -> Void) {
+        guard let point = self.point(api: "flight/list", airline: Settings.shared.currentAirline) else { completion(nil); return }
+        self.retrieveObject(point: point, completion: completion)
+    }
     func scheduleFlight(flight: Flight, completion: @escaping (Flight?) -> Void) {
         guard let aircraftId = flight.aircraft.aircraft_identifier
         else { completion(nil); return }
@@ -249,34 +269,14 @@ class RemoteService {
         guard let point = self.point(api: "flight/\(flightId)", airline: Settings.shared.currentAirline) else { return }
         self.deleteObject(point: point, completion: completion)
     }
-    
 
-    func retrieveFlightList(completion : @escaping ([Flight]?) -> Void) {
-        guard let point = self.point(api: "flight/list", airline: Settings.shared.currentAirline) else { completion(nil); return }
-        self.retrieveObject(point: point, completion: completion)
-    }
 
+    //MARK: - Tickets
     func retrieveTicketList(completion : @escaping ([Ticket]?) -> Void) {
         guard let point = self.point(api: "ticket/list", airline: Settings.shared.currentAirline) else { completion(nil); return }
         self.retrieveObject(point: point, completion: completion)
     }
     
-    func registerAirline(airline : Airline, completion : @escaping (Airline?) -> Void) {
-        self.registerObject(point: "airline/create", object: airline, requireAirline: false) { airline in
-            if let airline = airline, let airlineId = airline.airlineId {
-                Logger.net.info("register airline with \(airlineId) for \(airline.appleIdentifier)")
-                Settings.shared.currentAirline = airline
-            }else{
-                Logger.net.info("Failed to register")
-                Settings.shared.currentAirline = nil
-            }
-            completion(airline)
-        }
-    }
-   
-    func signOut() {
-        Settings.shared.currentAirline = nil
-    }
 
             
 }

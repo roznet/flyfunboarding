@@ -70,7 +70,7 @@ class MyFlyFunDb {
             if (isset($tableInfo['link'])) {
                 $links = $tableInfo['link'];
             }
-            $columns = [ $table_id . " INT NOT NULL AUTO_INCREMENT", $identifier . " VARCHAR(255) UNIQUE" ];
+            $columns = [ $table_id . " INT NOT NULL AUTO_INCREMENT", $identifier . " VARCHAR(36) UNIQUE DEFAULT (uuid())" ];
             foreach( $links as $link ) {
                 $link_id = $this->tableToId($link);
                 $columns[] = $link_id . " INT NOT NULL";
@@ -85,11 +85,17 @@ class MyFlyFunDb {
 
         foreach ($queries as $query) {
             mysqli_query($this->db, $query);
-            if (mysqli_errno($this->db)) {
-                die("Error creating table: " . mysqli_error($this->db));
-            }
+            $this->checkNoErrorOrDie($query);
         }
     }
+
+    private function checkNoErrorOrDie($sql) {
+        if (mysqli_errno($this->db)) {
+            http_response_code(500);
+            die("Error executing query: $sql, error: " . mysqli_error($this->db));
+        }
+    }
+                
 
     private function validateAirline() {
         if( $this->airline_id == -1 ) {
@@ -128,19 +134,26 @@ class MyFlyFunDb {
             $values[] = $object->$link_id;
             $cols[] = $link_id;
         }
-        
-        foreach ($object->uniqueIdentifier() as $key => $value) {
-            if( $key == $identifier ) {
-                $types[] = "s";
-                $values[] = $value;
-                $cols[] = $key;
-            }
+
+        if( !is_null($object->$identifier) && $object->$identifier != ""){
+            $types[] = "s";
+            $values[] = $object->$identifier;
+            $cols[] = $identifier;
         }
 
-        $sql = "INSERT INTO $table (" . implode(", ", $cols) . ") VALUES (" . implode(", ", array_fill(0, count($cols), "?")) . ") ON DUPLICATE KEY UPDATE json_data = VALUES(json_data)";
+        // If we already have a table_id, then update values instead of INSERT
+        if( $object->$table_id > 0 ) {
+            $types[] = "i";
+            $values[] = $object->$table_id;
+            $cols[] = $table_id;
+        }
+        
+        $sql = "INSERT INTO $table (" . implode(", ", $cols) . ") VALUES (" . implode(", ", array_fill(0, count($cols), "?")) . ")";
+        $sql .= "ON DUPLICATE KEY UPDATE json_data = VALUES(json_data), ". $identifier . " = VALUES(" . $identifier . ")";
         $stmt = mysqli_prepare($this->db, $sql);
         $stmt->bind_param(implode("", $types), ...$values);
         $stmt->execute();
+        $this->checkNoErrorOrDie($sql);
         $object->$table_id = mysqli_insert_id($this->db);
         // if the object was updated, we need to get the id
         if($object->$table_id == 0) {
@@ -149,15 +162,12 @@ class MyFlyFunDb {
             $stmt = mysqli_prepare($this->db, $sql);
             $stmt->bind_param("s", $object->uniqueIdentifier()[$identifier]);
             $stmt->execute();
+            $this->checkNoErrorOrDie($sql);
             $result = $stmt->get_result();
             $row = $result->fetch_assoc();
-            $object->$table_id = $row[$table_id_column];
+            $this->addIdentifiers($table, $object, $row);
         }
-    
-        if (mysqli_errno($this->db)) {
-            http_response_code(500);
-            die("Error creating table: " . mysqli_error($this->db));
-        }
+
         return $object;
     }
 
@@ -168,6 +178,19 @@ class MyFlyFunDb {
                 $link_id = $this->tableToId($link);
                 $object->$link_id = $row[$link_id];
             }
+        }
+    }
+    private function addIdentifiers($table, $object, $row) {
+        $tableId = $this->tableToId($table);
+        $tableIdentifier = $this->tableToIdentifier($table);
+        if( isset($row[$tableIdentifier]) ) {
+            $object->$tableIdentifier = $row[$tableIdentifier];
+        }
+        else {
+            $object->$tableIdentifier = "MISSING";
+        }
+        if( isset($row[$tableId]) ) {
+            $object->$tableId = $row[$tableId];
         }
     }
 
@@ -189,12 +212,12 @@ class MyFlyFunDb {
         }
         $sql .= ' WHERE ' . implode(' AND ', $clause);
         $result = mysqli_query($this->db, $sql);
+        $this->checkNoErrorOrDie($sql);
         $objects = [];
         while ($row = mysqli_fetch_assoc($result)) {
             $json = json_decode($row['json_data'], true);
             $object = JsonHelper::fromJson($json, $this->tableToClass($table));
-            $tableId = $this->tableToId($table);
-            $object->$tableId = $row[$tableId];
+            $this->addIdentifiers($table, $object, $row);
             $this->addLinks($table, $object, $row);
             $objects[] = $object->toJson();
         }
@@ -216,24 +239,25 @@ class MyFlyFunDb {
         }
         $row = $result->fetch_assoc();
         if( isset($row['airline_id']) ) {
-            $airline = $this->getAirline($row['airline_id']);
+            $airline = $this->getAirlineById($row['airline_id']);
             Airline::$current = $airline;
             MyFlyFunDb::$shared->airline_id = $airline->airline_id;
         }
 
         $json = json_decode($row['json_data'], true);
         $object = jsonhelper::fromjson($json, $this->tabletoclass($table));
-        $tableid = $this->tabletoid($table);
-        $object->$tableid = $row[$tableid];
+        $this->addIdentifiers($table, $object, $row);
         $this->addlinks($table, $object, $row);
         return $object;
     }
 
-    private function get($table,$id,$returnJson) {
+    private function get($table,$id) {
         $this->validateAirline();
-        $stmt = mysqli_prepare($this->db, "select * from $table where " . $this->tabletoidentifier($table) . " = ? and airline_id = ?" );
+        $sql = "select * from $table where " . $this->tabletoidentifier($table) . " = ? and airline_id = ?";
+        $stmt = mysqli_prepare($this->db, $sql);
         $stmt->bind_param("si", $id, $this->airline_id);
         $stmt->execute();
+        $this->checkNoErrorOrDie($sql);
         $result = $stmt->get_result();
         if ($result->num_rows == 0) {
             return null;
@@ -241,14 +265,9 @@ class MyFlyFunDb {
         $row = $result->fetch_assoc();
         $json = json_decode($row['json_data'], true);
         $object = jsonhelper::fromjson($json, $this->tabletoclass($table));
-        $tableid = $this->tabletoid($table);
-        $object->$tableid = $row[$tableid];
+        $this->addIdentifiers($table, $object, $row);
         $this->addlinks($table, $object, $row);
-        if( $returnJson ) {
-            return $object->tojson();
-        }else{
-            return $object;
-        }
+        return $object;
     }
 
     private function delete($object) : bool {
@@ -258,9 +277,12 @@ class MyFlyFunDb {
         if( $id == null ) {
             return false;
         }
-        $stmt = mysqli_prepare($this->db, "DELETE FROM $table WHERE " . $this->tableToIdentifier($table) . " = ? AND airline_id = ?" );
+        $sql ="DELETE FROM $table WHERE " . $this->tableToIdentifier($table) . " = ? AND airline_id = ?" ;
+        $stmt = mysqli_prepare($this->db, $sql);
         $stmt->bind_param("si", $id, $this->airline_id);
-        return $stmt->execute();
+        $rv = $stmt->execute();
+        $this->checkNoErrorOrDie($sql);
+        return $rv;
     }
 
     // Airlines
@@ -270,20 +292,25 @@ class MyFlyFunDb {
         $existing = $this->getAirlineByAppleIdentifier($airline->apple_identifier);
         if( $existing != null ) {
             $airline->airline_id = $existing->airline_id;
+            $airline->airline_identifier = $existing->airline_identifier;
             $sql = 'UPDATE Airlines SET json_data = ? WHERE airline_id = ?';
             $stmt = mysqli_prepare($this->db, $sql);
             $json_str = json_encode($json);
             $stmt->bind_param("si", $json_str, $airline->airline_id);
             $stmt->execute();
+            $this->checkNoErrorOrDie($sql);
             return $airline;
         }else{
             $sql = 'INSERT INTO Airlines (airline_identifier, json_data) VALUES (?, ?) ON DUPLICATE KEY UPDATE json_data = VALUES(json_data)';
             $stmt = mysqli_prepare($this->db, $sql);
             $json_str = json_encode($json);
-            $stmt->bind_param("ss", $airline->uniqueIdentifier()['airline_identifier'], $json_str);
+            $airlineIdentifier = Airline::airlineIdentifierFromAppleIdentifier($airline->apple_identifier);
+            $stmt->bind_param("ss", $airlineIdentifier, $json_str);
             $stmt->execute();
-            $airline->airline_id = mysqli_insert_id($this->db);
-            return $airline;
+            $this->checkNoErrorOrDie($sql);
+            $airline_id = mysqli_insert_id($this->db);
+            $rv = $this->getAirlineById($airline_id);
+            return $rv;
         }
     }
 
@@ -293,16 +320,17 @@ class MyFlyFunDb {
         $stmt = mysqli_prepare($this->db, $sql);
         $stmt->bind_param("s", $airlineIdentifier);
         $stmt->execute();
+        $this->checkNoErrorOrDie($sql);
         $result = $stmt->get_result();
         if ($result->num_rows == 0) {
             return null;
         }
         $row = $result->fetch_assoc();
         $object = JsonHelper::fromJson(json_decode($row['json_data'], true), Airline::class);
-        $object->airline_id = $row['airline_id'];
+        $this->addIdentifiers('Airlines', $object, $row);
         return $object;
     }
-    public function getAirline($airline_id){
+    public function getAirlineById($airline_id){
         $sql = "SELECT * FROM Airlines WHERE airline_id = ?";
         $stmt = mysqli_prepare($this->db, $sql);
         $stmt->bind_param("i", $airline_id);
@@ -313,7 +341,7 @@ class MyFlyFunDb {
         }
         $row = $result->fetch_assoc();
         $object = JsonHelper::fromJson(json_decode($row['json_data'], true), Airline::class);
-        $object->airline_id = $row['airline_id'];
+        $this->addIdentifiers('Airlines', $object, $row);
         return $object;
     }
     public function getAirlineByAirlineIdentifier($airline_identifier){
@@ -327,27 +355,27 @@ class MyFlyFunDb {
         }
         $row = $result->fetch_assoc();
         $object = JsonHelper::fromJson(json_decode($row['json_data'], true), Airline::class);
-        $object->airline_id = $row['airline_id'];
+        $this->addIdentifiers('Airlines', $object, $row);
         return $object;
     }
 
     // Aircrafts
     //
-    public function createOrUpdateAircraft(Aircraft $aircraft) {
+    public function createOrUpdateAircraft(Aircraft $aircraft) : ?Aircraft {
         return $this->createOrUpdate("Aircrafts", $aircraft);
     }
     public function listAircrafts() : array {
         return $this->list("Aircrafts");
     }
-    public function getAircraft($aircraft_id, $returnJson = true) {
-        return $this->get("Aircrafts", $aircraft_id, $returnJson);
+    public function getAircraft($aircraft_id) : ?Aircraft{
+        return $this->get("Aircrafts", $aircraft_id);
     }
     public function deleteAircraft(Aircraft $aircraft) : bool {
         return $this->delete($aircraft);
     }
 
     // Passengers
-    public function createOrUpdatePassenger(Passenger $passenger) {
+    public function createOrUpdatePassenger(Passenger $passenger) : ?Passenger {
         return $this->createOrUpdate("Passengers", $passenger);
     }
 
@@ -355,15 +383,15 @@ class MyFlyFunDb {
         return $this->list("Passengers");
     }
 
-    public function getPassenger($passsenger_id, $json = true) {
-        return $this->get("Passengers", $passsenger_id, $json);
+    public function getPassenger($passsenger_id ) : ?Passenger {
+        return $this->get("Passengers", $passsenger_id );
     }
     public function deletePassenger(Passenger $passenger) {
         return $this->delete($passenger);
     }
 
     // Flights
-    public function createOrUpdateFlight(Flight $flight) {
+    public function createOrUpdateFlight(Flight $flight) : ?Flight {
         return $this->createOrUpdate("Flights", $flight);
     }
 
@@ -375,30 +403,30 @@ class MyFlyFunDb {
         return $this->list("Flights", ["aircraft_id" => $aircraft->aircraft_id]);
     }
 
-    public function getFlight($flight_id, $json = true) {
-        return $this->get("Flights", $flight_id, $json);
+    public function getFlight($flight_id) : ?Flight {
+        return $this->get("Flights", $flight_id);
     }
 
-    public function deleteflight(Flight $flight) {
+    public function deleteflight(Flight $flight) : bool {
         return $this->delete($flight);
     }
 
     // Tickets
-    public function createOrUpdateTicket(Ticket $ticket) {
+    public function createOrUpdateTicket(Ticket $ticket) : ?Ticket {
         return $this->createOrUpdate("Tickets", $ticket);
     }
 
-    public function getTicket($ticket_id, $json = true) {
-        return $this->get("Tickets", $ticket_id, $json);
+    public function getTicket($ticket_id) : ?Ticket {
+        return $this->get("Tickets", $ticket_id);
     }
-    public function directGetTicket($ticket_id) {
+    public function directGetTicket($ticket_id) : ?Ticket {
         return $this->directGet("Tickets", $ticket_id);
     }
 
-    public function listTickets() {
+    public function listTickets() : array {
         return $this->list("Tickets");
     }
-    public function listTicketsForPassenger(Passenger $passenger) {
+    public function listTicketsForPassenger(Passenger $passenger) : array {
         return $this->list("Tickets", ["passenger_id" => $passenger->passenger_id]);
     }
 

@@ -30,31 +30,41 @@ import OSLog
 
 struct AircraftListView: View {
     @StateObject  var aircraftListViewModel = AircraftListViewModel(aircrafts: [])
+    @State private var navPath = NavigationPath()
     
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $navPath) {
             List(aircraftListViewModel.aircrafts) { aircraft in
-                NavigationLink(destination: AircraftEditView(aircraftModel: AircraftViewModel(aircraft: aircraft))) {
+                NavigationLink(destination: AircraftEditView(aircraftModel: AircraftViewModel(aircraft: aircraft, mode: .edit),
+                                                             aircraftListModel: self.aircraftListViewModel)) {
                     AircraftRowView(aircraft: aircraft)
                 }
-            }.navigationTitle(NSLocalizedString("Aircraft", comment: "Aircraft"))
-        }
-        .toolbar {
-            ToolbarItemGroup(placement: .bottomBar) {
-                Spacer()
-                Button(action: add){
-                    VStack {
-                        Image(systemName: "plus.circle")
-                        Text("Add")
-                    }
-                }.padding()
-                Button(action: delete) {
-                    VStack {
-                        Image(systemName: "minus.circle")
-                        Text("Delete")
-                    }
+            }
+            
+            .navigationDestination(for: Int.self) {
+                i in
+                if i == 0 {
+                    self.addAircraftView()
                 }
-                Spacer()
+            }
+            .navigationTitle("Aircraft")
+            .toolbar {
+                ToolbarItemGroup(placement: .bottomBar) {
+                    Spacer()
+                    Button(action: add){
+                        VStack {
+                            Image(systemName: "plus.circle")
+                            Text("Add")
+                        }
+                    }.padding()
+                    Button(action: delete) {
+                        VStack {
+                            Image(systemName: "minus.circle")
+                            Text("Delete")
+                        }
+                    }
+                    Spacer()
+                }
             }
         }
         .onAppear {
@@ -62,10 +72,17 @@ struct AircraftListView: View {
         }
     }
     func add() {
-        
+        self.navPath.append(0)
     }
     func delete() {
         
+    }
+    
+    func addAircraftView() -> some View {
+        let aircraft = Aircraft.defaultAircraft
+        
+        return AircraftEditView(aircraftModel: AircraftViewModel(aircraft: aircraft, mode: .create),
+                                aircraftListModel: self.aircraftListViewModel)
     }
 }
 

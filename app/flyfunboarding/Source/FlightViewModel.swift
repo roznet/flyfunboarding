@@ -32,7 +32,7 @@ class FlightViewModel : ObservableObject {
     @Published var origin : String
     @Published var destination : String
     @Published var scheduledDepartureDate : Date
-    @Published var aircraftRegistration : String
+    @Published var aircraft : Aircraft
     @Published var gate : String
     @Published var flightNumber : String
     
@@ -60,7 +60,7 @@ class FlightViewModel : ObservableObject {
                                        origin: Flight.ICAO(icao: self.origin),
                                        gate: self.gate,
                                        flightNumber: self.flightNumber,
-                                       aircraft: nil,
+                                       aircraft: aircraft,
                                        scheduledDepartureDate: self.scheduledDepartureDate)
         }
         set {
@@ -70,6 +70,7 @@ class FlightViewModel : ObservableObject {
             self.scheduledDepartureDate = newValue.scheduledDepartureDate
             self.gate = newValue.gate
             self.flightNumber = newValue.flightNumber
+            self.aircraft = newValue.aircraft
         }
     }
     
@@ -78,7 +79,7 @@ class FlightViewModel : ObservableObject {
         self.origin = flight.origin.icao
         self.destination = flight.destination.icao
         self.scheduledDepartureDate = flight.scheduledDepartureDate
-        self.aircraftRegistration = flight.aircraft.registration
+        self.aircraft = flight.aircraft
         self.gate = flight.gate
         self.flightNumber = flight.flightNumber
         self.mode = mode

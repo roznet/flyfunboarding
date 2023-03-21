@@ -12,53 +12,50 @@ class AircraftController extends Controller {
     public function index_delete($params) {
         $this->validateMethod('DELETE');
         $aircraft_id = $this->paramByPositionOrGet($params, 'aircraft_identifier', 0);
-        $aircraft = MyFlyFunDb::$shared->getAircraft($aircraft_id, false);
-        if ($aircraft) {
-            $status = MyFlyFunDb::$shared->deleteAircraft($aircraft);
-            $this->contentType('application/json');
-            echo json_encode(array('status' => $status, 'aircraft_identifier' => $aircraft->uniqueIdentifier()['aircraft_identifier']));
-        } else {
+        $aircraft = MyFlyFunDb::$shared->getAircraft($aircraft_id);
+        if (is_null($aircraft)) {
             $this->terminate(404, "Aircraft not found");
         }
+
+        $status = MyFlyFunDb::$shared->deleteAircraft($aircraft);
+        $this->contentType('application/json');
+        echo json_encode(array('status' => $status, 'aircraft_identifier' => $aircraft->uniqueIdentifier()['aircraft_identifier']));
     }
     public function index($params) {
         $this->validateMethod('GET');
         $aircraft_id = $this->paramByPositionOrGet($params, 'aircraft_identifier', 0);
-        $aircraft = MyFlyFunDb::$shared->getAircraft($aircraft_id, false);
-        if ($aircraft) {
-            // if more params do sub request
-            if (count($params) > 1) {
-                $sub_request = $this->paramByPositionOrGet($params, 'sub_request', 1);
-                if( method_exists($this, 'index_'.$sub_request) ){
-                    $this->{'index_'.$sub_request}($aircraft);
-                    return;
-                }
-
-                // if sub request is not found
-                $this->terminate(400, "Invalid request $sub_request");
-            }else{
-
-                $json = json_encode($aircraft->toJson());
-                $this->contentType('application/json');
-                echo( $json );
-            }
-        } else {
+        $aircraft = MyFlyFunDb::$shared->getAircraft($aircraft_id);
+        if (is_null($aircraft)) {
             $this->terminate(404, "Aircraft not found");
-        }   
+        }
+        // if more params do sub request
+        if (count($params) > 1) {
+            $sub_request = $this->paramByPositionOrGet($params, 'sub_request', 1);
+            if( method_exists($this, 'index_'.$sub_request) ){
+                $this->{'index_'.$sub_request}($aircraft);
+                return;
+            }
 
+            // if sub request is not found
+            $this->terminate(400, "Invalid request $sub_request");
+        }else{
+
+            $json = json_encode($aircraft->toJson());
+            $this->contentType('application/json');
+            echo( $json );
+        }
     }
     public function create() {
         $this->validateMethod( 'POST' );
         $json = $this->getJsonPostBody();
         $aircraft = Aircraft::fromJson($json);
         $aircraft = MyFlyFunDb::$shared->createOrUpdateAircraft($aircraft);
-        if($aircraft !== null){
-            $json = json_encode($aircraft->toJson());
-            $this->contentType('application/json');
-            echo( $json );
-        } else {
+        if( is_null($aircraft) ){
             $this->terminate(500, 'Error creating aircraft');
         }
+        $json = json_encode($aircraft->toJson());
+        $this->contentType('application/json');
+        echo( $json );
     }
 
     public function list(){

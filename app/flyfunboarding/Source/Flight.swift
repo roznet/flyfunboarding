@@ -75,15 +75,17 @@ struct Flight : Codable, Identifiable{
                         flight_id: self.flight_id, flight_identifier: self.flight_identifier)
         return rv
     }
-    // Needs to be kept consistent with PHP service class
-    func uniqueIdentifier() -> String? {
-        let dateFormatter = DateFormatter()
-        
-        let tag = String(format: "%@%@.%@.%@", self.origin.icao, self.destination.icao,
-                         self.aircraft.registration,
-                         dateFormatter.string(from: self.scheduledDepartureDate))
-        
-        return SHA256.hash(string: tag)?.hashString
+    
+    var asNewFlight : Flight {
+        let rv = Flight(destination: destination ,
+                        origin: origin ,
+                        gate: gate ,
+                        flightNumber: flightNumber ,
+                        aircraft: aircraft ,
+                        scheduledDepartureDate: scheduledDepartureDate ,
+                        flight_id: nil, flight_identifier: nil)
+        return rv
+
     }
 
     static var defaultFlight : Flight {

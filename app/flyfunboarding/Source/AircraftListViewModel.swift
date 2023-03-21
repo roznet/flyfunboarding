@@ -32,6 +32,8 @@ class AircraftListViewModel : ObservableObject {
     @Published var aircrafts : [Aircraft] = []
     var syncWithRemote : Bool = true
     
+    static var empty = AircraftListViewModel(aircrafts: [], syncWithRemote: false)
+    
     init(aircrafts : [Aircraft], syncWithRemote: Bool = true) {
         self.syncWithRemote = syncWithRemote
         self.aircrafts = aircrafts

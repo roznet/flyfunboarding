@@ -4,11 +4,12 @@ class Airline {
     public string $airline_name;
     public string $apple_identifier;
     public int $airline_id = -1;
+    public ?string $airline_identifier;
 
     static ?Airline $current = null;
 
-    static array $jsonKeys = ['airline_name' => 'string', 'apple_identifier' => 'string', 'airline_id' => 'integer'];
-    static array $jsonValuesOptionalDefaults = ['airline_id' => -1];
+    static array $jsonKeys = ['airline_name' => 'string', 'apple_identifier' => 'string', 'airline_id' => 'integer', 'airline_identifier' => 'string'];
+    static array $jsonValuesOptionalDefaults = ['airline_id' => -1, 'airline_identifier' => ''];
 
     function toJson() {
         return JsonHelper::toJson($this);
@@ -27,12 +28,6 @@ class Airline {
         return JsonHelper::fromJson($json, Airline::class);
     }
 
-    function identifierTag() : string {
-        return $this->apple_identifier;
-    }
-    function uniqueIdentifier() : array {
-        return ['airline_identifier' => Airline::airlineIdentifierFromAppleIdentifier($this->identifierTag())];
-    }
     // this is public static function because it will be use for example to create a new airline 
     // in the database, and we don't have an instance of the airline yet
     static function airlineIdentifierFromAppleIdentifier($identifier) : string {

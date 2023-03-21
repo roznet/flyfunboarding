@@ -64,7 +64,7 @@ class Aircraft: Codable, Identifiable, Hashable,Equatable {
     }
     
     static var defaultAircraft : Aircraft {
-        return Aircraft(registration: "N", type: "Cirrus SR22T")
+        return Aircraft(registration: "", type: "Cirrus SR22T")
     }
     
 }
