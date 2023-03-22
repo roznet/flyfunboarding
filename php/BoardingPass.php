@@ -64,7 +64,7 @@ class BoardingPass {
 
         $boardingpass['backFields'] = [
             $this->textField('passenger-name', 'Passenger', $this->passenger->formattedName),
-            $this->textField('origin-map-url', 'Airport Map', $this->flight->origin->getMapUrl())
+            $this->textField('origin-map-url', 'Airport Map', $this->flight->origin->getMapLink())
         ];
 
         $locations = $this->locationData();

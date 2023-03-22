@@ -40,6 +40,11 @@ class Airport {
         return "https://www.google.com/maps/place/{$info['latitude_deg']},{$info['longitude_deg']}";
     }
 
+    public function getMapLink() {
+        $info = $this->getInfo();
+        return "<a href='{$this->getMapURL()}' target='_blank'>{$info['name']}</a>";
+    }
+
     public function getCity() {
         $info = $this->getInfo();
         return $info['municipality'];
