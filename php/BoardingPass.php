@@ -109,11 +109,11 @@ class BoardingPass {
 
     function getPassData() {
         $data = [
-            'description' => 'Boarding pass',
+            'description' => 'Boarding Pass',
             'formatVersion' => 1,
             'organizationName' => 'FlyFun Boarding Pass',
             'passTypeIdentifier' => 'pass.net.ro-z.flyfunboardingpass',
-            'serialNumber' => '12345678',
+            'serialNumber' => $this->ticket->ticket_identifier,
             'teamIdentifier' => 'M7QSSF3624',
 
             'backgroundColor' => 'rgb(189,144,71)',
