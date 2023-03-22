@@ -30,7 +30,7 @@ class BoardingPass {
         return [
             'key' => $key,
             'label' => $label,
-            'value' => $value->format("D M d, H:s"),
+            'value' => $value->format("D M d, H:i"),
         ];
     }
 

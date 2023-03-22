@@ -36,39 +36,40 @@ struct FlightEditView: View {
     @State private var isPresentingConfirm : Bool = false
     
     var body: some View {
-        VStack {
-            AircraftPicker(aircraftRegistration: flightModel.aircraft.registration, aircraft: $flightModel.aircraft)
-                .disabled(self.editIsDisabled || self.flightModel.mode == .edit)
-            DatePicker("Flight Departure", selection: $flightModel.scheduledDepartureDate)
-                .disabled(self.editIsDisabled)
-            AirportPicker(labelText: "Departure", icao: $flightModel.origin, name: "Fairoaks")
-                .disabled(self.editIsDisabled)
-            AirportPicker(labelText: "Destination", icao: $flightModel.destination, name: "Le Touquet", editIsDisabled: self.editIsDisabled)
-            HStack {
-                Text("Gate")
-                    .standardFieldLabel()
-                TextField("Gate", text: $flightModel.gate)
-                    .standardStyle()
+        ScrollView {
+            VStack {
+                AircraftPicker(aircraftRegistration: flightModel.aircraft.registration, aircraft: $flightModel.aircraft)
+                    .disabled(self.editIsDisabled || self.flightModel.mode == .edit)
+                DatePicker("Flight Departure", selection: $flightModel.scheduledDepartureDate)
                     .disabled(self.editIsDisabled)
-            }
-            HStack {
-                Text("Flight Number")
-                    .standardFieldLabel()
-                TextField("Gate", text: $flightModel.flightNumber)
-                    .standardStyle()
+                AirportPicker(labelText: "Departure", icao: $flightModel.origin, name: "Fairoaks")
                     .disabled(self.editIsDisabled)
+                AirportPicker(labelText: "Destination", icao: $flightModel.destination, name: "Le Touquet", editIsDisabled: self.editIsDisabled)
+                HStack {
+                    Text("Gate")
+                        .standardFieldLabel()
+                    TextField("Gate", text: $flightModel.gate)
+                        .standardStyle()
+                        .disabled(self.editIsDisabled)
+                }
+                HStack {
+                    Text("Flight Number")
+                        .standardFieldLabel()
+                    TextField("Gate", text: $flightModel.flightNumber)
+                        .standardStyle()
+                        .disabled(self.editIsDisabled)
                     
+                }
+                if !self.editIsDisabled {
+                    StandardEditButtons(mode: self.flightModel.mode,
+                                        submit: self.flightModel.submitText,
+                                        delete: "Delete",
+                                        submitAction: scheduleOrAmend,
+                                        deleteAction: delete)
+                }
+                Spacer()
             }
-            if !self.editIsDisabled {
-                StandardEditButtons(mode: self.flightModel.mode,
-                                    submit: self.flightModel.submitText,
-                                    delete: "Delete",
-                                    submitAction: scheduleOrAmend,
-                                    deleteAction: delete)
-            }
-            Spacer()
         }
-        
     }
     private func remoteCompletion(flight : Flight?, mode : FlightViewModel.Mode) {
         if let f = flight {

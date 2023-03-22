@@ -122,7 +122,7 @@ struct AirportPicker: View {
                     }
                 }
                 .listStyle(.insetGrouped)
-                .frame(maxHeight: 320.0)
+                .frame(minHeight: 320.0)
             }
         }
     }

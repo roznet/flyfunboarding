@@ -102,7 +102,7 @@ struct AircraftPicker: View {
                             self.aircraft = aircraft
                             self.showPopup = false
                         }
-                }
+                }.frame(minHeight: 320.0)
             }
         }
     }
