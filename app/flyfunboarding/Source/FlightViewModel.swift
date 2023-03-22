@@ -29,6 +29,7 @@ import Foundation
 import SwiftUI
 
 class FlightViewModel : ObservableObject {
+    typealias Mode = StandardEditButtons.Mode
     @Published var origin : String
     @Published var destination : String
     @Published var scheduledDepartureDate : Date
@@ -36,18 +37,14 @@ class FlightViewModel : ObservableObject {
     @Published var gate : String
     @Published var flightNumber : String
     
-    enum Mode {
-        case schedule
-        case amend
-    }
     
     var mode : Mode
     
     var submitText : String {
         switch mode {
-        case .schedule:
+        case .create:
             return "Schedule"
-        case .amend:
+        case .edit:
             return "Amend"
         }
     }

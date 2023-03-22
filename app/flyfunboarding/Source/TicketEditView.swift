@@ -38,7 +38,7 @@ struct TicketEditView: View {
                     .standardFieldValue()
                     .padding(.bottom)
             }
-            FlightEditView(flightModel: FlightViewModel(flight: ticket.flight, mode: .amend),
+            FlightEditView(flightModel: FlightViewModel(flight: ticket.flight, mode: .edit),
                            flightListModel: FlightListViewModel.empty,
                            editIsDisabled: true)
             HStack(alignment: .center) {

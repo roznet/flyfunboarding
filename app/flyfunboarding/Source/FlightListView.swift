@@ -35,7 +35,7 @@ struct FlightListView: View {
     var body: some View {
         NavigationStack(path: $navPath) {
             List(flightListViewModel.flights) { flight in
-                NavigationLink(destination: FlightEditView(flightModel: FlightViewModel(flight:flight, mode: .amend),
+                NavigationLink(destination: FlightEditView(flightModel: FlightViewModel(flight:flight, mode: .edit),
                                                            flightListModel: self.flightListViewModel)) {
                     FlightRowView(flight: flight)
                 }
@@ -56,12 +56,6 @@ struct FlightListView: View {
                             Text("Add")
                         }
                     }.padding()
-                    Button(action: delete) {
-                        VStack {
-                            Image(systemName: "minus.circle")
-                            Text("Delete")
-                        }
-                    }
                     Spacer()
                 }
             }
@@ -81,7 +75,7 @@ struct FlightListView: View {
     func addFlightView() -> some View {
         let flight = self.flightListViewModel.flights.first?.with(scheduledDepartureDate: Date()) ?? Flight.defaultFlight
         
-        return FlightEditView(flightModel: FlightViewModel(flight: flight, mode: .schedule), flightListModel: self.flightListViewModel)
+        return FlightEditView(flightModel: FlightViewModel(flight: flight, mode: .create), flightListModel: self.flightListViewModel)
     }
 }
 

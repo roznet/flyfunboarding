@@ -38,7 +38,7 @@ struct FlightEditView: View {
     var body: some View {
         VStack {
             AircraftPicker(aircraftRegistration: flightModel.aircraft.registration, aircraft: $flightModel.aircraft)
-                .disabled(self.editIsDisabled || self.flightModel.mode == .amend)
+                .disabled(self.editIsDisabled || self.flightModel.mode == .edit)
             DatePicker("Flight Departure", selection: $flightModel.scheduledDepartureDate)
                 .disabled(self.editIsDisabled)
             AirportPicker(labelText: "Departure", icao: $flightModel.origin, name: "Fairoaks")
@@ -60,21 +60,11 @@ struct FlightEditView: View {
                     
             }
             if !self.editIsDisabled {
-                HStack {
-                    if self.flightModel.mode == .amend {
-                        Button("Delete", role: .destructive) {
-                            isPresentingConfirm = true
-                        }
-                        .standardButton()
-                        .confirmationDialog("Are you sure?", isPresented: $isPresentingConfirm){
-                            Button("Delete", role: .destructive) {
-                                delete()
-                            }
-                        }
-                    }
-                    Button(self.flightModel.mode == .schedule ? "Schedule" : "Amend", action: scheduleOrAmend)
-                        .standardButton()
-                }
+                StandardEditButtons(mode: self.flightModel.mode,
+                                    submit: self.flightModel.submitText,
+                                    delete: "Delete",
+                                    submitAction: scheduleOrAmend,
+                                    deleteAction: delete)
             }
             Spacer()
         }
@@ -83,13 +73,13 @@ struct FlightEditView: View {
     private func remoteCompletion(flight : Flight?, mode : FlightViewModel.Mode) {
         if let f = flight {
             // update in case we get a new identifier
-            Logger.ui.info( mode == .amend ? "Amended \(f)" : "Scheduled \(f)")
+            Logger.ui.info( mode == .edit ? "Amended \(f)" : "Scheduled \(f)")
             DispatchQueue.main.async {
                 if self.flightModel.flight.flight_identifier != f.flight_identifier {
                     Logger.ui.info("Changed identifier")
                 }
                 self.flightModel.flight = f
-                self.flightModel.mode = .amend
+                self.flightModel.mode = .edit
                 self.flightListModel.retrieveFlights()
             }
         }else{
@@ -100,10 +90,10 @@ struct FlightEditView: View {
     func scheduleOrAmend() {
         let newFlight = self.flightModel.flight
         switch self.flightModel.mode {
-        case .amend:
-            RemoteService.shared.amendFlight(flight: newFlight){ self.remoteCompletion(flight: $0, mode: .amend) }
-        case .schedule:
-            RemoteService.shared.scheduleFlight(flight: newFlight.asNewFlight){ self.remoteCompletion(flight: $0, mode: .schedule) }
+        case .edit:
+            RemoteService.shared.amendFlight(flight: newFlight){ self.remoteCompletion(flight: $0, mode: .edit) }
+        case .create:
+            RemoteService.shared.scheduleFlight(flight: newFlight.asNewFlight){ self.remoteCompletion(flight: $0, mode: .create) }
         }
     }
     
@@ -125,7 +115,7 @@ struct FlightEditView: View {
 struct FlightEditView_Previews: PreviewProvider {
     static var previews: some View {
         let flights = Samples.flights
-        FlightEditView(flightModel: FlightViewModel(flight: flights[0], mode: .schedule),
+        FlightEditView(flightModel: FlightViewModel(flight: flights[0], mode: .create),
                        flightListModel: FlightListViewModel(flights: flights, syncWithRemote: false),
                        editIsDisabled: false)
     }

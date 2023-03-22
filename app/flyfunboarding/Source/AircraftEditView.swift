@@ -28,46 +28,6 @@
 import SwiftUI
 import OSLog
 
-struct StandardEditButtons: View {
-    @State private var isPresentingConfirm : Bool = false
-    
-    enum Mode {
-        case edit
-        case create
-    }
-    
-    private var deleteName : String
-    private var submitString : String
-    private var mode : Mode
-    
-    private var submitAction : () -> Void
-    private var deleteAction : () -> Void
-    
-    init(mode: Mode, submit: String, delete: String, submitAction: @escaping () -> Void, deleteAction: @escaping () -> Void){
-        self.mode = mode
-        self.deleteName = delete
-        self.submitString = submit
-        self.submitAction = submitAction
-        self.deleteAction = deleteAction
-    }
-    
-    var body: some View {
-        HStack {
-            Spacer()
-            if self.mode == .edit {
-                Button(self.deleteName, role: .destructive) {
-                    isPresentingConfirm = true
-                }
-                .standardButton()
-            }
-            Button(action: submitAction) {
-                Text(self.submitString)
-            }.standardButton()
-            Spacer()
-        }
-    }
-}
-
 struct AircraftEditView: View {
     @StateObject var aircraftModel : AircraftViewModel
     @ObservedObject var aircraftListModel : AircraftListViewModel
