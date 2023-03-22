@@ -47,6 +47,9 @@ class MyFlyFunDb {
     private function classToTable($class) {
         return $class . 's';
     }
+    private function tableToLinkVariable($table) {
+        return substr(strtolower($table), 0, -1);
+    }
 
     public function dropTables(){
         $tables = MyFlyFunDb::$standardTables;
@@ -180,6 +183,12 @@ class MyFlyFunDb {
             foreach ($tableInfo['link'] as $link) {
                 $link_id = $this->tableToId($link);
                 $object->$link_id = $row[$link_id];
+
+                $linkObject = $this->getById($link, $row[$link_id]);
+                if( $linkObject != null ) {
+                    $linkvar = $this->tableToLinkVariable($link);
+                    $object->$linkvar = $linkObject;
+                }
             }
         }
     }
@@ -247,6 +256,24 @@ class MyFlyFunDb {
             MyFlyFunDb::$shared->airline_id = $airline->airline_id;
         }
 
+        $json = json_decode($row['json_data'], true);
+        $object = jsonhelper::fromjson($json, $this->tabletoclass($table));
+        $this->addIdentifiers($table, $object, $row);
+        $this->addlinks($table, $object, $row);
+        return $object;
+    }
+
+    private function getById($table,int $id) {
+        $sql = "select * from $table where " . $this->tableToId($table) . " = ? and airline_id = ?";
+        $stmt = mysqli_prepare($this->db, $sql);
+        $stmt->bind_param("ii", $id, $this->airline_id);
+        $stmt->execute();
+        $this->checkNoErrorOrDie($sql);
+        $result = $stmt->get_result();
+        if ($result->num_rows == 0) {
+            return null;
+        }
+        $row = $result->fetch_assoc();
         $json = json_decode($row['json_data'], true);
         $object = jsonhelper::fromjson($json, $this->tabletoclass($table));
         $this->addIdentifiers($table, $object, $row);
