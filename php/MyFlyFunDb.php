@@ -155,18 +155,21 @@ class MyFlyFunDb {
         $stmt->execute();
         $this->checkNoErrorOrDie($sql);
         $object->$table_id = mysqli_insert_id($this->db);
-        // if the object was updated, we need to get the id
+        // retrieve the object either by last insert id or identifier if already existing
         if($object->$table_id == 0) {
-            $table_id_column = $this->tableToId($table);
-            $sql = "SELECT $table_id_column FROM $table WHERE $identifier = ?";
+            $sql = "SELECT $table_id,$identifier FROM $table WHERE $identifier = ?";
             $stmt = mysqli_prepare($this->db, $sql);
-            $stmt->bind_param("s", $object->uniqueIdentifier()[$identifier]);
-            $stmt->execute();
-            $this->checkNoErrorOrDie($sql);
-            $result = $stmt->get_result();
-            $row = $result->fetch_assoc();
-            $this->addIdentifiers($table, $object, $row);
+            $stmt->bind_param("s", $object->$identifier);
+        }else{
+            $sql = "SELECT $table_id,$identifier FROM $table WHERE $table_id = ?";
+            $stmt = mysqli_prepare($this->db, $sql);
+            $stmt->bind_param("i", $object->$table_id);
         }
+        $stmt->execute();
+        $this->checkNoErrorOrDie($sql);
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        $this->addIdentifiers($table, $object, $row);
 
         return $object;
     }
@@ -416,12 +419,30 @@ class MyFlyFunDb {
     public function createOrUpdateTicket(Ticket $ticket) : ?Ticket {
         return $this->createOrUpdate("Tickets", $ticket);
     }
+    public function deleteTicket(Ticket $ticket) : bool {
+        return $this->delete($ticket);
+    }
 
-    public function getTicket($ticket_id) : ?Ticket {
+    public function getTicket(string $ticket_id) : ?Ticket {
         return $this->get("Tickets", $ticket_id);
     }
-    public function directGetTicket($ticket_id) : ?Ticket {
+    public function directGetTicket(string $ticket_id) : ?Ticket {
         return $this->directGet("Tickets", $ticket_id);
+    }
+    public function getTicketByFlightAndPassenger(int $flight_id, int $passenger_id) : ?Ticket {
+        $sql = "SELECT * FROM Tickets WHERE flight_id = ? AND passenger_id = ?";
+        $stmt = mysqli_prepare($this->db, $sql);
+        $stmt->bind_param("ii", $flight_id, $passenger_id);
+        $stmt->execute();
+        $this->checkNoErrorOrDie($sql);
+        $result = $stmt->get_result();
+        if ($result->num_rows == 0) {
+            return null;
+        }
+        $row = $result->fetch_assoc();
+        $object = JsonHelper::fromJson(json_decode($row['json_data'], true), Ticket::class);
+        $this->addIdentifiers('Tickets', $object, $row);
+        return $object;
     }
 
     public function listTickets() : array {

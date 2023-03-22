@@ -16,6 +16,7 @@ class Ticket {
         $ticket->flight = $flight;
         $ticket->seatNumber = $seatNumber;
         $ticket->ticket_id = $ticket_id;
+        $ticket->ticket_identifier = '';
         return $ticket;
     }
 

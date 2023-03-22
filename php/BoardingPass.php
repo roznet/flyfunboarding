@@ -91,7 +91,7 @@ class BoardingPass {
     }
 
     function getBarcodeData() : array {
-        $uniqueId = $this->ticket->uniqueIdentifier()['ticket_identifier'];
+        $uniqueId = $this->ticket->ticket_identifier;
         
         $payload = [];
         $payload['ticket'] = $uniqueId;
