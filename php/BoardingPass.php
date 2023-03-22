@@ -64,8 +64,22 @@ class BoardingPass {
 
         $boardingpass['backFields'] = [
             $this->textField('passenger-name', 'Passenger', $this->passenger->formattedName),
-            $this->textField('origin-map-url', 'Airport Map', $this->flight->origin->getMapURL())
+            $this->textField('origin-map-url', 'Airport Location', $this->flight->origin->getMapURL())
         ];
+
+        $infos = ['origin' => $this->flight->origin->getInfo(), 'destination' => $this->flight->destination->getInfo()];
+        foreach( $infos as $which => $info ) {
+            if( !is_null($info) ) {
+                foreach(['name', 'municipality', 'iso_country','iata_code', 'home_link', 'wikipedia_link'] as $key) {
+                    if( isset($info[$key]) && !empty($info[$key])) {
+                        // replace _ with space and capitalize
+                        $label = ucwords($which.' airport '.str_replace('_', ' ', $key));
+                        $fieldkey = $which.'-'.str_replace('_', '-', $key);
+                        $boardingpass['backFields'][] = $this->textField($fieldkey, $label, $info[$key]);
+                    }
+                }
+            }
+        }
 
         $locations = $this->locationData();
         if( count($locations) > 0 ) {
