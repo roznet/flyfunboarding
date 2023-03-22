@@ -12,9 +12,6 @@ class Passenger {
 
     public static $jsonKeys = [
         'formattedName' => 'string',
-        'firstName' => 'string',
-        'middleName' => 'string',
-        'lastName' => 'string',
         'passenger_id' => 'integer',
         'apple_identifier' => 'string',
         'passenger_identifier' => 'string',

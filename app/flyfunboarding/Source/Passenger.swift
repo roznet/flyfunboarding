@@ -28,14 +28,10 @@
 import Foundation
 import Contacts
 
+
 struct Passenger : Codable, Identifiable {
-    //raw information
-    var firstName : String
-    var middleName : String
-    var lastName : String
     
     var formattedName : String
-    
     var passenger_id : Int?
     var apple_identifier : String
     var passenger_identifier : String?
@@ -43,48 +39,27 @@ struct Passenger : Codable, Identifiable {
     var id : Int { return passenger_id ?? apple_identifier.hashValue }
     
     enum CodingKeys: String, CodingKey {
-        case firstName, middleName, lastName, formattedName, passenger_id, apple_identifier,passenger_identifier
+        case formattedName, passenger_id, apple_identifier,passenger_identifier
     }
 
     init(contact : CNContact){
-        self.firstName = contact.givenName
-        self.middleName = contact.middleName
-        self.lastName = contact.familyName
         self.apple_identifier = contact.identifier
         self.passenger_id = nil
         let comp = contact.identifier.split(separator: ":")
         if comp.count > 0 {
             self.passenger_identifier = String(comp.first!)
         }
-        
-        var nameComponents = PersonNameComponents()
-        nameComponents.givenName = self.firstName
-        nameComponents.middleName = self.middleName
-        nameComponents.familyName = self.lastName
-        self.formattedName = nameComponents.formatted()
-    }
-    var personNameComponents : PersonNameComponents {
-        get {
-            var ret = PersonNameComponents()
-            ret.givenName = self.firstName
-            ret.familyName = self.lastName
-            ret.middleName = self.middleName
-            return ret
-        }
-        set {
-            self.firstName = newValue.givenName ?? ""
-            self.lastName = newValue.familyName ?? ""
-            self.middleName = newValue.middleName ?? ""
-            self.formattedName = newValue.formatted()
-        }
+       
+        let formatter = CNContactFormatter()
+        formatter.style = .fullName
+        self.formattedName = formatter.string(from: contact) ?? "No Name"
     }
 
     mutating func syncWithContact() {
         if let contact = self.retrieveContact() {
-            self.firstName = contact.givenName
-            self.lastName = contact.familyName
-            self.middleName = contact.middleName
-            self.formattedName = self.personNameComponents.formatted()
+            let formatter = CNContactFormatter()
+            formatter.style = .fullName
+            self.formattedName = formatter.string(from: contact) ?? "No Name"
         }
     }
 
