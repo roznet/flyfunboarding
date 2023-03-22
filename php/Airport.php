@@ -35,6 +35,11 @@ class Airport {
         return $this->info;
     }
 
+    public function getMapURL() {
+        $info = $this->getInfo();
+        return "https://www.google.com/maps/place/{$info['latitude_deg']},{$info['longitude_deg']}";
+    }
+
     public function getCity() {
         $info = $this->getInfo();
         return $info['municipality'];
