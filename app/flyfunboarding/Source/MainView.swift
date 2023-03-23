@@ -37,7 +37,7 @@ struct MainView: View {
             AirlineView().environmentObject(accountModel)
         }else if accountModel.signedIn == .notSignedIn{
             InitialSigninView().environmentObject(accountModel)
-        }else {
+        }else if accountModel.signedIn == .unknown{
             VStack {
                 Spacer()
                 Text("Checking account status")

@@ -71,6 +71,8 @@ class AccountModel : ObservableObject {
                     self.signedIn = newStatus
                 }
             }
+        }else{
+            self.signedIn = .notSignedIn
         }
         
     }
