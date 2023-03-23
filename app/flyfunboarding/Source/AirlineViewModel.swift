@@ -58,6 +58,7 @@ class AirlineViewModel : ObservableObject {
                 }
             }else{
                 Logger.net.error("Failed to retrieved current Airline")
+                Settings.shared.currentAirline = nil
             }
         }
     }

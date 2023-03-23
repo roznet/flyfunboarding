@@ -1,6 +1,6 @@
 //  MIT License
 //
-//  Created on 16/03/2023 for flyfunboarding
+//  Created on 23/03/2023 for flyfunboarding
 //
 //  Copyright (c) 2023 Brice Rosenzweig
 //
@@ -25,30 +25,50 @@
 
 
 
-import Foundation
 import SwiftUI
 import OSLog
 
-class TicketListViewModel : ObservableObject {
-    @Published var tickets = [Ticket]()
-    
-    @Published var flight : Flight = Flight.defaultFlight
-    @Published var passenger : Passenger = Passenger.defaultPassenger
-    var syncWithRemote : Bool = true
-    
-    init(tickets: [Ticket], syncWithRemote: Bool = true) {
-        self.tickets = tickets
-        self.syncWithRemote = syncWithRemote
+class MatchedFlight : ObservableObject {
+    private var flights : [Flight] = []
+    @Published var suggestions : [Flight] = []
+
+    init(flights : [Flight]? = nil) {
+        if let flights = flights {
+            self.flights = flights
+            self.suggestions = flights
+        } else {
+            self.flights = []
+            self.suggestions = []
+        }
     }
-    
-    func retrieveTickets() {
-        if self.syncWithRemote {
-            RemoteService.shared.retrieveTicketList() {
-                tickets in
+
+    func retrieveFlights() {
+        RemoteService.shared.retrieveFlightList() { found in
+            if let flights = found {
                 DispatchQueue.main.async {
-                    self.tickets = tickets ?? []
+                    self.flights = flights
+                    self.suggestions = flights
                 }
             }
+        }
+    }
+    
+}
+struct FlightPicker: View {
+    @StateObject var matchedFlight = MatchedFlight()
+    @Binding var flight : Flight
+    
+    var completion : () -> Void = {}
+    
+    var body: some View {
+        List(matchedFlight.suggestions) { flight in
+            FlightRowView(flight: flight)
+                .onTapGesture {
+                    self.flight = flight
+                    completion()
+                }
+        }.onAppear{
+            self.matchedFlight.retrieveFlights()
         }
     }
 }

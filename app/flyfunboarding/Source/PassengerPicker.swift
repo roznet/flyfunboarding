@@ -1,6 +1,6 @@
 //  MIT License
 //
-//  Created on 16/03/2023 for flyfunboarding
+//  Created on 23/03/2023 for flyfunboarding
 //
 //  Copyright (c) 2023 Brice Rosenzweig
 //
@@ -25,30 +25,51 @@
 
 
 
-import Foundation
 import SwiftUI
-import OSLog
 
-class TicketListViewModel : ObservableObject {
-    @Published var tickets = [Ticket]()
-    
-    @Published var flight : Flight = Flight.defaultFlight
-    @Published var passenger : Passenger = Passenger.defaultPassenger
-    var syncWithRemote : Bool = true
-    
-    init(tickets: [Ticket], syncWithRemote: Bool = true) {
-        self.tickets = tickets
-        self.syncWithRemote = syncWithRemote
+class MatchedPassenger : ObservableObject {
+    private var passengers : [Passenger] = []
+    @Published var suggestions : [Passenger] = []
+
+    init(passengers : [Passenger]? = nil) {
+        if let passengers = passengers {
+            self.passengers = passengers
+            self.suggestions = passengers
+        }else{
+            self.passengers = []
+            self.suggestions = []
+        }
     }
-    
-    func retrieveTickets() {
-        if self.syncWithRemote {
-            RemoteService.shared.retrieveTicketList() {
-                tickets in
+
+    func retrievePassengers() {
+        RemoteService.shared.retrievePassengerList() { found in
+            if let passengers = found {
                 DispatchQueue.main.async {
-                    self.tickets = tickets ?? []
+                    self.passengers = passengers
+                    self.suggestions = passengers
                 }
             }
         }
     }
 }
+
+struct PassengerPicker: View {
+    @StateObject var matchedPassenger = MatchedPassenger()
+    @Binding var passenger : Passenger
+    
+    var completion : () -> Void = {}
+    
+    var body: some View {
+        List(matchedPassenger.suggestions) { passenger in
+            Text(passenger.formattedName)
+                .onTapGesture {
+                    self.passenger = passenger
+                    completion()
+                }
+        }
+        .onAppear() {
+            self.matchedPassenger.retrievePassengers()
+        }
+    }
+}
+

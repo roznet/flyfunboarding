@@ -70,7 +70,7 @@ struct AirlineView: View {
             }
         }
     }
-                             
+    
     @State var settingsPresented = false
     var settingsButton : some View {
         return Button(action: {
@@ -82,21 +82,21 @@ struct AirlineView: View {
             AirlineSettingsView()
         }
     }
-  
+    
     func signOut() {
-        self.accountModel.signedIn = false
+        Settings.shared.currentAirline = nil
+        self.accountModel.signedIn = .notSignedIn
     }
 }
-
 struct AirlineView_Previews: PreviewProvider {
     static var previews: some View {
         AirlineView(airlineViewModel: createAirlineViewModel())
             .environmentObject(createAccountModel())
     }
-
+    
     static func createAccountModel() -> AccountModel {
         let rv = AccountModel()
-        rv.signedIn = true
+        rv.signedIn = .signedIn
         return rv
     }
     

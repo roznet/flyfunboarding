@@ -40,33 +40,25 @@ struct AircraftListView: View {
                     AircraftRowView(aircraft: aircraft)
                 }
             }
-            
             .navigationDestination(for: Int.self) {
                 i in
                 if i == 0 {
                     self.addAircraftView()
                 }
             }
-            .navigationTitle("Aircraft")
+            .navigationBarTitle("Aircraft")
             .toolbar {
-                ToolbarItemGroup(placement: .bottomBar) {
-                    Spacer()
+                ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: add){
                         VStack {
                             Image(systemName: "plus.circle")
                             Text("Add")
                         }
-                    }.padding()
-                    Button(action: delete) {
-                        VStack {
-                            Image(systemName: "minus.circle")
-                            Text("Delete")
-                        }
                     }
-                    Spacer()
                 }
             }
         }
+        .padding(.top)
         .onAppear {
             aircraftListViewModel.retrieveAircraft()
         }

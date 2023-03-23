@@ -29,15 +29,20 @@ import AuthenticationServices
 import OSLog
 
 class AccountModel : ObservableObject {
-    
-    @Published var signedIn : Bool = false
+   
+    enum Status {
+        case unknown
+        case signedIn
+        case notSignedIn
+    }
+    @Published var signedIn : Status = .unknown
     
     init() {
         self.validateCredential()
         NotificationCenter.default.addObserver(forName: .signinStatusChanged, object: nil, queue: nil){
             _ in
             DispatchQueue.main.async {
-                self.signedIn = (Settings.shared.currentAirline != nil)
+                self.signedIn = (Settings.shared.currentAirline != nil) ? .signedIn : .notSignedIn
             }
         }
     }
@@ -47,14 +52,14 @@ class AccountModel : ObservableObject {
         if let user = Settings.shared.userIdentifier {
             appleProvider.getCredentialState(forUserID: user) {
                 credentialState, error in
-                var newStatus = false
+                var newStatus : Status = .notSignedIn
                 switch credentialState {
                 case .authorized:
                     Logger.app.info("User logged in \(user)")
-                    newStatus = true
+                    newStatus = .signedIn
                     if Settings.shared.airlineIdentifier == nil {
                         Logger.app.error("Logged in but airlineIdentifier missing")
-                        newStatus = false
+                        newStatus = .notSignedIn
                     }
                         
                 case .revoked, .notFound, .transferred:

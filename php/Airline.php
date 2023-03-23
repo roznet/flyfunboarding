@@ -31,7 +31,9 @@ class Airline {
     // this is public static function because it will be use for example to create a new airline 
     // in the database, and we don't have an instance of the airline yet
     static function airlineIdentifierFromAppleIdentifier($identifier) : string {
-        return hash('sha256', $identifier);
+        // use md5, this is not secure but here we are just looking
+        // for a unique identifier
+        return hash('sha1', $identifier);
     }
 
 

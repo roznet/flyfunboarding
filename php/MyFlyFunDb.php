@@ -34,6 +34,7 @@ class MyFlyFunDb {
             "Tickets" => [ "link" => [ "Passengers", "Flights" ] ],
             "Aircrafts" => []
     ];
+    static $tableCreationOrder = [ "Aircrafts", "Passengers", "Flights", "Tickets" ];
 
     private function tableToId($table) {
         return substr(strtolower($table), 0, -1) . '_id';
@@ -65,7 +66,8 @@ class MyFlyFunDb {
         // refactor current function to create tables from an array of string of queries
         $queries = [];
         $queries = [ "CREATE TABLE IF NOT EXISTS Airlines (airline_id INT NOT NULL AUTO_INCREMENT, json_data JSON, airline_identifier VARCHAR(255) UNIQUE, modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, PRIMARY KEY (airline_id))" ];
-        foreach (MyFlyFunDb::$standardTables as $table => $tableInfo) {
+        foreach (MyFlyFunDb::$tableCreationOrder as $table) {
+            $tableInfo = MyFlyFunDb::$standardTables[$table];
             // generate id name: lowercase table name without the last character if it's an s
             $table_id =  $this->tableToId($table);
             $identifier = $this->tableToIdentifier($table);
@@ -83,10 +85,15 @@ class MyFlyFunDb {
             $columns[] = "modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP";
             $columns[] = "PRIMARY KEY ({$table_id})" ;
             $columns[] = "FOREIGN KEY (airline_id) REFERENCES Airlines(airline_id) ON DELETE CASCADE";
+            foreach( $links as $link ) {
+                $link_id = $this->tableToId($link);
+                $columns[] = "FOREIGN KEY ({$link_id}) REFERENCES {$link}({$link_id}) ON DELETE CASCADE";
+            }
             $queries[] = "CREATE TABLE IF NOT EXISTS $table (" . implode(", ", $columns) . ")";
         }
 
         foreach ($queries as $query) {
+            print("Executing query: $query".PHP_EOL);
             mysqli_query($this->db, $query);
             $this->checkNoErrorOrDie($query);
         }

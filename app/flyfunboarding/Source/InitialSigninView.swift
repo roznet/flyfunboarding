@@ -99,11 +99,11 @@ struct InitialSigninView: View {
                 if let remoteAirline = remoteAirline {
                     Settings.shared.currentAirline = remoteAirline
                     DispatchQueue.main.async {
-                        self.accountStatus.signedIn = true
+                        self.accountStatus.signedIn = .signedIn
                     }
                 }else{
                     Logger.net.error("Failed to register airline?")
-                    self.accountStatus.signedIn = false
+                    self.accountStatus.signedIn = .notSignedIn
                 }
             }
            

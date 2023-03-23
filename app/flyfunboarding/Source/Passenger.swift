@@ -36,12 +36,19 @@ struct Passenger : Codable, Identifiable {
     var apple_identifier : String
     var passenger_identifier : String?
     
+    static var defaultPassenger = Passenger(name: "")
+    
     var id : Int { return passenger_id ?? apple_identifier.hashValue }
     
     enum CodingKeys: String, CodingKey {
         case formattedName, passenger_id, apple_identifier,passenger_identifier
     }
-
+    init(name: String) {
+        self.formattedName = name
+        self.apple_identifier = ""
+        self.passenger_id = nil
+        self.passenger_identifier = nil
+    }
     init(contact : CNContact){
         self.apple_identifier = contact.identifier
         self.passenger_id = nil

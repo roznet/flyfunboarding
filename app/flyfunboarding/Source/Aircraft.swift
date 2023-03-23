@@ -56,12 +56,6 @@ class Aircraft: Codable, Identifiable, Hashable,Equatable {
     func with(newRegistration: String, newType: String) -> Aircraft {
         return Aircraft(registration: newRegistration, type: newType, aircraft_id: self.aircraft_id, aircraft_identifier: self.aircraft_identifier)
     }
-
-    
-    func uniqueIdentifier() -> String? {
-        let tag = self.registration
-        return SHA256.hash(string: tag)?.hashString
-    }
     
     static var defaultAircraft : Aircraft {
         return Aircraft(registration: "", type: "Cirrus SR22T")

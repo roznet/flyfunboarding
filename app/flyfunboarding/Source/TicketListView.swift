@@ -26,21 +26,84 @@
 
 
 import SwiftUI
+import OSLog
 
 struct TicketListView: View {
+    enum Stage {
+        case edit
+        case passenger
+        case flight
+    }
+    
+    @State private var navPath = NavigationPath()
     @StateObject var ticketListViewModel = TicketListViewModel(tickets: [])
-
+    
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $navPath) {
             List(ticketListViewModel.tickets) { ticket in
-                NavigationLink(destination: { TicketEditView(ticket: ticket) } ) {
+                NavigationLink(destination: self.ticketEditView(ticket: ticket) ){
                     TicketRowView(ticket: ticket)
                 }
             }
+            .navigationDestination(for: Int.self) {
+                i in
+                if i == 0 {
+                    self.chooseFlight()
+                }else if i == 1 {
+                    self.choosePassenger()
+                }else if i == 2 {
+                    self.newTicket()
+                }
+            }
+            .toolbar {
+                ToolbarItemGroup(placement: .navigationBarTrailing) {
+                    Button(action: issue) {
+                        VStack {
+                            Image(systemName: "plus.circle")
+                            Text("New")
+                        }
+                    }
+                }
+            }
         }
+        .padding(.top)
         .onAppear() {
             self.ticketListViewModel.retrieveTickets()
         }
+    }
+    
+    func chooseFlight() -> some View {
+        var rv = FlightPicker(flight: $ticketListViewModel.flight)
+        rv.completion = {
+            self.navPath.removeLast()
+            self.navPath.append(1)
+        }
+        return rv
+        
+    }
+    
+    func choosePassenger() -> some View {
+        var rv = PassengerPicker(passenger: $ticketListViewModel.passenger)
+        rv.completion = {
+            self.navPath.removeLast()
+            self.navPath.append(2)
+        }
+        return rv
+    }
+    
+    func newTicket() -> some View {
+        let ticket = Ticket(passenger: self.ticketListViewModel.passenger, flight: self.ticketListViewModel.flight, seatNumber: "")
+        return TicketEditView(ticketModel: TicketViewModel(ticket: ticket, mode: .create))
+    }
+    
+    func ticketEditView(ticket: Ticket) -> some View {
+        return TicketEditView(ticketModel: TicketViewModel(ticket: ticket, mode: .edit))
+    }
+    
+    //MARK: - Actions
+
+    func issue() {
+        self.navPath.append(0)
     }
 }
 

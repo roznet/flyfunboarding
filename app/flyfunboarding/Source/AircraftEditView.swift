@@ -71,9 +71,11 @@ struct AircraftEditView: View {
             if let a = a{
                 let identifier = a.aircraft_identifier ?? "no id"
                 Logger.ui.info("Save success \(a.registration) \(identifier)")
-                self.aircraftModel.aircraft = a
-                self.aircraftModel.mode = .edit
-                self.aircraftListModel.retrieveAircraft()
+                DispatchQueue.main.async {
+                    self.aircraftModel.aircraft = a
+                    self.aircraftModel.mode = .edit
+                    self.aircraftListModel.retrieveAircraft()
+                }
             }else{
                 Logger.ui.error("Failed to save aircraft")
             }

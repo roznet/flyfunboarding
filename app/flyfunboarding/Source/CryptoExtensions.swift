@@ -1,6 +1,6 @@
 //  MIT License
 //
-//  Created on 16/03/2023 for flyfunboarding
+//  Created on 23/03/2023 for flyfunboarding
 //
 //  Copyright (c) 2023 Brice Rosenzweig
 //
@@ -26,29 +26,34 @@
 
 
 import Foundation
-import SwiftUI
-import OSLog
+import CryptoKit
 
-class TicketListViewModel : ObservableObject {
-    @Published var tickets = [Ticket]()
-    
-    @Published var flight : Flight = Flight.defaultFlight
-    @Published var passenger : Passenger = Passenger.defaultPassenger
-    var syncWithRemote : Bool = true
-    
-    init(tickets: [Ticket], syncWithRemote: Bool = true) {
-        self.tickets = tickets
-        self.syncWithRemote = syncWithRemote
-    }
-    
-    func retrieveTickets() {
-        if self.syncWithRemote {
-            RemoteService.shared.retrieveTicketList() {
-                tickets in
-                DispatchQueue.main.async {
-                    self.tickets = tickets ?? []
-                }
-            }
+extension SHA256 {
+    static func hash(string : String) -> SHA256Digest? {
+        if let data = string.data(using: .utf8) {
+            return SHA256.hash(data: data)
         }
+        return nil
+    }
+}
+
+extension SHA256Digest {
+    var hashString : String {
+        self.compactMap { String(format: "%02x", $0) }.joined()
+    }
+}
+
+extension Insecure.SHA1 {
+    static func hash(string : String) -> Insecure.SHA1.Digest? {
+        if let data = string.data(using: .utf8) {
+            return Insecure.SHA1.hash(data: data)
+        }
+        return nil
+    }
+}
+
+extension Insecure.SHA1Digest {
+    var hashString : String {
+        self.compactMap { String(format: "%02x", $0) }.joined()
     }
 }

@@ -31,6 +31,8 @@ import SwiftUIKit
 import OSLog
 
 struct PassengerListView: View {
+    
+    
     @State var showPicker = false
     @StateObject var passengerListViewModel = PassengerListViewModel(passengers: [])
     
@@ -45,18 +47,17 @@ struct PassengerListView: View {
                 }
                 .navigationTitle("Passengers")
                 .toolbar {
-                    ToolbarItemGroup(placement: .automatic) {
-                        Spacer()
+                    ToolbarItemGroup(placement: .navigationBarTrailing) {
                         Button(action:add) {
                             VStack {
                                 Image(systemName: "person.fill.badge.plus")
                                 Text("Add")
                             }
-                        }.padding()
-                        Spacer()
+                        }
                     }
                 }
             }
+            .padding(.top)
             .onAppear{
                 self.passengerListViewModel.retrievePassengers()
             }

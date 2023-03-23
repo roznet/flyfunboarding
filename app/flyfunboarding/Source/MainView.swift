@@ -33,10 +33,17 @@ struct MainView: View {
     @StateObject private var accountModel : AccountModel = AccountModel()
     
     var body: some View {
-        if accountModel.signedIn {
+        if accountModel.signedIn == .signedIn {
             AirlineView().environmentObject(accountModel)
-        }else{
+        }else if accountModel.signedIn == .notSignedIn{
             InitialSigninView().environmentObject(accountModel)
+        }else {
+            VStack {
+                Spacer()
+                Text("Checking account status")
+                ProgressView()
+                Spacer()
+            }
         }
     }
 }

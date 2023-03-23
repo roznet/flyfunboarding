@@ -29,22 +29,9 @@ import OSLog
 import RZUtilsSwift
 import AuthenticationServices
 import FMDB
-import CryptoKit
 
-extension SHA256 {
-    static func hash(string : String) -> SHA256Digest? {
-        if let data = string.data(using: .utf8) {
-            return SHA256.hash(data: data)
-        }
-        return nil
-    }
-}
 
-extension SHA256Digest {
-    var hashString : String {
-        self.compactMap { String(format: "%02x", $0) }.joined()
-    }
-}
+
 @main
 struct FlyFunBoardingApp: App {
     static public var knownAirports : KnownAirports? = nil

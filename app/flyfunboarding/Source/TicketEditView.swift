@@ -26,40 +26,61 @@
 
 
 import SwiftUI
+import OSLog
 
 struct TicketEditView: View {
-    var ticket : Ticket
+
+    @StateObject var ticketModel : TicketViewModel
+    var ticket : Ticket { return self.ticketModel.ticket }
+    
     var body: some View {
         VStack(alignment: .leading) {
             HStack(alignment: .firstTextBaseline) {
+                Text("Seat Number").standardFieldLabel()
+                TextField("Seat Number", text: $ticketModel.seatNumber).standardStyle()
+            }
+            
+            HStack(alignment: .firstTextBaseline) {
                 Text("Passenger")
                     .standardFieldLabel()
-                Text(ticket.passenger.formattedName)
+                Text(ticketModel.passenger.formattedName)
                     .standardFieldValue()
-                    .padding(.bottom)
             }
-            FlightEditView(flightModel: FlightViewModel(flight: ticket.flight, mode: .edit),
+            .padding(.bottom)
+            FlightEditView(flightModel: FlightViewModel(flight: ticketModel.flight, mode: .edit),
                            flightListModel: FlightListViewModel.empty,
                            editIsDisabled: true)
-            HStack(alignment: .center) {
-                Spacer()
-                Button(action: downloadFile) {
-                    Text("Share")
-                }
-                Button(action: issueTicket) {
-                    Text("Open in Safari")
-                }.padding(.leading)
-                Spacer()
+            StandardEditButtons(mode: ticketModel.mode,
+                                submit: "Issue", delete: "Cancel", submitAction: issue, deleteAction: delete)
+            Spacer()
+            if self.ticketModel.mode == .edit {
+                self.boardingPassButtons()
             }
         }
     }
     
-    func issueTicket() {
+    func boardingPassButtons() -> some View{
+       return
+            HStack(alignment: .center) {
+                Spacer()
+                Button(action: boardingPassLink) {
+                    Text("Download Pass")
+                }.standardButton()
+                Button(action: boardingPassFile) {
+                    Text("Pass in Safari")
+                }.standardButton().padding(.leading)
+                Spacer()
+            }
+            .padding(.top)
+    }
+    
+    
+    func boardingPassFile() {
         if let url = ticket.disclaimerUrl {
             UIApplication.shared.open(url)
         }
     }
-    func downloadFile() {
+    func boardingPassLink() {
         if let url = ticket.downloadPassUrl {
             guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
                   let window = scene.windows.first else {
@@ -70,12 +91,31 @@ struct TicketEditView: View {
             window.rootViewController?.present(activityVC, animated: true, completion: nil)
         }
     }
+    
+    func issue() {
+        let ticket = self.ticketModel.ticket
+        RemoteService.shared.issueTicket(ticket: ticket) {
+            ticket in
+            if let t = ticket {
+                Logger.ui.info( "issued \(t)")
+                DispatchQueue.main.async {
+                    self.ticketModel.ticket = t
+                    self.ticketModel.mode = .edit
+                }
+            }else{
+                Logger.ui.error("Failed to issue ticket")
+            }
+        }
+    }
+    func delete() {
+        
+    }
 
 }
 
 struct TicketEditView_Previews: PreviewProvider {
     static var previews: some View {
         let tickets = Samples.tickets
-        TicketEditView(ticket: tickets[0])
+        TicketEditView(ticketModel: TicketViewModel(ticket: tickets[0], mode: .edit))
     }
 }

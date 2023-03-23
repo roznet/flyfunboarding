@@ -30,13 +30,14 @@ import RZFlight
 import RZData
 
 struct FlightListView: View {
+    
     @StateObject var flightListViewModel = FlightListViewModel(flights: [])
     @State private var navPath = NavigationPath()
+    
     var body: some View {
         NavigationStack(path: $navPath) {
             List(flightListViewModel.flights) { flight in
-                NavigationLink(destination: FlightEditView(flightModel: FlightViewModel(flight:flight, mode: .edit),
-                                                           flightListModel: self.flightListViewModel)) {
+                NavigationLink(destination: self.flightEditView(flight: flight)) {
                     FlightRowView(flight: flight)
                 }
             }
@@ -48,21 +49,25 @@ struct FlightListView: View {
             }
             .navigationTitle("Flights")
             .toolbar {
-                ToolbarItemGroup(placement: .bottomBar) {
-                    Spacer()
+                ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button(action: add) {
                         VStack {
                             Image(systemName: "plus.circle")
                             Text("Add")
                         }
-                    }.padding()
-                    Spacer()
+                    }
                 }
             }
         }
+        .padding(.top)
         .onAppear {
             flightListViewModel.retrieveFlights()
         }
+    }
+    
+    func flightEditView(flight: Flight) -> some View {
+        return FlightEditView(flightModel: FlightViewModel(flight:flight, mode: .edit),
+                              flightListModel: self.flightListViewModel)
     }
     func add() {
         self.navPath.append(0)

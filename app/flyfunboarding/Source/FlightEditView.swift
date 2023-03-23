@@ -67,7 +67,6 @@ struct FlightEditView: View {
                                         submitAction: scheduleOrAmend,
                                         deleteAction: delete)
                 }
-                Spacer()
             }
         }
     }

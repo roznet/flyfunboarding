@@ -35,10 +35,26 @@ class TicketViewModel : ObservableObject {
     @Published var passenger : Passenger
     @Published var seatNumber : String
     var mode : Mode
+   
+    var ticket : Ticket {
+        get {
+            return self.originalTicket.with(seatNumber: self.seatNumber)
+        }
+        set {
+            self.originalTicket = newValue
+            self.flight = newValue.flight
+            self.passenger = newValue.passenger
+            self.seatNumber = newValue.seatNumber
+        }
+    }
+    private var originalTicket : Ticket
+    
+    var isIssued : Bool { return self.originalTicket.ticket_identifier != nil }
   
     init(ticket: Ticket, mode : Mode) {
         self.flight = ticket.flight
         self.passenger = ticket.passenger
+        self.originalTicket = ticket
         self.seatNumber =  ticket.seatNumber
         self.mode = mode
     }

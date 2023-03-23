@@ -38,6 +38,9 @@ struct Ticket : Codable, Identifiable {
     
     var id : Int { return self.ticket_id ?? -1 }
     
+    func with(seatNumber : String) -> Ticket {
+        return Ticket(passenger: self.passenger, flight: self.flight, seatNumber: seatNumber, ticket_id: self.ticket_id, ticket_identifier: self.ticket_identifier)
+    }
     var downloadPassUrl : URL? {
         if let identifier = ticket_identifier {
             let baseUrl = Secrets.shared.flyfunBaseUrl
