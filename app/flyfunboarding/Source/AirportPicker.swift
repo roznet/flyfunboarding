@@ -27,6 +27,7 @@
 
 import SwiftUI
 import CoreLocation
+import RZFlight
 import OSLog
 
 class MatchedAirport : ObservableObject {
@@ -73,6 +74,14 @@ struct AirportPicker: View {
     @FocusState var isFocused : Bool
     @State var editIsDisabled : Bool = false
     
+    func sync() {
+        if let name = Airport.find(icao: self.icao) {
+            self.name = name.name
+        }else{
+            self.name = ""
+        }
+    }
+    
     var body: some View {
         VStack {
             HStack(alignment: .firstTextBaseline) {
@@ -103,6 +112,7 @@ struct AirportPicker: View {
                         }
                     Text(name)
                         .font(.footnote)
+                        .onAppear() { self.sync() }
                 }
             }
             

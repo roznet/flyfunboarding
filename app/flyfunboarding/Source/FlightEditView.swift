@@ -55,7 +55,7 @@ struct FlightEditView: View {
                 HStack {
                     Text("Flight Number")
                         .standardFieldLabel()
-                    TextField("Gate", text: $flightModel.flightNumber)
+                    TextField("Flight Number", text: $flightModel.flightNumber)
                         .standardStyle()
                         .disabled(self.editIsDisabled)
                     

@@ -29,8 +29,13 @@ import OSLog
 import RZUtilsSwift
 import AuthenticationServices
 import FMDB
+import RZFlight
 
-
+extension Airport {
+    static func find(icao : String) -> Airport? {
+        return try? Airport(db: FlyFunBoardingApp.db, ident: icao)
+    }
+}
 
 @main
 struct FlyFunBoardingApp: App {
