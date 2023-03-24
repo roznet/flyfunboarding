@@ -139,7 +139,7 @@ label {
 }
 #submit-link {
     margin-top: 10px;
-    opacity: 0.5;
+    opacity: 1.0;
 }
 
 </style>
@@ -168,10 +168,10 @@ if($get_pass) {
 <div class="acknowledge">
 <form>
   <label>
-    <input type="checkbox" id="agree-checkbox">
+    <input type="checkbox" id="agree-checkbox" value="1" checked>
     I agree to the terms and conditions
   </label>
-  <a id="submit-link" href="#" download>
+  <a id="submit-link" href="<?php echo $pass_url; ?>" download>
   <img id="submit-img" src="<?php echo $img_url; ?>" alt="Add to Apple Wallet" width="100">
   </a>
 </form>
