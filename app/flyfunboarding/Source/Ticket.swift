@@ -38,6 +38,10 @@ struct Ticket : Codable, Identifiable {
     
     var id : Int { return self.ticket_id ?? -1 }
     
+    static var defaultTicket : Ticket = {
+        return Ticket(passenger: Passenger.defaultPassenger, flight: Flight.defaultFlight, seatNumber: "")
+    }()
+    
     func with(seatNumber : String) -> Ticket {
         return Ticket(passenger: self.passenger, flight: self.flight, seatNumber: seatNumber, ticket_id: self.ticket_id, ticket_identifier: self.ticket_identifier)
     }
@@ -64,5 +68,12 @@ struct Ticket : Codable, Identifiable {
         }
         return nil
 
+    }
+}
+
+extension Ticket {
+    struct Signature : Codable {
+        let ticket : String
+        let signature : String
     }
 }

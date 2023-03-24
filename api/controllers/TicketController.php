@@ -64,6 +64,27 @@ class TicketController extends Controller {
         echo $json;
     }
 
+    function verify_post() {
+        $this->validateMethod('POST');
+
+        $json = $this->getJsonPostBody();
+        if( !isset($json['ticket']) ) {
+            $this->terminate(400, 'Ticket not found');
+        }
+        $ticket_id = $json['ticket'];
+        $ticket = MyFlyFunDb::$shared->getTicket($ticket_id);
+        if( is_null($ticket) ) {
+            $this->terminate(400, 'Ticket not found');
+        }
+        if( $ticket->verify($json) ){
+            $json = json_encode($ticket->toJson());
+            $this->contentType('application/json');
+            echo $json;
+        }else{
+            $this->terminate(403, 'Ticket not valid');
+        }
+    }
+
     function list($params) {
         $this->validateMethod('GET');
 
@@ -96,6 +117,7 @@ class TicketController extends Controller {
             $boardingPass->createPass();
         }
     }
+
 
 
 }

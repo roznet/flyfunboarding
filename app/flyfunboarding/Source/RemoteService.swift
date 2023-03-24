@@ -114,7 +114,7 @@ class RemoteService {
         
         return true
     }
-    private func registerObject<Type:Codable>(point: String, object: Type, requireAirline : Bool = true, completion: @escaping (Type?) -> Void) {
+    private func registerObject<Type:Codable>(point: String, object: Codable, requireAirline : Bool = true, completion: @escaping (Type?) -> Void) {
         var airline : Airline? = nil
         if requireAirline {
             airline = Settings.shared.currentAirline
@@ -203,7 +203,7 @@ class RemoteService {
     
     //MARK: - Airline
     func registerAirline(airline : Airline, completion : @escaping (Airline?) -> Void) {
-        self.registerObject(point: "airline/create", object: airline, requireAirline: false) { airline in
+        self.registerObject(point: "airline/create", object: airline, requireAirline: false) { (airline : Airline?) in
             if let airline = airline, let airlineId = airline.airlineId {
                 Logger.net.info("register airline with \(airlineId) for \(airline.appleIdentifier)")
                 Settings.shared.currentAirline = airline
@@ -285,10 +285,10 @@ class RemoteService {
         else { completion(nil); return }
         self.registerObject(point: point, object: ticket, completion: completion)
     }
-   
     
-    
-    
-
-            
+    func verifyTicket(signature: Ticket.Signature, completion : @escaping (Ticket?) -> Void) {
+        guard let point = self.point(api: "ticket/verify", airline: Settings.shared.currentAirline)
+        else { completion(nil); return }
+        self.registerObject(point: point, object: signature, completion: completion)
+    }
 }

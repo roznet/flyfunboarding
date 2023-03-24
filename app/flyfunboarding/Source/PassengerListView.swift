@@ -50,7 +50,7 @@ struct PassengerListView: View {
                     ToolbarItemGroup(placement: .navigationBarTrailing) {
                         Button(action:add) {
                             VStack {
-                                Image(systemName: "person.fill.badge.plus")
+                                Image(systemName: "plus.circle")
                                 Text("Add")
                             }
                         }

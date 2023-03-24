@@ -68,6 +68,7 @@
 		42D940BC29CCDD6F00622CF3 /* CryptoExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D940BB29CCDD6F00622CF3 /* CryptoExtensions.swift */; };
 		42D940C029CCF8CA00622CF3 /* FlightPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D940BF29CCF8CA00622CF3 /* FlightPicker.swift */; };
 		42D940C229CCFCD800622CF3 /* PassengerPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D940C129CCFCD800622CF3 /* PassengerPicker.swift */; };
+		42D940C429CE354900622CF3 /* IconWithBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D940C329CE354900622CF3 /* IconWithBadge.swift */; };
 		42E58E1929BFD45000185971 /* airports.db in Resources */ = {isa = PBXBuildFile; fileRef = 42E58E1829BFD45000185971 /* airports.db */; };
 		42E58E1B29BFE36900185971 /* Flight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E58E1A29BFE36900185971 /* Flight.swift */; };
 		42E58E1D29BFE67100185971 /* Ticket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E58E1C29BFE67100185971 /* Ticket.swift */; };
@@ -151,6 +152,7 @@
 		42D940BB29CCDD6F00622CF3 /* CryptoExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CryptoExtensions.swift; path = Source/CryptoExtensions.swift; sourceTree = "<group>"; };
 		42D940BF29CCF8CA00622CF3 /* FlightPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FlightPicker.swift; path = Source/FlightPicker.swift; sourceTree = "<group>"; };
 		42D940C129CCFCD800622CF3 /* PassengerPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PassengerPicker.swift; path = Source/PassengerPicker.swift; sourceTree = "<group>"; };
+		42D940C329CE354900622CF3 /* IconWithBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = IconWithBadge.swift; path = Source/IconWithBadge.swift; sourceTree = "<group>"; };
 		42E58E1829BFD45000185971 /* airports.db */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = airports.db; path = python/airports.db; sourceTree = "<group>"; };
 		42E58E1A29BFE36900185971 /* Flight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Flight.swift; path = Source/Flight.swift; sourceTree = "<group>"; };
 		42E58E1C29BFE67100185971 /* Ticket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Ticket.swift; path = Source/Ticket.swift; sourceTree = "<group>"; };
@@ -231,6 +233,7 @@
 				42D940B929CB9D8B00622CF3 /* StandardEditButtons.swift */,
 				42D940BB29CCDD6F00622CF3 /* CryptoExtensions.swift */,
 				42D940C129CCFCD800622CF3 /* PassengerPicker.swift */,
+				42D940C329CE354900622CF3 /* IconWithBadge.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -607,6 +610,7 @@
 				4269B42E29BC77B3009891C6 /* Log.swift in Sources */,
 				42D9407B29C7212800622CF3 /* StyleModifiers.swift in Sources */,
 				4260043329BD1829003E0433 /* AircraftListView.swift in Sources */,
+				42D940C429CE354900622CF3 /* IconWithBadge.swift in Sources */,
 				4269B43C29BCB0A9009891C6 /* Airline.swift in Sources */,
 				4269B41B29BBCAB6009891C6 /* FlyFunBoardingApp.swift in Sources */,
 				42D9406C29C3C75600622CF3 /* FlightRowView.swift in Sources */,

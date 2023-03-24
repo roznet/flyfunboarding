@@ -111,13 +111,7 @@ class BoardingPass {
     }
 
     function getBarcodeData() : array {
-        $uniqueId = $this->ticket->ticket_identifier;
-        
-        $payload = [];
-        $payload['ticket'] = $uniqueId;
-        if( Airline::$current !== null){
-            $payload['signature'] = Airline::$current->sign($uniqueId);
-        }
+        $payload = $this->ticket->signature();
 
         return [
             'format' => 'PKBarcodeFormatQR',

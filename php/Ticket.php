@@ -40,6 +40,21 @@ class Ticket {
         return JsonHelper::toJson($this);
     }
 
+    public function signature() : array {
+        $signature = Airline::$current->sign($this->ticket_identifier);
+        return [
+            'ticket' => $this->ticket_identifier,
+            'signature' => $signature
+        ];
+    }
+
+    public function verify(array $payload) : bool {
+        $signature = $payload['signature'];
+        $ticket = $payload['ticket'];
+        return Airline::$current->verify($ticket, $signature);
+    }
+
+
     static public function fromJson(array $json) : Ticket {
         $rv = JsonHelper::fromJson($json, 'Ticket');
         if(isset($rv->passenger->passenger_id)) {

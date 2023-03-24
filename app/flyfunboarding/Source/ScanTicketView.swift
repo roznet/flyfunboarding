@@ -27,27 +27,77 @@
 
 import SwiftUI
 import CodeScanner
+import OSLog
 
 struct ScanTicketView: View {
-    @State private var isPresentingScanner = false
+    enum Status {
+        case scanning
+        case checking
+        case valid
+        case invalid
+    }
     @State private var scannedString : String?
-    
-    var body: some View {
-        VStack {
-            if let code = scannedString {
-                Text(code)
+    @State private var status : Status = .scanning
+    @State private var ticket : Ticket = Ticket.defaultTicket
+
+    func verify(string : String) {
+        scannedString = string
+        if
+           let data = string.data(using: .utf8) {
+            Logger.ui.info("Scanned \(string)")
+            if let signature = try? JSONDecoder().decode(Ticket.Signature.self, from: data) {
+                RemoteService.shared.verifyTicket(signature: signature) {
+                    ticket in
+                    if let ticket = ticket {
+                        DispatchQueue.main.async {
+                            self.status = .valid
+                            self.ticket = ticket
+                        }
+                    }else{
+                        self.status = .invalid
+                    }
+                }
+                self.status = .checking
+            }else{
+                self.status = .invalid
             }
-            
-            Button("Scan Ticket") {
-                isPresentingScanner = true
-            }
+        }else{
+            self.status = .invalid
         }
-        .sheet(isPresented: $isPresentingScanner) {
-            CodeScannerView(codeTypes: [.qr], simulatedData: "0"){
-                response in
-                if case let .success(result) = response {
-                    scannedString = result.string
-                    isPresentingScanner = false
+    }
+    var body: some View {
+        GeometryReader { geometry in
+            VStack {
+                CodeScannerView(codeTypes: [.qr], scanMode: .continuous, simulatedData: "0"){
+                    response in
+                    if case let .success(result) = response {
+                        self.verify(string: result.string)
+                    }
+                }
+                    .padding()
+                    .frame(width: geometry.size.width, height: geometry.size.height / 2.0)
+                
+                switch self.status {
+                case .checking:
+                    VStack {
+                        Text("Checking validity")
+                        ProgressView()
+                    }
+                case .scanning:
+                    Text("Scan a ticket")
+                case .invalid:
+                    VStack {
+                        Image(systemName: "xmark.seal.fill")
+                            .foregroundColor(.red)
+                        Text("Invalid ticket")
+                    }
+                case .valid:
+                    VStack {
+                        Image(systemName: "checkmark.seal.fill")
+                            .foregroundColor(.green)
+                        Text("Valid ticket")
+                        TicketRowView(ticket: self.ticket)
+                    }
                 }
             }
         }
