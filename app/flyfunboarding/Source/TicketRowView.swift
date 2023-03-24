@@ -31,11 +31,9 @@ struct TicketRowView: View {
     var ticket : Ticket
     var body: some View {
         VStack(alignment: .leading) {
-            Text(ticket.passenger.formattedName)
-            HStack {
-                Text(ticket.flight.origin.icao)
-                Text(ticket.flight.destination.icao)
-            }
+            Text(ticket.passenger.formattedName).standardFieldLabel()
+                .padding(.bottom)
+            FlightRowView(flight: ticket.flight)
         }
     }
 }

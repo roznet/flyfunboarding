@@ -32,17 +32,23 @@ import OSLog
 class FlightListViewModel : ObservableObject {
     @Published var flights : [Flight] = []
     var syncWithRemote : Bool = true
+    var aircraft : Aircraft? = nil
     
     static var empty = FlightListViewModel(flights: [], syncWithRemote: false)
     
-    init(flights : [Flight], syncWithRemote: Bool = true) {
+    init(flights : [Flight], aircraft : Aircraft? = nil, syncWithRemote: Bool = true) {
         self.syncWithRemote = syncWithRemote
         self.flights = flights
+        if let aircraft = aircraft {
+            if aircraft.aircraft_identifier != nil {
+                self.aircraft = aircraft
+            }
+        }
     }
     
     func retrieveFlights() {
         if syncWithRemote {
-            RemoteService.shared.retrieveFlightList(){
+            RemoteService.shared.retrieveFlightList(aircraft: self.aircraft) {
                 flights in
                 DispatchQueue.main.async {
                     self.flights = flights ?? []

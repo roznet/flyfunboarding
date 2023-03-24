@@ -51,7 +51,7 @@ struct TicketEditView: View {
                            flightListModel: FlightListViewModel.empty,
                            editIsDisabled: true)
             StandardEditButtons(mode: ticketModel.mode,
-                                submit: "Issue", delete: "Cancel", submitAction: issue, deleteAction: delete)
+                                submit: "Issue", delete: "Delete", submitAction: issue, deleteAction: delete)
             Spacer()
             if self.ticketModel.mode == .edit {
                 self.boardingPassButtons()

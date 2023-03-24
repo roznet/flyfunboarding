@@ -247,8 +247,10 @@ class RemoteService {
     }
     
     //MARK: - Flights
-    func retrieveFlightList(completion : @escaping ([Flight]?) -> Void) {
-        guard let point = self.point(api: "flight/list", airline: Settings.shared.currentAirline) else { completion(nil); return }
+    func retrieveFlightList(aircraft : Aircraft? = nil, completion : @escaping ([Flight]?) -> Void) {
+        let api = aircraft?.aircraft_identifier == nil ? "flight/list" : "aircraft/\(aircraft!.aircraft_identifier!)/flights"
+        
+        guard let point = self.point(api: api, airline: Settings.shared.currentAirline) else { completion(nil); return }
         self.retrieveObject(point: point, completion: completion)
     }
     func scheduleFlight(flight: Flight, completion: @escaping (Flight?) -> Void) {

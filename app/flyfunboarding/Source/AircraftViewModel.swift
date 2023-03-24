@@ -32,6 +32,7 @@ class AircraftViewModel : ObservableObject {
     @Published var registration :String
     @Published var type :String
     typealias Mode = StandardEditButtons.Mode
+    @StateObject var flightListViewModel = FlightListViewModel(flights: [], syncWithRemote: false)
     
     var mode : Mode
     var submitText : String {
@@ -61,6 +62,12 @@ class AircraftViewModel : ObservableObject {
         self.type = aircraft.type
         self.originalAircraft = aircraft
         self.mode = mode
+        self.flightListViewModel.aircraft = aircraft
+        if aircraft.aircraft_identifier != nil {
+            self.flightListViewModel.syncWithRemote = true
+            self.flightListViewModel.retrieveFlights()
+        }
+        
         
     }
 }
