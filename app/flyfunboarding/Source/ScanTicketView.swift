@@ -68,7 +68,7 @@ struct ScanTicketView: View {
     var body: some View {
         GeometryReader { geometry in
             VStack {
-                CodeScannerView(codeTypes: [.qr], scanMode: .continuous, simulatedData: "0"){
+                CodeScannerView(codeTypes: [.qr], scanMode: .continuous, showViewfinder: true, simulatedData: "0"){
                     response in
                     if case let .success(result) = response {
                         self.verify(string: result.string)
@@ -88,13 +88,19 @@ struct ScanTicketView: View {
                 case .invalid:
                     VStack {
                         Image(systemName: "xmark.seal.fill")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
                             .foregroundColor(.red)
+                            .frame(width: geometry.size.width / 4.0, height: geometry.size.width/4.0)
                         Text("Invalid ticket")
                     }
                 case .valid:
                     VStack {
                         Image(systemName: "checkmark.seal.fill")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
                             .foregroundColor(.green)
+                            .frame(width: geometry.size.width / 4.0, height: geometry.size.width/4.0)
                         Text("Valid ticket")
                         TicketRowView(ticket: self.ticket)
                     }
