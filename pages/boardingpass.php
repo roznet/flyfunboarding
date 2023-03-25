@@ -62,7 +62,7 @@ if( isset($_GET['ticket']) && preg_match('/^[a-zA-Z0-9]+/',$_GET['ticket']) ){
         $ticket = MyFlyFunDb::$shared->directGetTicket($pass_identifier);
         if($ticket){
             $path = $parsedUrl['path'];
-            $path = str_replace('pages/disclaimer.php',"api/boardingPass/{$pass_identifier}",$path);
+            $path = str_replace('pages/boardingpass',"api/boardingPass/{$pass_identifier}",$path);
             $pass_url = $path;
             $airlineName = Airline::$current->airline_name;
             $get_pass = true;

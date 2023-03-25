@@ -60,7 +60,7 @@ struct Ticket : Codable, Identifiable {
     var disclaimerUrl : URL? {
         if let identifier = ticket_identifier {
             let baseUrl = Secrets.shared.flyfunBaseUrl.absoluteString.replacing("/api", with: "/pages")
-            let point = "boardingpass?ticket=\(identifier)"
+            let point = "boardingpass.php?ticket=\(identifier)"
             if let url = URL(string: point, relativeTo: URL(string: baseUrl) ) {
                 Logger.app.info("Sharing \(url.absoluteURL)")
                 return url.absoluteURL
