@@ -44,7 +44,7 @@ class AircraftListViewModel : ObservableObject {
             RemoteService.shared.retrieveAircraftList(){
                 aircrafts in
                 DispatchQueue.main.async {
-                    self.aircrafts = aircrafts ?? []
+                    self.aircrafts = aircrafts?.sorted(by: { $0.moreRecent(than: $1) }) ?? []
                 }
             }
         }

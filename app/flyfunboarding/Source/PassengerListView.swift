@@ -41,9 +41,8 @@ struct PassengerListView: View {
             ContactPicker(showPicker: $showPicker, onSelectContact: selectedContact)
             NavigationStack {
                 List(passengerListViewModel.passengers) { passenger in
-                    VStack(alignment: .leading) {
-                        Text(passenger.formattedName).standardFieldValue()
-                    }.padding(.bottom)
+                    PassengerRowView(passenger: passenger)
+                        .padding(.bottom)
                 }
                 .navigationTitle("Passengers")
                 .toolbar {

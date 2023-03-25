@@ -43,7 +43,7 @@ class PassengerListViewModel : ObservableObject {
             RemoteService.shared.retrievePassengerList() {
                 passengers in
                 DispatchQueue.main.async {
-                    self.passengers = passengers ?? []
+                    self.passengers = passengers?.sorted(by: { $0.moreRecent(than: $1) }) ?? []
                 }
             }
         }

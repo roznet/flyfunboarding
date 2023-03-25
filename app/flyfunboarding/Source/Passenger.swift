@@ -35,13 +35,14 @@ struct Passenger : Codable, Identifiable {
     var passenger_id : Int?
     var apple_identifier : String
     var passenger_identifier : String?
+    var stats : [Stats]?
     
     static var defaultPassenger = Passenger(name: "")
     
-    var id : Int { return passenger_id ?? apple_identifier.hashValue }
+    var id = UUID()
     
     enum CodingKeys: String, CodingKey {
-        case formattedName, passenger_id, apple_identifier,passenger_identifier
+        case formattedName, passenger_id, apple_identifier,passenger_identifier,stats
     }
     init(name: String) {
         self.formattedName = name
@@ -76,5 +77,11 @@ struct Passenger : Codable, Identifiable {
         let contact = try? store.unifiedContact(withIdentifier: self.apple_identifier, keysToFetch: keys as [CNKeyDescriptor])
         return contact
     }
-   
+  
+    func moreRecent(than : Passenger) -> Bool {
+        if let a = self.stats?.first, let b = than.stats?.first {
+            return a.moreRecent(than: b)
+        }
+        return self.stats?.first != nil
+    }
 }

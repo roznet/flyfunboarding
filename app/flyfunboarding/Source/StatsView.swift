@@ -1,6 +1,6 @@
 //  MIT License
 //
-//  Created on 19/03/2023 for flyfunboarding
+//  Created on 25/03/2023 for flyfunboarding
 //
 //  Copyright (c) 2023 Brice Rosenzweig
 //
@@ -25,30 +25,33 @@
 
 
 
-import Foundation
 import SwiftUI
 
-
-extension TextField {
-    func standardStyle() -> some View {
-        return self.textFieldStyle(.roundedBorder)
+struct StatsView: View {
+    var stats : Stats
+    
+    var body: some View {
+        VStack {
+            Text("\(stats.formattedCount)").standardInfo()
+            if let last = stats.formattedLast {
+                Text("\(last)").standardInfo()
+            }
+        }
     }
 }
 
-extension Text {
-    func standardFieldLabel() -> some View {
-        return self.font(.headline)
-    }
-    func standardFieldValue() -> some View {
-        return self.font(.body)
-    }
-    func standardInfo() -> some View {
-        return self.font(.footnote).foregroundColor(.gray)
-    }
-}
-
-extension Button {
-    func standardButton() -> some View {
-        return self.buttonStyle(.bordered)
+struct StatsView_Previews: PreviewProvider {
+    static var previews: some View {
+        VStack {
+            StatsView(stats: Stats(table: "Tickets", count: 1, last: Date().addingTimeInterval(24*3600*5)))
+                .padding()
+            
+            StatsView(stats: Stats(table: "Tickets", count: 2, last: Date()))
+                .padding()
+            
+            StatsView(stats: Stats(table: "Flights", count: 0))
+                .padding()
+        }
+        
     }
 }

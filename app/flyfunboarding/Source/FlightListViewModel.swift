@@ -38,7 +38,7 @@ class FlightListViewModel : ObservableObject {
     
     init(flights : [Flight], aircraft : Aircraft? = nil, syncWithRemote: Bool = true) {
         self.syncWithRemote = syncWithRemote
-        self.flights = flights
+        self.flights = flights.sorted(by: { $0.moreRecent(than: $1)})
         if let aircraft = aircraft {
             if aircraft.aircraft_identifier != nil {
                 self.aircraft = aircraft
@@ -51,7 +51,7 @@ class FlightListViewModel : ObservableObject {
             RemoteService.shared.retrieveFlightList(aircraft: self.aircraft) {
                 flights in
                 DispatchQueue.main.async {
-                    self.flights = flights ?? []
+                    self.flights = flights?.sorted(by: { $0.moreRecent(than: $1)}) ?? []
                 }
             }
         }

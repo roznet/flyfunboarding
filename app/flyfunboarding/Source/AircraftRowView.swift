@@ -38,6 +38,9 @@ struct AircraftRowView : View {
                 Text(aircraft.type).standardFieldValue()
             }.padding(.leading)
             Spacer()
+            if let first = aircraft.stats?.first {
+                StatsView(stats: first)
+            }
             if self.selected {
                 Image(systemName: "checkmark.circle").padding(.trailing)
             }
@@ -46,10 +49,18 @@ struct AircraftRowView : View {
 }
 
 struct AircraftRowView_Previews: PreviewProvider {
+    static func aircraftWithStats(aircraft : Aircraft) -> Aircraft {
+        let rv = aircraft
+        rv.stats = [Stats(table: "Flights", count: 2, last: Date() )]
+        return rv
+    }
+    
     static var previews: some View {
         let aircrafts = Samples.aircrafts
+        let withStats : Aircraft = self.aircraftWithStats(aircraft: aircrafts[0])
         VStack {
             AircraftRowView(aircraft: aircrafts[0])
+            AircraftRowView(aircraft: withStats)
             AircraftRowView(aircraft: aircrafts[1], selected: true)
         }
     }

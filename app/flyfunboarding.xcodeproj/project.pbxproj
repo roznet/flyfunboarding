@@ -69,6 +69,9 @@
 		42D940C029CCF8CA00622CF3 /* FlightPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D940BF29CCF8CA00622CF3 /* FlightPicker.swift */; };
 		42D940C229CCFCD800622CF3 /* PassengerPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D940C129CCFCD800622CF3 /* PassengerPicker.swift */; };
 		42D940C429CE354900622CF3 /* IconWithBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D940C329CE354900622CF3 /* IconWithBadge.swift */; };
+		42D940C629CEF31F00622CF3 /* Stats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D940C529CEF31F00622CF3 /* Stats.swift */; };
+		42D940C829CEF5AB00622CF3 /* PassengerRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D940C729CEF5AB00622CF3 /* PassengerRowView.swift */; };
+		42D940CA29CEF86F00622CF3 /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D940C929CEF86F00622CF3 /* StatsView.swift */; };
 		42E58E1929BFD45000185971 /* airports.db in Resources */ = {isa = PBXBuildFile; fileRef = 42E58E1829BFD45000185971 /* airports.db */; };
 		42E58E1B29BFE36900185971 /* Flight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E58E1A29BFE36900185971 /* Flight.swift */; };
 		42E58E1D29BFE67100185971 /* Ticket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E58E1C29BFE67100185971 /* Ticket.swift */; };
@@ -153,6 +156,9 @@
 		42D940BF29CCF8CA00622CF3 /* FlightPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FlightPicker.swift; path = Source/FlightPicker.swift; sourceTree = "<group>"; };
 		42D940C129CCFCD800622CF3 /* PassengerPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PassengerPicker.swift; path = Source/PassengerPicker.swift; sourceTree = "<group>"; };
 		42D940C329CE354900622CF3 /* IconWithBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = IconWithBadge.swift; path = Source/IconWithBadge.swift; sourceTree = "<group>"; };
+		42D940C529CEF31F00622CF3 /* Stats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Stats.swift; path = Source/Stats.swift; sourceTree = "<group>"; };
+		42D940C729CEF5AB00622CF3 /* PassengerRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PassengerRowView.swift; path = Source/PassengerRowView.swift; sourceTree = "<group>"; };
+		42D940C929CEF86F00622CF3 /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StatsView.swift; path = Source/StatsView.swift; sourceTree = "<group>"; };
 		42E58E1829BFD45000185971 /* airports.db */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = airports.db; path = python/airports.db; sourceTree = "<group>"; };
 		42E58E1A29BFE36900185971 /* Flight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Flight.swift; path = Source/Flight.swift; sourceTree = "<group>"; };
 		42E58E1C29BFE67100185971 /* Ticket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Ticket.swift; path = Source/Ticket.swift; sourceTree = "<group>"; };
@@ -248,6 +254,7 @@
 				4260043229BD1829003E0433 /* AircraftListView.swift */,
 				426A29E029C26ABD00CACB19 /* AircraftEditView.swift */,
 				42E58E2429C25A2F00185971 /* AircraftRowView.swift */,
+				42D940C729CEF5AB00622CF3 /* PassengerRowView.swift */,
 				4260044229BDCBE2003E0433 /* PassengerListView.swift */,
 				42D9406729C3C35B00622CF3 /* FlightEditView.swift */,
 				42D9406B29C3C75600622CF3 /* FlightRowView.swift */,
@@ -256,6 +263,7 @@
 				42D9407229C3D37A00622CF3 /* TicketRowView.swift */,
 				42D9407429C3D48300622CF3 /* TicketEditView.swift */,
 				42D940B229CA28C900622CF3 /* ScanTicketView.swift */,
+				42D940C929CEF86F00622CF3 /* StatsView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -346,6 +354,7 @@
 				4260044029BDCAF8003E0433 /* Passenger.swift */,
 				42E58E1A29BFE36900185971 /* Flight.swift */,
 				42E58E1C29BFE67100185971 /* Ticket.swift */,
+				42D940C529CEF31F00622CF3 /* Stats.swift */,
 			);
 			name = DataModels;
 			sourceTree = "<group>";
@@ -596,10 +605,12 @@
 				42D9407729C4FCAC00622CF3 /* AircraftPicker.swift in Sources */,
 				4260043529BD186A003E0433 /* AircraftListViewModel.swift in Sources */,
 				4208E4AF29BDF6D400E2A5FC /* Samples.swift in Sources */,
+				42D940C829CEF5AB00622CF3 /* PassengerRowView.swift in Sources */,
 				426A29E129C26ABD00CACB19 /* AircraftEditView.swift in Sources */,
 				4260043729BD18B9003E0433 /* Aircraft.swift in Sources */,
 				42D9406A29C3C3D800622CF3 /* FlightListViewModel.swift in Sources */,
 				42D9407529C3D48300622CF3 /* TicketEditView.swift in Sources */,
+				42D940CA29CEF86F00622CF3 /* StatsView.swift in Sources */,
 				42D940B329CA28C900622CF3 /* ScanTicketView.swift in Sources */,
 				4260042F29BCF415003E0433 /* AccountModel.swift in Sources */,
 				42D9406F29C3C87B00622CF3 /* FlightViewModel.swift in Sources */,
@@ -609,6 +620,7 @@
 				4260044E29BDD4DC003E0433 /* ToggleTextField.swift in Sources */,
 				4269B42E29BC77B3009891C6 /* Log.swift in Sources */,
 				42D9407B29C7212800622CF3 /* StyleModifiers.swift in Sources */,
+				42D940C629CEF31F00622CF3 /* Stats.swift in Sources */,
 				4260043329BD1829003E0433 /* AircraftListView.swift in Sources */,
 				42D940C429CE354900622CF3 /* IconWithBadge.swift in Sources */,
 				4269B43C29BCB0A9009891C6 /* Airline.swift in Sources */,

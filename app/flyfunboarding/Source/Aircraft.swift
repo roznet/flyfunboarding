@@ -37,14 +37,15 @@ class Aircraft: Codable, Identifiable, Hashable,Equatable {
     
     var registration: String
     var type: String
+    var stats : [Stats]?
     var aircraft_id: Int?
     var aircraft_identifier : String?
     
     enum CodingKeys: String, CodingKey {
-        case registration, type, aircraft_id, aircraft_identifier
+        case registration, type, aircraft_id, aircraft_identifier,stats
     }
     
-    var id : Int { return aircraft_id ?? registration.hashValue }
+    var id = UUID()
     
     init(registration: String, type: String, aircraft_id: Int? = nil, aircraft_identifier: String? = nil) {
         self.registration = registration
@@ -60,5 +61,11 @@ class Aircraft: Codable, Identifiable, Hashable,Equatable {
     static var defaultAircraft : Aircraft {
         return Aircraft(registration: "", type: "Cirrus SR22T")
     }
-    
+   
+    func moreRecent(than : Aircraft) -> Bool {
+        if let a = self.stats?.first, let b = than.stats?.first {
+            return a.moreRecent(than: b)
+        }
+        return self.stats?.first != nil
+    }
 }

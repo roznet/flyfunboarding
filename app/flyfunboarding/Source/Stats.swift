@@ -1,6 +1,6 @@
 //  MIT License
 //
-//  Created on 19/03/2023 for flyfunboarding
+//  Created on 25/03/2023 for flyfunboarding
 //
 //  Copyright (c) 2023 Brice Rosenzweig
 //
@@ -26,29 +26,44 @@
 
 
 import Foundation
-import SwiftUI
 
-
-extension TextField {
-    func standardStyle() -> some View {
-        return self.textFieldStyle(.roundedBorder)
+struct Stats : Codable {
+    var table : String
+    var count : Int
+    var last : Date? = nil
+   
+   
+    var formattedLast : String? {
+        if let last = last {
+            let formatter = DateFormatter()
+            formatter.dateStyle = .medium
+            formatter.doesRelativeDateFormatting = true
+            return formatter.string(from: last)
+        }else{
+            return nil
+        }
     }
-}
-
-extension Text {
-    func standardFieldLabel() -> some View {
-        return self.font(.headline)
+    
+    var formattedCount : String {
+        let name = table.lowercased()
+        var singular = table
+        singular.removeLast()
+        if self.count == 0 {
+            return "no \(name)"
+        }else if self.count == 1 {
+            return "1 \(singular)"
+        }else{
+            return "\(self.count) \(name)"
+        }
     }
-    func standardFieldValue() -> some View {
-        return self.font(.body)
+    enum CodingKeys: String, CodingKey {
+        case table, count, last
     }
-    func standardInfo() -> some View {
-        return self.font(.footnote).foregroundColor(.gray)
-    }
-}
-
-extension Button {
-    func standardButton() -> some View {
-        return self.buttonStyle(.bordered)
+    
+    func moreRecent(than : Stats) -> Bool {
+        if let a = self.last, let b = than.last {
+            return a > b
+        }
+        return self.last != nil
     }
 }

@@ -69,6 +69,10 @@ struct Ticket : Codable, Identifiable {
         return nil
 
     }
+    
+    func moreRecent(than : Ticket) -> Bool {
+        return self.flight.moreRecent(than: than.flight)
+    }
 }
 
 extension Ticket {

@@ -96,4 +96,8 @@ struct Flight : Codable, Identifiable{
                       aircraft: Aircraft.defaultAircraft,
                       scheduledDepartureDate: Date())
     }
+    
+    func moreRecent(than : Flight) -> Bool {
+        return self.scheduledDepartureDate > than.scheduledDepartureDate
+    }
 }
