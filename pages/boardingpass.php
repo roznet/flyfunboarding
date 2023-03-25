@@ -306,7 +306,7 @@ if($get_pass) {
 <form>
   <label>
     <input type="checkbox" id="agree-checkbox" value="1" checked>
-    I agree to the terms and conditions
+    I agree to the terms and conditions below
   </label>
   <a id="submit-link" href="<?php echo $pass_url; ?>" download>
   <img id="submit-img" src="<?php echo $img_url; ?>" alt="Add to Apple Wallet" width="100">
