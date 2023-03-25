@@ -47,7 +47,7 @@ class TicketListViewModel : ObservableObject {
             RemoteService.shared.retrieveTicketList() {
                 tickets in
                 DispatchQueue.main.async {
-                    self.tickets = tickets ?? []
+                    self.tickets = tickets?.sorted(by: { $0.moreRecent(than: $1)}) ?? []
                     
                 }
             }

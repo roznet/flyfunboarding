@@ -51,6 +51,7 @@ struct Flight : Codable, Identifiable{
     var scheduledDepartureDate : Date
     var flight_id : Int?
     var flight_identifier : String?
+    var stats : [Stats]? = nil
     
     enum CodingKeys: CodingKey {
         case destination
@@ -61,6 +62,7 @@ struct Flight : Codable, Identifiable{
         case scheduledDepartureDate
         case flight_id
         case flight_identifier
+        case stats
     }
     
     func with(destination: ICAO? = nil, origin: ICAO? = nil,

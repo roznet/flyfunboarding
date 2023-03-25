@@ -42,6 +42,13 @@ struct FlightRowView: View {
                 Spacer()
                 Text(flight.scheduledDepartureDate, style: .time)
             }
+            if let first = flight.stats?.first {
+                HStack {
+                    Spacer()
+                    Text(first.formattedCount).standardInfo()
+                }
+            }
+            
         }.padding(.bottom)
     }
 }
