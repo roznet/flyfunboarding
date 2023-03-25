@@ -1,4 +1,6 @@
 <?php
+include_once( '../php/autoload.php' );
+
 // Array with language codes corresponding to the country codes
 
 $languages_codes = array(
@@ -58,10 +60,14 @@ if( isset($_GET['ticket']) && preg_match('/^[a-zA-Z0-9]+/',$_GET['ticket']) ){
     $current_url = $_SERVER['REQUEST_URI'];
     $parsedUrl = parse_url($current_url);
     if(isset($parsedUrl['path'])){
-        $path = $parsedUrl['path'];
-        $path = str_replace('pages/disclaimer.php',"api/boardingPass/{$pass_identifier}",$path);
-        $pass_url = $path;
-        $get_pass = true;
+        $ticket = MyFlyFunDb::$shared->directGetTicket($pass_identifier);
+        if($ticket){
+            $path = $parsedUrl['path'];
+            $path = str_replace('pages/disclaimer.php',"api/boardingPass/{$pass_identifier}",$path);
+            $pass_url = $path;
+            $airlineName = Airline::$current->airline_name;
+            $get_pass = true;
+        }
     }
 }
 ?>
@@ -71,7 +77,16 @@ if( isset($_GET['ticket']) && preg_match('/^[a-zA-Z0-9]+/',$_GET['ticket']) ){
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fly Fun Boarding Pass Disclaimer</title>
+<title>
+<?php
+if( $get_pass ){
+    print("Your {$airlineName} Fly Fun Boarding Pass");
+}else{
+    print("Fly Fun Boarding Pass Disclaimer");
+}
+?>
+</title>
+
 <style>
 body {
   font-family: Arial, sans-serif;
