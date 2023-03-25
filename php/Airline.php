@@ -16,8 +16,10 @@ class Airline {
     }
 
     function sign($data) {
-        // this is wrong, but simple method for now
-        return hash('sha256', $data);
+        // simple signature, just a sha256 hash of the secret + data
+        // but should be good enough for our purpose
+        $secret = Config::$shared['secret'];
+        return hash('sha256', $secret . $data);
     }
 
     function verify($data, $signature) {
