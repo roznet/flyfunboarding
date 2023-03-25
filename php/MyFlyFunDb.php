@@ -52,6 +52,13 @@ class MyFlyFunDb {
         return substr(strtolower($table), 0, -1);
     }
 
+    function tableToSqlReference($table) {
+        return strtolower(substr($table,0,2));
+    }
+    function tableToStatsColumnName($table, $stat) {
+        return strtolower($table) . '_' . $stat;
+    }
+
     public function dropTables(){
         $tables = MyFlyFunDb::$standardTables;
 
@@ -243,6 +250,68 @@ class MyFlyFunDb {
         return $objects;
     }
 
+    private function addStats($object, $row, $joins){
+        $stats = [];
+        foreach( $joins as $join ) {
+            $joinCount = $this->tableToStatsColumnName($join, 'count');
+            $joinLast = $this->tableToStatsColumnName($join, 'last');
+
+            $stat = new Stats();
+            $stat->count = $row[$joinCount];
+            if( isset($row[$joinLast]) ) {
+                $stat->last = new DateTime($row[$joinLast]);
+            }
+            else {
+                $stat->last = null;
+            }
+            $stat->table = $join;
+            $stats[] = $stat;
+        }
+        $object->stats = $stats;
+    }
+
+    // SELECT p.*, COUNT(t.ticket_id) as ticket_id_count, MAX(t.modified) as ticket_last FROM Passengers p LEFT JOIN Tickets t ON p.passenger_id = t.passenger_id GROUP BY p.passenger_id
+    function listStats($table, $where = [], $joins = []) : array {
+        $this->validateAirline();
+        $tableRef = $this->tableToSqlReference($table);
+        $select = ["{$tableRef}.*"];
+        $leftJoin = [];
+        foreach( $joins as $joinTable) {
+            $joinTableRef = $this->tableToSqlReference($joinTable);
+            $joinId = $this->tableToId($joinTable);
+            $joinCount = $this->tableToStatsColumnName($joinTable, 'count');
+            $joinLast = $this->tableToStatsColumnName($joinTable, 'last');
+            $select[] = "COUNT({$joinTableRef}.{$joinId}) as {$joinCount}";
+            $select[] = "MAX({$joinTableRef}.modified) as {$joinLast}";
+            $tableId = $this->tableToId($table);
+            $leftJoin[] = "{$joinTable} {$joinTableRef} ON {$tableRef}.{$tableId} = {$joinTableRef}.{$tableId}";
+        }
+        $clause = [ $tableRef.'.airline_id = ' . $this->airline_id];
+        if( count($where) > 0 ) {
+            foreach( $where as $key => $value ) {
+                $clause[] = $key . ' = ' . $value;
+            }
+        }
+        $sql = "SELECT " . implode(',', $select) . " FROM $table {$tableRef}";
+        if( count($leftJoin) > 0 ) {
+            $sql .= ' LEFT JOIN ' . implode($leftJoin);
+        }
+        $sql .= ' WHERE ' . implode(' AND ', $clause);
+        $sql .= ' GROUP BY ' . $tableRef . '.' . $this->tableToId($table);
+        $result = mysqli_query($this->db, $sql);
+        $this->checkNoErrorOrDie($sql);
+        $objects = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $json = json_decode($row['json_data'], true);
+            $object = JsonHelper::fromJson($json, $this->tableToClass($table));
+            $this->addIdentifiers($table, $object, $row);
+            $this->addLinks($table, $object, $row);
+            $this->addStats($object, $row, $joins);
+            $objects[] = $object->toJson();
+        }
+        return $objects;
+    }
+
     // Function to get all row from a table, with optional $where array and doing
     // a left join on links in the $link argument with a count
     //function listStats($table, $where = [], $link = []) {
@@ -403,7 +472,7 @@ class MyFlyFunDb {
         return $this->createOrUpdate("Aircrafts", $aircraft);
     }
     public function listAircrafts() : array {
-        return $this->list("Aircrafts");
+        return $this->listStats("Aircrafts", [], ['Flights']);
     }
     public function getAircraft($aircraft_id) : ?Aircraft{
         return $this->get("Aircrafts", $aircraft_id);
@@ -418,7 +487,7 @@ class MyFlyFunDb {
     }
 
     public function listPassengers() : array {
-        return $this->list("Passengers");
+        return $this->listStats("Passengers", [], ['Tickets']);
     }
 
     public function getPassenger($passsenger_id ) : ?Passenger {
@@ -434,7 +503,7 @@ class MyFlyFunDb {
     }
 
     public function listFlights() : array {
-        return $this->list("Flights");
+        return $this->listStats("Flights", [], ['Tickets']);
     }
 
     public function listFlightsForAircraft(Aircraft $aircraft) : array {

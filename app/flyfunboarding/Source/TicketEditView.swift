@@ -31,6 +31,9 @@ import OSLog
 struct TicketEditView: View {
 
     @StateObject var ticketModel : TicketViewModel
+    @ObservedObject var ticketListModel : TicketListViewModel
+    @Environment(\.dismiss) var dismiss
+    
     var ticket : Ticket { return self.ticketModel.ticket }
     
     var body: some View {
@@ -101,6 +104,7 @@ struct TicketEditView: View {
                 DispatchQueue.main.async {
                     self.ticketModel.ticket = t
                     self.ticketModel.mode = .edit
+                    self.ticketListModel.retrieveTickets()
                 }
             }else{
                 Logger.ui.error("Failed to issue ticket")
@@ -108,7 +112,16 @@ struct TicketEditView: View {
         }
     }
     func delete() {
-        
+        Logger.ui.info( "Delete Ticket")
+        RemoteService.shared.deleteTicket(ticket: self.ticket){
+            result in
+            if result {
+                DispatchQueue.main.async {
+                    self.ticketListModel.retrieveTickets()
+                    self.dismiss()
+                }
+            }
+        }
     }
 
 }
@@ -116,6 +129,6 @@ struct TicketEditView: View {
 struct TicketEditView_Previews: PreviewProvider {
     static var previews: some View {
         let tickets = Samples.tickets
-        TicketEditView(ticketModel: TicketViewModel(ticket: tickets[0], mode: .edit))
+        TicketEditView(ticketModel: TicketViewModel(ticket: tickets[0], mode: .edit), ticketListModel: TicketListViewModel.empty)
     }
 }

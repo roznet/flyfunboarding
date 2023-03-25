@@ -28,7 +28,6 @@ class Ticket {
         'flight_id' => 'integer',
         'passenger_id' => 'integer',
         'ticket_identifier' => 'string'
-
     ];
     static $jsonValuesOptionalDefaults = [
         'ticket_id' => -1,

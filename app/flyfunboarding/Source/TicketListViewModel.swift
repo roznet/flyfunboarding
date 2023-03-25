@@ -35,6 +35,7 @@ class TicketListViewModel : ObservableObject {
     @Published var flight : Flight = Flight.defaultFlight
     @Published var passenger : Passenger = Passenger.defaultPassenger
     var syncWithRemote : Bool = true
+   
     
     init(tickets: [Ticket], syncWithRemote: Bool = true) {
         self.tickets = tickets
@@ -47,8 +48,13 @@ class TicketListViewModel : ObservableObject {
                 tickets in
                 DispatchQueue.main.async {
                     self.tickets = tickets ?? []
+                    
                 }
             }
         }
     }
+}
+
+extension TicketListViewModel {
+    static var empty : TicketListViewModel = TicketListViewModel(tickets: [], syncWithRemote: false)
 }

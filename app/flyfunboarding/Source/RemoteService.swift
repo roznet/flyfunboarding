@@ -278,6 +278,12 @@ class RemoteService {
         guard let point = self.point(api: "ticket/list", airline: Settings.shared.currentAirline) else { completion(nil); return }
         self.retrieveObject(point: point, completion: completion)
     }
+    func deleteTicket(ticket: Ticket, completion: @escaping (Bool)->Void) {
+        guard let ticketId = ticket.ticket_identifier
+        else { completion(false); return }
+        guard let point = self.point(api: "ticket/\(ticketId)", airline: Settings.shared.currentAirline) else { return }
+        self.deleteObject(point: point, completion: completion)
+    }
     
     func issueTicket(ticket : Ticket, completion: @escaping (Ticket?)->Void){
         guard let flightId = ticket.flight.flight_identifier,

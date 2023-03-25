@@ -16,6 +16,11 @@ class JsonHelper {
             $rv = new DateTime($json[$key]);
         }else if( $type == "DateInterval" ){
             $rv = new DateInterval($json[$key]);
+        }else if( $type == 'array' ){
+            $rv = [];
+            foreach ($json[$key] as $item) {
+                $rv[] = JsonHelper::fromJson($item, $type);
+            }
         }else if( class_exists($type) ) {
             $rv = JsonHelper::fromJson($json[$key], $type);
         }else{
@@ -27,9 +32,17 @@ class JsonHelper {
     private static function valueToJson($obj, $key, $type, $defaults) {
         $rv = null;
         if( $type == "DateTime" ){
+            if( $obj->$key == null ){
+                return null;
+            }
             $rv =  $obj->$key->format('c');
         }else if( $type == "DateInterval" ){
             $rv = $obj->$key->format('PT%hH%iM%sS');
+        }else if( $type == 'array' ){
+            $rv = [];
+            foreach ($obj->$key as $item) {
+                $rv[] = JsonHelper::toJson($item);
+            }
         }else if( class_exists($type) ){
             $rv = JsonHelper::toJson($obj->$key);
         }else{

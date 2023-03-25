@@ -6,6 +6,7 @@ class Flight {
     public string $gate;
     public string $flightNumber;
     public Aircraft $aircraft;
+    public array $stats = [];
     public DateTime $scheduledDepartureDate;
     public int $flight_id = -1;
     public int $aircraft_id = -1;
@@ -16,6 +17,7 @@ class Flight {
         'destination' => 'Airport',
         'gate' => 'string',
         'flightNumber'  => 'string',
+        'stats' => 'array',
         'aircraft' => 'Aircraft',
         'scheduledDepartureDate' => 'DateTime',
         'flight_id' => 'integer',
@@ -23,7 +25,8 @@ class Flight {
     ];
     public static $jsonValuesOptionalDefaults = [
         'flight_id' => -1,
-        'flight_identifier' => ''
+        'flight_identifier' => '',
+        'stats' => []
     ];
 
     public static function fromJson($json) : Flight {
