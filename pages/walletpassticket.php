@@ -55,7 +55,7 @@ if( isset($ticket)) {
             var qrCodeElement = document.getElementById("signature-qrcode");
 
             var qrCode = new QRCode(qrCodeElement, {
-                text: qrData,
+                text: JSON.stringify(qrData),
                 width: 128,
                 height: 128,
                 colorDark: "#000000",

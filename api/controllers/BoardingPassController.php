@@ -17,7 +17,7 @@ class BoardingPassController extends Controller {
             echo json_encode($json);
         }else{
             header('Content-Type: application/vnd.apple.pkpass');
-            headfer('Content-Disposition: attachment; filename="boardingpass.pkpass"');
+            header('Content-Disposition: attachment; filename="boardingpass.pkpass"');
             $boardingPass->createPass();
         }
     }
