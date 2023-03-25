@@ -9,8 +9,13 @@ if( isset($ticket)) {
             <span class="airline-name"><?php print(Airline::$current->airline_name)?></span>
             <div class="flight-info">
                 <div>
+                    <?php if( $ticket->flight->hasFlightNumber()) { ?>
                     <span class="label">FLIGHT</span>
                     <span class="value"><?php print($ticket->flight->flightNumber)?></span>
+                    <?php } else { ?>
+                    <span class="label">AIRCRAFT</span>
+                    <span class="value"><?php print($ticket->flight->aircraft->registration)?></span>
+                    <?php } ?>
                 </div>
                 <div>
                     <span class="label">SEAT</span>
@@ -34,7 +39,7 @@ if( isset($ticket)) {
         <div class="info-column">
             <div>
                 <span class="label">DATE</span>
-                <span class="value">2023-03-30</span>
+                <span class="value"><?php print($ticket->flight->scheduledDepartureDate->format("D M d, H:i"))?></span>
             </div>
             <div>
                 <span class="label">PASSENGER</span>
@@ -42,6 +47,12 @@ if( isset($ticket)) {
             </div>
         </div>
         <div class="info-column">
+            <?php if( $ticket->flight->hasFlightNumber()) { ?>
+            <div>  
+                <span class="label">AIRCRAFT</span>
+                <span class="value"><?php print($ticket->flight->aircraft->registration)?></span>
+            </div>
+            <?php } ?>
             <div>
                 <span class="label">GATE</span>
                 <span class="value"><?php print($ticket->flight->gate)?></span>

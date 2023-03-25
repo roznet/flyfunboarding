@@ -46,8 +46,13 @@ class BoardingPass {
         $boardingpass = ['transitType' => 'PKTransitTypeAir'];
         $boardingpass[ 'headerFields' ] = [
             $this->textField('seat', 'Seat', $this->ticket->seatNumber),
-            $this->textField('flight', 'Flight', $this->flight->flightNumber),
         ];
+
+        if( $this->flight->hasFlightNumber() ) {
+            $boardingpass['headerFields'][] = $this->textField('flight-number', 'Flight', $this->flight->flightNumber);
+        }else{
+            $boardingpass['headerFields'][] = $this->textField('flight-number', 'Aircraft', $this->flight->aircraft->registration);
+        }
         $boardingpass[ 'primaryFields' ] = [
             $this->textField('origin', $this->flight->origin->fitName(20), $this->flight->origin->getIcao()),
             $this->textField('destination', $this->flight->destination->fitName(20), $this->flight->destination->getIcao()),
@@ -59,8 +64,10 @@ class BoardingPass {
         ];
         $boardingpass['auxiliaryFields'] = [
             $this->dateField('date', 'Departs', $this->flight->scheduledDepartureDate),
-
         ];
+        if( $this->flight->hasFlightNumber()){
+            $boardingpass['auxiliaryFields'][] = $this->textField('aircraft', 'Aircraft', $this->flight->aircraft->registration);
+        }
 
         $boardingpass['backFields'] = [
             $this->textField('passenger-name', 'Passenger', $this->passenger->formattedName),

@@ -37,6 +37,10 @@ class Flight {
         return $rv;
     }
 
+    public function hasFlightNumber() : bool {
+        return !is_null($this->flightNumber) && $this->flightNumber != '' && $this->flightNumber != $this->aircraft->registration;
+    }
+
     public function toJson() : array {
         return JsonHelper::toJson($this);
     }
