@@ -34,11 +34,17 @@ extension Notification.Name {
 
 struct AircraftEditView: View {
     @StateObject var aircraftModel : AircraftViewModel
-    @ObservedObject var aircraftListModel : AircraftListViewModel
+    @StateObject var flightListViewModel : FlightListViewModel
     @Environment(\.dismiss) var dismiss
     
     @State var editIsDisabled : Bool = false
     @State var isPresentingConfirm : Bool = false
+    
+    init(aircraft: Aircraft, mode : AircraftViewModel.Mode, syncWithRemote: Bool = true) {
+        _aircraftModel = StateObject(wrappedValue: AircraftViewModel(aircraft: aircraft, mode: mode))
+        _flightListViewModel = StateObject(wrappedValue: FlightListViewModel(flights: [], aircraft: aircraft, syncWithRemote: syncWithRemote))
+        
+    }
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -61,8 +67,27 @@ struct AircraftEditView: View {
                                     submitAction: save,
                                     deleteAction: cancel)
             }
+            if self.flightListViewModel.flights.count > 0 {
+                VStack {
+                    HStack {
+                        Text("Flights").standardFieldLabel()
+                        Spacer()
+                    }
+                    List(self.flightListViewModel.flights) { flight in
+                        NavigationLink(value: flight){
+                            FlightRowView(flight: flight)
+                        }
+                    }
+                }
+            }
             Spacer()
         }.padding(.bottom)
+            .onAppear {
+                self.flightListViewModel.retrieveFlights()
+            }
+    }
+    func flightEditView(flight: Flight) -> some View {
+        return FlightEditView(flightModel: FlightViewModel(flight:flight, mode: .edit))
     }
     func cancel() {
         RemoteService.shared.deleteAircraft(aircraft: self.aircraftModel.aircraft) {
@@ -76,12 +101,11 @@ struct AircraftEditView: View {
     }
 
     func save() {
-        Logger.ui.info("Save Aircraft")
+        Logger.ui.info("Save Aircraft \(self.aircraftModel.aircraft)")
         RemoteService.shared.registerAircraft(aircraft: self.aircraftModel.aircraft){
             a in
             if let a = a{
-                let identifier = a.aircraft_identifier ?? "no id"
-                Logger.ui.info("Save success \(a.registration) \(identifier)")
+                Logger.ui.info("Save success \(a)")
                 NotificationCenter.default.post(name: .aircraftModified, object: nil)
                 DispatchQueue.main.async {
                     self.aircraftModel.aircraft = a
@@ -97,7 +121,6 @@ struct AircraftEditView: View {
 
 struct AircraftView_Previews: PreviewProvider {
     static var previews: some View {
-        AircraftEditView(aircraftModel: AircraftViewModel(aircraft: Samples.aircraft, mode: .edit),
-                         aircraftListModel: AircraftListViewModel.empty)
+        AircraftEditView(aircraft: Samples.aircraft, mode: .edit, syncWithRemote: false)
     }
 }

@@ -35,10 +35,17 @@ struct AircraftListView: View {
     var body: some View {
         NavigationStack(path: $navPath) {
             List(aircraftListViewModel.aircrafts) { aircraft in
-                NavigationLink(destination: AircraftEditView(aircraftModel: AircraftViewModel(aircraft: aircraft, mode: .edit),
-                                                             aircraftListModel: self.aircraftListViewModel)) {
+                NavigationLink(value: aircraft){
                     AircraftRowView(aircraft: aircraft)
                 }
+            }
+            .navigationDestination(for: Aircraft.self){
+                aircraft in
+                AircraftEditView(aircraft: aircraft, mode: .edit)
+            }
+            .navigationDestination(for: Flight.self){
+                flight in
+                FlightEditView(flightModel: FlightViewModel(flight: flight, mode: .edit))
             }
             .navigationDestination(for: Int.self) {
                 i in
@@ -46,7 +53,7 @@ struct AircraftListView: View {
                     self.addAircraftView()
                 }
             }
-            .navigationBarTitle("Aircraft")
+            .navigationBarTitle("Aircrafts")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: add){
@@ -73,8 +80,7 @@ struct AircraftListView: View {
     func addAircraftView() -> some View {
         let aircraft = Aircraft.defaultAircraft
         
-        return AircraftEditView(aircraftModel: AircraftViewModel(aircraft: aircraft, mode: .create),
-                                aircraftListModel: self.aircraftListViewModel)
+        return AircraftEditView(aircraft: aircraft, mode: .create)
     }
 }
 

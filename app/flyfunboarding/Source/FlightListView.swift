@@ -37,9 +37,13 @@ struct FlightListView: View {
     var body: some View {
         NavigationStack(path: $navPath) {
             List(flightListViewModel.flights) { flight in
-                NavigationLink(destination: self.flightEditView(flight: flight)) {
+                NavigationLink(value: flight) {
                     FlightRowView(flight: flight)
                 }
+            }
+            .navigationDestination(for: Flight.self){
+                flight in
+                self.flightEditView(flight: flight)
             }
             .navigationDestination(for: Int.self) {
                 i in
@@ -66,8 +70,7 @@ struct FlightListView: View {
     }
     
     func flightEditView(flight: Flight) -> some View {
-        return FlightEditView(flightModel: FlightViewModel(flight:flight, mode: .edit),
-                              flightListModel: self.flightListViewModel)
+        return FlightEditView(flightModel: FlightViewModel(flight:flight, mode: .edit))
     }
     func add() {
         self.navPath.append(0)
@@ -80,7 +83,7 @@ struct FlightListView: View {
     func addFlightView() -> some View {
         let flight = self.flightListViewModel.flights.first?.with(scheduledDepartureDate: Date()) ?? Flight.defaultFlight
         
-        return FlightEditView(flightModel: FlightViewModel(flight: flight, mode: .create), flightListModel: self.flightListViewModel)
+        return FlightEditView(flightModel: FlightViewModel(flight: flight, mode: .create))
     }
 }
 

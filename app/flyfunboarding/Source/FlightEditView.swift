@@ -28,13 +28,16 @@
 import SwiftUI
 import OSLog
 
+extension Notification.Name {
+    static let flightModified = Notification.Name("flightModified")
+}
+
 struct FlightEditView: View {
     @StateObject var flightModel : FlightViewModel
-    @ObservedObject var flightListModel : FlightListViewModel
     @Environment(\.dismiss) var dismiss
     @State var editIsDisabled : Bool = false
     @State private var isPresentingConfirm : Bool = false
-    
+   
     var body: some View {
         ScrollView {
             VStack {
@@ -75,12 +78,9 @@ struct FlightEditView: View {
             // update in case we get a new identifier
             Logger.ui.info( mode == .edit ? "Amended \(f)" : "Scheduled \(f)")
             DispatchQueue.main.async {
-                if self.flightModel.flight.flight_identifier != f.flight_identifier {
-                    Logger.ui.info("Changed identifier")
-                }
                 self.flightModel.flight = f
                 self.flightModel.mode = .edit
-                self.flightListModel.retrieveFlights()
+                NotificationCenter.default.post(name: .flightModified, object: nil)
             }
         }else{
             Logger.ui.error("Failed to schedule flight")
@@ -103,7 +103,7 @@ struct FlightEditView: View {
             result in
             if result {
                 DispatchQueue.main.async {
-                    self.flightListModel.retrieveFlights()
+                    NotificationCenter.default.post(name: .flightModified, object: nil)
                     self.dismiss()
                 }
             }
@@ -116,7 +116,6 @@ struct FlightEditView_Previews: PreviewProvider {
     static var previews: some View {
         let flights = Samples.flights
         FlightEditView(flightModel: FlightViewModel(flight: flights[0], mode: .create),
-                       flightListModel: FlightListViewModel(flights: flights, syncWithRemote: false),
                        editIsDisabled: false)
     }
 }

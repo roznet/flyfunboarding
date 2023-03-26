@@ -44,6 +44,14 @@ class FlightListViewModel : ObservableObject {
                 self.aircraft = aircraft
             }
         }
+        NotificationCenter.default.addObserver(forName: .flightModified, object: nil, queue: nil){
+            _ in
+            self.retrieveFlights()
+        }
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     func retrieveFlights() {

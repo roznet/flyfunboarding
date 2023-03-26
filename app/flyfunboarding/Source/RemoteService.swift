@@ -34,6 +34,13 @@ extension Airline {
     }
 }
 
+extension String {
+    var shortenedPoint : String {
+        let components = self.components(separatedBy: "/").map { $0.count < 12 ? $0 : $0.prefix(5)+".."+$0.suffix(5) }
+        return components.joined(separator: "/")
+    }
+}
+
 class RemoteService {
     static let shared = RemoteService()
    
@@ -136,7 +143,7 @@ class RemoteService {
            
             do {
                 let retrieved = try RemoteService.decoder.decode(Type.self, from: data)
-                Logger.net.info("registered successful \(point)")
+                Logger.net.info("registered successful \(point.shortenedPoint)")
                 completion(retrieved)
             }catch{
                 Logger.net.error("Failed to decode \(point) with error: \(error)")
@@ -165,7 +172,7 @@ class RemoteService {
            
             do {
                 let retrieved = try RemoteService.decoder.decode(Type.self, from: data)
-                Logger.net.info("retrieved successful \(point)")
+                Logger.net.info("retrieved successful \(point.shortenedPoint)")
                 completion(retrieved)
             }catch{
                 Logger.net.error("Failed to decode \(point) with error: \(error)")
@@ -194,7 +201,7 @@ class RemoteService {
                 return
             }
 
-            Logger.net.info("deleted successful \(point)")
+            Logger.net.info("deleted successful \(point.shortenedPoint)")
             completion(true)
         }.resume()
     }

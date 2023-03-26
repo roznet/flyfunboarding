@@ -36,7 +36,7 @@ struct Ticket : Codable, Identifiable {
     var ticket_id : Int?
     var ticket_identifier : String?
     
-    var id : Int { return self.ticket_id ?? -1 }
+    var id = UUID()
     
     static var defaultTicket : Ticket = {
         return Ticket(passenger: Passenger.defaultPassenger, flight: Flight.defaultFlight, seatNumber: "")

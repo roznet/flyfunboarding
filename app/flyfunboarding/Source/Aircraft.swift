@@ -69,3 +69,14 @@ class Aircraft: Codable, Identifiable, Hashable,Equatable {
         return self.stats?.first != nil
     }
 }
+
+extension Aircraft : CustomStringConvertible{
+    var description: String {
+        var components = [ self.registration, self.type]
+        if let id = self.aircraft_identifier {
+            components.append(id.shortenedPoint)
+        }
+        let args = components.joined(separator: ", ")
+        return "Aircraft(\(args))"
+    }
+}

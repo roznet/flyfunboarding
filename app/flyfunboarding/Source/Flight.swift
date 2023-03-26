@@ -29,7 +29,7 @@ import Foundation
 import RZFlight
 import CryptoKit
 
-struct Flight : Codable, Identifiable{
+struct Flight : Codable, Identifiable, Hashable, Equatable{
     struct ICAO : Codable, Identifiable {
         var id : Int { return icao.hashValue }
         var icao : String
@@ -41,7 +41,14 @@ struct Flight : Codable, Identifiable{
         lazy var airport : Airport? = { try? Airport(db: FlyFunBoardingApp.db, ident: self.icao) }()
     }
     
-    var id : Int { return self.flight_id ?? -1 }
+    static func == (lhs: Flight, rhs: Flight) -> Bool {
+        return lhs.flight_identifier == rhs.flight_identifier
+    }
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(self.flight_identifier)
+    }
+    
+    var id = UUID()
     
     var destination : ICAO
     var origin : ICAO
@@ -101,5 +108,17 @@ struct Flight : Codable, Identifiable{
     
     func moreRecent(than : Flight) -> Bool {
         return self.scheduledDepartureDate > than.scheduledDepartureDate
+    }
+}
+
+extension Flight : CustomStringConvertible {
+    var description: String {
+        var components : [String] = [ self.origin.icao, self.destination.icao, self.scheduledDepartureDate.formatted(date: .abbreviated, time: .shortened), self.aircraft.description]
+        if let id = self.flight_identifier {
+            components.append(id.shortenedPoint)
+        }
+        let args = components.joined(separator: ", ")
+        
+        return "Flight(\(args))"
     }
 }

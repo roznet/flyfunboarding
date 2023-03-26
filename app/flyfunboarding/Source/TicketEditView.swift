@@ -51,7 +51,6 @@ struct TicketEditView: View {
             }
             .padding(.bottom)
             FlightEditView(flightModel: FlightViewModel(flight: ticketModel.flight, mode: .edit),
-                           flightListModel: FlightListViewModel.empty,
                            editIsDisabled: true)
             StandardEditButtons(mode: ticketModel.mode,
                                 submit: "Issue", delete: "Delete", submitAction: issue, deleteAction: delete)
