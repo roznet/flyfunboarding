@@ -1,6 +1,6 @@
 # ![icon](https://github.com/roznet/flyfunboarding/blob/ecda36f975109a8708dd4ea8d943c5064dde16d1/images/icon.png) Fly Fun Boarding App
 
-Welcome to Fly Fun Boaring, a Mini Airline Workflow for Private Pilots! This open-source application is designed to provide a fun and engaging way for private pilots to issue boarding passes to their friends and family for flights on small planes, such as Cirrus, Cessna, or Diamond aircraft. It is intended for non-commercial use and serves as a fun way to enhance the experience of flying with a private pilot. The app is built using SwiftUI with a PHP backend server.
+Welcome to Fly Fun Boarding, a Mini Airline Workflow for Private Pilots! This open-source application is designed to provide a fun and engaging way for private pilots to issue boarding passes to their friends and family for flights on small planes, such as Cirrus, Cessna, or Diamond aircraft. It is intended for non-commercial use and serves as a fun way to enhance the experience of flying with a private pilot. The app is built using SwiftUI with a PHP backend server.
 
 ## Features
 
