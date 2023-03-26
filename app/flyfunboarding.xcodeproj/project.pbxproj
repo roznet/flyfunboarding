@@ -51,6 +51,7 @@
 		4269B43C29BCB0A9009891C6 /* Airline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4269B43B29BCB0A9009891C6 /* Airline.swift */; };
 		4269B43E29BCB1E6009891C6 /* RemoteService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4269B43D29BCB1E6009891C6 /* RemoteService.swift */; };
 		426A29E129C26ABD00CACB19 /* AircraftEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426A29E029C26ABD00CACB19 /* AircraftEditView.swift */; };
+		42BBE9B329D0512300543641 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 42BBE9B229D0512300543641 /* CodeScanner */; };
 		42D9406829C3C35B00622CF3 /* FlightEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D9406729C3C35B00622CF3 /* FlightEditView.swift */; };
 		42D9406A29C3C3D800622CF3 /* FlightListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D9406929C3C3D800622CF3 /* FlightListViewModel.swift */; };
 		42D9406C29C3C75600622CF3 /* FlightRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D9406B29C3C75600622CF3 /* FlightRowView.swift */; };
@@ -62,7 +63,6 @@
 		42D9407929C6617200622CF3 /* SwiftStringScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D9407829C6617200622CF3 /* SwiftStringScore.swift */; };
 		42D9407B29C7212800622CF3 /* StyleModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D9407A29C7212800622CF3 /* StyleModifiers.swift */; };
 		42D940B329CA28C900622CF3 /* ScanTicketView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D940B229CA28C900622CF3 /* ScanTicketView.swift */; };
-		42D940B629CA667A00622CF3 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 42D940B529CA667A00622CF3 /* CodeScanner */; };
 		42D940B829CB9CA200622CF3 /* TicketViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D940B729CB9CA200622CF3 /* TicketViewModel.swift */; };
 		42D940BA29CB9D8B00622CF3 /* StandardEditButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D940B929CB9D8B00622CF3 /* StandardEditButtons.swift */; };
 		42D940BC29CCDD6F00622CF3 /* CryptoExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D940BB29CCDD6F00622CF3 /* CryptoExtensions.swift */; };
@@ -172,7 +172,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				42D940B629CA667A00622CF3 /* CodeScanner in Frameworks */,
+				42BBE9B329D0512300543641 /* CodeScanner in Frameworks */,
 				4269B42529BC75CA009891C6 /* RZUtils in Frameworks */,
 				4269B42329BC75CA009891C6 /* RZData in Frameworks */,
 				4269B42929BC75CA009891C6 /* RZUtilsUniversal in Frameworks */,
@@ -403,7 +403,7 @@
 				4208E4B729BE29B100E2A5FC /* SwiftUIKit */,
 				4208E4BC29BE4E7400E2A5FC /* RZFlight */,
 				4208E4C429BE5CB300E2A5FC /* KDTree */,
-				42D940B529CA667A00622CF3 /* CodeScanner */,
+				42BBE9B229D0512300543641 /* CodeScanner */,
 			);
 			productName = flyfunboarding;
 			productReference = 4269B3E229BBC84C009891C6 /* flyfunboarding.app */;
@@ -484,7 +484,7 @@
 				4208E4B629BE29B100E2A5FC /* XCRemoteSwiftPackageReference "SwiftUIKit" */,
 				4208E4BB29BE4E7400E2A5FC /* XCRemoteSwiftPackageReference "rzflight" */,
 				4208E4C329BE5CB300E2A5FC /* XCRemoteSwiftPackageReference "KDTree" */,
-				42D940B429CA667A00622CF3 /* XCRemoteSwiftPackageReference "CodeScanner" */,
+				42BBE9B129D0512300543641 /* XCRemoteSwiftPackageReference "CodeScanner" */,
 			);
 			productRefGroup = 4269B3E329BBC84C009891C6 /* Products */;
 			projectDirPath = "";
@@ -1007,12 +1007,12 @@
 				kind = branch;
 			};
 		};
-		42D940B429CA667A00622CF3 /* XCRemoteSwiftPackageReference "CodeScanner" */ = {
+		42BBE9B129D0512300543641 /* XCRemoteSwiftPackageReference "CodeScanner" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/twostraws/CodeScanner";
+			repositoryURL = "https://github.com/roznet/CodeScanner";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.0;
+				branch = main;
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -1053,9 +1053,9 @@
 			package = 4269B42129BC75CA009891C6 /* XCRemoteSwiftPackageReference "rzutils" */;
 			productName = RZUtilsUniversal;
 		};
-		42D940B529CA667A00622CF3 /* CodeScanner */ = {
+		42BBE9B229D0512300543641 /* CodeScanner */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 42D940B429CA667A00622CF3 /* XCRemoteSwiftPackageReference "CodeScanner" */;
+			package = 42BBE9B129D0512300543641 /* XCRemoteSwiftPackageReference "CodeScanner" */;
 			productName = CodeScanner;
 		};
 /* End XCSwiftPackageProductDependency section */

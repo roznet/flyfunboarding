@@ -75,7 +75,7 @@ struct ScanTicketView: View {
                     }
                 }
                     .padding()
-                    .frame(width: geometry.size.width, height: geometry.size.height / 2.0)
+                    .frame(width: min(450.0,geometry.size.width), height: geometry.size.height / 2.0)
                 
                 switch self.status {
                 case .checking:
@@ -91,7 +91,8 @@ struct ScanTicketView: View {
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .foregroundColor(.red)
-                            .frame(width: geometry.size.width / 4.0, height: geometry.size.width/4.0)
+                            .frame(width: min(100.0,geometry.size.width / 4.0),
+                                   height: min(100.0,geometry.size.width/4.0))
                         Text("Invalid ticket")
                     }
                 case .valid:
@@ -100,12 +101,21 @@ struct ScanTicketView: View {
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .foregroundColor(.green)
-                            .frame(width: geometry.size.width / 4.0, height: geometry.size.width/4.0)
+                            .frame(width: min(100.0,geometry.size.width / 4.0),
+                                   height: min(100.0,geometry.size.width/4.0))
                         Text("Valid ticket")
-                        TicketRowView(ticket: self.ticket)
+                            .fontWeight(.bold)
+                            .padding(.bottom)
+                        HStack {
+                            Spacer()
+                            TicketRowView(ticket: self.ticket)
+                                .frame(maxWidth: 500.0)
+                            Spacer()
+                        }
                     }
                 }
             }
+            .frame(maxWidth:.infinity,alignment: .center)
         }
     }
 }
