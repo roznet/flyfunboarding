@@ -110,6 +110,7 @@ struct ScanTicketView: View {
                             Spacer()
                             TicketRowView(ticket: self.ticket)
                                 .frame(maxWidth: 500.0)
+                                .padding()
                             Spacer()
                         }
                     }
