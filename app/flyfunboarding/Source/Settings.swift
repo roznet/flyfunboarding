@@ -41,14 +41,21 @@ struct Settings {
         case user_full_name = "user_full_name"
         case airline_id = "airline_id"
         case airline_identifier = "airline_identifier"
+        case last_latitude = "last_latitude"
+        case last_longitude = "last_longitude"
         
     }
+  
+    @UserStorage(key: Key.last_latitude, defaultValue: 51.50)
+    var lastLatitude : Double
+    @UserStorage(key: Key.last_longitude, defaultValue: 0.12)
+    var lastLongitude : Double
     
     @UserStorage(key: Key.airline_name, defaultValue: "My Airline")
     var airlineName : String
     
     @UserStorage(key: Key.airline_id, defaultValue: -1)
-    var airlineId : Int 
+    var airlineId : Int
    
     @CodableStorage(key: Key.user_full_name)
     var userFullName : PersonNameComponents?

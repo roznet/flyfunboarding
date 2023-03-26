@@ -31,10 +31,48 @@ import RZFlight
 import OSLog
 
 class MatchedAirport : ObservableObject {
+    class LocationRequest : NSObject, CLLocationManagerDelegate {
+        var locationManager : CLLocationManager = CLLocationManager()
+        var cb : (CLLocationCoordinate2D) -> Void = { _ in }
+        
+        func start(cb : @escaping (CLLocationCoordinate2D) -> Void) {
+            locationManager.delegate = self
+            self.cb = cb
+            self.locationManager.desiredAccuracy = kCLLocationAccuracyReduced
+            self.locationManager.requestWhenInUseAuthorization()
+            locationManager.requestLocation()
+        }
+        
+        func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+            guard let first = locations.first else { return }
+            cb(first.coordinate)
+        }
+        
+        func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+            Logger.ui.info("Failed to get location, ignoring \(error.localizedDescription)")
+        }
+    }
+    
     typealias AirportCoord = KnownAirports.AirportCoord
     
     @Published var suggestions : [AirportCoord] = []
     var coord = CLLocationCoordinate2D(latitude: 51.50, longitude: 0.12)
+    private var locationRequest : LocationRequest = LocationRequest()
+    private var lastText : String? = nil
+    
+    init() {
+        self.coord = CLLocationCoordinate2D(latitude: Settings.shared.lastLatitude,
+                                            longitude: Settings.shared.lastLongitude)
+        self.locationRequest.start() {
+            c in
+            self.coord = c
+            Settings.shared.lastLatitude = c.latitude
+            Settings.shared.lastLongitude = c.longitude
+            if let text = self.lastText {
+                self.autocomplete(text)
+            }
+        }
+    }
    
     private var searching : Bool = false
     
@@ -55,6 +93,7 @@ class MatchedAirport : ObservableObject {
             if let found = FlyFunBoardingApp.knownAirports?.nearestDescriptions(coord: self.coord, needle: text, count: 20) {
                 DispatchQueue.main.async {
                     DispatchQueue.synchronized(self){
+                        self.lastText = text
                         self.suggestions = found
                         self.searching = false
                     }
