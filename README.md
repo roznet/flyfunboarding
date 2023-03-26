@@ -50,4 +50,4 @@ This application is intended for fun and non-commercial use only. It is not affi
 
 ## Acknowledgments
 
-This app was developed with extensive assistance from ChatGPT by OpenAI and GitHub Copilot, two AI-powered tools that provided valuable insights and code suggestions throughout the development process. Their contributions have not only significantly enhanced the app's functionality and user experience but also made the development process much faster than is typical for such an application. We appreciate their support in making this project a success.
+This app was developed with extensive assistance from ChatGPT by OpenAI and GitHub Copilot, two AI-powered tools that provided valuable insights and code suggestions throughout the development process. Their contributions have made the development process much faster than is typical for such an application. We appreciate their support in making this project a success.
