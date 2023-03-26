@@ -48,21 +48,26 @@ function get_chosen_language($languages_codes,$default_language='en'){
 $chosen_language = get_chosen_language($languages_codes);
 $disclaimer_file = "disclaimer_{$chosen_language}.html";
 
-
-$get_pass = false;
-
 $query = [ 'lang' => $chosen_language ];
 
+$get_pass = false;
 if( isset($_GET['ticket']) && preg_match('/^[a-zA-Z0-9]+/',$_GET['ticket']) ){
     $pass_identifier = $_GET['ticket'];
-    $query['ticket'] = $pass_identifier;
-    $current_url = $_SERVER['REQUEST_URI'];
-    $parsedUrl = parse_url($current_url);
-    if(isset($parsedUrl['path'])){
-        $ticket = MyFlyFunDb::$shared->directGetTicket($pass_identifier);
-        if($ticket){
-            $path = $parsedUrl['path'];
-            $path = str_replace('pages/boardingpass',"api/boardingPass/{$pass_identifier}",$path);
+    $ticket = MyFlyFunDb::$shared->directGetTicket($pass_identifier);
+    if($ticket){
+        $query['ticket'] = $pass_identifier;
+        $current_url = $_SERVER['REQUEST_URI'];
+        $parsedUrl = parse_url($current_url);
+        if(isset($parsedUrl['path'])){
+            $pathComponents = explode('/',$parsedUrl['path'] );
+            // if the path is /pages/boardingpass.php then we need to change it to /api/boardingPass.php
+            if(count($pathComponents) > 2 && $pathComponents[count($pathComponents)-2] == 'pages' ){
+                $pathComponents = array_slice($pathComponents,0,-2);
+                $pathComponents[] = 'api';
+                $pathComponents[] = 'boardingPass';
+                $pathComponents[] = $pass_identifier;
+                $path = implode('/',$pathComponents);
+            }
             $pass_url = $path;
             $airlineName = Airline::$current->airline_name;
             $get_pass = true;
