@@ -39,7 +39,7 @@ class AircraftViewModel : ObservableObject {
         case .create:
             return "Create"
         case .edit:
-            return "Edit"
+            return "Update"
         }
     }
     

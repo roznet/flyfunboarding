@@ -28,6 +28,10 @@
 import SwiftUI
 import OSLog
 
+extension Notification.Name {
+    static let aircraftModified = Notification.Name("aicraftModified")
+}
+
 struct AircraftEditView: View {
     @StateObject var aircraftModel : AircraftViewModel
     @ObservedObject var aircraftListModel : AircraftListViewModel
@@ -61,20 +65,27 @@ struct AircraftEditView: View {
         }.padding(.bottom)
     }
     func cancel() {
-        print("Dismiss")
+        RemoteService.shared.deleteAircraft(aircraft: self.aircraftModel.aircraft) {
+            success in
+            if success {
+                DispatchQueue.main.async {
+                    dismiss()
+                }
+            }
+        }
     }
 
     func save() {
-        Logger.ui.info("Save flight")
+        Logger.ui.info("Save Aircraft")
         RemoteService.shared.registerAircraft(aircraft: self.aircraftModel.aircraft){
             a in
             if let a = a{
                 let identifier = a.aircraft_identifier ?? "no id"
                 Logger.ui.info("Save success \(a.registration) \(identifier)")
+                NotificationCenter.default.post(name: .aircraftModified, object: nil)
                 DispatchQueue.main.async {
                     self.aircraftModel.aircraft = a
                     self.aircraftModel.mode = .edit
-                    self.aircraftListModel.retrieveAircraft()
                 }
             }else{
                 Logger.ui.error("Failed to save aircraft")

@@ -28,6 +28,8 @@ import Foundation
 import SwiftUI
 import OSLog
 
+
+
 class AircraftListViewModel : ObservableObject {
     @Published var aircrafts : [Aircraft] = []
     var syncWithRemote : Bool = true
@@ -37,6 +39,14 @@ class AircraftListViewModel : ObservableObject {
     init(aircrafts : [Aircraft], syncWithRemote: Bool = true) {
         self.syncWithRemote = syncWithRemote
         self.aircrafts = aircrafts
+        NotificationCenter.default.addObserver(forName: .aircraftModified, object: nil, queue: nil){
+            _ in
+            self.retrieveAircraft()
+        }
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     func retrieveAircraft() {
