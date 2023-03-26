@@ -39,14 +39,7 @@ struct AircraftListView: View {
                     AircraftRowView(aircraft: aircraft)
                 }
             }
-            .navigationDestination(for: Aircraft.self){
-                aircraft in
-                AircraftEditView(aircraft: aircraft, mode: .edit)
-            }
-            .navigationDestination(for: Flight.self){
-                flight in
-                FlightEditView(flightModel: FlightViewModel(flight: flight, mode: .edit))
-            }
+            .standardNavigationDestinations()
             .navigationDestination(for: Int.self) {
                 i in
                 if i == 0 {

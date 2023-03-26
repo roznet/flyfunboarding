@@ -35,16 +35,20 @@ class TicketListViewModel : ObservableObject {
     @Published var flight : Flight = Flight.defaultFlight
     @Published var passenger : Passenger = Passenger.defaultPassenger
     var syncWithRemote : Bool = true
-   
+  
+    private var filterPassenger : Passenger? = nil
+    private var filterFlight : Flight? = nil
     
-    init(tickets: [Ticket], syncWithRemote: Bool = true) {
+    init(tickets: [Ticket], passenger: Passenger? = nil, flight: Flight? = nil, syncWithRemote: Bool = true) {
         self.tickets = tickets
         self.syncWithRemote = syncWithRemote
+        self.filterFlight = flight
+        self.filterPassenger = passenger
     }
     
     func retrieveTickets() {
         if self.syncWithRemote {
-            RemoteService.shared.retrieveTicketList() {
+            RemoteService.shared.retrieveTicketList(flight: self.filterFlight, passenger: self.filterPassenger) {
                 tickets in
                 DispatchQueue.main.async {
                     self.tickets = tickets?.sorted(by: { $0.moreRecent(than: $1)}) ?? []

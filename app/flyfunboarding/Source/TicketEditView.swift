@@ -27,7 +27,9 @@
 
 import SwiftUI
 import OSLog
-
+extension Notification.Name {
+    static let ticketModified = Notification.Name("ticketModified")
+}
 struct TicketEditView: View {
 
     @StateObject var ticketModel : TicketViewModel
@@ -50,7 +52,7 @@ struct TicketEditView: View {
                     .standardFieldValue()
             }
             .padding(.bottom)
-            FlightEditView(flightModel: FlightViewModel(flight: ticketModel.flight, mode: .edit),
+            FlightEditView(flight: ticketModel.flight, mode: .edit,
                            editIsDisabled: true)
             StandardEditButtons(mode: ticketModel.mode,
                                 submit: "Issue", delete: "Delete", submitAction: issue, deleteAction: delete)

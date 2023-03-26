@@ -563,6 +563,9 @@ class MyFlyFunDb {
         return $this->list("Tickets", ["passenger_id" => $passenger->passenger_id]);
     }
 
+    public function listTicketsForFlight(Flight $flight) : array {
+        return $this->list("Tickets", ["flight_id" => $flight->flight_id]);
+    }
 }
 if (is_null(MyFlyFunDb::$shared)) {
     MyFlyFunDb::$shared = new MyFlyFunDb();

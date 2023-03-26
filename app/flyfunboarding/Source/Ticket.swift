@@ -29,7 +29,7 @@ import Foundation
 import RZUtilsSwift
 import OSLog
 
-struct Ticket : Codable, Identifiable {
+struct Ticket : Codable, Identifiable, Hashable, Equatable {
     var passenger : Passenger
     var flight : Flight
     var seatNumber : String
@@ -37,6 +37,18 @@ struct Ticket : Codable, Identifiable {
     var ticket_identifier : String?
     
     var id = UUID()
+    
+    enum CodingKeys: String, CodingKey {
+        case passenger, flight, seatNumber, ticket_id, ticket_identifier;
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(self.ticket_identifier)
+    }
+    
+    static func ==(lhs: Ticket, rhs: Ticket) -> Bool {
+        return lhs.ticket_identifier == rhs.ticket_identifier
+    }
     
     static var defaultTicket : Ticket = {
         return Ticket(passenger: Passenger.defaultPassenger, flight: Flight.defaultFlight, seatNumber: "")

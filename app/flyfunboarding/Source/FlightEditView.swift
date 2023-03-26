@@ -34,10 +34,16 @@ extension Notification.Name {
 
 struct FlightEditView: View {
     @StateObject var flightModel : FlightViewModel
+    @StateObject var ticketListViewModel : TicketListViewModel
     @Environment(\.dismiss) var dismiss
-    @State var editIsDisabled : Bool = false
+    var editIsDisabled : Bool = false
     @State private var isPresentingConfirm : Bool = false
-   
+    
+    init(flight: Flight, mode: FlightViewModel.Mode, syncWithRemote: Bool = true, editIsDisabled: Bool = false){
+        _flightModel = StateObject(wrappedValue: FlightViewModel(flight: flight, mode: mode))
+        _ticketListViewModel = StateObject(wrappedValue: TicketListViewModel(tickets: [], flight: flight, syncWithRemote: syncWithRemote))
+        self.editIsDisabled = editIsDisabled
+    }
     var body: some View {
         ScrollView {
             VStack {
@@ -69,8 +75,23 @@ struct FlightEditView: View {
                                         delete: "Delete",
                                         submitAction: scheduleOrAmend,
                                         deleteAction: delete)
+                    if self.ticketListViewModel.tickets.count > 0 {
+                        VStack {
+                            HStack {
+                                Text("Tickets").standardFieldLabel()
+                                Spacer()
+                            }
+                            List(self.ticketListViewModel.tickets) { ticket in
+                                NavigationLink(value: ticket){
+                                    TicketRowView(ticket: ticket)
+                                }
+                            }
+                        }
+                    }
                 }
             }
+        }.onAppear() {
+            self.ticketListViewModel.retrieveTickets()
         }
     }
     private func remoteCompletion(flight : Flight?, mode : FlightViewModel.Mode) {
@@ -115,7 +136,6 @@ struct FlightEditView: View {
 struct FlightEditView_Previews: PreviewProvider {
     static var previews: some View {
         let flights = Samples.flights
-        FlightEditView(flightModel: FlightViewModel(flight: flights[0], mode: .create),
-                       editIsDisabled: false)
+        FlightEditView(flight: flights[0], mode: .create)
     }
 }

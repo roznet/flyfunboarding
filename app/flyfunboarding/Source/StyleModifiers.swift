@@ -34,7 +34,23 @@ extension TextField {
         return self.textFieldStyle(.roundedBorder)
     }
 }
-
+extension List {
+    func standardNavigationDestinations() -> some View {
+        return self
+            .navigationDestination(for: Aircraft.self){
+                aircraft in
+                AircraftEditView(aircraft: aircraft, mode: .edit)
+            }
+            .navigationDestination(for: Flight.self){
+                flight in
+                FlightEditView(flight: flight, mode: .edit)
+            }
+            .navigationDestination(for: Ticket.self){
+                ticket in
+                TicketRowView(ticket: ticket)
+            }
+    }
+}
 extension Text {
     func standardFieldLabel() -> some View {
         return self.font(.headline)

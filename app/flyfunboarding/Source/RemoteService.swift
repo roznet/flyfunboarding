@@ -293,8 +293,15 @@ class RemoteService {
 
 
     //MARK: - Tickets
-    func retrieveTicketList(completion : @escaping ([Ticket]?) -> Void) {
-        guard let point = self.point(api: "ticket/list", airline: Settings.shared.currentAirline) else { completion(nil); return }
+    func retrieveTicketList(flight: Flight? = nil, passenger: Passenger? = nil, completion : @escaping ([Ticket]?) -> Void) {
+        var api = "ticket/list"
+        if let flight_identifier = flight?.flight_identifier {
+            api = "flight/\(flight_identifier)/tickets"
+        }else if let passenger_identifier = passenger?.passenger_identifier {
+            api = "passenger/\(passenger_identifier)/tickets"
+        }
+        
+        guard let point = self.point(api: api, airline: Settings.shared.currentAirline) else { completion(nil); return }
         self.retrieveObject(point: point, completion: completion)
     }
     func deleteTicket(ticket: Ticket, completion: @escaping (Bool)->Void) {

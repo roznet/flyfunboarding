@@ -22,11 +22,17 @@ class FlightController extends Controller
 
         $flight_id = $this->paramByPositionOrGet($params, 'flight_id', 0);
         $flight = MyFlyFunDb::$shared->getFlight($flight_id);
-
         if (is_null($flight)) {
             $this->terminate(400, 'Flight does not exist '.$flight_id);
         }
-        $json = json_encode($flight->toJson());
+
+        $tickets = $this->paramByPositionOrGet($params, 'tickets', 1, true);
+        if ($tickets === null) {
+            $json = json_encode($flight->toJson());
+        }else{
+            $tickets = MyFlyFunDb::$shared->listTicketsForFlight($flight);
+            $json = json_encode($tickets);
+        }
 
         $this->contentType('application/json');
         echo $json;

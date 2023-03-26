@@ -55,6 +55,7 @@ struct TicketListView: View {
                     self.newTicket()
                 }
             }
+            .navigationTitle("Tickets")
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button(action: issue) {

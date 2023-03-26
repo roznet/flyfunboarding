@@ -66,16 +66,16 @@ struct AircraftEditView: View {
                                     delete: "Delete",
                                     submitAction: save,
                                     deleteAction: cancel)
-            }
-            if self.flightListViewModel.flights.count > 0 {
-                VStack {
-                    HStack {
-                        Text("Flights").standardFieldLabel()
-                        Spacer()
-                    }
-                    List(self.flightListViewModel.flights) { flight in
-                        NavigationLink(value: flight){
-                            FlightRowView(flight: flight)
+                if self.flightListViewModel.flights.count > 0 {
+                    VStack {
+                        HStack {
+                            Text("Flights").standardFieldLabel()
+                            Spacer()
+                        }
+                        List(self.flightListViewModel.flights) { flight in
+                            NavigationLink(value: flight){
+                                FlightRowView(flight: flight)
+                            }
                         }
                     }
                 }
@@ -87,7 +87,7 @@ struct AircraftEditView: View {
             }
     }
     func flightEditView(flight: Flight) -> some View {
-        return FlightEditView(flightModel: FlightViewModel(flight:flight, mode: .edit))
+        return FlightEditView(flight:flight, mode: .edit)
     }
     func cancel() {
         RemoteService.shared.deleteAircraft(aircraft: self.aircraftModel.aircraft) {
