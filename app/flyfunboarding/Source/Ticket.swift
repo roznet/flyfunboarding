@@ -67,7 +67,6 @@ struct Ticket : Codable, Identifiable {
             }
         }
         return nil
-
     }
     
     func moreRecent(than : Ticket) -> Bool {

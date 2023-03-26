@@ -36,4 +36,15 @@ class Controller {
             return null;
         }
     }
+
+
+    function validateSystemCall() : bool {
+        $headers = apache_request_headers();
+        if (!isset($headers['Authorization'])) {
+            return false;
+        }
+        $bearer = str_replace("Bearer ", "", $headers['Authorization']);
+        $secret = Config::$shared['secret'];
+        return $bearer == $secret;
+    }
 }
