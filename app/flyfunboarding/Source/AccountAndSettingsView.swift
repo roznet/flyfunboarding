@@ -26,12 +26,13 @@
 
 
 import SwiftUI
+import OSLog
 
 struct AccountAndSettingsView: View {
     @EnvironmentObject var accountStatus : AccountModel
     @Environment(\.dismiss) var dismiss
     @State private var isPresentingConfirm : Bool = false
-
+    @StateObject var airlineViewModel = AirlineViewModel(airline: Settings.shared.currentAirline ?? Airline())
     
     var body : some View {
         VStack {
@@ -49,15 +50,20 @@ struct AccountAndSettingsView: View {
                     .font(.title)
                     .bold()
                     .multilineTextAlignment(.center)
-                    .padding()
-                Text(NSLocalizedString("You can sign out or delete your airline and all its data, which can't be undone", comment: "")).multilineTextAlignment(.center)
+                
+                VStack {
+                    Text("Edit your airline's Name")
+                    ToggledTextField(text: $airlineViewModel.airlineName, image: nil, action: update)
+                }.padding()
             }
             Spacer()
-            HStack {
-                Spacer()
-                Button("Delete Airline", role: .destructive) {
-                    self.isPresentingConfirm = true
-                }
+            VStack {
+                Text(NSLocalizedString("You can sign out or delete your airline and all its data. Deleting your data can't be undone.", comment: "")).multilineTextAlignment(.center)
+                HStack {
+                    Spacer()
+                    Button("Delete Airline", role: .destructive) {
+                        self.isPresentingConfirm = true
+                    }
                     .standardButton()
                     .padding(.trailing)
                     .confirmationDialog("Are you sure?", isPresented: $isPresentingConfirm){
@@ -67,15 +73,20 @@ struct AccountAndSettingsView: View {
                     } message: {
                         Text( "Are you sure? This can't be undone")
                     }
-                Button("Signout", action: signOut).standardButton()
+                    Button("Signout", action: signOut).standardButton()
+                    Spacer()
+                }
                 Spacer()
             }
-            Spacer()
         }
     }
     
     func signOut() {
         Settings.shared.currentAirline = nil
+    }
+    func update() {
+        Logger.ui.info("Update name")
+        self.airlineViewModel.updateAirline()
     }
     
     func deleteAction() {

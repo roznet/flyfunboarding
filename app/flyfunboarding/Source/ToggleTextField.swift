@@ -29,7 +29,8 @@ struct ToggledTextField: View {
     @Binding var text : String
     @State private var isEditing: Bool = false
 
-    var image : Image
+    var image : Image?
+    var action: () -> Void = {}
 
     @ViewBuilder
     var textfield : some View {
@@ -53,17 +54,22 @@ struct ToggledTextField: View {
         }
     }
     func toggle() {
+        if self.isEditing {
+            action()
+        }
         self.isEditing.toggle()
     }
     
     @ViewBuilder
     var header : some View {
         HStack {
-            image
-                .resizable()
-                .frame(width: 50.0, height: 50.0)
-                .foregroundColor(.accentColor)
-                .padding(.leading)
+            if let image = image {
+                image
+                    .resizable()
+                    .frame(width: 50.0, height: 50.0)
+                    .foregroundColor(.accentColor)
+                    .padding(.leading)
+            }
             textfield
             Button(action: toggle){
                 icon

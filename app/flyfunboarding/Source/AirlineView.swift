@@ -37,7 +37,7 @@ struct AirlineView: View {
     var body: some View {
         VStack {
             HStack {
-                ToggledTextField(text: $airlineViewModel.airlineName, image: Image("FlyFunLogo"))
+                ToggledTextField(text: $airlineViewModel.airlineName, image: Image("FlyFunLogo"), action: update)
                 settingsButton
                     .padding(.trailing)
             }
@@ -69,6 +69,10 @@ struct AirlineView: View {
                     }
             }
         }
+    }
+    func update() {
+        Logger.ui.info("Update name")
+        self.airlineViewModel.updateAirline()
     }
     
     @State var settingsPresented = false
