@@ -1,5 +1,5 @@
 <?php
-if( isset($ticket)) {
+if( isset($ticket) && isset($label)) {
 ?>
 <div class="boarding-section">
 <div class="boarding-pass">
@@ -10,15 +10,15 @@ if( isset($ticket)) {
             <div class="flight-info">
                 <div>
                     <?php if( $ticket->flight->hasFlightNumber()) { ?>
-                    <span class="label">FLIGHT</span>
+                    <span class="label"><?php $label->for('Flight')?></span>
                     <span class="value"><?php print($ticket->flight->flightNumber)?></span>
                     <?php } else { ?>
-                    <span class="label">AIRCRAFT</span>
+                    <span class="label"><?php $label->for('Aircraft')?></span>
                     <span class="value"><?php print($ticket->flight->aircraft->registration)?></span>
                     <?php } ?>
                 </div>
                 <div>
-                    <span class="label">SEAT</span>
+                <span class="label"><?php $label->for('Seat')?></span>
                     <span class="value"><?php print($ticket->seatNumber) ?></span>
                 </div>
             </div>
@@ -38,23 +38,23 @@ if( isset($ticket)) {
     <div class="boarding-body">
         <div class="info-column">
             <div>
-                <span class="label">DATE</span>
+            <span class="label"><?php $label->for('Departs')?></span>
                 <span class="value"><?php print($ticket->flight->scheduledDepartureDate->format("D M d, H:i"))?></span>
             </div>
             <div>
-                <span class="label">PASSENGER</span>
+            <span class="label"><?php $label->for('Passenger')?></span>
                 <span class="value"><?php print($ticket->passenger->formattedName)?></span>
             </div>
         </div>
         <div class="info-column">
             <?php if( $ticket->flight->hasFlightNumber()) { ?>
             <div>  
-                <span class="label">AIRCRAFT</span>
+            <span class="label"><?php $label->for('Aircraft')?></span>
                 <span class="value"><?php print($ticket->flight->aircraft->registration)?></span>
             </div>
             <?php } ?>
             <div>
-                <span class="label">GATE</span>
+            <span class="label"><?php $label->for('Gate')?></span>
                 <span class="value"><?php print($ticket->flight->gate)?></span>
             </div>
         </div>

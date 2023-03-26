@@ -12,6 +12,23 @@ $languages_text = array(
     'fr' => 'Français'
 );
 
+class Label {
+    public BoardingPass $boardingPass;
+    public string $language;
+
+    function __construct(BoardingPass $boardingPass, string $language) {
+        $this->boardingPass = $boardingPass;
+        $this->language = $language;
+    }
+    function for($string, $uppercase = true) {
+        if($uppercase) {
+            print(strtoupper($this->boardingPass->localString($this->language, $string)));
+        } else {
+            print($this->boardingPass->localString($this->language, $string));
+        }
+    }
+}
+
 function language_has_disclaimer($language){
     if( file_exists("disclaimer_{$language}.html") ){
         return true;
@@ -51,10 +68,14 @@ $disclaimer_file = "disclaimer_{$chosen_language}.html";
 $query = [ 'lang' => $chosen_language ];
 
 $get_pass = false;
+$boardingPass = null;
+$label = null;
 if( isset($_GET['ticket']) && preg_match('/^[a-zA-Z0-9]+/',$_GET['ticket']) ){
     $pass_identifier = $_GET['ticket'];
     $ticket = MyFlyFunDb::$shared->directGetTicket($pass_identifier);
     if($ticket){
+        $boardingPass = new BoardingPass($ticket);
+        $label = new Label($boardingPass, $chosen_language);
         $query['ticket'] = $pass_identifier;
         $current_url = $_SERVER['REQUEST_URI'];
         $parsedUrl = parse_url($current_url);
@@ -304,14 +325,14 @@ label {
 
 <?php
 if($get_pass) {
-    include('walletpassticket.php');
+    include('walletPass.php');
     $img_url = "../images/AddToApple/{$chosen_language}/badge.svg" ;
 ?>
 <div class="acknowledge">
 <form>
   <label>
     <input type="checkbox" id="agree-checkbox" value="1" checked>
-    I agree to the terms and conditions below
+<?php $label->for('I agree to the terms and conditions below', false); ?>
   </label>
   <a id="submit-link" href="<?php echo $pass_url; ?>" download>
   <img id="submit-img" src="<?php echo $img_url; ?>" alt="Add to Apple Wallet" width="100">

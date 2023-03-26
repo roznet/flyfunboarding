@@ -42,6 +42,43 @@ class BoardingPass {
         ];
     }
 
+    function localeStrings($language) : array {
+        $defs = [
+            'fr' => [ 
+                'Flight' => 'Vol',
+                'Aircraft' => 'Avion',
+                'Gate' => 'Porte',
+                'Departs' => 'Départ',
+                'Arrives' => 'Arrivée',
+                'Passenger' => 'Passager',
+                'Seat' => 'Siège',
+                'I agree to the terms and conditions below' => 'J\'accepte les termes et conditions ci-dessous',
+            ],
+            'en' => [
+                'Flight' => 'Flight',
+                'Aircraft' => 'Aircraft',
+                'Gate' => 'Gate',
+                'Departs' => 'Departs',
+                'Arrives' => 'Arrives',
+                'Passenger' => 'Passenger',
+                'Seat' => 'Seat',
+                'I agree to the terms and conditions below' => 'I agree to the terms and conditions below',
+            ],
+        ];
+        if( isset($defs[$language]) ) {
+            return $defs[$language];
+        }
+        return [];
+    }
+
+    function localString($language, $key) {
+        $strings = $this->localeStrings($language);
+        if( isset($strings[$key]) ) {
+            return $strings[$key];
+        }
+        return $key;
+    }
+
     function boardingPassData() : array {
         $boardingpass = ['transitType' => 'PKTransitTypeAir'];
         $boardingpass[ 'headerFields' ] = [
@@ -59,7 +96,7 @@ class BoardingPass {
         ];
 
         $boardingpass[ 'secondaryFields' ] = [
-            $this->textField('passenger-name', 'Name', $this->passenger->formattedName),
+            $this->textField('passenger-name', 'Passenger', $this->passenger->formattedName),
             $this->textField('gate', 'Gate', $this->flight->gate),
         ];
         $boardingpass['auxiliaryFields'] = [
@@ -155,7 +192,10 @@ class BoardingPass {
         $data = $this->getPassData();
 		
 		$pass = $this->create_pkpass();
-		$pass->setData($data);
+        $pass->setData($data);
+        foreach( ['en', 'fr'] as $lang ) {
+            $pass->addLocaleStrings($lang, $this->localeStrings($lang));
+        }
 		$pass->addFile($this->getImagePath('icon.png'));
 		$pass->addFile($this->getImagePath('icon@2x.png'));
 		$pass->addFile($this->getImagePath('logo.png'));
