@@ -79,7 +79,7 @@ struct AirlineView: View {
             Image(systemName: "gearshape")
         }
         .sheet(isPresented: $settingsPresented){
-            AirlineSettingsView()
+            AccountAndSettingsView()
         }
     }
     

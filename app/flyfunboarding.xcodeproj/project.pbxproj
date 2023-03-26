@@ -28,7 +28,7 @@
 		4260044329BDCBE2003E0433 /* PassengerListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4260044229BDCBE2003E0433 /* PassengerListView.swift */; };
 		4260044529BDD0F9003E0433 /* FlightListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4260044429BDD0F9003E0433 /* FlightListView.swift */; };
 		4260044729BDD127003E0433 /* TicketListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4260044629BDD127003E0433 /* TicketListView.swift */; };
-		4260044929BDD40E003E0433 /* AirlineSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4260044829BDD40E003E0433 /* AirlineSettingsView.swift */; };
+		4260044929BDD40E003E0433 /* AccountAndSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4260044829BDD40E003E0433 /* AccountAndSettingsView.swift */; };
 		4260044E29BDD4DC003E0433 /* ToggleTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4260044D29BDD4DC003E0433 /* ToggleTextField.swift */; };
 		4269B3EA29BBC84C009891C6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4269B3E929BBC84C009891C6 /* Assets.xcassets */; };
 		4269B3ED29BBC84C009891C6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4269B3EC29BBC84C009891C6 /* Preview Assets.xcassets */; };
@@ -115,7 +115,7 @@
 		4260044229BDCBE2003E0433 /* PassengerListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PassengerListView.swift; path = Source/PassengerListView.swift; sourceTree = "<group>"; };
 		4260044429BDD0F9003E0433 /* FlightListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FlightListView.swift; path = Source/FlightListView.swift; sourceTree = "<group>"; };
 		4260044629BDD127003E0433 /* TicketListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TicketListView.swift; path = Source/TicketListView.swift; sourceTree = "<group>"; };
-		4260044829BDD40E003E0433 /* AirlineSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AirlineSettingsView.swift; path = Source/AirlineSettingsView.swift; sourceTree = "<group>"; };
+		4260044829BDD40E003E0433 /* AccountAndSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AccountAndSettingsView.swift; path = Source/AccountAndSettingsView.swift; sourceTree = "<group>"; };
 		4260044D29BDD4DC003E0433 /* ToggleTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ToggleTextField.swift; path = Source/ToggleTextField.swift; sourceTree = "<group>"; };
 		4269B3E229BBC84C009891C6 /* flyfunboarding.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = flyfunboarding.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4269B3E929BBC84C009891C6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -248,9 +248,9 @@
 			isa = PBXGroup;
 			children = (
 				4269B41829BBCA9D009891C6 /* MainView.swift */,
+				4260044829BDD40E003E0433 /* AccountAndSettingsView.swift */,
 				4260043E29BDCA72003E0433 /* InitialSigninView.swift */,
 				4260042C29BCF2D0003E0433 /* AirlineView.swift */,
-				4260044829BDD40E003E0433 /* AirlineSettingsView.swift */,
 				4260043229BD1829003E0433 /* AircraftListView.swift */,
 				426A29E029C26ABD00CACB19 /* AircraftEditView.swift */,
 				42E58E2429C25A2F00185971 /* AircraftRowView.swift */,
@@ -614,7 +614,7 @@
 				42D940B329CA28C900622CF3 /* ScanTicketView.swift in Sources */,
 				4260042F29BCF415003E0433 /* AccountModel.swift in Sources */,
 				42D9406F29C3C87B00622CF3 /* FlightViewModel.swift in Sources */,
-				4260044929BDD40E003E0433 /* AirlineSettingsView.swift in Sources */,
+				4260044929BDD40E003E0433 /* AccountAndSettingsView.swift in Sources */,
 				42D9407129C3D0B700622CF3 /* TicketListViewModel.swift in Sources */,
 				4208E4BA29BE2E3D00E2A5FC /* PassengerListViewModel.swift in Sources */,
 				4260044E29BDD4DC003E0433 /* ToggleTextField.swift in Sources */,
@@ -802,6 +802,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = FlyFunBoarding;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Scan Boarding Pass";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -837,6 +838,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = FlyFunBoarding;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Scan Boarding Pass";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

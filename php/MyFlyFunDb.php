@@ -451,6 +451,14 @@ class MyFlyFunDb {
         $this->addIdentifiers('Airlines', $object, $row);
         return $object;
     }
+
+    public function deleteAirlineById($airline_id){
+        $sql = "DELETE FROM Airlines WHERE airline_id= ?";
+        $stmt = mysqli_prepare($this->db, $sql);
+        $stmt->bind_param("i", $airline_id);
+        $stmt->execute();
+        $this->checkNoErrorOrDie($sql);
+    }
     public function getAirlineByAirlineIdentifier($airline_identifier){
         $sql = "SELECT * FROM Airlines WHERE airline_identifier = ?";
         $stmt = mysqli_prepare($this->db, $sql);

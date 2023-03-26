@@ -25,6 +25,20 @@ class AirlineController extends Controller {
         echo json_encode($airline->toJson());
     }
 
+
+    function index_delete($params){
+        $this->validateMethod( 'DELETE' );
+        $airline_id = $params[0];
+        $airline = MyFlyFunDb::$shared->getAirlineByAirlineIdentifier($airline_id);
+        if( !$airline->validate() ) {
+            http_response_code(401);
+            die("Invalid Bearer Token");
+        }
+        MyFlyFunDb::$shared->deleteAirlineById($airline->airline_id);
+        $this->contentType('application/json');
+        echo json_encode(array('status' => 1, 'airline_identifier' => $airline->airline_identifier));
+    }
+
     function get($params) {
         $this->validateMethod( 'GET' );
         $apple_identifier = $params[0];
