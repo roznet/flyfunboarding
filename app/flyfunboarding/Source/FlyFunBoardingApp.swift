@@ -30,10 +30,26 @@ import RZUtilsSwift
 import AuthenticationServices
 import FMDB
 import RZFlight
+import RZExternalUniversal
 
 extension Airport {
     static func find(icao : String) -> Airport? {
         return try? Airport(db: FlyFunBoardingApp.db, ident: icao)
+    }
+}
+
+extension TimeZone {
+    static func find(icao : String) -> TimeZone? {
+        var rv : TimeZone? = nil
+        if let shapeFile = FlyFunBoardingApp.timezoneShapeFile,
+           let airport = Airport.find(icao: icao) {
+            let index = shapeFile.indexSet(forShapeContaining: airport.coord)
+            let tzvalues = shapeFile.values(for: index)
+            if let first = tzvalues.first, let tzname = first["tzid"] as? String {
+                rv = TimeZone(identifier: tzname)
+            }
+        }
+        return rv
     }
 }
 
@@ -42,13 +58,17 @@ struct FlyFunBoardingApp: App {
     static public var knownAirports : KnownAirports? = nil
     public static let worker = DispatchQueue(label: "net.ro-z.flightlogstats.worker")
     public static var db : FMDatabase = FMDatabase()
-    
+    public static var timezoneShapeFile : RZShapeFile? = nil
+
     init() {
         Secrets.shared = Secrets(url: Bundle.main.url(forResource: "secrets", withExtension: "json"))
         FlyFunBoardingApp.db = FMDatabase(url: Bundle.main.url(forResource: "airports", withExtension: "db"))
         FlyFunBoardingApp.db.open()
         FlyFunBoardingApp.worker.async {
             FlyFunBoardingApp.knownAirports = KnownAirports(db: FlyFunBoardingApp.db)
+            if let path = Bundle.main.url(forResource: "combined-shapefile", withExtension: "shp")?.path {
+                FlyFunBoardingApp.timezoneShapeFile = RZShapeFile(base: (path as NSString).deletingPathExtension)
+            }
         }
     }
     

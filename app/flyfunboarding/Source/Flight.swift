@@ -32,13 +32,37 @@ import CryptoKit
 struct Flight : Codable, Identifiable, Hashable, Equatable{
     struct ICAO : Codable, Identifiable {
         var id : Int { return icao.hashValue }
-        var icao : String
+        var icao : String {
+            didSet {
+                self.timezone = TimeZone.find(icao: self.icao)
+            }
+        }
+        var timezoneIdentifier : String? = nil
         
-        enum CodingKeys: CodingKey {
-            case icao
+        enum CodingKeys: String, CodingKey {
+            case icao, timezoneIdentifier = "timezone_identifier"
+        }
+        init(icao: String) {
+            self.icao = icao
+            self.timezone = TimeZone.find(icao: self.icao)
         }
         
         lazy var airport : Airport? = { try? Airport(db: FlyFunBoardingApp.db, ident: self.icao) }()
+        var timezone : TimeZone? {
+            get {
+                if let timezoneIdentifier = timezoneIdentifier {
+                    return TimeZone(identifier: timezoneIdentifier)
+                }
+                return nil
+            }
+            set {
+                if let identifier = newValue?.identifier {
+                    self.timezoneIdentifier = identifier
+                }else{
+                    self.timezoneIdentifier = nil
+                }
+            }
+        }
     }
     
     static func == (lhs: Flight, rhs: Flight) -> Bool {

@@ -2,7 +2,8 @@
 
 class Airport {
     
-	public string $icao;
+    public string $icao;
+    public string $timezone_identifier ;
     private array $info = [];
 
     private static $db = null;
@@ -16,8 +17,8 @@ class Airport {
 		}
     }
 
-    public static $jsonKeys = ['icao' => 'string'];
-    public static $jsonValuesOptionalDefaults = [];
+    public static $jsonKeys = ['icao' => 'string', 'timezone_identifier' => 'string'];
+    public static $jsonValuesOptionalDefaults = ['timezone_identifier' => ''];
 
     public function getInfo() {
         if (empty($this->info)) {

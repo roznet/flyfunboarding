@@ -84,7 +84,6 @@ class KnownAirports {
     let tree : KDTree<AirportCoord>
     let db : FMDatabase
     
-    let timezoneShapeFile : RZShapeFile?
     
     init(db : FMDatabase){
         var points : [AirportCoord] = []
@@ -100,11 +99,7 @@ class KnownAirports {
         }
         self.db = db
         self.tree = KDTree<AirportCoord>(values: points)
-        if let path = Bundle.main.url(forResource: "combined-shapefile", withExtension: "shp")?.path {
-            self.timezoneShapeFile = RZShapeFile(base: (path as NSString).deletingPathExtension)
-        }else{
-            self.timezoneShapeFile = nil
-        }
+        
             
     }
  
@@ -122,16 +117,6 @@ class KnownAirports {
         return tree.nearestK(count, to: AirportCoord(coord: coord)) { $0.matches(needle) }
     }
     
-    func timezone(airport : AirportCoord) -> TimeZone? {
-        var rv : TimeZone? = nil
-        if let shapeFile = self.timezoneShapeFile {
-            let index = shapeFile.indexSet(forShapeContaining: airport.coord)
-            let tzvalues = shapeFile.values(for: index)
-            if let first = tzvalues.first, let tzname = first["tzid"] as? String {
-                rv = TimeZone(identifier: tzname)
-            }
-        }
-        return rv
-    }
+
 }
 
