@@ -111,6 +111,7 @@
 		4247B9AE29D2310000B312AC /* combined-shapefile.dbf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "combined-shapefile.dbf"; path = "python/timezones/combined-shapefile.dbf"; sourceTree = "<group>"; };
 		4247B9AF29D2310000B312AC /* combined-shapefile.shp */ = {isa = PBXFileReference; lastKnownFileType = file; name = "combined-shapefile.shp"; path = "python/timezones/combined-shapefile.shp"; sourceTree = "<group>"; };
 		4247B9B229D235F500B312AC /* combined-shapefile.shx */ = {isa = PBXFileReference; lastKnownFileType = file; name = "combined-shapefile.shx"; path = "python/timezones/combined-shapefile.shx"; sourceTree = "<group>"; };
+		4247B9B429D24EEE00B312AC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		4260042C29BCF2D0003E0433 /* AirlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AirlineView.swift; path = Source/AirlineView.swift; sourceTree = "<group>"; };
 		4260042E29BCF415003E0433 /* AccountModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AccountModel.swift; path = Source/AccountModel.swift; sourceTree = "<group>"; };
 		4260043029BCF66D003E0433 /* AirlineViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AirlineViewModel.swift; path = Source/AirlineViewModel.swift; sourceTree = "<group>"; };
@@ -302,6 +303,7 @@
 		4269B3E429BBC84C009891C6 /* flyfunboarding */ = {
 			isa = PBXGroup;
 			children = (
+				4247B9B429D24EEE00B312AC /* Info.plist */,
 				4269B41629BBCA6D009891C6 /* UserInterface */,
 				4269B43A29BCB08D009891C6 /* RemoteService */,
 				4269B41429BBCA5E009891C6 /* DataModels */,
@@ -817,6 +819,7 @@
 				DEVELOPMENT_TEAM = M7QSSF3624;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = flyfunboarding/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = FlyFunBoarding;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Scan Boarding Pass";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Access location to find the airport closest to you";
@@ -853,6 +856,7 @@
 				DEVELOPMENT_TEAM = M7QSSF3624;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = flyfunboarding/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = FlyFunBoarding;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Scan Boarding Pass";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Access location to find the airport closest to you";
