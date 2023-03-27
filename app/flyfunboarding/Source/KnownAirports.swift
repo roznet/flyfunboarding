@@ -30,6 +30,7 @@ import FMDB
 import KDTree
 import CoreLocation
 import RZFlight
+import RZExternalUniversal
 import MapKit
 
 class KnownAirports {
@@ -56,6 +57,8 @@ class KnownAirports {
         let latitude_deg : Double
         let longiture_deg : Double
         
+        var coord : CLLocationCoordinate2D { return CLLocationCoordinate2D(latitude: self.latitude_deg, longitude: self.longiture_deg)}
+        
         func kdDimension(_ dimension: Int) -> Double {
             if dimension == 0 {
                 return latitude_deg
@@ -80,6 +83,9 @@ class KnownAirports {
     }
     let tree : KDTree<AirportCoord>
     let db : FMDatabase
+    
+    let timezoneShapeFile : RZShapeFile?
+    
     init(db : FMDatabase){
         var points : [AirportCoord] = []
         if let res = db.executeQuery("SELECT ident,name,latitude_deg,longitude_deg FROM airports", withArgumentsIn: []){
@@ -94,6 +100,12 @@ class KnownAirports {
         }
         self.db = db
         self.tree = KDTree<AirportCoord>(values: points)
+        if let path = Bundle.main.url(forResource: "combined-shapefile", withExtension: "shp")?.path {
+            self.timezoneShapeFile = RZShapeFile(base: (path as NSString).deletingPathExtension)
+        }else{
+            self.timezoneShapeFile = nil
+        }
+            
     }
  
     func nearestIdent(coord : CLLocationCoordinate2D) -> String? {
@@ -108,6 +120,18 @@ class KnownAirports {
     }
     func nearestDescriptions(coord : CLLocationCoordinate2D, needle: String, count : Int) -> [AirportCoord] {
         return tree.nearestK(count, to: AirportCoord(coord: coord)) { $0.matches(needle) }
+    }
+    
+    func timezone(airport : AirportCoord) -> TimeZone? {
+        var rv : TimeZone? = nil
+        if let shapeFile = self.timezoneShapeFile {
+            let index = shapeFile.indexSet(forShapeContaining: airport.coord)
+            let tzvalues = shapeFile.values(for: index)
+            if let first = tzvalues.first, let tzname = first["tzid"] as? String {
+                rv = TimeZone(identifier: tzname)
+            }
+        }
+        return rv
     }
 }
 

@@ -17,6 +17,10 @@
 		4208E4C929BE785000E2A5FC /* AirportPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4208E4C829BE785000E2A5FC /* AirportPicker.swift */; };
 		4245DB1929BCBDB6004B9953 /* secrets.json in Resources */ = {isa = PBXBuildFile; fileRef = 4245DB1829BCBDB5004B9953 /* secrets.json */; };
 		4245DB1C29BCBE40004B9953 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4245DB1B29BCBE40004B9953 /* Secrets.swift */; };
+		4247B9AC29D22CDF00B312AC /* RZExternalUniversal in Frameworks */ = {isa = PBXBuildFile; productRef = 4247B9AB29D22CDF00B312AC /* RZExternalUniversal */; };
+		4247B9B029D2310000B312AC /* combined-shapefile.dbf in Resources */ = {isa = PBXBuildFile; fileRef = 4247B9AE29D2310000B312AC /* combined-shapefile.dbf */; };
+		4247B9B129D2310000B312AC /* combined-shapefile.shp in Resources */ = {isa = PBXBuildFile; fileRef = 4247B9AF29D2310000B312AC /* combined-shapefile.shp */; };
+		4247B9B329D235F500B312AC /* combined-shapefile.shx in Resources */ = {isa = PBXBuildFile; fileRef = 4247B9B229D235F500B312AC /* combined-shapefile.shx */; };
 		4260042D29BCF2D0003E0433 /* AirlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4260042C29BCF2D0003E0433 /* AirlineView.swift */; };
 		4260042F29BCF415003E0433 /* AccountModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4260042E29BCF415003E0433 /* AccountModel.swift */; };
 		4260043129BCF66D003E0433 /* AirlineViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4260043029BCF66D003E0433 /* AirlineViewModel.swift */; };
@@ -104,6 +108,9 @@
 		4208E4C829BE785000E2A5FC /* AirportPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AirportPicker.swift; path = Source/AirportPicker.swift; sourceTree = "<group>"; };
 		4245DB1829BCBDB5004B9953 /* secrets.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = secrets.json; sourceTree = "<group>"; };
 		4245DB1B29BCBE40004B9953 /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Secrets.swift; path = Source/Secrets.swift; sourceTree = "<group>"; };
+		4247B9AE29D2310000B312AC /* combined-shapefile.dbf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "combined-shapefile.dbf"; path = "python/timezones/combined-shapefile.dbf"; sourceTree = "<group>"; };
+		4247B9AF29D2310000B312AC /* combined-shapefile.shp */ = {isa = PBXFileReference; lastKnownFileType = file; name = "combined-shapefile.shp"; path = "python/timezones/combined-shapefile.shp"; sourceTree = "<group>"; };
+		4247B9B229D235F500B312AC /* combined-shapefile.shx */ = {isa = PBXFileReference; lastKnownFileType = file; name = "combined-shapefile.shx"; path = "python/timezones/combined-shapefile.shx"; sourceTree = "<group>"; };
 		4260042C29BCF2D0003E0433 /* AirlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AirlineView.swift; path = Source/AirlineView.swift; sourceTree = "<group>"; };
 		4260042E29BCF415003E0433 /* AccountModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AccountModel.swift; path = Source/AccountModel.swift; sourceTree = "<group>"; };
 		4260043029BCF66D003E0433 /* AirlineViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AirlineViewModel.swift; path = Source/AirlineViewModel.swift; sourceTree = "<group>"; };
@@ -175,6 +182,7 @@
 				42BBE9B329D0512300543641 /* CodeScanner in Frameworks */,
 				4269B42529BC75CA009891C6 /* RZUtils in Frameworks */,
 				4269B42329BC75CA009891C6 /* RZData in Frameworks */,
+				4247B9AC29D22CDF00B312AC /* RZExternalUniversal in Frameworks */,
 				4269B42929BC75CA009891C6 /* RZUtilsUniversal in Frameworks */,
 				4208E4B829BE29B100E2A5FC /* SwiftUIKit in Frameworks */,
 				4208E4BD29BE4E7400E2A5FC /* RZFlight in Frameworks */,
@@ -203,6 +211,9 @@
 		4245DB1A29BCBDC0004B9953 /* SupportingFiles */ = {
 			isa = PBXGroup;
 			children = (
+				4247B9B229D235F500B312AC /* combined-shapefile.shx */,
+				4247B9AE29D2310000B312AC /* combined-shapefile.dbf */,
+				4247B9AF29D2310000B312AC /* combined-shapefile.shp */,
 				42E58E1829BFD45000185971 /* airports.db */,
 				4245DB1829BCBDB5004B9953 /* secrets.json */,
 				4269B42F29BCA00B009891C6 /* FlyFunBoarding-Bridging-Header.h */,
@@ -404,6 +415,7 @@
 				4208E4BC29BE4E7400E2A5FC /* RZFlight */,
 				4208E4C429BE5CB300E2A5FC /* KDTree */,
 				42BBE9B229D0512300543641 /* CodeScanner */,
+				4247B9AB29D22CDF00B312AC /* RZExternalUniversal */,
 			);
 			productName = flyfunboarding;
 			productReference = 4269B3E229BBC84C009891C6 /* flyfunboarding.app */;
@@ -485,6 +497,7 @@
 				4208E4BB29BE4E7400E2A5FC /* XCRemoteSwiftPackageReference "rzflight" */,
 				4208E4C329BE5CB300E2A5FC /* XCRemoteSwiftPackageReference "KDTree" */,
 				42BBE9B129D0512300543641 /* XCRemoteSwiftPackageReference "CodeScanner" */,
+				4247B9AA29D22CDF00B312AC /* XCRemoteSwiftPackageReference "rzexternal" */,
 			);
 			productRefGroup = 4269B3E329BBC84C009891C6 /* Products */;
 			projectDirPath = "";
@@ -504,11 +517,14 @@
 			files = (
 				4269B43929BCA4EA009891C6 /* sample_tickets.json in Resources */,
 				4269B43729BCA4EA009891C6 /* sample_airline.json in Resources */,
+				4247B9B129D2310000B312AC /* combined-shapefile.shp in Resources */,
 				4269B3ED29BBC84C009891C6 /* Preview Assets.xcassets in Resources */,
 				4269B43829BCA4EA009891C6 /* sample_passengers.json in Resources */,
 				4269B43629BCA4EA009891C6 /* sample_flights.json in Resources */,
 				42E58E2029C2590200185971 /* Localizable.strings in Resources */,
+				4247B9B029D2310000B312AC /* combined-shapefile.dbf in Resources */,
 				4245DB1929BCBDB6004B9953 /* secrets.json in Resources */,
+				4247B9B329D235F500B312AC /* combined-shapefile.shx in Resources */,
 				42E58E1929BFD45000185971 /* airports.db in Resources */,
 				4269B3EA29BBC84C009891C6 /* Assets.xcassets in Resources */,
 				4269B43529BCA4EA009891C6 /* sample_aircrafts.json in Resources */,
@@ -1001,6 +1017,14 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		4247B9AA29D22CDF00B312AC /* XCRemoteSwiftPackageReference "rzexternal" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/roznet/rzexternal";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		4269B42129BC75CA009891C6 /* XCRemoteSwiftPackageReference "rzutils" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/roznet/rzutils";
@@ -1034,6 +1058,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4208E4C329BE5CB300E2A5FC /* XCRemoteSwiftPackageReference "KDTree" */;
 			productName = KDTree;
+		};
+		4247B9AB29D22CDF00B312AC /* RZExternalUniversal */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4247B9AA29D22CDF00B312AC /* XCRemoteSwiftPackageReference "rzexternal" */;
+			productName = RZExternalUniversal;
 		};
 		4269B42229BC75CA009891C6 /* RZData */ = {
 			isa = XCSwiftPackageProductDependency;

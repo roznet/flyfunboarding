@@ -37,6 +37,15 @@
       }
     },
     {
+      "identity" : "rzexternal",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/roznet/rzexternal",
+      "state" : {
+        "branch" : "master",
+        "revision" : "fcd1b1c083c0f24a1abb04c0e9f0d104a133b9eb"
+      }
+    },
+    {
       "identity" : "rzflight",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/roznet/rzflight",
