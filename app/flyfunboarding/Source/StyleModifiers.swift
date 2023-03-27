@@ -47,6 +47,7 @@ extension List {
             }
             .navigationDestination(for: Ticket.self){
                 ticket in
+                // Should be edit view once we have proper constructor
                 TicketRowView(ticket: ticket)
             }
     }

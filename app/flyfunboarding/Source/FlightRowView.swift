@@ -32,13 +32,16 @@ struct FlightRowView: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
-                Text(flight.aircraft.registration).standardFieldLabel()
+                HStack {
+                    Text(flight.origin.icao).standardFieldLabel()
+                    Image(systemName: "arrow.right")
+                    Text(flight.destination.icao).standardFieldLabel()
+                }
                 Spacer()
                 Text(flight.scheduledDepartureDate, style: .date)
             }
             HStack {
-                Text(flight.origin.icao).standardFieldValue()
-                Text(flight.destination.icao).standardFieldValue()
+                Text(flight.aircraft.registration).standardFieldValue()
                 Spacer()
                 Text(flight.scheduledDepartureDate, style: .time)
             }

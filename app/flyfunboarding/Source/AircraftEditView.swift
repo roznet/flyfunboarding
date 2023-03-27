@@ -40,9 +40,10 @@ struct AircraftEditView: View {
     @State var editIsDisabled : Bool = false
     @State var isPresentingConfirm : Bool = false
     
-    init(aircraft: Aircraft, mode : AircraftViewModel.Mode, syncWithRemote: Bool = true) {
+    init(aircraft: Aircraft, mode : AircraftViewModel.Mode,
+         flights: [Flight] = [], syncWithRemote: Bool = true) {
         _aircraftModel = StateObject(wrappedValue: AircraftViewModel(aircraft: aircraft, mode: mode))
-        _flightListViewModel = StateObject(wrappedValue: FlightListViewModel(flights: [], aircraft: aircraft, syncWithRemote: syncWithRemote))
+        _flightListViewModel = StateObject(wrappedValue: FlightListViewModel(flights: flights, aircraft: aircraft, syncWithRemote: syncWithRemote))
         
     }
     
@@ -68,13 +69,13 @@ struct AircraftEditView: View {
                                     deleteAction: cancel)
                 if self.flightListViewModel.flights.count > 0 {
                     VStack {
-                        HStack {
-                            Text("Flights").standardFieldLabel()
-                            Spacer()
-                        }
-                        List(self.flightListViewModel.flights) { flight in
-                            NavigationLink(value: flight){
-                                FlightRowView(flight: flight)
+                        List() {
+                            Section("Flights"){
+                                ForEach(self.flightListViewModel.flights) { flight in
+                                    NavigationLink(value: flight){
+                                        FlightRowView(flight: flight)
+                                    }
+                                }
                             }
                         }
                     }

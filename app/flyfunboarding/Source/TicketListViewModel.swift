@@ -30,7 +30,7 @@ import SwiftUI
 import OSLog
 
 class TicketListViewModel : ObservableObject {
-    @Published var tickets = [Ticket]()
+    @Published var tickets : [Ticket] = []
     
     @Published var flight : Flight = Flight.defaultFlight
     @Published var passenger : Passenger = Passenger.defaultPassenger

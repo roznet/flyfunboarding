@@ -36,52 +36,49 @@ struct FlightEditView: View {
     @StateObject var flightModel : FlightViewModel
     @StateObject var ticketListViewModel : TicketListViewModel
     @Environment(\.dismiss) var dismiss
-    var editIsDisabled : Bool = false
+    @State var editIsDisabled : Bool = false
     @State private var isPresentingConfirm : Bool = false
     
-    init(flight: Flight, mode: FlightViewModel.Mode, syncWithRemote: Bool = true, editIsDisabled: Bool = false){
+    init(flight: Flight, mode: FlightViewModel.Mode, tickets: [Ticket] = [],
+         syncWithRemote: Bool = true, editIsDisabled: Bool = false){
         _flightModel = StateObject(wrappedValue: FlightViewModel(flight: flight, mode: mode))
-        _ticketListViewModel = StateObject(wrappedValue: TicketListViewModel(tickets: [], flight: flight, syncWithRemote: syncWithRemote))
+        _ticketListViewModel = StateObject(wrappedValue: TicketListViewModel(tickets: tickets, flight: flight, syncWithRemote: syncWithRemote))
         self.editIsDisabled = editIsDisabled
     }
     var body: some View {
-        ScrollView {
-            VStack {
-                AircraftPicker(aircraftRegistration: flightModel.aircraft.registration, aircraft: $flightModel.aircraft)
-                    .disabled(self.editIsDisabled || self.flightModel.mode == .edit)
-                DatePicker("Flight Departure", selection: $flightModel.scheduledDepartureDate)
+        VStack {
+            AircraftPicker(aircraftRegistration: flightModel.aircraft.registration, aircraft: $flightModel.aircraft)
+                .disabled(self.editIsDisabled || self.flightModel.mode == .edit)
+            DatePicker("Flight Departure", selection: $flightModel.scheduledDepartureDate)
+                .disabled(self.editIsDisabled)
+            AirportPicker(labelText: "Departure", icao: $flightModel.origin, name: "Fairoaks")
+                .disabled(self.editIsDisabled)
+            AirportPicker(labelText: "Destination", icao: $flightModel.destination, name: "Le Touquet", editIsDisabled: self.editIsDisabled)
+            HStack {
+                Text("Gate")
+                    .standardFieldLabel()
+                TextField("Gate", text: $flightModel.gate)
+                    .standardStyle()
                     .disabled(self.editIsDisabled)
-                AirportPicker(labelText: "Departure", icao: $flightModel.origin, name: "Fairoaks")
+            }
+            HStack {
+                Text("Flight Number")
+                    .standardFieldLabel()
+                TextField("Flight Number", text: $flightModel.flightNumber)
+                    .standardStyle()
                     .disabled(self.editIsDisabled)
-                AirportPicker(labelText: "Destination", icao: $flightModel.destination, name: "Le Touquet", editIsDisabled: self.editIsDisabled)
-                HStack {
-                    Text("Gate")
-                        .standardFieldLabel()
-                    TextField("Gate", text: $flightModel.gate)
-                        .standardStyle()
-                        .disabled(self.editIsDisabled)
-                }
-                HStack {
-                    Text("Flight Number")
-                        .standardFieldLabel()
-                    TextField("Flight Number", text: $flightModel.flightNumber)
-                        .standardStyle()
-                        .disabled(self.editIsDisabled)
-                    
-                }
-                if !self.editIsDisabled {
-                    StandardEditButtons(mode: self.flightModel.mode,
-                                        submit: self.flightModel.submitText,
-                                        delete: "Delete",
-                                        submitAction: scheduleOrAmend,
-                                        deleteAction: delete)
-                    if self.ticketListViewModel.tickets.count > 0 {
-                        VStack {
-                            HStack {
-                                Text("Tickets").standardFieldLabel()
-                                Spacer()
-                            }
-                            List(self.ticketListViewModel.tickets) { ticket in
+                
+            }
+            if !self.editIsDisabled {
+                StandardEditButtons(mode: self.flightModel.mode,
+                                    submit: self.flightModel.submitText,
+                                    delete: "Delete",
+                                    submitAction: scheduleOrAmend,
+                                    deleteAction: delete)
+                if self.ticketListViewModel.tickets.count > 0 {
+                    List() {
+                        Section("Tickets") {
+                            ForEach(self.ticketListViewModel.tickets) { ticket in
                                 NavigationLink(value: ticket){
                                     TicketRowView(ticket: ticket)
                                 }
@@ -136,6 +133,7 @@ struct FlightEditView: View {
 struct FlightEditView_Previews: PreviewProvider {
     static var previews: some View {
         let flights = Samples.flights
-        FlightEditView(flight: flights[0], mode: .create)
+        let tickets = Samples.tickets
+        FlightEditView(flight: flights[0], mode: .edit, tickets: tickets, syncWithRemote: false)
     }
 }
