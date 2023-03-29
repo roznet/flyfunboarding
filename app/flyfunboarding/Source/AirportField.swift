@@ -31,6 +31,9 @@ import RZFlight
 import OSLog
 
 struct AirportField: View {
+    
+    // Ideally, we would use icao binding or a call back
+    // but somehow it freezes, so that's why we are using choice and a notification for the change.
     @State var labelText : String
     @Binding var icao : String
     @State var name : String = ""
