@@ -55,8 +55,15 @@ struct FlightEditView: View {
                 Text("Departure Date").standardFieldLabel()
                 DatePicker("", selection: $flightModel.scheduledDepartureDate)
             }
-            AirportField(labelText: "Departure", icao: $flightModel.origin)
-            AirportField(labelText: "Destination", icao: $flightModel.destination)
+            AirportField(labelText: "Departure", icao: flightModel.origin) { ac in
+                self.flightModel.origin = ac.icao
+                if let tz = TimeZone.find(icao: ac.icao) {
+                    self.flightModel.departureTimeZone = tz
+                }
+            }
+            AirportField(labelText: "Destination", icao: flightModel.destination) { ac in
+                self.flightModel.destination = ac.icao
+            }
             HStack {
                 Text("Gate")
                     .standardFieldLabel()

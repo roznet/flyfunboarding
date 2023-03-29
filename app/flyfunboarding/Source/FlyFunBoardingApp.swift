@@ -32,26 +32,7 @@ import FMDB
 import RZFlight
 import RZExternalUniversal
 
-extension Airport {
-    static func find(icao : String) -> Airport? {
-        return try? Airport(db: FlyFunBoardingApp.db, ident: icao)
-    }
-}
 
-extension TimeZone {
-    static func find(icao : String) -> TimeZone? {
-        var rv : TimeZone? = nil
-        if let shapeFile = FlyFunBoardingApp.timezoneShapeFile,
-           let airport = Airport.find(icao: icao) {
-            let index = shapeFile.indexSet(forShapeContaining: airport.coord)
-            let tzvalues = shapeFile.values(for: index)
-            if let first = tzvalues.first, let tzname = first["tzid"] as? String {
-                rv = TimeZone(identifier: tzname)
-            }
-        }
-        return rv
-    }
-}
 
 @main
 struct FlyFunBoardingApp: App {

@@ -41,6 +41,7 @@ struct AirportPicker: View {
     @Binding var icao : String
     @State var search :String
     @Environment(\.dismiss) var dismiss
+    var onSelectCallback: ((AirportCoord) -> Void)? = nil
     
     var body: some View {
         VStack {
@@ -58,20 +59,26 @@ struct AirportPicker: View {
             List(matchedAiports.suggestions) { suggestion in
                 VStack(alignment: .leading) {
                     HStack(alignment: .firstTextBaseline) {
-                        Text(suggestion.ident).font(.headline)
+                        Text(suggestion.icao).font(.headline)
                         Spacer()
                         Text(self.formatDistance(suggestion: suggestion)).font(.footnote).foregroundColor(.secondary).padding(.trailing)
                     }
                     Text(suggestion.name).font(.footnote)
                 }.onTapGesture {
-                    self.icao = suggestion.ident
+                    self.icao = suggestion.icao
                     NotificationCenter.default.post(name: .airportWasPicked, object: nil)
+                    onSelectCallback?(suggestion)
                     self.dismiss()
                     
                 }
             }
             .listStyle(.insetGrouped)
         }
+    }
+    func onSelect(action : @escaping ((AirportCoord) -> Void)) -> AirportPicker {
+        var rv = self
+        rv.onSelectCallback = action
+        return rv
     }
 
     func formatDistance(suggestion : MatchedAirport.AirportCoord) -> String{

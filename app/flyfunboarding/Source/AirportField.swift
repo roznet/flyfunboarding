@@ -31,21 +31,23 @@ import RZFlight
 import OSLog
 
 struct AirportField: View {
+    typealias AirportCoord = KnownAirports.AirportCoord
     
-    // Ideally, we would use icao binding or a call back
-    // but somehow it freezes, so that's why we are using choice and a notification for the change.
     @State var labelText : String
-    @Binding var icao : String
+    @State var icao : String
     @State var name : String = ""
-    @State var choice : String = ""
+    var onSelectAction : ((AirportCoord) -> Void)?
     
     var body: some View {
         HStack(alignment: .firstTextBaseline) {
             Text(self.labelText)
                 .standardFieldLabel()
-            NavigationLink(destination: AirportPicker(icao: $choice, search: icao)){
+            NavigationLink(destination: AirportPicker(icao: $icao, search: icao).onSelect() {
+                ac in
+                onSelectAction?(ac)
+            }){
                 VStack {
-                    TextField("ICAO", text: $choice)
+                    TextField("ICAO", text: $icao)
                         .standardStyle()
                     Text(name)
                         .standardInfo()
@@ -54,14 +56,6 @@ struct AirportField: View {
         }
         .onAppear(){
             self.sync()
-            NotificationCenter.default.addObserver(forName: .airportWasPicked, object: nil, queue: nil){ _ in
-                DispatchQueue.main.async {
-                    self.icao = self.choice
-                }
-            }
-        }
-        .onDisappear(){
-            NotificationCenter.default.removeObserver(self)
         }
     }
     
@@ -70,7 +64,6 @@ struct AirportField: View {
             if let airport = Airport.find(icao: self.icao) {
                 DispatchQueue.main.async {
                     self.name = airport.name
-                    self.choice = self.icao
                 }
             }
         }

@@ -33,6 +33,7 @@ class FlightViewModel : ObservableObject {
     @Published var origin : String
     @Published var destination : String
     @Published var scheduledDepartureDate : Date
+    @Published var departureTimeZone : TimeZone = TimeZone.current
     @Published var aircraft : Aircraft
     @Published var gate : String
     @Published var flightNumber : String

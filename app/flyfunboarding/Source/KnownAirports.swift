@@ -33,26 +33,47 @@ import RZFlight
 import RZExternalUniversal
 import MapKit
 
+extension Airport {
+    static func find(icao : String) -> Airport? {
+        return try? Airport(db: FlyFunBoardingApp.db, ident: icao)
+    }
+}
+
+extension TimeZone {
+    static func find(icao : String) -> TimeZone? {
+        var rv : TimeZone? = nil
+        if let shapeFile = FlyFunBoardingApp.timezoneShapeFile,
+           let airport = Airport.find(icao: icao) {
+            let index = shapeFile.indexSet(forShapeContaining: airport.coord)
+            let tzvalues = shapeFile.values(for: index)
+            if let first = tzvalues.first, let tzname = first["tzid"] as? String {
+                rv = TimeZone(identifier: tzname)
+            }
+        }
+        return rv
+    }
+}
+
 class KnownAirports {
     
     struct AirportCoord : KDTreePoint, Hashable, Identifiable {
         internal static var dimensions: Int = 2
-        var id: String { return self.ident }
+        var id: String { return self.icao }
         
         init(coord : CLLocationCoordinate2D){
-            ident = ""
+            icao = ""
             name = ""
             latitude_deg = coord.latitude
             longiture_deg = coord.longitude
         }
         
-        init(ident : String, name: String, latitude_deg : Double, longiture_deg : Double){
-            self.ident = ident
+        init(icao : String, name: String, latitude_deg : Double, longiture_deg : Double){
+            self.icao = icao
             self.name = name
             self.latitude_deg = latitude_deg
             self.longiture_deg = longiture_deg
         }
-        let ident : String
+        let icao : String
         let name : String
         let latitude_deg : Double
         let longiture_deg : Double
@@ -74,7 +95,7 @@ class KnownAirports {
         
         func matches(_ needle : String) -> Bool {
             let lc = needle.lowercased()
-            return self.ident.lowercased().contains(lc) || self.name.lowercased().contains(lc)
+            return self.icao.lowercased().contains(lc) || self.name.lowercased().contains(lc)
         }
         
         func distance(to: CLLocationCoordinate2D) -> CLLocationDistance {
@@ -93,7 +114,7 @@ class KnownAirports {
                    let name = res.string(forColumnIndex: 1){
                     let lat = res.double(forColumnIndex: 2)
                     let lon = res.double(forColumnIndex: 3)
-                    points.append(AirportCoord(ident: ident, name: name, latitude_deg: lat, longiture_deg: lon))
+                    points.append(AirportCoord(icao: ident, name: name, latitude_deg: lat, longiture_deg: lon))
                 }
             }
         }
@@ -105,7 +126,7 @@ class KnownAirports {
  
     func nearestIdent(coord : CLLocationCoordinate2D) -> String? {
         let found = tree.nearest(to: AirportCoord(coord: coord))
-        return found?.ident
+        return found?.icao
     }
     func nearest(coord : CLLocationCoordinate2D, db : FMDatabase) -> Airport? {
         if let found = self.nearestIdent(coord: coord){
