@@ -1,6 +1,6 @@
 //  MIT License
 //
-//  Created on 17/03/2023 for flyfunboarding
+//  Created on 29/03/2023 for flyfunboarding
 //
 //  Copyright (c) 2023 Brice Rosenzweig
 //
@@ -26,41 +26,27 @@
 
 
 import SwiftUI
-import OSLog
 
-
-struct AircraftPicker: View {
-    @StateObject private var matchedAircrafts = MatchedAircraft()
-    @Binding var aircraft : Aircraft
-    @State var search : String = ""
-    @Environment(\.dismiss) var dismiss
-
+struct AircraftField: View {
+    @State var aircraft : Aircraft
+    @State var reg : String = ""
     
     var body: some View {
-        VStack {
-            HStack(alignment: .firstTextBaseline) {
-                Text("Aircraft Registration")
-                    .standardFieldLabel()
-                TextField("Search", text: $search )
+        HStack(alignment: .firstTextBaseline) {
+            Text("Aircraft Registration")
+                .standardFieldLabel()
+            NavigationLink(destination: AircraftPicker(aircraft: $aircraft)) {
+                TextField("Registration", text: $reg)
                     .standardStyle()
-                    .onChange(of: search) { newValue in
-                        matchedAircrafts.autocomplete(newValue)
-                    }
             }
-            List(matchedAircrafts.suggestions) { suggestion in
-                VStack(alignment: .leading) {
-                    AircraftRowView(aircraft: suggestion)
-                }
-                .onTapGesture {
-                    self.aircraft = suggestion
-                    self.dismiss()
-                }
-            }
-        }
-        .onAppear() {
-            self.search = self.aircraft.registration
-            self.matchedAircrafts.retrieveAircrafts()
+        }.onAppear() {
+            reg = aircraft.registration
         }
     }
 }
 
+struct AircraftField_Previews: PreviewProvider {
+    static var previews: some View {
+        AircraftField(aircraft: Samples.aircraft)
+    }
+}

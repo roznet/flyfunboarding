@@ -36,40 +36,41 @@ struct FlightEditView: View {
     @StateObject var flightModel : FlightViewModel
     @StateObject var ticketListViewModel : TicketListViewModel
     @Environment(\.dismiss) var dismiss
-    @State var editIsDisabled : Bool = false
     @State private var isPresentingConfirm : Bool = false
+    @Environment(\.isEnabled) private var isEnabled;
     
-    init(flight: Flight, mode: FlightViewModel.Mode, tickets: [Ticket] = [],
-         syncWithRemote: Bool = true, editIsDisabled: Bool = false){
+    init(flight: Flight,
+         mode: FlightViewModel.Mode,
+         tickets: [Ticket] = [],
+         syncWithRemote: Bool = true,
+         editIsDisabled: Bool = false){
         _flightModel = StateObject(wrappedValue: FlightViewModel(flight: flight, mode: mode))
         _ticketListViewModel = StateObject(wrappedValue: TicketListViewModel(tickets: tickets, flight: flight, syncWithRemote: syncWithRemote))
-        self.editIsDisabled = editIsDisabled
     }
     var body: some View {
         VStack {
-            AircraftPicker(aircraftRegistration: flightModel.aircraft.registration, aircraft: $flightModel.aircraft)
-                .disabled(self.editIsDisabled || self.flightModel.mode == .edit)
-            DatePicker("Flight Departure", selection: $flightModel.scheduledDepartureDate)
-                .disabled(self.editIsDisabled)
-            AirportPicker(labelText: "Departure", icao: $flightModel.origin, name: "Fairoaks")
-                .disabled(self.editIsDisabled)
-            AirportPicker(labelText: "Destination", icao: $flightModel.destination, name: "Le Touquet", editIsDisabled: self.editIsDisabled)
+            AircraftField(aircraft: flightModel.aircraft)
+                .disabled(self.flightModel.mode == .edit)
+            HStack {
+                Text("Departure Date").standardFieldLabel()
+                DatePicker("", selection: $flightModel.scheduledDepartureDate)
+            }
+            AirportField(labelText: "Departure", icao: $flightModel.origin)
+            AirportField(labelText: "Destination", icao: $flightModel.destination)
             HStack {
                 Text("Gate")
                     .standardFieldLabel()
                 TextField("Gate", text: $flightModel.gate)
                     .standardStyle()
-                    .disabled(self.editIsDisabled)
             }
             HStack {
                 Text("Flight Number")
                     .standardFieldLabel()
                 TextField("Flight Number", text: $flightModel.flightNumber)
                     .standardStyle()
-                    .disabled(self.editIsDisabled)
                 
             }
-            if !self.editIsDisabled {
+            if isEnabled {
                 StandardEditButtons(mode: self.flightModel.mode,
                                     submit: self.flightModel.submitText,
                                     delete: "Delete",

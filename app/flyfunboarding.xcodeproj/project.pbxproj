@@ -14,13 +14,17 @@
 		4208E4BD29BE4E7400E2A5FC /* RZFlight in Frameworks */ = {isa = PBXBuildFile; productRef = 4208E4BC29BE4E7400E2A5FC /* RZFlight */; };
 		4208E4C229BE5A1E00E2A5FC /* KnownAirports.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4208E4C129BE5A1E00E2A5FC /* KnownAirports.swift */; };
 		4208E4C529BE5CB300E2A5FC /* KDTree in Frameworks */ = {isa = PBXBuildFile; productRef = 4208E4C429BE5CB300E2A5FC /* KDTree */; };
-		4208E4C929BE785000E2A5FC /* AirportPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4208E4C829BE785000E2A5FC /* AirportPicker.swift */; };
+		4208E4C929BE785000E2A5FC /* AirportField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4208E4C829BE785000E2A5FC /* AirportField.swift */; };
 		4245DB1929BCBDB6004B9953 /* secrets.json in Resources */ = {isa = PBXBuildFile; fileRef = 4245DB1829BCBDB5004B9953 /* secrets.json */; };
 		4245DB1C29BCBE40004B9953 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4245DB1B29BCBE40004B9953 /* Secrets.swift */; };
 		4247B9AC29D22CDF00B312AC /* RZExternalUniversal in Frameworks */ = {isa = PBXBuildFile; productRef = 4247B9AB29D22CDF00B312AC /* RZExternalUniversal */; };
 		4247B9B029D2310000B312AC /* combined-shapefile.dbf in Resources */ = {isa = PBXBuildFile; fileRef = 4247B9AE29D2310000B312AC /* combined-shapefile.dbf */; };
 		4247B9B129D2310000B312AC /* combined-shapefile.shp in Resources */ = {isa = PBXBuildFile; fileRef = 4247B9AF29D2310000B312AC /* combined-shapefile.shp */; };
 		4247B9B329D235F500B312AC /* combined-shapefile.shx in Resources */ = {isa = PBXBuildFile; fileRef = 4247B9B229D235F500B312AC /* combined-shapefile.shx */; };
+		4247B9ED29D4A8E500B312AC /* MatchedAirport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4247B9EC29D4A8E500B312AC /* MatchedAirport.swift */; };
+		4247B9EF29D4AA3100B312AC /* MatchedAircraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4247B9EE29D4AA3100B312AC /* MatchedAircraft.swift */; };
+		4247B9F129D4AA5D00B312AC /* AirportPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4247B9F029D4AA5D00B312AC /* AirportPicker.swift */; };
+		4247B9F329D4AB0700B312AC /* AircraftField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4247B9F229D4AB0700B312AC /* AircraftField.swift */; };
 		4260042D29BCF2D0003E0433 /* AirlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4260042C29BCF2D0003E0433 /* AirlineView.swift */; };
 		4260042F29BCF415003E0433 /* AccountModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4260042E29BCF415003E0433 /* AccountModel.swift */; };
 		4260043129BCF66D003E0433 /* AirlineViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4260043029BCF66D003E0433 /* AirlineViewModel.swift */; };
@@ -105,13 +109,17 @@
 		4208E4AE29BDF6D400E2A5FC /* Samples.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Samples.swift; path = Source/Samples.swift; sourceTree = "<group>"; };
 		4208E4B929BE2E3D00E2A5FC /* PassengerListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PassengerListViewModel.swift; path = Source/PassengerListViewModel.swift; sourceTree = "<group>"; };
 		4208E4C129BE5A1E00E2A5FC /* KnownAirports.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = KnownAirports.swift; path = Source/KnownAirports.swift; sourceTree = "<group>"; };
-		4208E4C829BE785000E2A5FC /* AirportPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AirportPicker.swift; path = Source/AirportPicker.swift; sourceTree = "<group>"; };
+		4208E4C829BE785000E2A5FC /* AirportField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AirportField.swift; path = Source/AirportField.swift; sourceTree = "<group>"; };
 		4245DB1829BCBDB5004B9953 /* secrets.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = secrets.json; sourceTree = "<group>"; };
 		4245DB1B29BCBE40004B9953 /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Secrets.swift; path = Source/Secrets.swift; sourceTree = "<group>"; };
 		4247B9AE29D2310000B312AC /* combined-shapefile.dbf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "combined-shapefile.dbf"; path = "python/timezones/combined-shapefile.dbf"; sourceTree = "<group>"; };
 		4247B9AF29D2310000B312AC /* combined-shapefile.shp */ = {isa = PBXFileReference; lastKnownFileType = file; name = "combined-shapefile.shp"; path = "python/timezones/combined-shapefile.shp"; sourceTree = "<group>"; };
 		4247B9B229D235F500B312AC /* combined-shapefile.shx */ = {isa = PBXFileReference; lastKnownFileType = file; name = "combined-shapefile.shx"; path = "python/timezones/combined-shapefile.shx"; sourceTree = "<group>"; };
 		4247B9B429D24EEE00B312AC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		4247B9EC29D4A8E500B312AC /* MatchedAirport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MatchedAirport.swift; path = Source/MatchedAirport.swift; sourceTree = "<group>"; };
+		4247B9EE29D4AA3100B312AC /* MatchedAircraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MatchedAircraft.swift; path = Source/MatchedAircraft.swift; sourceTree = "<group>"; };
+		4247B9F029D4AA5D00B312AC /* AirportPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AirportPicker.swift; path = Source/AirportPicker.swift; sourceTree = "<group>"; };
+		4247B9F229D4AB0700B312AC /* AircraftField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AircraftField.swift; path = Source/AircraftField.swift; sourceTree = "<group>"; };
 		4260042C29BCF2D0003E0433 /* AirlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AirlineView.swift; path = Source/AirlineView.swift; sourceTree = "<group>"; };
 		4260042E29BCF415003E0433 /* AccountModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AccountModel.swift; path = Source/AccountModel.swift; sourceTree = "<group>"; };
 		4260043029BCF66D003E0433 /* AirlineViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AirlineViewModel.swift; path = Source/AirlineViewModel.swift; sourceTree = "<group>"; };
@@ -223,6 +231,15 @@
 			name = SupportingFiles;
 			sourceTree = "<group>";
 		};
+		4247B9EB29D4A8C300B312AC /* Matched */ = {
+			isa = PBXGroup;
+			children = (
+				4247B9EC29D4A8E500B312AC /* MatchedAirport.swift */,
+				4247B9EE29D4AA3100B312AC /* MatchedAircraft.swift */,
+			);
+			name = Matched;
+			sourceTree = "<group>";
+		};
 		4260044A29BDD494003E0433 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
@@ -242,10 +259,13 @@
 		4260044B29BDD49B003E0433 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				4247B9EB29D4A8C300B312AC /* Matched */,
 				4208E4AE29BDF6D400E2A5FC /* Samples.swift */,
 				4260044D29BDD4DC003E0433 /* ToggleTextField.swift */,
-				4208E4C829BE785000E2A5FC /* AirportPicker.swift */,
+				4247B9F029D4AA5D00B312AC /* AirportPicker.swift */,
+				4208E4C829BE785000E2A5FC /* AirportField.swift */,
 				42D9407629C4FCAC00622CF3 /* AircraftPicker.swift */,
+				4247B9F229D4AB0700B312AC /* AircraftField.swift */,
 				42D940BF29CCF8CA00622CF3 /* FlightPicker.swift */,
 				42D9407A29C7212800622CF3 /* StyleModifiers.swift */,
 				42D940B929CB9D8B00622CF3 /* StandardEditButtons.swift */,
@@ -595,6 +615,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4247B9F329D4AB0700B312AC /* AircraftField.swift in Sources */,
 				4269B42B29BC75E9009891C6 /* Settings.swift in Sources */,
 				4260044529BDD0F9003E0433 /* FlightListView.swift in Sources */,
 				4260044329BDCBE2003E0433 /* PassengerListView.swift in Sources */,
@@ -604,7 +625,7 @@
 				4260044729BDD127003E0433 /* TicketListView.swift in Sources */,
 				4260044129BDCAF8003E0433 /* Passenger.swift in Sources */,
 				42D9407329C3D37A00622CF3 /* TicketRowView.swift in Sources */,
-				4208E4C929BE785000E2A5FC /* AirportPicker.swift in Sources */,
+				4208E4C929BE785000E2A5FC /* AirportField.swift in Sources */,
 				4245DB1C29BCBE40004B9953 /* Secrets.swift in Sources */,
 				4208E4C229BE5A1E00E2A5FC /* KnownAirports.swift in Sources */,
 				42E58E2529C25A2F00185971 /* AircraftRowView.swift in Sources */,
@@ -617,6 +638,7 @@
 				42E58E1B29BFE36900185971 /* Flight.swift in Sources */,
 				4260043F29BDCA72003E0433 /* InitialSigninView.swift in Sources */,
 				42D940BA29CB9D8B00622CF3 /* StandardEditButtons.swift in Sources */,
+				4247B9ED29D4A8E500B312AC /* MatchedAirport.swift in Sources */,
 				42E58E1D29BFE67100185971 /* Ticket.swift in Sources */,
 				42D940B829CB9CA200622CF3 /* TicketViewModel.swift in Sources */,
 				4260042D29BCF2D0003E0433 /* AirlineView.swift in Sources */,
@@ -637,11 +659,13 @@
 				4208E4BA29BE2E3D00E2A5FC /* PassengerListViewModel.swift in Sources */,
 				4260044E29BDD4DC003E0433 /* ToggleTextField.swift in Sources */,
 				4269B42E29BC77B3009891C6 /* Log.swift in Sources */,
+				4247B9EF29D4AA3100B312AC /* MatchedAircraft.swift in Sources */,
 				42D9407B29C7212800622CF3 /* StyleModifiers.swift in Sources */,
 				42D940C629CEF31F00622CF3 /* Stats.swift in Sources */,
 				4260043329BD1829003E0433 /* AircraftListView.swift in Sources */,
 				42D940C429CE354900622CF3 /* IconWithBadge.swift in Sources */,
 				4269B43C29BCB0A9009891C6 /* Airline.swift in Sources */,
+				4247B9F129D4AA5D00B312AC /* AirportPicker.swift in Sources */,
 				4269B41B29BBCAB6009891C6 /* FlyFunBoardingApp.swift in Sources */,
 				42D9406C29C3C75600622CF3 /* FlightRowView.swift in Sources */,
 			);
@@ -823,7 +847,6 @@
 				INFOPLIST_KEY_CFBundleDisplayName = FlyFunBoarding;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Scan Boarding Pass";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Access location to find the airport closest to you";
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -860,7 +883,6 @@
 				INFOPLIST_KEY_CFBundleDisplayName = FlyFunBoarding;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Scan Boarding Pass";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Access location to find the airport closest to you";
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";

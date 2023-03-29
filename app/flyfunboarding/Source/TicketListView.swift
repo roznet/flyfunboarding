@@ -98,7 +98,8 @@ struct TicketListView: View {
     }
     
     func ticketEditView(ticket: Ticket) -> some View {
-        return TicketEditView(ticketModel: TicketViewModel(ticket: ticket, mode: .edit), ticketListModel: self.ticketListViewModel)
+        return TicketEditView(ticketModel: TicketViewModel(ticket: ticket, mode: .edit),
+                              ticketListModel: self.ticketListViewModel)
     }
     
     //MARK: - Actions

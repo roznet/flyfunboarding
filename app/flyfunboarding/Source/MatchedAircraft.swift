@@ -1,6 +1,6 @@
 //  MIT License
 //
-//  Created on 17/03/2023 for flyfunboarding
+//  Created on 29/03/2023 for flyfunboarding
 //
 //  Copyright (c) 2023 Brice Rosenzweig
 //
@@ -25,42 +25,39 @@
 
 
 
+import Foundation
 import SwiftUI
 import OSLog
 
-
-struct AircraftPicker: View {
-    @StateObject private var matchedAircrafts = MatchedAircraft()
-    @Binding var aircraft : Aircraft
-    @State var search : String = ""
-    @Environment(\.dismiss) var dismiss
-
-    
-    var body: some View {
-        VStack {
-            HStack(alignment: .firstTextBaseline) {
-                Text("Aircraft Registration")
-                    .standardFieldLabel()
-                TextField("Search", text: $search )
-                    .standardStyle()
-                    .onChange(of: search) { newValue in
-                        matchedAircrafts.autocomplete(newValue)
-                    }
-            }
-            List(matchedAircrafts.suggestions) { suggestion in
-                VStack(alignment: .leading) {
-                    AircraftRowView(aircraft: suggestion)
-                }
-                .onTapGesture {
-                    self.aircraft = suggestion
-                    self.dismiss()
+class MatchedAircraft : ObservableObject {
+    private var aircrafts : [Aircraft] = []
+    @Published var suggestions : [Aircraft] = []
+   
+    init(aircrafts : [Aircraft]? = nil) {
+        if let aircrafts = aircrafts {
+            self.aircrafts = aircrafts
+            self.suggestions = aircrafts
+        } else {
+            self.aircrafts = []
+            self.suggestions = []
+        }
+    }
+    func retrieveAircrafts() {
+        RemoteService.shared.retrieveAircraftList() { found in
+            if let aircrafts = found {
+                DispatchQueue.main.async {
+                    self.aircrafts = aircrafts
+                    self.suggestions = aircrafts
                 }
             }
         }
-        .onAppear() {
-            self.search = self.aircraft.registration
-            self.matchedAircrafts.retrieveAircrafts()
+    }
+    func shouldAutocomplete(_ text : String) -> Bool {
+        return true
+    }
+    func autocomplete(_ text : String) {
+        self.suggestions = aircrafts.sorted {
+            $0.registration.score(word: text) > $1.registration.score(word: text)
         }
     }
 }
-

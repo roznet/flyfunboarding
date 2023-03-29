@@ -1,6 +1,6 @@
 //  MIT License
 //
-//  Created on 12/03/2023 for flyfunboarding
+//  Created on 29/03/2023 for flyfunboarding
 //
 //  Copyright (c) 2023 Brice Rosenzweig
 //
@@ -25,157 +25,55 @@
 
 
 
+import Foundation
 import SwiftUI
 import CoreLocation
 import RZFlight
 import OSLog
 
-class MatchedAirport : ObservableObject {
-    class LocationRequest : NSObject, CLLocationManagerDelegate {
-        var locationManager : CLLocationManager = CLLocationManager()
-        var cb : (CLLocationCoordinate2D) -> Void = { _ in }
-        
-        func start(cb : @escaping (CLLocationCoordinate2D) -> Void) {
-            locationManager.delegate = self
-            self.cb = cb
-            self.locationManager.desiredAccuracy = kCLLocationAccuracyReduced
-            self.locationManager.requestWhenInUseAuthorization()
-            locationManager.requestLocation()
-        }
-        
-        func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-            guard let first = locations.first else { return }
-            cb(first.coordinate)
-        }
-        
-        func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-            Logger.ui.info("Failed to get location, ignoring \(error.localizedDescription)")
-        }
-    }
-    
-    typealias AirportCoord = KnownAirports.AirportCoord
-    
-    @Published var suggestions : [AirportCoord] = []
-    var coord = CLLocationCoordinate2D(latitude: 51.50, longitude: 0.12)
-    private var locationRequest : LocationRequest = LocationRequest()
-    private var lastText : String? = nil
-    
-    init() {
-        self.coord = CLLocationCoordinate2D(latitude: Settings.shared.lastLatitude,
-                                            longitude: Settings.shared.lastLongitude)
-        self.locationRequest.start() {
-            c in
-            self.coord = c
-            Settings.shared.lastLatitude = c.latitude
-            Settings.shared.lastLongitude = c.longitude
-            if let text = self.lastText {
-                self.autocomplete(text)
-            }
-        }
-    }
-   
-    private var searching : Bool = false
-    
-    func shouldAutocomplete(_ text : String) -> Bool {
-        /*if suggestions.count == 1 && suggestions.first!.ident == text {
-            return false
-        }*/
-        return true
-    }
-    
-    func autocomplete(_ text : String) {
-        DispatchQueue.synchronized(self){
-            guard !self.searching else { return }
-            self.searching = true
-        }
-        
-        FlyFunBoardingApp.worker.async {
-            if let found = FlyFunBoardingApp.knownAirports?.nearestDescriptions(coord: self.coord, needle: text, count: 20) {
-                DispatchQueue.main.async {
-                    DispatchQueue.synchronized(self){
-                        self.lastText = text
-                        self.suggestions = found
-                        self.searching = false
-                    }
-                }
-            }else{
-                self.searching = false
-            }
-        }
-    }
+extension Notification.Name {
+    static let airportWasPicked = Notification.Name("airportWasPicked")
 }
 struct AirportPicker: View {
-    @StateObject var matchedAiports = MatchedAirport()
-    var labelText : String
-    @Binding var icao : String
-    @State var name : String
-    @State private var showPopup = false
-    @FocusState var isFocused : Bool
-    @State var editIsDisabled : Bool = false
+    typealias AirportCoord = KnownAirports.AirportCoord
     
-    func sync() {
-        if let name = Airport.find(icao: self.icao) {
-            self.name = name.name
-        }else{
-            self.name = ""
-        }
-    }
+    @StateObject var matchedAiports = MatchedAirport()
+    @Binding var icao : String
+    @State var search :String
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         VStack {
-            HStack(alignment: .firstTextBaseline) {
-                Text(self.labelText)
-                VStack {
-                    TextField("ICAO", text: $icao)
-                        .standardStyle()
-                        .disabled(editIsDisabled)
-                        .focused($isFocused)
-                        .onChange(of: icao) { newValue in
-                            if matchedAiports.shouldAutocomplete(newValue) {
-                                matchedAiports.autocomplete(newValue)
-                            }
-                        }
-                        .onTapGesture {
-                            self.showPopup = true
-                            matchedAiports.autocomplete(self.icao)
-                        }
-                        .onChange(of: isFocused){ isFocused in
-                            if isFocused {
-                                Logger.ui.info("focused")
-                                self.showPopup = true
-                                
-                            }else{
-                                Logger.ui.info("not focused")
-                                self.showPopup = false
-                            }
-                        }
-                    Text(name)
-                        .font(.footnote)
-                        .onAppear() { self.sync() }
-                }
-            }
-            
-            if showPopup && !editIsDisabled {
-                List(matchedAiports.suggestions, id: \.self) { suggestion in
-                    VStack(alignment: .leading) {
-                        HStack(alignment: .firstTextBaseline) {
-                            Text(suggestion.ident).font(.headline)
-                            Spacer()
-                            Text(self.formatDistance(suggestion: suggestion)).font(.footnote).foregroundColor(.secondary).padding(.trailing)
-                        }
-                        Text(suggestion.name).font(.footnote)
-                    }.onTapGesture {
-                        self.icao = suggestion.ident
-                        self.name = suggestion.name
-                        self.showPopup = false
+            HStack {
+                Text("Search Airport")
+                TextField("Search", text: $search)
+                    .standardStyle()
+                    .onChange(of: search){ newValue in
+                        self.matchedAiports.autocomplete(newValue)
                     }
-                }
-                .listStyle(.insetGrouped)
-                .frame(minHeight: 320.0)
+                    .onAppear(){
+                        self.matchedAiports.autocomplete(search)
+                    }
             }
+            List(matchedAiports.suggestions) { suggestion in
+                VStack(alignment: .leading) {
+                    HStack(alignment: .firstTextBaseline) {
+                        Text(suggestion.ident).font(.headline)
+                        Spacer()
+                        Text(self.formatDistance(suggestion: suggestion)).font(.footnote).foregroundColor(.secondary).padding(.trailing)
+                    }
+                    Text(suggestion.name).font(.footnote)
+                }.onTapGesture {
+                    self.icao = suggestion.ident
+                    NotificationCenter.default.post(name: .airportWasPicked, object: nil)
+                    self.dismiss()
+                    
+                }
+            }
+            .listStyle(.insetGrouped)
         }
     }
-    
+
     func formatDistance(suggestion : MatchedAirport.AirportCoord) -> String{
         let dist = suggestion.distance(to: matchedAiports.coord)
         let measure = Measurement(value: dist, unit: UnitLength.meters)
@@ -183,11 +81,5 @@ struct AirportPicker: View {
         formatter.numberFormatter.maximumFractionDigits = 0
         return formatter.string(for: measure) ?? ""
         
-    }
-}
-
-struct AirportPicker_Previews: PreviewProvider {
-    static var previews: some View {
-        AirportPicker(labelText: "Destination", icao: .constant("EGTF"), name: "Fairoaks")
     }
 }

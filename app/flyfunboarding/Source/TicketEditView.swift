@@ -52,8 +52,9 @@ struct TicketEditView: View {
                     .standardFieldValue()
             }
             .padding(.bottom)
-            FlightEditView(flight: ticketModel.flight, mode: .edit,
-                           editIsDisabled: true)
+            FlightEditView(flight: ticketModel.flight,
+                           mode: .edit
+            ).disabled(true)
             StandardEditButtons(mode: ticketModel.mode,
                                 submit: "Issue", delete: "Delete", submitAction: issue, deleteAction: delete)
             Spacer()

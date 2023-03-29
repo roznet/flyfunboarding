@@ -33,7 +33,6 @@ struct FlightListView: View {
     
     @StateObject var flightListViewModel = FlightListViewModel(flights: [])
     @State private var navPath = NavigationPath()
-    
     var body: some View {
         NavigationStack(path: $navPath) {
             List(flightListViewModel.flights) { flight in
