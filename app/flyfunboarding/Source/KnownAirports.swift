@@ -73,8 +73,11 @@ class KnownAirports {
         }
         
         func matches(_ needle : String) -> Bool {
-            let lc = needle.lowercased()
-            return self.ident.lowercased().contains(lc) || self.name.lowercased().contains(lc)
+            if self.ident.range(of: needle, options: [.caseInsensitive,.diacriticInsensitive]) != nil ||
+                self.name.range(of: needle, options: [.caseInsensitive,.diacriticInsensitive]) != nil {
+                return true
+            }
+            return false
         }
         
         func distance(to: CLLocationCoordinate2D) -> CLLocationDistance {
