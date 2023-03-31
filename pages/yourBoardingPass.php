@@ -67,6 +67,27 @@ $disclaimer_file = "disclaimer_{$chosen_language}.html";
 
 $query = [ 'lang' => $chosen_language ];
 
+$current_url = $_SERVER['REQUEST_URI'];
+$parsedUrl = parse_url($current_url);
+$rootPath = null;
+$rootPathComponents = [];
+
+if(isset($parsedUrl['path'])){
+    $pathComponents = explode('/',$parsedUrl['path'] );
+    // if the path is /pages/boardingpass.php then we need to change it to /api/boardingPass.php
+    // find the index of the pages folder
+    $rootIndex = array_search('pages',$pathComponents);
+
+    if($rootIndex !== false) {
+        $rootPathComponents = array_slice($pathComponents,0,$rootIndex);
+        $rootPath = implode('/',$rootPathComponents);
+    }
+}
+if(is_null($rootPath)){
+    http_response_code(500);
+    die("Could not find the root path");
+}
+
 $get_pass = false;
 $boardingPass = null;
 $label = null;
@@ -77,22 +98,14 @@ if( isset($_GET['ticket']) && preg_match('/^[a-zA-Z0-9]+/',$_GET['ticket']) ){
         $boardingPass = new BoardingPass($ticket);
         $label = new Label($boardingPass, $chosen_language);
         $query['ticket'] = $pass_identifier;
-        $current_url = $_SERVER['REQUEST_URI'];
-        $parsedUrl = parse_url($current_url);
-        if(isset($parsedUrl['path'])){
-            $pathComponents = explode('/',$parsedUrl['path'] );
-            // if the path is /pages/boardingpass.php then we need to change it to /api/boardingPass.php
-            if(count($pathComponents) > 2 && $pathComponents[count($pathComponents)-2] == 'pages' ){
-                $pathComponents = array_slice($pathComponents,0,-2);
-                $pathComponents[] = 'api';
-                $pathComponents[] = 'boardingPass';
-                $pathComponents[] = $pass_identifier;
-                $path = implode('/',$pathComponents);
-            }
-            $pass_url = $path;
-            $airlineName = Airline::$current->airline_name;
-            $get_pass = true;
-        }
+        $pathComponents = $rootPathComponents;
+        $pathComponents[] = 'api';
+        $pathComponents[] = 'boardingPass';
+        $pathComponents[] = $pass_identifier;
+        $path = implode('/',$pathComponents);
+        $pass_url = $path;
+        $airlineName = Airline::$current->airline_name;
+        $get_pass = true;
     }
 }
 ?>
@@ -105,7 +118,7 @@ if( isset($_GET['ticket']) && preg_match('/^[a-zA-Z0-9]+/',$_GET['ticket']) ){
 <title>
 <?php
 if( $get_pass ){
-    print("Your {$airlineName} Fly Fun Boarding Pass");
+    print("{$ticket->passenger->formattedName}'s {$airlineName} Fly Fun Boarding Pass");
 }else{
     print("Fly Fun Boarding Pass Disclaimer");
 }
@@ -303,13 +316,13 @@ label {
     height: 50px;
 }
 </style>
-<script src="../js/qrcode.min.js"></script>
+<script src="<?php print($rootPath); ?>/js/qrcode.min.js"></script>
 </head>
 <body>
 
 <div class="language-switcher">
     <div class="logo-container">
-        <img src="../images/logo.png" alt="logo" width="100">
+    <img src="<?php print($rootPath);?>/images/logo.png" alt="logo" width="100">
         <span class="logo-text">Fly Fun</span>
     </div>
     <div class="language-buttons">
@@ -326,7 +339,7 @@ label {
 <?php
 if($get_pass) {
     include('walletPass.php');
-    $img_url = "../images/AddToApple/{$chosen_language}/badge.svg" ;
+    $img_url = "{$rootPath}/images/AddToApple/{$chosen_language}/badge.svg" ;
 ?>
 <div class="acknowledge">
 <form>

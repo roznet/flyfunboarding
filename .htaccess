@@ -8,6 +8,11 @@ RewriteRule ^api/(.*)$ api/index.php?url=$1 [QSA,L]
 # redirect pages to php file
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^pages/yourBoardingPass/([-a-zA-Z0-9]*)$ pages/yourBoardingPass.php?ticket=$1 [QSA,L]
+
+# redirect pages to php file
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^pages/(.*)$ pages/$1.php [NC,L]
 
 

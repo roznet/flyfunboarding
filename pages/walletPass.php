@@ -5,7 +5,7 @@ if( isset($ticket) && isset($label)) {
 <div class="boarding-pass">
     <div class="boarding-header">
         <div class="header-row-1">
-            <img class="logo" src="../images/logo.png" alt="Logo" />
+        <img class="logo" src="<?php print($rootPath); ?>/images/logo.png" alt="Logo" />
             <span class="airline-name"><?php print(Airline::$current->airline_name)?></span>
             <div class="flight-info">
                 <div>
@@ -28,7 +28,7 @@ if( isset($ticket) && isset($label)) {
             <span class="label"><?php print($ticket->flight->origin->fitName(20))?></span>
             <span class="value-large"><?php print($ticket->flight->origin->getIcao())?></span>
             </div>
-            <div class="plane-icon"><img src="../images/airplane@2x.png" alt="plane icon"></div>
+            <div class="plane-icon"><img src="<?php print($rootPath);?>/images/airplane@2x.png" alt="plane icon"></div>
             <div>
             <span class="label"><?php print($ticket->flight->destination->fitName(20))?></span>
             <span class="value-large"><?php print($ticket->flight->destination->getIcao())?></span>

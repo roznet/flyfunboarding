@@ -41,8 +41,6 @@
 		4269B3EA29BBC84C009891C6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4269B3E929BBC84C009891C6 /* Assets.xcassets */; };
 		4269B3ED29BBC84C009891C6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4269B3EC29BBC84C009891C6 /* Preview Assets.xcassets */; };
 		4269B3F729BBC84D009891C6 /* flyfunboardingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4269B3F629BBC84D009891C6 /* flyfunboardingTests.swift */; };
-		4269B40129BBC84D009891C6 /* flyfunboardingUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4269B40029BBC84D009891C6 /* flyfunboardingUITests.swift */; };
-		4269B40329BBC84D009891C6 /* flyfunboardingUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4269B40229BBC84D009891C6 /* flyfunboardingUITestsLaunchTests.swift */; };
 		4269B41929BBCA9D009891C6 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4269B41829BBCA9D009891C6 /* MainView.swift */; };
 		4269B41B29BBCAB6009891C6 /* FlyFunBoardingApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4269B41A29BBCAB6009891C6 /* FlyFunBoardingApp.swift */; };
 		4269B42329BC75CA009891C6 /* RZData in Frameworks */ = {isa = PBXBuildFile; productRef = 4269B42229BC75CA009891C6 /* RZData */; };
@@ -95,13 +93,6 @@
 			remoteGlobalIDString = 4269B3E129BBC84C009891C6;
 			remoteInfo = flyfunboarding;
 		};
-		4269B3FD29BBC84D009891C6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 4269B3DA29BBC84C009891C6 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 4269B3E129BBC84C009891C6;
-			remoteInfo = flyfunboarding;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -138,7 +129,6 @@
 		4269B3EC29BBC84C009891C6 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		4269B3F229BBC84D009891C6 /* flyfunboardingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = flyfunboardingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4269B3F629BBC84D009891C6 /* flyfunboardingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = flyfunboardingTests.swift; sourceTree = "<group>"; };
-		4269B3FC29BBC84D009891C6 /* flyfunboardingUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = flyfunboardingUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4269B40029BBC84D009891C6 /* flyfunboardingUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = flyfunboardingUITests.swift; sourceTree = "<group>"; };
 		4269B40229BBC84D009891C6 /* flyfunboardingUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = flyfunboardingUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		4269B40F29BBC9A9009891C6 /* flyfunboarding.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = flyfunboarding.entitlements; sourceTree = "<group>"; };
@@ -201,13 +191,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		4269B3EF29BBC84D009891C6 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		4269B3F929BBC84D009891C6 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -315,7 +298,6 @@
 			children = (
 				4269B3E229BBC84C009891C6 /* flyfunboarding.app */,
 				4269B3F229BBC84D009891C6 /* flyfunboardingTests.xctest */,
-				4269B3FC29BBC84D009891C6 /* flyfunboardingUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -461,24 +443,6 @@
 			productReference = 4269B3F229BBC84D009891C6 /* flyfunboardingTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		4269B3FB29BBC84D009891C6 /* flyfunboardingUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 4269B40C29BBC84D009891C6 /* Build configuration list for PBXNativeTarget "flyfunboardingUITests" */;
-			buildPhases = (
-				4269B3F829BBC84D009891C6 /* Sources */,
-				4269B3F929BBC84D009891C6 /* Frameworks */,
-				4269B3FA29BBC84D009891C6 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				4269B3FE29BBC84D009891C6 /* PBXTargetDependency */,
-			);
-			name = flyfunboardingUITests;
-			productName = flyfunboardingUITests;
-			productReference = 4269B3FC29BBC84D009891C6 /* flyfunboardingUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -494,10 +458,6 @@
 						LastSwiftMigration = 1420;
 					};
 					4269B3F129BBC84D009891C6 = {
-						CreatedOnToolsVersion = 14.2;
-						TestTargetID = 4269B3E129BBC84C009891C6;
-					};
-					4269B3FB29BBC84D009891C6 = {
 						CreatedOnToolsVersion = 14.2;
 						TestTargetID = 4269B3E129BBC84C009891C6;
 					};
@@ -527,7 +487,6 @@
 			targets = (
 				4269B3E129BBC84C009891C6 /* flyfunboarding */,
 				4269B3F129BBC84D009891C6 /* flyfunboardingTests */,
-				4269B3FB29BBC84D009891C6 /* flyfunboardingUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -554,13 +513,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		4269B3F029BBC84D009891C6 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		4269B3FA29BBC84D009891C6 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -679,15 +631,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		4269B3F829BBC84D009891C6 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				4269B40329BBC84D009891C6 /* flyfunboardingUITestsLaunchTests.swift in Sources */,
-				4269B40129BBC84D009891C6 /* flyfunboardingUITests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -695,11 +638,6 @@
 			isa = PBXTargetDependency;
 			target = 4269B3E129BBC84C009891C6 /* flyfunboarding */;
 			targetProxy = 4269B3F329BBC84D009891C6 /* PBXContainerItemProxy */;
-		};
-		4269B3FE29BBC84D009891C6 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 4269B3E129BBC84C009891C6 /* flyfunboarding */;
-			targetProxy = 4269B3FD29BBC84D009891C6 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -941,42 +879,6 @@
 			};
 			name = Release;
 		};
-		4269B40D29BBC84D009891C6 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = M7QSSF3624;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "net.ro-z.flyfunboardingUITests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = flyfunboarding;
-			};
-			name = Debug;
-		};
-		4269B40E29BBC84D009891C6 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = M7QSSF3624;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "net.ro-z.flyfunboardingUITests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = flyfunboarding;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1003,15 +905,6 @@
 			buildConfigurations = (
 				4269B40A29BBC84D009891C6 /* Debug */,
 				4269B40B29BBC84D009891C6 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		4269B40C29BBC84D009891C6 /* Build configuration list for PBXNativeTarget "flyfunboardingUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				4269B40D29BBC84D009891C6 /* Debug */,
-				4269B40E29BBC84D009891C6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
