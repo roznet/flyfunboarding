@@ -46,7 +46,7 @@ struct AircraftListView: View {
                     self.addAircraftView()
                 }
             }
-            .navigationBarTitle("Aircrafts")
+            .standardNavigationBarTitle("Aircrafts")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: add){

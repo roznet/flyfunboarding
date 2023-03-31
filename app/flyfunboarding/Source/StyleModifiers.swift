@@ -69,3 +69,9 @@ extension Button {
         return self.buttonStyle(.bordered)
     }
 }
+
+extension View {
+    func standardNavigationBarTitle(_ text : String) -> some View {
+        return self.navigationBarTitle(text, displayMode: .inline)
+    }
+}

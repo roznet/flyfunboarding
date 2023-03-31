@@ -44,7 +44,7 @@ struct PassengerListView: View {
                     PassengerRowView(passenger: passenger)
                         .padding(.bottom)
                 }
-                .navigationTitle("Passengers")
+                .standardNavigationBarTitle("Passengers")
                 .toolbar {
                     ToolbarItemGroup(placement: .navigationBarTrailing) {
                         Button(action:add) {

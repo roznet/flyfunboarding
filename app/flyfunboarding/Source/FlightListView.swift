@@ -47,7 +47,7 @@ struct FlightListView: View {
                     self.addFlightView()
                 }
             }
-            .navigationTitle("Flights")
+            .standardNavigationBarTitle("Flights")
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button(action: add) {
