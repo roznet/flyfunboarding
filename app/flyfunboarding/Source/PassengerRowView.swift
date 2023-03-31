@@ -46,7 +46,9 @@ struct PassengerRowView: View {
 
 struct PassengerRowView_Previews: PreviewProvider {
     static var previews: some View {
-        PassengerRowView(passenger: Passenger(name: "John"))
+        List {
+            PassengerRowView(passenger: Passenger(name: "John"))
+        }
     }
 }
 

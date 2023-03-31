@@ -49,27 +49,31 @@ struct FlightEditView: View {
     }
     var body: some View {
         VStack {
-            AircraftField(aircraft: flightModel.aircraft)
-                .disabled(self.flightModel.mode == .edit)
-            HStack {
-                Text("Departure Date").standardFieldLabel()
-                DatePicker("", selection: $flightModel.scheduledDepartureDate)
+            VStack {
+                AircraftField(aircraft: flightModel.aircraft)
+                    .disabled(self.flightModel.mode == .edit)
+                HStack {
+                    Text("Departure Date").standardFieldLabel()
+                    DatePicker("", selection: $flightModel.scheduledDepartureDate)
+                }
+                AirportField(labelText: "Departure", icao: $flightModel.origin)
+                AirportField(labelText: "Destination", icao: $flightModel.destination)
+                HStack {
+                    Text("Gate")
+                        .standardFieldLabel()
+                    TextField("Gate", text: $flightModel.gate)
+                        .standardStyle()
+                }
+                HStack {
+                    Text("Flight Number")
+                        .standardFieldLabel()
+                    TextField("Flight Number", text: $flightModel.flightNumber)
+                        .standardStyle()
+                    
+                }
             }
-            AirportField(labelText: "Departure", icao: $flightModel.origin)
-            AirportField(labelText: "Destination", icao: $flightModel.destination)
-            HStack {
-                Text("Gate")
-                    .standardFieldLabel()
-                TextField("Gate", text: $flightModel.gate)
-                    .standardStyle()
-            }
-            HStack {
-                Text("Flight Number")
-                    .standardFieldLabel()
-                TextField("Flight Number", text: $flightModel.flightNumber)
-                    .standardStyle()
-                
-            }
+            .padding(.horizontal)
+        
             if isEnabled {
                 StandardEditButtons(mode: self.flightModel.mode,
                                     submit: self.flightModel.submitText,
@@ -88,7 +92,9 @@ struct FlightEditView: View {
                     }
                 }
             }
-        }.onAppear() {
+        }
+        
+        .onAppear() {
             self.ticketListViewModel.retrieveTickets()
         }
     }

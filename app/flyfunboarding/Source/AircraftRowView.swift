@@ -58,7 +58,7 @@ struct AircraftRowView_Previews: PreviewProvider {
     static var previews: some View {
         let aircrafts = Samples.aircrafts
         let withStats : Aircraft = self.aircraftWithStats(aircraft: aircrafts[0])
-        VStack {
+        List {
             AircraftRowView(aircraft: aircrafts[0])
             AircraftRowView(aircraft: withStats)
             AircraftRowView(aircraft: aircrafts[1], selected: true)

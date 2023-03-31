@@ -20,14 +20,16 @@ final class flyfunboardingTests: XCTestCase {
 
     func testSamples() throws {
         let tickets = Samples.tickets
-        print( tickets)
+        XCTAssertGreaterThan(tickets.count, 0)
+        let aircrafts = Samples.aircrafts
+        XCTAssertGreaterThan(aircrafts.count, 0)
+        let passengers = Samples.passengers
+        XCTAssertGreaterThan(passengers.count, 0)
+        let flights = Samples.flights
+        XCTAssertGreaterThan(flights.count, 0)
+        
     }
 
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
+    
 
 }

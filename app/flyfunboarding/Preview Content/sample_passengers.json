@@ -4,13 +4,13 @@
     "firstName": "John",
     "middleName": "T",
     "lastName": "Doe",
-    "identifier": "jtd"
+    "apple_identifier": "jtd"
 },
 {
     "formattedName": "Mrs Jane C Smith",
     "firstName": "Jane",
     "middleName": "C",
     "lastName": "Smith",
-    "identifier": "jcs",
+    "apple_identifier": "jcs",
 }
 ]

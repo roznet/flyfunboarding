@@ -111,6 +111,7 @@ struct TicketListView: View {
 
 struct TicketListView_Previews: PreviewProvider {
     static var previews: some View {
-        TicketListView()
+        let tickets = Samples.tickets
+        TicketListView(ticketListViewModel: TicketListViewModel(tickets: tickets,syncWithRemote: false))
     }
 }

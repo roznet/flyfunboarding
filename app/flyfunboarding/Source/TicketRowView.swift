@@ -31,8 +31,13 @@ struct TicketRowView: View {
     var ticket : Ticket
     var body: some View {
         VStack(alignment: .leading) {
+                   
+            ZStack {
+                RoundedRectangle(cornerRadius: 10.0)
+                    .fill(Color(UIColor.secondarySystemBackground))
             Text(ticket.passenger.formattedName).standardFieldLabel()
                 .padding(.bottom)
+            }
             FlightRowView(flight: ticket.flight)
         }
     }
@@ -41,6 +46,10 @@ struct TicketRowView: View {
 struct TicketRowView_Previews: PreviewProvider {
     static var previews: some View {
         let tickets = Samples.tickets
-        TicketRowView(ticket: tickets[0])
+        List {
+            TicketRowView(ticket: tickets[0])
+            TicketRowView(ticket: tickets[1])
+        }
+        
     }
 }

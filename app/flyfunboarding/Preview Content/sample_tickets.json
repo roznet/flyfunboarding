@@ -5,7 +5,7 @@
 	    "firstName": "John",
 	    "middleName": "T",
 	    "lastName": "Doe",
-	    "identifier": "jtd"
+	    "apple_identifier": "jtd"
     },
     "flight":
 	{
@@ -29,7 +29,7 @@
 	    "firstName": "John",
 	    "middleName": "T",
 	    "lastName": "Doe",
-	    "identifier": "jtd"
+	    "apple_identifier": "jtd"
 	},
 	"flight":
 	{

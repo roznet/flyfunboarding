@@ -59,6 +59,9 @@ struct FlightRowView: View {
 struct FlightRowView_Previews: PreviewProvider {
     static var previews: some View {
         let flights = Samples.flights
-        FlightRowView(flight: flights[0])
+        List {
+            FlightRowView(flight: flights[0])
+            FlightRowView(flight: flights[1])
+        }
     }
 }

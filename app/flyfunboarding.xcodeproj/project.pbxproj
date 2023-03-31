@@ -7,6 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4207276229D767C000D966CA /* RZUtils in Frameworks */ = {isa = PBXBuildFile; productRef = 4207276129D767C000D966CA /* RZUtils */; };
+		4207276429D767D400D966CA /* RZData in Frameworks */ = {isa = PBXBuildFile; productRef = 4207276329D767D400D966CA /* RZData */; };
+		4207276629D767D400D966CA /* RZUtilsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4207276529D767D400D966CA /* RZUtilsSwift */; };
+		4207276829D767D400D966CA /* RZUtilsUniversal in Frameworks */ = {isa = PBXBuildFile; productRef = 4207276729D767D400D966CA /* RZUtilsUniversal */; };
+		4207276A29D767D400D966CA /* SwiftUIKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4207276929D767D400D966CA /* SwiftUIKit */; };
+		4207276C29D767D400D966CA /* RZFlight in Frameworks */ = {isa = PBXBuildFile; productRef = 4207276B29D767D400D966CA /* RZFlight */; };
+		4207276E29D767D400D966CA /* KDTree in Frameworks */ = {isa = PBXBuildFile; productRef = 4207276D29D767D400D966CA /* KDTree */; };
+		4207277029D767D400D966CA /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 4207276F29D767D400D966CA /* CodeScanner */; };
+		4207277229D767D400D966CA /* RZExternal in Frameworks */ = {isa = PBXBuildFile; productRef = 4207277129D767D400D966CA /* RZExternal */; };
+		4207277429D767E000D966CA /* RZExternalUniversal in Frameworks */ = {isa = PBXBuildFile; productRef = 4207277329D767E000D966CA /* RZExternalUniversal */; };
 		4208E4AD29BDF5F100E2A5FC /* AircraftViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4208E4AC29BDF5F100E2A5FC /* AircraftViewModel.swift */; };
 		4208E4AF29BDF6D400E2A5FC /* Samples.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4208E4AE29BDF6D400E2A5FC /* Samples.swift */; };
 		4208E4B829BE29B100E2A5FC /* SwiftUIKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4208E4B729BE29B100E2A5FC /* SwiftUIKit */; };
@@ -129,8 +139,6 @@
 		4269B3EC29BBC84C009891C6 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		4269B3F229BBC84D009891C6 /* flyfunboardingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = flyfunboardingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4269B3F629BBC84D009891C6 /* flyfunboardingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = flyfunboardingTests.swift; sourceTree = "<group>"; };
-		4269B40029BBC84D009891C6 /* flyfunboardingUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = flyfunboardingUITests.swift; sourceTree = "<group>"; };
-		4269B40229BBC84D009891C6 /* flyfunboardingUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = flyfunboardingUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		4269B40F29BBC9A9009891C6 /* flyfunboarding.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = flyfunboarding.entitlements; sourceTree = "<group>"; };
 		4269B41829BBCA9D009891C6 /* MainView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainView.swift; path = Source/MainView.swift; sourceTree = "<group>"; };
 		4269B41A29BBCAB6009891C6 /* FlyFunBoardingApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FlyFunBoardingApp.swift; path = Source/FlyFunBoardingApp.swift; sourceTree = "<group>"; };
@@ -194,12 +202,29 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4207277029D767D400D966CA /* CodeScanner in Frameworks */,
+				4207276429D767D400D966CA /* RZData in Frameworks */,
+				4207276229D767C000D966CA /* RZUtils in Frameworks */,
+				4207277429D767E000D966CA /* RZExternalUniversal in Frameworks */,
+				4207276829D767D400D966CA /* RZUtilsUniversal in Frameworks */,
+				4207276A29D767D400D966CA /* SwiftUIKit in Frameworks */,
+				4207277229D767D400D966CA /* RZExternal in Frameworks */,
+				4207276C29D767D400D966CA /* RZFlight in Frameworks */,
+				4207276629D767D400D966CA /* RZUtilsSwift in Frameworks */,
+				4207276E29D767D400D966CA /* KDTree in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4207276029D767C000D966CA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		4245DB1A29BCBDC0004B9953 /* SupportingFiles */ = {
 			isa = PBXGroup;
 			children = (
@@ -288,8 +313,8 @@
 			children = (
 				4269B3E429BBC84C009891C6 /* flyfunboarding */,
 				4269B3F529BBC84D009891C6 /* flyfunboardingTests */,
-				4269B3FF29BBC84D009891C6 /* flyfunboardingUITests */,
 				4269B3E329BBC84C009891C6 /* Products */,
+				4207276029D767C000D966CA /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -337,15 +362,6 @@
 				4269B3F629BBC84D009891C6 /* flyfunboardingTests.swift */,
 			);
 			path = flyfunboardingTests;
-			sourceTree = "<group>";
-		};
-		4269B3FF29BBC84D009891C6 /* flyfunboardingUITests */ = {
-			isa = PBXGroup;
-			children = (
-				4269B40029BBC84D009891C6 /* flyfunboardingUITests.swift */,
-				4269B40229BBC84D009891C6 /* flyfunboardingUITestsLaunchTests.swift */,
-			);
-			path = flyfunboardingUITests;
 			sourceTree = "<group>";
 		};
 		4269B41329BBCA54009891C6 /* App */ = {
@@ -439,6 +455,18 @@
 				4269B3F429BBC84D009891C6 /* PBXTargetDependency */,
 			);
 			name = flyfunboardingTests;
+			packageProductDependencies = (
+				4207276129D767C000D966CA /* RZUtils */,
+				4207276329D767D400D966CA /* RZData */,
+				4207276529D767D400D966CA /* RZUtilsSwift */,
+				4207276729D767D400D966CA /* RZUtilsUniversal */,
+				4207276929D767D400D966CA /* SwiftUIKit */,
+				4207276B29D767D400D966CA /* RZFlight */,
+				4207276D29D767D400D966CA /* KDTree */,
+				4207276F29D767D400D966CA /* CodeScanner */,
+				4207277129D767D400D966CA /* RZExternal */,
+				4207277329D767E000D966CA /* RZExternalUniversal */,
+			);
 			productName = flyfunboardingTests;
 			productReference = 4269B3F229BBC84D009891C6 /* flyfunboardingTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -852,6 +880,9 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "net.ro-z.flyfunboardingTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -872,6 +903,9 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "net.ro-z.flyfunboardingTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -963,6 +997,56 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		4207276129D767C000D966CA /* RZUtils */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4269B42129BC75CA009891C6 /* XCRemoteSwiftPackageReference "rzutils" */;
+			productName = RZUtils;
+		};
+		4207276329D767D400D966CA /* RZData */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4269B42129BC75CA009891C6 /* XCRemoteSwiftPackageReference "rzutils" */;
+			productName = RZData;
+		};
+		4207276529D767D400D966CA /* RZUtilsSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4269B42129BC75CA009891C6 /* XCRemoteSwiftPackageReference "rzutils" */;
+			productName = RZUtilsSwift;
+		};
+		4207276729D767D400D966CA /* RZUtilsUniversal */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4269B42129BC75CA009891C6 /* XCRemoteSwiftPackageReference "rzutils" */;
+			productName = RZUtilsUniversal;
+		};
+		4207276929D767D400D966CA /* SwiftUIKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4208E4B629BE29B100E2A5FC /* XCRemoteSwiftPackageReference "SwiftUIKit" */;
+			productName = SwiftUIKit;
+		};
+		4207276B29D767D400D966CA /* RZFlight */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4208E4BB29BE4E7400E2A5FC /* XCRemoteSwiftPackageReference "rzflight" */;
+			productName = RZFlight;
+		};
+		4207276D29D767D400D966CA /* KDTree */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4208E4C329BE5CB300E2A5FC /* XCRemoteSwiftPackageReference "KDTree" */;
+			productName = KDTree;
+		};
+		4207276F29D767D400D966CA /* CodeScanner */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 42BBE9B129D0512300543641 /* XCRemoteSwiftPackageReference "CodeScanner" */;
+			productName = CodeScanner;
+		};
+		4207277129D767D400D966CA /* RZExternal */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4247B9AA29D22CDF00B312AC /* XCRemoteSwiftPackageReference "rzexternal" */;
+			productName = RZExternal;
+		};
+		4207277329D767E000D966CA /* RZExternalUniversal */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4247B9AA29D22CDF00B312AC /* XCRemoteSwiftPackageReference "rzexternal" */;
+			productName = RZExternalUniversal;
+		};
 		4208E4B729BE29B100E2A5FC /* SwiftUIKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4208E4B629BE29B100E2A5FC /* XCRemoteSwiftPackageReference "SwiftUIKit" */;
