@@ -27,9 +27,16 @@
 
 import Foundation
 import Contacts
+import UIKit
 
 
-struct Passenger : Codable, Identifiable {
+struct Passenger : Codable, Identifiable, Hashable, Equatable {
+    static func == (lhs: Passenger, rhs: Passenger) -> Bool {
+        return lhs.apple_identifier == rhs.apple_identifier
+    }
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(self.apple_identifier)
+    }
     
     var formattedName : String
     var passenger_id : Int?
@@ -73,9 +80,26 @@ struct Passenger : Codable, Identifiable {
 
     func retrieveContact() -> CNContact? {
         let store = CNContactStore()
-        let keys = [CNContactGivenNameKey, CNContactMiddleNameKey, CNContactFamilyNameKey, CNContactPhoneNumbersKey, CNContactEmailAddressesKey, CNContactThumbnailImageDataKey]
+        let keys : [CNKeyDescriptor] = [
+            CNContactFormatter.descriptorForRequiredKeys(for: .fullName),
+            CNContactImageDataAvailableKey as CNKeyDescriptor
+        ]
         let contact = try? store.unifiedContact(withIdentifier: self.apple_identifier, keysToFetch: keys as [CNKeyDescriptor])
         return contact
+    }
+    
+    func retrieveImage() -> UIImage? {
+        let store = CNContactStore()
+        let keys : [CNKeyDescriptor] = [
+            CNContactImageDataAvailableKey as CNKeyDescriptor,
+            CNContactThumbnailImageDataKey as CNKeyDescriptor
+        ]
+        let contact = try? store.unifiedContact(withIdentifier: self.apple_identifier, keysToFetch: keys as [CNKeyDescriptor])
+        if let available = contact?.imageDataAvailable, available, let data = contact?.thumbnailImageData {
+            return UIImage(data: data)
+        }else{
+            return nil
+        }
     }
   
     func moreRecent(than : Passenger) -> Bool {

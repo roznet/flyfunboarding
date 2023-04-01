@@ -31,12 +31,16 @@ extension Notification.Name {
     static let ticketModified = Notification.Name("ticketModified")
 }
 struct TicketEditView: View {
+    typealias Mode = StandardEditButtons.Mode
 
     @StateObject var ticketModel : TicketViewModel
-    @ObservedObject var ticketListModel : TicketListViewModel
     @Environment(\.dismiss) var dismiss
     
     var ticket : Ticket { return self.ticketModel.ticket }
+    
+    init(ticket : Ticket, mode : Mode) {
+        _ticketModel = StateObject(wrappedValue: TicketViewModel(ticket: ticket, mode: mode))
+    }
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -106,7 +110,7 @@ struct TicketEditView: View {
                 DispatchQueue.main.async {
                     self.ticketModel.ticket = t
                     self.ticketModel.mode = .edit
-                    self.ticketListModel.retrieveTickets()
+                    NotificationCenter.default.post(name: .ticketModified, object: nil)
                 }
             }else{
                 Logger.ui.error("Failed to issue ticket")
@@ -118,8 +122,8 @@ struct TicketEditView: View {
         RemoteService.shared.deleteTicket(ticket: self.ticket){
             result in
             if result {
+                NotificationCenter.default.post(name: .ticketModified, object: nil)
                 DispatchQueue.main.async {
-                    self.ticketListModel.retrieveTickets()
                     self.dismiss()
                 }
             }
@@ -131,6 +135,6 @@ struct TicketEditView: View {
 struct TicketEditView_Previews: PreviewProvider {
     static var previews: some View {
         let tickets = Samples.tickets
-        TicketEditView(ticketModel: TicketViewModel(ticket: tickets[0], mode: .edit), ticketListModel: TicketListViewModel.empty)
+        TicketEditView(ticket: tickets.first!, mode: .create)
     }
 }

@@ -94,12 +94,11 @@ struct TicketListView: View {
     
     func newTicket() -> some View {
         let ticket = Ticket(passenger: self.ticketListViewModel.passenger, flight: self.ticketListViewModel.flight, seatNumber: "")
-        return TicketEditView(ticketModel: TicketViewModel(ticket: ticket, mode: .create), ticketListModel: self.ticketListViewModel)
+        return TicketEditView(ticket: ticket, mode: .create)
     }
     
     func ticketEditView(ticket: Ticket) -> some View {
-        return TicketEditView(ticketModel: TicketViewModel(ticket: ticket, mode: .edit),
-                              ticketListModel: self.ticketListViewModel)
+        return TicketEditView(ticket: ticket, mode: .edit)
     }
     
     //MARK: - Actions

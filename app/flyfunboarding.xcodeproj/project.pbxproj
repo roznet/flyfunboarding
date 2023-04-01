@@ -17,6 +17,8 @@
 		4207277229D767D400D966CA /* RZExternal in Frameworks */ = {isa = PBXBuildFile; productRef = 4207277129D767D400D966CA /* RZExternal */; };
 		4207277429D767E000D966CA /* RZExternalUniversal in Frameworks */ = {isa = PBXBuildFile; productRef = 4207277329D767E000D966CA /* RZExternalUniversal */; };
 		4207277729D80A9100D966CA /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 4207277629D80A9100D966CA /* CodeScanner */; };
+		4207277929D85B7700D966CA /* PassengerEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4207277829D85B7700D966CA /* PassengerEditView.swift */; };
+		4207277B29D85BEC00D966CA /* PassengerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4207277A29D85BEC00D966CA /* PassengerViewModel.swift */; };
 		4208E4AD29BDF5F100E2A5FC /* AircraftViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4208E4AC29BDF5F100E2A5FC /* AircraftViewModel.swift */; };
 		4208E4AF29BDF6D400E2A5FC /* Samples.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4208E4AE29BDF6D400E2A5FC /* Samples.swift */; };
 		4208E4B829BE29B100E2A5FC /* SwiftUIKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4208E4B729BE29B100E2A5FC /* SwiftUIKit */; };
@@ -105,6 +107,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4207277829D85B7700D966CA /* PassengerEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PassengerEditView.swift; path = Source/PassengerEditView.swift; sourceTree = "<group>"; };
+		4207277A29D85BEC00D966CA /* PassengerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PassengerViewModel.swift; path = Source/PassengerViewModel.swift; sourceTree = "<group>"; };
 		4208E4AC29BDF5F100E2A5FC /* AircraftViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AircraftViewModel.swift; path = Source/AircraftViewModel.swift; sourceTree = "<group>"; };
 		4208E4AE29BDF6D400E2A5FC /* Samples.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Samples.swift; path = Source/Samples.swift; sourceTree = "<group>"; };
 		4208E4B929BE2E3D00E2A5FC /* PassengerListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PassengerListViewModel.swift; path = Source/PassengerListViewModel.swift; sourceTree = "<group>"; };
@@ -254,6 +258,7 @@
 				4260043429BD186A003E0433 /* AircraftListViewModel.swift */,
 				4208E4AC29BDF5F100E2A5FC /* AircraftViewModel.swift */,
 				4208E4B929BE2E3D00E2A5FC /* PassengerListViewModel.swift */,
+				4207277A29D85BEC00D966CA /* PassengerViewModel.swift */,
 				42D9406929C3C3D800622CF3 /* FlightListViewModel.swift */,
 				42D9406E29C3C87B00622CF3 /* FlightViewModel.swift */,
 				42D9407029C3D0B700622CF3 /* TicketListViewModel.swift */,
@@ -293,6 +298,7 @@
 				426A29E029C26ABD00CACB19 /* AircraftEditView.swift */,
 				42E58E2429C25A2F00185971 /* AircraftRowView.swift */,
 				42D940C729CEF5AB00622CF3 /* PassengerRowView.swift */,
+				4207277829D85B7700D966CA /* PassengerEditView.swift */,
 				4260044229BDCBE2003E0433 /* PassengerListView.swift */,
 				42D9406729C3C35B00622CF3 /* FlightEditView.swift */,
 				42D9406B29C3C75600622CF3 /* FlightRowView.swift */,
@@ -633,8 +639,10 @@
 				42D9406F29C3C87B00622CF3 /* FlightViewModel.swift in Sources */,
 				4260044929BDD40E003E0433 /* AccountAndSettingsView.swift in Sources */,
 				42D9407129C3D0B700622CF3 /* TicketListViewModel.swift in Sources */,
+				4207277B29D85BEC00D966CA /* PassengerViewModel.swift in Sources */,
 				4208E4BA29BE2E3D00E2A5FC /* PassengerListViewModel.swift in Sources */,
 				4260044E29BDD4DC003E0433 /* ToggleTextField.swift in Sources */,
+				4207277929D85B7700D966CA /* PassengerEditView.swift in Sources */,
 				4269B42E29BC77B3009891C6 /* Log.swift in Sources */,
 				4247B9EF29D4AA3100B312AC /* MatchedAircraft.swift in Sources */,
 				42D9407B29C7212800622CF3 /* StyleModifiers.swift in Sources */,
@@ -809,7 +817,9 @@
 				INFOPLIST_FILE = flyfunboarding/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = FlyFunBoarding;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Scan Boarding Pass";
+				INFOPLIST_KEY_NSContactsUsageDescription = "Use contact to display name on the boarding pass";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Access location to find the airport closest to you";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -818,7 +828,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "net.ro-z.flyfunboarding";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -845,7 +855,9 @@
 				INFOPLIST_FILE = flyfunboarding/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = FlyFunBoarding;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Scan Boarding Pass";
+				INFOPLIST_KEY_NSContactsUsageDescription = "Use contact to display name on the boarding pass";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Access location to find the airport closest to you";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -854,7 +866,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "net.ro-z.flyfunboarding";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

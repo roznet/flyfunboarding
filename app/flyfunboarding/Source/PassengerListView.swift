@@ -41,9 +41,12 @@ struct PassengerListView: View {
             ContactPicker(showPicker: $showPicker, onSelectContact: selectedContact)
             NavigationStack {
                 List(passengerListViewModel.passengers) { passenger in
-                    PassengerRowView(passenger: passenger)
-                        .padding(.bottom)
+                    NavigationLink(value: passenger) {
+                        PassengerRowView(passenger: passenger)
+                            .padding(.bottom)
+                    }
                 }
+                .standardNavigationDestinations()
                 .standardNavigationBarTitle("Passengers")
                 .toolbar {
                     ToolbarItemGroup(placement: .navigationBarTrailing) {

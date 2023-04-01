@@ -44,6 +44,13 @@ class TicketListViewModel : ObservableObject {
         self.syncWithRemote = syncWithRemote
         self.filterFlight = flight
         self.filterPassenger = passenger
+        NotificationCenter.default.addObserver(forName: .ticketModified, object: nil, queue: nil) {
+            _ in
+            self.retrieveTickets()
+        }
+    }
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     func retrieveTickets() {
