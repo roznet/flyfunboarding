@@ -3,10 +3,10 @@
     {
       "identity" : "codescanner",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/roznet/CodeScanner",
+      "location" : "https://github.com/twostraws/CodeScanner",
       "state" : {
         "branch" : "main",
-        "revision" : "67e92e1b3f2b4d525384f4a169cce4883295e0d0"
+        "revision" : "a147b225529e2c4183f89c773d797bc0edd1fdd8"
       }
     },
     {

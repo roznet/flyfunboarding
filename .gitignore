@@ -3,5 +3,5 @@
 output
 .DS_Store
 samples
-tests
+secrets.zsh
 secrets.json

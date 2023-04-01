@@ -14,9 +14,9 @@
 		4207276A29D767D400D966CA /* SwiftUIKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4207276929D767D400D966CA /* SwiftUIKit */; };
 		4207276C29D767D400D966CA /* RZFlight in Frameworks */ = {isa = PBXBuildFile; productRef = 4207276B29D767D400D966CA /* RZFlight */; };
 		4207276E29D767D400D966CA /* KDTree in Frameworks */ = {isa = PBXBuildFile; productRef = 4207276D29D767D400D966CA /* KDTree */; };
-		4207277029D767D400D966CA /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 4207276F29D767D400D966CA /* CodeScanner */; };
 		4207277229D767D400D966CA /* RZExternal in Frameworks */ = {isa = PBXBuildFile; productRef = 4207277129D767D400D966CA /* RZExternal */; };
 		4207277429D767E000D966CA /* RZExternalUniversal in Frameworks */ = {isa = PBXBuildFile; productRef = 4207277329D767E000D966CA /* RZExternalUniversal */; };
+		4207277729D80A9100D966CA /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 4207277629D80A9100D966CA /* CodeScanner */; };
 		4208E4AD29BDF5F100E2A5FC /* AircraftViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4208E4AC29BDF5F100E2A5FC /* AircraftViewModel.swift */; };
 		4208E4AF29BDF6D400E2A5FC /* Samples.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4208E4AE29BDF6D400E2A5FC /* Samples.swift */; };
 		4208E4B829BE29B100E2A5FC /* SwiftUIKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4208E4B729BE29B100E2A5FC /* SwiftUIKit */; };
@@ -67,7 +67,6 @@
 		4269B43C29BCB0A9009891C6 /* Airline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4269B43B29BCB0A9009891C6 /* Airline.swift */; };
 		4269B43E29BCB1E6009891C6 /* RemoteService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4269B43D29BCB1E6009891C6 /* RemoteService.swift */; };
 		426A29E129C26ABD00CACB19 /* AircraftEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426A29E029C26ABD00CACB19 /* AircraftEditView.swift */; };
-		42BBE9B329D0512300543641 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 42BBE9B229D0512300543641 /* CodeScanner */; };
 		42D9406829C3C35B00622CF3 /* FlightEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D9406729C3C35B00622CF3 /* FlightEditView.swift */; };
 		42D9406A29C3C3D800622CF3 /* FlightListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D9406929C3C3D800622CF3 /* FlightListViewModel.swift */; };
 		42D9406C29C3C75600622CF3 /* FlightRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D9406B29C3C75600622CF3 /* FlightRowView.swift */; };
@@ -186,7 +185,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				42BBE9B329D0512300543641 /* CodeScanner in Frameworks */,
 				4269B42529BC75CA009891C6 /* RZUtils in Frameworks */,
 				4269B42329BC75CA009891C6 /* RZData in Frameworks */,
 				4247B9AC29D22CDF00B312AC /* RZExternalUniversal in Frameworks */,
@@ -195,6 +193,7 @@
 				4208E4BD29BE4E7400E2A5FC /* RZFlight in Frameworks */,
 				4269B42729BC75CA009891C6 /* RZUtilsSwift in Frameworks */,
 				4208E4C529BE5CB300E2A5FC /* KDTree in Frameworks */,
+				4207277729D80A9100D966CA /* CodeScanner in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -202,7 +201,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4207277029D767D400D966CA /* CodeScanner in Frameworks */,
 				4207276429D767D400D966CA /* RZData in Frameworks */,
 				4207276229D767C000D966CA /* RZUtils in Frameworks */,
 				4207277429D767E000D966CA /* RZExternalUniversal in Frameworks */,
@@ -434,8 +432,8 @@
 				4208E4B729BE29B100E2A5FC /* SwiftUIKit */,
 				4208E4BC29BE4E7400E2A5FC /* RZFlight */,
 				4208E4C429BE5CB300E2A5FC /* KDTree */,
-				42BBE9B229D0512300543641 /* CodeScanner */,
 				4247B9AB29D22CDF00B312AC /* RZExternalUniversal */,
+				4207277629D80A9100D966CA /* CodeScanner */,
 			);
 			productName = flyfunboarding;
 			productReference = 4269B3E229BBC84C009891C6 /* flyfunboarding.app */;
@@ -463,7 +461,6 @@
 				4207276929D767D400D966CA /* SwiftUIKit */,
 				4207276B29D767D400D966CA /* RZFlight */,
 				4207276D29D767D400D966CA /* KDTree */,
-				4207276F29D767D400D966CA /* CodeScanner */,
 				4207277129D767D400D966CA /* RZExternal */,
 				4207277329D767E000D966CA /* RZExternalUniversal */,
 			);
@@ -506,8 +503,8 @@
 				4208E4B629BE29B100E2A5FC /* XCRemoteSwiftPackageReference "SwiftUIKit" */,
 				4208E4BB29BE4E7400E2A5FC /* XCRemoteSwiftPackageReference "rzflight" */,
 				4208E4C329BE5CB300E2A5FC /* XCRemoteSwiftPackageReference "KDTree" */,
-				42BBE9B129D0512300543641 /* XCRemoteSwiftPackageReference "CodeScanner" */,
 				4247B9AA29D22CDF00B312AC /* XCRemoteSwiftPackageReference "rzexternal" */,
+				4207277529D80A9100D966CA /* XCRemoteSwiftPackageReference "CodeScanner" */,
 			);
 			productRefGroup = 4269B3E329BBC84C009891C6 /* Products */;
 			projectDirPath = "";
@@ -946,6 +943,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		4207277529D80A9100D966CA /* XCRemoteSwiftPackageReference "CodeScanner" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/twostraws/CodeScanner";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		4208E4B629BE29B100E2A5FC /* XCRemoteSwiftPackageReference "SwiftUIKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/youjinp/SwiftUIKit.git";
@@ -983,14 +988,6 @@
 			repositoryURL = "https://github.com/roznet/rzutils";
 			requirement = {
 				branch = master;
-				kind = branch;
-			};
-		};
-		42BBE9B129D0512300543641 /* XCRemoteSwiftPackageReference "CodeScanner" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/roznet/CodeScanner";
-			requirement = {
-				branch = main;
 				kind = branch;
 			};
 		};
@@ -1032,11 +1029,6 @@
 			package = 4208E4C329BE5CB300E2A5FC /* XCRemoteSwiftPackageReference "KDTree" */;
 			productName = KDTree;
 		};
-		4207276F29D767D400D966CA /* CodeScanner */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 42BBE9B129D0512300543641 /* XCRemoteSwiftPackageReference "CodeScanner" */;
-			productName = CodeScanner;
-		};
 		4207277129D767D400D966CA /* RZExternal */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4247B9AA29D22CDF00B312AC /* XCRemoteSwiftPackageReference "rzexternal" */;
@@ -1046,6 +1038,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4247B9AA29D22CDF00B312AC /* XCRemoteSwiftPackageReference "rzexternal" */;
 			productName = RZExternalUniversal;
+		};
+		4207277629D80A9100D966CA /* CodeScanner */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4207277529D80A9100D966CA /* XCRemoteSwiftPackageReference "CodeScanner" */;
+			productName = CodeScanner;
 		};
 		4208E4B729BE29B100E2A5FC /* SwiftUIKit */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -1086,11 +1083,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4269B42129BC75CA009891C6 /* XCRemoteSwiftPackageReference "rzutils" */;
 			productName = RZUtilsUniversal;
-		};
-		42BBE9B229D0512300543641 /* CodeScanner */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 42BBE9B129D0512300543641 /* XCRemoteSwiftPackageReference "CodeScanner" */;
-			productName = CodeScanner;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
