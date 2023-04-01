@@ -128,6 +128,15 @@ class MyFlyFunDb {
         return hash('sha256',Airline::$current->airline_id . '.' . $identifier);
     }
 
+    public function status() : bool {
+        $result = $this->db->query("SHOW TABLES LIKE 'Airlines'");
+        if( isset($result) && $result->num_rows > 0 ) {
+            return true;
+        }
+        return false;
+    }
+
+
     private function createOrUpdate($table, $object) {
         $this->validateAirline();
         $json = json_encode($object->toJson());
