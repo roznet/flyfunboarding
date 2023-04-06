@@ -100,7 +100,7 @@ class BoardingPass {
             $this->textField('gate', 'Gate', $this->flight->gate),
         ];
         $boardingpass['auxiliaryFields'] = [
-            $this->dateField('date', 'Departs', $this->flight->scheduledDepartureDate),
+            $this->textField('date', 'Departs', $this->flight->formatScheduledDepartureDate()),
         ];
         if( $this->flight->hasFlightNumber()){
             $boardingpass['auxiliaryFields'][] = $this->textField('aircraft', 'Aircraft', $this->flight->aircraft->registration);

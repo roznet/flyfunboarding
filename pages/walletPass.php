@@ -39,7 +39,7 @@ if( isset($ticket) && isset($label)) {
         <div class="info-column">
             <div>
             <span class="label"><?php $label->for('Departs')?></span>
-                <span class="value"><?php print($ticket->flight->scheduledDepartureDate->format("D M d, H:i"))?></span>
+                <span class="value"><?php print($ticket->flight->formatScheduledDepartureDate())?></span>
             </div>
             <div>
             <span class="label"><?php $label->for('Passenger')?></span>

@@ -41,6 +41,16 @@ class Flight {
         return !is_null($this->flightNumber) && $this->flightNumber != '' && $this->flightNumber != $this->aircraft->registration;
     }
 
+    public function formatScheduledDepartureDate() : string {
+        $dateToDisplay = $this->scheduledDepartureDate;
+        if( $this->origin->timezone_identifier) {
+            $tz = new DateTimeZone($this->origin->timezone_identifier);
+            $dateToDisplay->setTimezone($tz);
+        }
+        return $dateToDisplay->format('D M d, H:i');
+    }
+    
+
     public function toJson() : array {
         return JsonHelper::toJson($this);
     }
