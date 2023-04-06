@@ -67,6 +67,7 @@ struct PassengerPicker: View {
                     completion()
                 }
         }
+        .standardNavigationBarTitle("Choose Passenger")
         .onAppear() {
             self.matchedPassenger.retrievePassengers()
         }

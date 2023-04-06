@@ -67,7 +67,9 @@ struct FlightPicker: View {
                     self.flight = flight
                     completion()
                 }
-        }.onAppear{
+        }
+        .standardNavigationBarTitle("Choose Flight")
+        .onAppear{
             self.matchedFlight.retrieveFlights()
         }
     }

@@ -64,4 +64,11 @@ class FlightListViewModel : ObservableObject {
             }
         }
     }
+    func guessNextFlight() -> Flight {
+        if let last = self.flights.first {
+            return last.asNewFlight
+        }
+        return Flight.defaultFlight
+    }
+
 }

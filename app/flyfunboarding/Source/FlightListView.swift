@@ -77,9 +77,9 @@ struct FlightListView: View {
     }
     
     func addFlightView() -> some View {
-        let flight = self.flightListViewModel.flights.first?.with(scheduledDepartureDate: Date()) ?? Flight.defaultFlight
+        let flight = self.flightListViewModel.guessNextFlight()
         
-        return FlightEditView(flight: flight, mode: .create)
+        return FlightEditView(flight: flight, mode: .create, tickets: [], syncWithRemote: false)
     }
 }
 
