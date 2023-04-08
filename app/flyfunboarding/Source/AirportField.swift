@@ -29,7 +29,10 @@ import SwiftUI
 import CoreLocation
 import RZFlight
 import OSLog
+extension Notification.Name {
+    static let airportSourceChanged = Notification.Name("airportSourceChange")
 
+}
 struct AirportField: View {
     
     // Ideally, we would use icao binding or a call back
@@ -57,6 +60,13 @@ struct AirportField: View {
             NotificationCenter.default.addObserver(forName: .airportWasPicked, object: nil, queue: nil){ _ in
                 DispatchQueue.main.async {
                     self.icao = self.choice
+                }
+            }
+            NotificationCenter.default.addObserver(forName: .airportSourceChanged, object: nil, queue: nil){
+                _ in
+                DispatchQueue.main.async {
+                    self.choice = self.icao
+                    self.sync()
                 }
             }
         }

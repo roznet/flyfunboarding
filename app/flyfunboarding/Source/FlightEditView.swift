@@ -56,8 +56,22 @@ struct FlightEditView: View {
                     Text("Departure Date").standardFieldLabel()
                     DatePicker("", selection: $flightModel.scheduledDepartureDate)
                 }
-                AirportField(labelText: "Departure", icao: $flightModel.origin)
-                AirportField(labelText: "Destination", icao: $flightModel.destination)
+                if self.flightModel.mode == .create {
+                    HStack {
+                        VStack {
+                            AirportField(labelText: "Departure", icao: $flightModel.origin)
+                            AirportField(labelText: "Destination", icao: $flightModel.destination)
+                        }
+                        Button(action: swapAirports){
+                            Image(systemName: "arrow.up.arrow.down")
+                                .resizable()
+                                .frame(width: 20,height: 20)
+                        }
+                    }
+                }else{
+                    AirportField(labelText: "Departure", icao: $flightModel.origin)
+                    AirportField(labelText: "Destination", icao: $flightModel.destination)
+                }
                 HStack {
                     Text("Gate")
                         .standardFieldLabel()
@@ -113,6 +127,12 @@ struct FlightEditView: View {
         }
         
     }
+    func swapAirports() {
+        let save = self.flightModel.origin
+        self.flightModel.origin = self.flightModel.destination
+        self.flightModel.destination = save
+        NotificationCenter.default.post(name: .airportSourceChanged, object: nil)
+    }
     func scheduleOrAmend() {
         let newFlight = self.flightModel.flight
         switch self.flightModel.mode {
@@ -142,6 +162,10 @@ struct FlightEditView_Previews: PreviewProvider {
     static var previews: some View {
         let flights = Samples.flights
         let tickets = Samples.tickets
-        FlightEditView(flight: flights[0], mode: .edit, tickets: tickets, syncWithRemote: false)
+        Group {
+            FlightEditView(flight: flights[0], mode: .edit, tickets: tickets, syncWithRemote: false)
+            
+            FlightEditView(flight: flights[0], mode: .create, tickets: [], syncWithRemote: false)
+        }
     }
 }
