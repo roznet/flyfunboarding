@@ -46,8 +46,11 @@ class MatchedFlight : ObservableObject {
         RemoteService.shared.retrieveFlightList() { found in
             if let flights = found {
                 DispatchQueue.main.async {
-                    self.flights = flights
-                    self.suggestions = flights
+                    let ordered = flights.sorted(){
+                        $0.moreRecent(than: $1)
+                    }
+                    self.flights = ordered
+                    self.suggestions = ordered
                 }
             }
         }

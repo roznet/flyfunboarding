@@ -27,19 +27,56 @@
 
 import SwiftUI
 
+
 struct PassengerRowView: View {
     var passenger : Passenger
-    
+    var highlightName : Bool
+    @State var passengerImage : Image = Image(systemName: "person")
+    @State var hasImage : Bool = false
+  
+    func fetchImage() {
+        let imageData = self.passenger.retrieveImageData()
+        if let data = imageData,
+           let uiImage = UIImage(data: data) {
+            DispatchQueue.main.async {
+                self.passengerImage = Image(uiImage: uiImage)
+                self.hasImage = true
+            }
+        }else{
+            self.passengerImage = Image(systemName: "person")
+            self.hasImage = false
+        }
+    }
     
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
-                Text(passenger.formattedName).standardFieldValue()
+                if self.hasImage {
+                    self.passengerImage
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 50, height: 50)
+                        .clipShape(Circle())
+                }else{
+                    Circle()
+                        .frame(width: 50, height: 50)
+                        .foregroundColor(.secondarySystemBackground)
+                }
+                if self.highlightName {
+                    Text(passenger.formattedName)
+                        .standardFieldLabel()
+                }else{
+                    Text(passenger.formattedName)
+                        .standardFieldValue()
+                }
                 if let first = self.passenger.stats?.first {
                     Spacer()
                     StatsView(stats: first)
                 }
             }
+        }
+        .onAppear(){
+            self.fetchImage()
         }
     }
 }
@@ -47,7 +84,7 @@ struct PassengerRowView: View {
 struct PassengerRowView_Previews: PreviewProvider {
     static var previews: some View {
         List {
-            PassengerRowView(passenger: Passenger(name: "John"))
+            PassengerRowView(passenger: Passenger(name: "John"), highlightName : false)
         }
     }
 }

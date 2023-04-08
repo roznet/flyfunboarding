@@ -28,12 +28,13 @@
 import Foundation
 import Contacts
 import UIKit
+import SwiftUI
 
 class PassengerViewModel : ObservableObject {
     private var passenger : Passenger
     @Published var displayName : String
     @Published var contactFormattedName : String = ""
-    @Published var thumbnail : UIImage? = nil
+    @Published var thumbnail : Image? = nil
     
     init(passenger : Passenger){
         self.passenger = passenger

@@ -92,6 +92,7 @@ struct FlightEditView: View {
                     }
                 }
             }
+            Spacer()
         }
         
         .onAppear() {

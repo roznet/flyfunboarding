@@ -35,7 +35,14 @@ class TicketViewModel : ObservableObject {
     @Published var passenger : Passenger
     @Published var seatNumber : String
     var mode : Mode
-   
+    var submitText : String {
+        switch mode {
+        case .create:
+            return "Issue"
+        case .edit:
+            return "Update"
+        }
+    }
     var ticket : Ticket {
         get {
             return self.originalTicket.with(seatNumber: self.seatNumber)

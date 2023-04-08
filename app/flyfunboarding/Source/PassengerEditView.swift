@@ -47,7 +47,7 @@ struct PassengerEditView: View {
                 
                 HStack {
                     if let thumbnail = self.passengerModel.thumbnail  {
-                        Image(uiImage: thumbnail)
+                        thumbnail
                             .resizable()
                             .frame(maxWidth: 50.0, maxHeight: 50.0)
                     }

@@ -28,6 +28,7 @@
 import Foundation
 import Contacts
 import UIKit
+import SwiftUI
 
 
 struct Passenger : Codable, Identifiable, Hashable, Equatable {
@@ -88,7 +89,7 @@ struct Passenger : Codable, Identifiable, Hashable, Equatable {
         return contact
     }
     
-    func retrieveImage() -> UIImage? {
+    func retrieveImageData() -> Data? {
         let store = CNContactStore()
         let keys : [CNKeyDescriptor] = [
             CNContactImageDataAvailableKey as CNKeyDescriptor,
@@ -96,7 +97,17 @@ struct Passenger : Codable, Identifiable, Hashable, Equatable {
         ]
         let contact = try? store.unifiedContact(withIdentifier: self.apple_identifier, keysToFetch: keys as [CNKeyDescriptor])
         if let available = contact?.imageDataAvailable, available, let data = contact?.thumbnailImageData {
-            return UIImage(data: data)
+            return data
+        }else{
+            return nil
+        }
+
+    }
+    
+    func retrieveImage() -> Image? {
+        if let data = self.retrieveImageData(),
+           let uiImage = UIImage(data: data) {
+            return Image(uiImage: uiImage)
         }else{
             return nil
         }

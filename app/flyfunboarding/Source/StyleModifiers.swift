@@ -79,3 +79,6 @@ extension View {
         return self.navigationBarTitle(text, displayMode: .inline)
     }
 }
+extension Color {
+    static let secondarySystemBackground = Color(uiColor: .secondarySystemBackground)
+}

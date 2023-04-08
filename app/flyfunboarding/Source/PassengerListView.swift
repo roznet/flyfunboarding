@@ -42,7 +42,7 @@ struct PassengerListView: View {
             NavigationStack {
                 List(passengerListViewModel.passengers) { passenger in
                     NavigationLink(value: passenger) {
-                        PassengerRowView(passenger: passenger)
+                        PassengerRowView(passenger: passenger,highlightName: false)
                             .padding(.bottom)
                     }
                 }

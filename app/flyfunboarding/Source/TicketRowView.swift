@@ -35,10 +35,15 @@ struct TicketRowView: View {
             ZStack {
                 RoundedRectangle(cornerRadius: 10.0)
                     .fill(Color(UIColor.secondarySystemBackground))
-            Text(ticket.passenger.formattedName).standardFieldLabel()
-                .padding(.bottom)
+                VStack {
+                    HStack {
+                        PassengerRowView(passenger: ticket.passenger, highlightName: true)
+                        Spacer()
+                    }
+                    FlightRowView(flight: ticket.flight)
+                        .padding(.horizontal)
+                }
             }
-            FlightRowView(flight: ticket.flight)
         }
     }
 }
