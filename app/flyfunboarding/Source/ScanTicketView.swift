@@ -36,9 +36,11 @@ struct ScanTicketView: View {
         case valid
         case invalid
     }
-    @State private var scannedString : String?
-    @State private var status : Status = .scanning
-    @State private var ticket : Ticket = Ticket.defaultTicket
+    @State private var scannedString : String? = nil
+    @State  var status : Status = .scanning
+    @State var ticket : Ticket = Ticket.defaultTicket
+    @State var validColor : Color = Color.green
+    @State var validText : String = "Valid Ticket"
 
     func verify(string : String) {
         scannedString = string
@@ -52,6 +54,13 @@ struct ScanTicketView: View {
                         DispatchQueue.main.async {
                             self.status = .valid
                             self.ticket = ticket
+                            if self.ticket.validToday {
+                                self.validColor = Color.green
+                                self.validText = "Welcome on Board"
+                            }else{
+                                self.validColor = Color.purple
+                                self.validText = "Not for today"
+                            }
                         }
                     }else{
                         self.status = .invalid
@@ -93,17 +102,21 @@ struct ScanTicketView: View {
                             .foregroundColor(.red)
                             .frame(width: min(100.0,geometry.size.width / 4.0),
                                    height: min(100.0,geometry.size.width/4.0))
-                        Text("Invalid ticket")
+                        Text("Invalid Ticket")
+                            .font(.largeTitle)
                     }
                 case .valid:
                     VStack {
                         Image(systemName: "checkmark.seal.fill")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .foregroundColor(.green)
+                            .foregroundColor(self.validColor)
                             .frame(width: min(100.0,geometry.size.width / 4.0),
                                    height: min(100.0,geometry.size.width/4.0))
-                        Text("Valid ticket")
+                        Text("Valid Ticket")
+                            .font(.title)
+                            
+                        Text(self.validText)
                             .fontWeight(.bold)
                             .padding(.bottom)
                         HStack {
@@ -123,6 +136,16 @@ struct ScanTicketView: View {
 
 struct ScanTicketView_Previews: PreviewProvider {
     static var previews: some View {
-        ScanTicketView()
+        let tickets = Samples.tickets
+        Group {
+            ScanTicketView()
+                .previewDisplayName("Scanning")
+            ScanTicketView(status: .invalid)
+                .previewDisplayName("invalid")
+            ScanTicketView(status: .valid, ticket: tickets[0], validColor: .purple, validText: "Not for today")
+                .previewDisplayName("Valid Different day")
+            ScanTicketView(status: .valid, ticket: tickets[0], validColor: .green, validText: "Welcome on Board")
+                .previewDisplayName("Valid today")
+        }
     }
 }

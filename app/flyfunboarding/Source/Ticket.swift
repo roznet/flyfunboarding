@@ -36,6 +36,10 @@ struct Ticket : Codable, Identifiable, Hashable, Equatable {
     var ticket_id : Int?
     var ticket_identifier : String?
     
+    var validToday : Bool {
+        return (self.flight.scheduledDepartureDate as NSDate).isSameCalendarDay(Date(), calendar: NSCalendar.current)
+    }
+    
     var id = UUID()
     
     enum CodingKeys: String, CodingKey {
