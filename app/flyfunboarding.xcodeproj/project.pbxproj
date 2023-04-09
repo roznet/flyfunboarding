@@ -27,6 +27,9 @@
 		4208E4C229BE5A1E00E2A5FC /* KnownAirports.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4208E4C129BE5A1E00E2A5FC /* KnownAirports.swift */; };
 		4208E4C529BE5CB300E2A5FC /* KDTree in Frameworks */ = {isa = PBXBuildFile; productRef = 4208E4C429BE5CB300E2A5FC /* KDTree */; };
 		4208E4C929BE785000E2A5FC /* AirportField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4208E4C829BE785000E2A5FC /* AirportField.swift */; };
+		4215043C29E299E2006D9B4C /* signatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4215043B29E299E2006D9B4C /* signatureTests.swift */; };
+		4215044229E29B95006D9B4C /* Signature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4215044129E29B95006D9B4C /* Signature.swift */; };
+		4215044429E2A0A5006D9B4C /* test_signature.json in Resources */ = {isa = PBXBuildFile; fileRef = 4215044329E2A0A5006D9B4C /* test_signature.json */; };
 		4245DB1929BCBDB6004B9953 /* secrets.json in Resources */ = {isa = PBXBuildFile; fileRef = 4245DB1829BCBDB5004B9953 /* secrets.json */; };
 		4245DB1C29BCBE40004B9953 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4245DB1B29BCBE40004B9953 /* Secrets.swift */; };
 		4247B9AC29D22CDF00B312AC /* RZExternalUniversal in Frameworks */ = {isa = PBXBuildFile; productRef = 4247B9AB29D22CDF00B312AC /* RZExternalUniversal */; };
@@ -114,6 +117,9 @@
 		4208E4B929BE2E3D00E2A5FC /* PassengerListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PassengerListViewModel.swift; path = Source/PassengerListViewModel.swift; sourceTree = "<group>"; };
 		4208E4C129BE5A1E00E2A5FC /* KnownAirports.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = KnownAirports.swift; path = Source/KnownAirports.swift; sourceTree = "<group>"; };
 		4208E4C829BE785000E2A5FC /* AirportField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AirportField.swift; path = Source/AirportField.swift; sourceTree = "<group>"; };
+		4215043B29E299E2006D9B4C /* signatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = signatureTests.swift; sourceTree = "<group>"; };
+		4215044129E29B95006D9B4C /* Signature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Signature.swift; path = Source/Signature.swift; sourceTree = "<group>"; };
+		4215044329E2A0A5006D9B4C /* test_signature.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = test_signature.json; path = samples/test_signature.json; sourceTree = "<group>"; };
 		4245DB1829BCBDB5004B9953 /* secrets.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = secrets.json; sourceTree = "<group>"; };
 		4245DB1B29BCBE40004B9953 /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Secrets.swift; path = Source/Secrets.swift; sourceTree = "<group>"; };
 		4247B9AE29D2310000B312AC /* combined-shapefile.dbf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "combined-shapefile.dbf"; path = "python/timezones/combined-shapefile.dbf"; sourceTree = "<group>"; };
@@ -225,6 +231,14 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		4215043F29E29B33006D9B4C /* samples */ = {
+			isa = PBXGroup;
+			children = (
+				4215044329E2A0A5006D9B4C /* test_signature.json */,
+			);
+			name = samples;
 			sourceTree = "<group>";
 		};
 		4245DB1A29BCBDC0004B9953 /* SupportingFiles */ = {
@@ -363,7 +377,9 @@
 		4269B3F529BBC84D009891C6 /* flyfunboardingTests */ = {
 			isa = PBXGroup;
 			children = (
+				4215043F29E29B33006D9B4C /* samples */,
 				4269B3F629BBC84D009891C6 /* flyfunboardingTests.swift */,
+				4215043B29E299E2006D9B4C /* signatureTests.swift */,
 			);
 			path = flyfunboardingTests;
 			sourceTree = "<group>";
@@ -390,6 +406,7 @@
 				42E58E1A29BFE36900185971 /* Flight.swift */,
 				42E58E1C29BFE67100185971 /* Ticket.swift */,
 				42D940C529CEF31F00622CF3 /* Stats.swift */,
+				4215044129E29B95006D9B4C /* Signature.swift */,
 			);
 			name = DataModels;
 			sourceTree = "<group>";
@@ -547,6 +564,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4215044429E2A0A5006D9B4C /* test_signature.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -642,6 +660,7 @@
 				4207277B29D85BEC00D966CA /* PassengerViewModel.swift in Sources */,
 				4208E4BA29BE2E3D00E2A5FC /* PassengerListViewModel.swift in Sources */,
 				4260044E29BDD4DC003E0433 /* ToggleTextField.swift in Sources */,
+				4215044229E29B95006D9B4C /* Signature.swift in Sources */,
 				4207277929D85B7700D966CA /* PassengerEditView.swift in Sources */,
 				4269B42E29BC77B3009891C6 /* Log.swift in Sources */,
 				4247B9EF29D4AA3100B312AC /* MatchedAircraft.swift in Sources */,
@@ -660,6 +679,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4215043C29E299E2006D9B4C /* signatureTests.swift in Sources */,
 				4269B3F729BBC84D009891C6 /* flyfunboardingTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

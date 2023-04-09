@@ -44,8 +44,10 @@ class PassengerViewModel : ObservableObject {
     
     func sync() {
         if let contact = self.passenger.retrieveContact() {
+            
             let formatter = CNContactFormatter()
             formatter.style = .fullName
+            
             self.contactFormattedName = formatter.string(from: contact) ?? "No name"
             self.thumbnail = self.passenger.retrieveImage()
         }
