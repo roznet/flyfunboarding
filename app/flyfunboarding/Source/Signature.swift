@@ -70,8 +70,8 @@ struct Signature {
         return secKey
     }
 
-    func verifySignature(base64Signature: String, string: String) -> Status {
-        if let data = string.data(using: .utf8) {
+    func verifySignature(base64Signature: String, string: String, encoding: String.Encoding = .utf8) -> Status {
+        if let data = string.data(using: encoding) {
             return self.verifySignature(base64Signature: base64Signature, data: data)
         }
         return .invalidSignature
