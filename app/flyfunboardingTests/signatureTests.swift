@@ -55,6 +55,7 @@ final class signatureTests: XCTestCase {
                let data = input.data.data(using: .utf8),
                let badData = "Bad".data(using: .utf8){
                 XCTAssertEqual( sign.verifySignature(base64Signature: input.signature, data: data), .verified)
+                XCTAssertEqual( sign.verifySignature(base64Signature: input.signature, string: input.data), .verified)
                 XCTAssertNotEqual( sign.verifySignature(base64Signature: input.signature, data: badData), .verified)
             }else{
                 XCTAssertTrue(false)

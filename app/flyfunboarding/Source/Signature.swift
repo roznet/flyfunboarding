@@ -45,7 +45,8 @@ struct Signature {
     }
 
     static private func publicKeyFromPEM(_ pemString: String) -> SecKey? {
-        let keyString = pemString.replacingOccurrences(of: "-----BEGIN PUBLIC KEY-----", with: "")
+        let keyString = pemString
+            .replacingOccurrences(of: "-----BEGIN PUBLIC KEY-----", with: "")
             .replacingOccurrences(of: "-----END PUBLIC KEY-----", with: "")
             .replacingOccurrences(of: "\n", with: "")
             .trimmingCharacters(in: .whitespacesAndNewlines)
@@ -69,6 +70,12 @@ struct Signature {
         return secKey
     }
 
+    func verifySignature(base64Signature: String, string: String) -> Status {
+        if let data = string.data(using: .utf8) {
+            return self.verifySignature(base64Signature: base64Signature, data: data)
+        }
+        return .invalidSignature
+    }
     func verifySignature(base64Signature: String, data: Data) -> Status {
         guard let signatureData = Data(base64Encoded: base64Signature) else {
             return .invalidSignature
