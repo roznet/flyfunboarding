@@ -62,6 +62,13 @@ struct Airline: Codable{
     func with(newName: String) -> Airline {
         return Airline(airlineName: newName, appleIdentifier: self.appleIdentifier, airlineId: self.airlineId, airlineIdentifier: self.airlineIdentifier)
     }
+    
+    struct Keys : Codable {
+        let baseName : String
+        let publicKey : String
+        
+        var signatureVerifier : SignatureVerifier? { return SignatureVerifier(publicKeyPemString: self.publicKey) }
+    }
 }
 
 

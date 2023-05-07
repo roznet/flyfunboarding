@@ -231,6 +231,27 @@ class RemoteService {
         
         self.retrieveObject(point: "airline/\(airlineIdentifier)", completion: completion)
     }
+    func retrieveAndCheckCurrentAirlineKeys(){
+        guard let point = self.point(api: "keys", airline: Settings.shared.currentAirline) else { return }
+        self.retrieveObject(point: point) {
+            (keys : Airline.Keys?) in
+            if let keys = keys {
+                let existing = Settings.shared.airlinePublicKey
+                // if we have keys, check if they changed (they shouldn't)
+                if existing == "" {
+                    // if no existing keys save the one we have
+                    Logger.app.info("Registered new public key")
+                    Settings.shared.airlinePublicKey = keys.publicKey
+                }
+                else if keys.publicKey != existing {
+                    Logger.app.error("Keys changed!")
+                    // We won't do anything, this is not intended to be the most secure app
+                    // But here we should invalidate validation of tickets,
+                    Settings.shared.airlinePublicKey = keys.publicKey
+                }
+            }
+        }
+    }
     func deleteCurrentAirline(completion: @escaping (Bool) ->Void) {
         guard let airline = Settings.shared.currentAirline,
               let airlineIdentifier = airline.airlineIdentifier

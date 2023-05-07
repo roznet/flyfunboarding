@@ -28,6 +28,7 @@
 import Foundation
 import RZUtilsSwift
 import OSLog
+import CryptoKit
 
 struct Ticket : Codable, Identifiable, Hashable, Equatable {
     var passenger : Passenger
@@ -92,7 +93,21 @@ struct Ticket : Codable, Identifiable, Hashable, Equatable {
 
 extension Ticket {
     struct Signature : Codable {
+        struct Digest : Codable {
+            let hash : String
+            let signature : String
+        }
         let ticket : String
-        let signature : String
+        let signature : String?
+        let signatureDigest : Digest?
+        
+        var canVerify : Bool { return self.signatureDigest != nil }
+        
+        func verify(with verifier: SignatureVerifier) -> SignatureVerifier.Status {
+            if let signature = self.signatureDigest?.signature {
+                return verifier.verifySignature(base64Signature: signature, string: self.ticket)
+            }
+            return .invalidSignature
+        }
     }
 }

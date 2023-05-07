@@ -26,6 +26,7 @@
 
 import Foundation
 import RZUtilsSwift
+import OSLog
 
 extension Notification.Name {
     static let signinStatusChanged = Notification.Name("signinStatusChanged")
@@ -43,6 +44,7 @@ struct Settings {
         case airline_identifier = "airline_identifier"
         case last_latitude = "last_latitude"
         case last_longitude = "last_longitude"
+        case airline_public_key = "airline_public_key"
         
     }
   
@@ -56,6 +58,9 @@ struct Settings {
     
     @UserStorage(key: Key.airline_id, defaultValue: -1)
     var airlineId : Int
+    
+    @UserStorage(key: Key.airline_public_key, defaultValue: "")
+    var airlinePublicKey : String
    
     @CodableStorage(key: Key.user_full_name)
     var userFullName : PersonNameComponents?
@@ -80,6 +85,10 @@ struct Settings {
         set {
             if let airline = newValue {
                 if airline.validAirline {
+                    if self.userIdentifier != airline.appleIdentifier {
+                        Logger.app.info("changing airline, resetting publicKey for \(airline.appleIdentifier)")
+                        self.airlinePublicKey = ""
+                    }
                     self.userIdentifier = airline.appleIdentifier
                     self.airlineName = airline.airlineName
                     self.airlineId = airline.airlineId ?? -1
@@ -90,6 +99,7 @@ struct Settings {
                 self.airlineId = -1
                 self.airlineName = "My Airline"
                 self.airlineIdentifier = nil
+                self.airlinePublicKey = ""
             }
             NotificationCenter.default.post(name: .signinStatusChanged, object: self)
         }

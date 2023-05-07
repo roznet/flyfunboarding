@@ -53,4 +53,5 @@ class AirlineController extends Controller {
         }
         echo json_encode($airline->toJson());
     }
+
 }

@@ -28,8 +28,11 @@
 		4208E4C529BE5CB300E2A5FC /* KDTree in Frameworks */ = {isa = PBXBuildFile; productRef = 4208E4C429BE5CB300E2A5FC /* KDTree */; };
 		4208E4C929BE785000E2A5FC /* AirportField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4208E4C829BE785000E2A5FC /* AirportField.swift */; };
 		4215043C29E299E2006D9B4C /* signatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4215043B29E299E2006D9B4C /* signatureTests.swift */; };
-		4215044229E29B95006D9B4C /* Signature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4215044129E29B95006D9B4C /* Signature.swift */; };
+		4215044229E29B95006D9B4C /* SignatureVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4215044129E29B95006D9B4C /* SignatureVerifier.swift */; };
 		4215044429E2A0A5006D9B4C /* test_signature.json in Resources */ = {isa = PBXBuildFile; fileRef = 4215044329E2A0A5006D9B4C /* test_signature.json */; };
+		4215044829EAFA54006D9B4C /* sample_keys.json in Resources */ = {isa = PBXBuildFile; fileRef = 4215044529EAFA54006D9B4C /* sample_keys.json */; };
+		4215044929EAFA54006D9B4C /* sample_validate_new.json in Resources */ = {isa = PBXBuildFile; fileRef = 4215044629EAFA54006D9B4C /* sample_validate_new.json */; };
+		4215044A29EAFA54006D9B4C /* sample_validate_old.json in Resources */ = {isa = PBXBuildFile; fileRef = 4215044729EAFA54006D9B4C /* sample_validate_old.json */; };
 		4245DB1929BCBDB6004B9953 /* secrets.json in Resources */ = {isa = PBXBuildFile; fileRef = 4245DB1829BCBDB5004B9953 /* secrets.json */; };
 		4245DB1C29BCBE40004B9953 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4245DB1B29BCBE40004B9953 /* Secrets.swift */; };
 		4247B9AC29D22CDF00B312AC /* RZExternalUniversal in Frameworks */ = {isa = PBXBuildFile; productRef = 4247B9AB29D22CDF00B312AC /* RZExternalUniversal */; };
@@ -118,8 +121,11 @@
 		4208E4C129BE5A1E00E2A5FC /* KnownAirports.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = KnownAirports.swift; path = Source/KnownAirports.swift; sourceTree = "<group>"; };
 		4208E4C829BE785000E2A5FC /* AirportField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AirportField.swift; path = Source/AirportField.swift; sourceTree = "<group>"; };
 		4215043B29E299E2006D9B4C /* signatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = signatureTests.swift; sourceTree = "<group>"; };
-		4215044129E29B95006D9B4C /* Signature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Signature.swift; path = Source/Signature.swift; sourceTree = "<group>"; };
+		4215044129E29B95006D9B4C /* SignatureVerifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SignatureVerifier.swift; path = Source/SignatureVerifier.swift; sourceTree = "<group>"; };
 		4215044329E2A0A5006D9B4C /* test_signature.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = test_signature.json; path = samples/test_signature.json; sourceTree = "<group>"; };
+		4215044529EAFA54006D9B4C /* sample_keys.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = sample_keys.json; sourceTree = "<group>"; };
+		4215044629EAFA54006D9B4C /* sample_validate_new.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = sample_validate_new.json; sourceTree = "<group>"; };
+		4215044729EAFA54006D9B4C /* sample_validate_old.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = sample_validate_old.json; sourceTree = "<group>"; };
 		4245DB1829BCBDB5004B9953 /* secrets.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = secrets.json; sourceTree = "<group>"; };
 		4245DB1B29BCBE40004B9953 /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Secrets.swift; path = Source/Secrets.swift; sourceTree = "<group>"; };
 		4247B9AE29D2310000B312AC /* combined-shapefile.dbf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "combined-shapefile.dbf"; path = "python/timezones/combined-shapefile.dbf"; sourceTree = "<group>"; };
@@ -364,6 +370,9 @@
 		4269B3EB29BBC84C009891C6 /* Preview Content */ = {
 			isa = PBXGroup;
 			children = (
+				4215044529EAFA54006D9B4C /* sample_keys.json */,
+				4215044629EAFA54006D9B4C /* sample_validate_new.json */,
+				4215044729EAFA54006D9B4C /* sample_validate_old.json */,
 				4269B43029BCA4EA009891C6 /* sample_aircrafts.json */,
 				4269B43229BCA4EA009891C6 /* sample_airline.json */,
 				4269B43129BCA4EA009891C6 /* sample_flights.json */,
@@ -406,7 +415,7 @@
 				42E58E1A29BFE36900185971 /* Flight.swift */,
 				42E58E1C29BFE67100185971 /* Ticket.swift */,
 				42D940C529CEF31F00622CF3 /* Stats.swift */,
-				4215044129E29B95006D9B4C /* Signature.swift */,
+				4215044129E29B95006D9B4C /* SignatureVerifier.swift */,
 			);
 			name = DataModels;
 			sourceTree = "<group>";
@@ -499,7 +508,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1420;
-				LastUpgradeCheck = 1420;
+				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					4269B3E129BBC84C009891C6 = {
 						CreatedOnToolsVersion = 14.2;
@@ -565,6 +574,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				4215044429E2A0A5006D9B4C /* test_signature.json in Resources */,
+				4215044A29EAFA54006D9B4C /* sample_validate_old.json in Resources */,
+				4215044929EAFA54006D9B4C /* sample_validate_new.json in Resources */,
+				4215044829EAFA54006D9B4C /* sample_keys.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -660,7 +672,7 @@
 				4207277B29D85BEC00D966CA /* PassengerViewModel.swift in Sources */,
 				4208E4BA29BE2E3D00E2A5FC /* PassengerListViewModel.swift in Sources */,
 				4260044E29BDD4DC003E0433 /* ToggleTextField.swift in Sources */,
-				4215044229E29B95006D9B4C /* Signature.swift in Sources */,
+				4215044229E29B95006D9B4C /* SignatureVerifier.swift in Sources */,
 				4207277929D85B7700D966CA /* PassengerEditView.swift in Sources */,
 				4269B42E29BC77B3009891C6 /* Log.swift in Sources */,
 				4247B9EF29D4AA3100B312AC /* MatchedAircraft.swift in Sources */,
@@ -711,6 +723,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -771,6 +784,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";

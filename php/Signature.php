@@ -13,7 +13,7 @@ class Signature {
         return $this->publicKey != '';
     }
 
-    public function __construct($baseName) {
+    private function __construct($baseName) {
         $this->baseName = $baseName;
         $this->secret = Config::$shared['secret'];
         $privateKeyFileName = Config::$shared['keys_path'] . '/' . $baseName . '.pem';
@@ -31,7 +31,17 @@ class Signature {
         }
     }
 
-    public static function create($baseName = null){
+    public static function retrieveOrCreate($baseName) : Signature {
+        $privateKeyFileName = Config::$shared['keys_path'] . '/' . $baseName . '.pem';
+        $publicKeyFileName = Config::$shared['keys_path'] . '/' . $baseName . '.pub';
+        if( file_exists($privateKeyFileName) && file_exists($publicKeyFileName)){
+            return new Signature($baseName);
+        }else{
+            return Signature::create($baseName);
+        }
+    }
+
+    private static function create($baseName = null){
         $res = openssl_pkey_new([
             "private_key_bits" => 2048,
             "private_key_type" => OPENSSL_KEYTYPE_RSA,
@@ -56,21 +66,21 @@ class Signature {
         return new Signature($fileNameBase);
     }
 
-    public function exportPublicJson() {
+    public function exportPublicKeys() {
         return [
             'baseName' => $this->baseName,
             'publicKey' => $this->publicKey,
         ];
     }
 
-    public function signDigest(string $data) {
+    public function signatureDigest(string $data) {
         return [
             'hash' => $this->secretHash($data),
             'signature' => $this->sign($data)
         ];
     }
 
-    public function verifyDigest(string $data, array $digest) {
+    public function verifySignatureDigest(string $data, array $digest) {
         if( !isset($digest['hash'])){
             return false;
         }
@@ -83,7 +93,7 @@ class Signature {
         return true;
     }
 
-    public function sign($data) {
+    private function sign($data) {
         if(!$this->canSign()) {
             return null;
         }
@@ -91,7 +101,7 @@ class Signature {
         return base64_encode($signature);
     }
 
-    public function verify($data, $signature) {
+    private function verify($data, $signature) {
         if(!$this->canVerify()) {
             return false;
         }

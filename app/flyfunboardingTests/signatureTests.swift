@@ -51,7 +51,7 @@ final class signatureTests: XCTestCase {
             let data = try Data(contentsOf: jsonFile)
             let decoder = JSONDecoder()
             let input = try decoder.decode(Input.self, from: data)
-            if let sign = Signature(publicKeyPemString: input.publicKey),
+            if let sign = SignatureVerifier(publicKeyPemString: input.publicKey),
                let data = input.data.data(using: .utf8),
                let badData = "Bad".data(using: .utf8){
                 XCTAssertEqual( sign.verifySignature(base64Signature: input.signature, data: data), .verified)
@@ -64,6 +64,21 @@ final class signatureTests: XCTestCase {
             XCTAssertTrue(false)
         }
     }
-
-
+    
+    func testValidate() throws {
+        guard let keysFile = Bundle(for: type(of: self)).url(forResource: "sample_keys", withExtension: "json"),
+              let sampleOldFile = Bundle(for: type(of: self)).url(forResource: "sample_validate_old", withExtension: "json"),
+            let sampleNewFile = Bundle(for: type(of: self)).url(forResource: "sample_validate_new", withExtension: "json")
+              
+        else { XCTAssertTrue(false); return }
+        let sampleOld = try JSONDecoder().decode(Ticket.Signature.self, from: try Data(contentsOf: sampleOldFile))
+        let sampleNew = try JSONDecoder().decode(Ticket.Signature.self, from: try Data(contentsOf: sampleNewFile))
+        let keys = try JSONDecoder().decode(Airline.Keys.self, from: try Data(contentsOf: keysFile))
+        
+        guard let verifier = keys.signatureVerifier else { XCTAssertTrue(false); return }
+        XCTAssertFalse(sampleOld.canVerify)
+        XCTAssertTrue(sampleNew.canVerify)
+        let checkNew = sampleNew.verify(with: verifier)
+        XCTAssertEqual(checkNew, .verified)
+    }
 }

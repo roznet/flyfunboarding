@@ -40,19 +40,23 @@ class Ticket {
     }
 
     public function signature() : array {
-        $signature = Airline::$current->sign($this->ticket_identifier);
+        $signatureDigest = Airline::$current->signatureDigest($this->ticket_identifier);
         return [
             'ticket' => $this->ticket_identifier,
-            'signature' => $signature
+            'signatureDigest' => $signatureDigest
         ];
     }
 
     public function verify(array $payload) : bool {
+        if( isset($payload['signatureDigest']) ) {
+            $signature = $payload['signatureDigest'];
+            $ticket = $payload['ticket'];
+            return Airline::$current->verifySignatureDigest($ticket, $signature);
+        }
         $signature = $payload['signature'];
         $ticket = $payload['ticket'];
-        return Airline::$current->verify($ticket, $signature);
+        return Airline::$current->verifySignatureDigest($ticket, $signature);
     }
-
 
     static public function fromJson(array $json) : Ticket {
         $rv = JsonHelper::fromJson($json, 'Ticket');

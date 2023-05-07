@@ -15,15 +15,25 @@ class Airline {
         return JsonHelper::toJson($this);
     }
 
-    function sign($data) {
-        // simple signature, just a sha256 hash of the secret + data
-        // but should be good enough for our purpose
-        $secret = Config::$shared['secret'];
-        return hash('sha256', $secret . $data);
+    function signer() {
+        $rv = Signature::retrieveOrCreate($this->apple_identifier);
+        return $rv;
+    }
+    function publicKeys() {
+        return $this->signer()->exportPublicKeys();
+    }
+    function signatureDigest($data) {
+        $signer = $this->signer();
+        return $signer->signatureDigest($data);
     }
 
-    function verify($data, $signature) {
-        return $signature == $this->sign($data);
+    function verifySignatureDigest($data, $signature) {
+        $signer = $this->signer();
+        if( is_array($signature) ) {
+            return $signer->verifySignatureDigest($data, $signature);
+        }else{
+            return $signer->verifySecretHash($data, $signature);
+        }
     }
 
     static function fromJson($json) {
@@ -47,6 +57,4 @@ class Airline {
         $bearer = str_replace("Bearer ", "", $headers['Authorization']);
         return $bearer == $this->apple_identifier;
     }
-
-
 }

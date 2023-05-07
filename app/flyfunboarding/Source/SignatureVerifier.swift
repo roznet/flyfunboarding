@@ -28,7 +28,7 @@
 import Foundation
 import CryptoKit
 
-struct Signature {
+struct SignatureVerifier {
     let publicKey : SecKey
    
     enum Status {

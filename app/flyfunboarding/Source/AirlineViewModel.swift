@@ -55,6 +55,7 @@ class AirlineViewModel : ObservableObject {
                 Logger.net.info("Retrieved airline \(airlineIdentifier)")
                 DispatchQueue.main.async {
                     self.airline = airline
+                    RemoteService.shared.retrieveAndCheckCurrentAirlineKeys()
                 }
             }else{
                 Logger.net.error("Failed to retrieved current Airline")
