@@ -6,6 +6,8 @@ class Signature {
     var string $privateKey;
     var string $secret;
 
+    var bool $usePublicKeySignature = true;
+
     public function canSign() {
         return $this->privateKey != '';
     }
@@ -18,6 +20,9 @@ class Signature {
         $this->secret = Config::$shared['secret'];
         $privateKeyFileName = Config::$shared['keys_path'] . '/' . $baseName . '.pem';
         $publicKeyFileName = Config::$shared['keys_path'] . '/' . $baseName . '.pub';
+        if( isset( Config::$shared['use_public_key_signature'])){
+            $this->usePublicKeySignature = Config::$shared['use_public_key_signature'] == true;
+        }
         // check if private key exists
         if(file_exists($privateKeyFileName) ){
             $this->privateKey = file_get_contents($privateKeyFileName);
@@ -74,10 +79,14 @@ class Signature {
     }
 
     public function signatureDigest(string $data) {
-        return [
+        $digest =  [
             'hash' => $this->secretHash($data),
-            'signature' => $this->sign($data)
         ];
+
+        if( $this->usePublicKeySignature ){
+            $digest['signature'] = $this->sign($data);
+        }
+        return $digest;
     }
 
     public function verifySignatureDigest(string $data, array $digest) {

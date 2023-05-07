@@ -95,13 +95,13 @@ extension Ticket {
     struct Signature : Codable {
         struct Digest : Codable {
             let hash : String
-            let signature : String
+            let signature : String?
         }
         let ticket : String
         let signature : String?
         let signatureDigest : Digest?
         
-        var canVerify : Bool { return self.signatureDigest != nil }
+        var canVerify : Bool { return self.signatureDigest?.signature != nil }
         
         func verify(with verifier: SignatureVerifier) -> SignatureVerifier.Status {
             if let signature = self.signatureDigest?.signature {
