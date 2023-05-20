@@ -61,7 +61,7 @@ class MatchedAirport : ObservableObject {
     var coord : CLLocationCoordinate2D
     private var locationRequest : LocationRequest = LocationRequest()
     
-    init() {
+    init(cb: @escaping (String) -> Void = { _ in }) {
         self.coord = CLLocationCoordinate2D(latitude: Settings.shared.lastLatitude,
                                             longitude: Settings.shared.lastLongitude)
         self.locationRequest.start() {
@@ -69,6 +69,10 @@ class MatchedAirport : ObservableObject {
             self.coord = c
             Settings.shared.lastLatitude = c.latitude
             Settings.shared.lastLongitude = c.longitude
+            if let found = FlyFunBoardingApp.knownAirports?.nearestIdent(coord: self.coord) {
+                cb(found)
+            }
+            
         }
     }
     
@@ -81,7 +85,7 @@ class MatchedAirport : ObservableObject {
         }
         
         FlyFunBoardingApp.worker.async {
-            if let found = FlyFunBoardingApp.knownAirports?.nearestDescriptions(coord: self.coord, needle: text, count: 20) {
+            if let found = FlyFunBoardingApp.knownAirports?.nearestMatching(coord: self.coord, needle: text, count: 20) {
                 DispatchQueue.main.async {
                     DispatchQueue.synchronized(self){
                         self.suggestions = found

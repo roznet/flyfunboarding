@@ -110,15 +110,16 @@ class KnownAirports {
         let found = tree.nearest(to: AirportCoord(coord: coord))
         return found?.ident
     }
-    func nearest(coord : CLLocationCoordinate2D, db : FMDatabase) -> Airport? {
-        if let found = self.nearestIdent(coord: coord){
-            return try? Airport(db: db, ident: found)
-        }
-        return nil
+    func nearest(coord : CLLocationCoordinate2D, count : Int) -> [AirportCoord] {
+        return tree.nearestK(count, to: AirportCoord(coord: coord))
     }
-    func nearestDescriptions(coord : CLLocationCoordinate2D, needle: String, count : Int) -> [AirportCoord] {
+    func nearestMatching(coord : CLLocationCoordinate2D, needle: String, count : Int) -> [AirportCoord] {
+        if needle.isEmpty {
+            return self.nearest(coord: coord, count: count)
+        }
         return tree.nearestK(count, to: AirportCoord(coord: coord)) { $0.matches(needle) }
     }
+    
     
 
 }

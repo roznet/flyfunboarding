@@ -50,7 +50,7 @@ struct FlightEditView: View {
     var body: some View {
         VStack {
             VStack {
-                AircraftField(aircraft: flightModel.aircraft)
+                AircraftField(aircraft: $flightModel.aircraft)
                     .disabled(self.flightModel.mode == .edit)
                 HStack {
                     Text("Departure Date").standardFieldLabel()

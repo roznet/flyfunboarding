@@ -28,25 +28,37 @@
 import SwiftUI
 
 struct AircraftField: View {
-    @State var aircraft : Aircraft
+    @Binding var aircraft : Aircraft
+    @State var choice : Aircraft = Aircraft.defaultAircraft
     @State var reg : String = ""
     
     var body: some View {
         HStack(alignment: .firstTextBaseline) {
             Text("Aircraft Registration")
                 .standardFieldLabel()
-            NavigationLink(destination: AircraftPicker(aircraft: $aircraft)) {
+            NavigationLink(destination: AircraftPicker(aircraft: $choice)) {
                 TextField("Registration", text: $reg)
                     .standardStyle()
             }
         }.onAppear() {
             reg = aircraft.registration
+            NotificationCenter.default.addObserver(forName: .aircraftWasPicked, object: nil, queue: nil) {
+                _ in
+                DispatchQueue.main.async {
+                    self.aircraft = self.choice
+                    self.sync()
+                }
+            }
         }
+    }
+    func sync() {
+        self.choice = self.aircraft
+        self.reg = self.aircraft.registration
     }
 }
 
 struct AircraftField_Previews: PreviewProvider {
     static var previews: some View {
-        AircraftField(aircraft: Samples.aircraft)
+        AircraftField(aircraft: .constant(Samples.aircraft), choice: Samples.aircraft)
     }
 }

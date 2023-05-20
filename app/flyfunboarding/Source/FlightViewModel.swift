@@ -37,6 +37,8 @@ class FlightViewModel : ObservableObject {
     @Published var gate : String
     @Published var flightNumber : String
     
+    private var matchAirport : MatchedAirport?
+    
     
     var mode : Mode
     
@@ -80,5 +82,22 @@ class FlightViewModel : ObservableObject {
         self.gate = flight.gate
         self.flightNumber = flight.flightNumber
         self.mode = mode
+        if mode == .create {
+            let last = Settings.shared.lastAirportsIdent
+            if let one = last.last {
+                self.origin = one
+                if let two = last.first, two != self.origin {
+                    self.destination = two
+                }
+            }else {
+                self.matchAirport = MatchedAirport() {
+                    matched in
+                    self.origin = matched
+                    self.destination = matched
+                }
+            }
+        }else{
+            self.matchAirport = nil
+        }
     }
 }

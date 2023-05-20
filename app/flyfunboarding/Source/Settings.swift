@@ -45,6 +45,8 @@ struct Settings {
         case last_latitude = "last_latitude"
         case last_longitude = "last_longitude"
         case airline_public_key = "airline_public_key"
+        case last_airports_ident = "last_airports_ident"
+        case last_aircraft_ident = "last_aircraft_ident"
         
     }
   
@@ -52,6 +54,9 @@ struct Settings {
     var lastLatitude : Double
     @UserStorage(key: Key.last_longitude, defaultValue: 0.12)
     var lastLongitude : Double
+    
+    @UserStorage(key: Key.last_airports_ident, defaultValue: [])
+    var lastAirportsIdent : [String]
     
     @UserStorage(key: Key.airline_name, defaultValue: "My Airline")
     var airlineName : String
@@ -104,5 +109,14 @@ struct Settings {
             NotificationCenter.default.post(name: .signinStatusChanged, object: self)
         }
     }
-    
+    mutating func notice(lastAirportIdent : String) {
+        let list = self.lastAirportsIdent
+        if let last = list.last {
+            if last != lastAirportIdent {
+                self.lastAirportsIdent = [last, lastAirportIdent]
+            }
+        }else{
+            self.lastAirportsIdent = [ lastAirportIdent ]
+        }
+    }
 }

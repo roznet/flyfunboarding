@@ -28,6 +28,9 @@
 import SwiftUI
 import OSLog
 
+extension Notification.Name {
+    static let aircraftWasPicked = Notification.Name("aircraftWasPicked")
+}
 
 struct AircraftPicker: View {
     @StateObject private var matchedAircrafts = MatchedAircraft()
@@ -35,11 +38,10 @@ struct AircraftPicker: View {
     @State var search : String = ""
     @Environment(\.dismiss) var dismiss
 
-    
     var body: some View {
         VStack {
             HStack(alignment: .firstTextBaseline) {
-                Text("Aircraft Registration")
+                Text("Search Aircraft")
                     .standardFieldLabel()
                 TextField("Search", text: $search )
                     .standardStyle()
@@ -53,6 +55,7 @@ struct AircraftPicker: View {
                 }
                 .onTapGesture {
                     self.aircraft = suggestion
+                    NotificationCenter.default.post(name: .aircraftWasPicked, object: nil)
                     self.dismiss()
                 }
             }

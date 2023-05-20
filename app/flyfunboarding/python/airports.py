@@ -64,7 +64,7 @@ with open(airportsfile, encoding='utf-8-sig') as csvf:
     csvReader = csv.DictReader(csvf)
 
     for row in csvReader:
-        if row['type'] != 'heliport':
+        if row['type'] != 'heliport' and row['type'] != 'closed' and row['type'] != 'balloonport':
             db.execute(sql_insert_airports,row)
 
 db.commit()

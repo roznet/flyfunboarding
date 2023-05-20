@@ -81,6 +81,7 @@ struct AirportField: View {
                 DispatchQueue.main.async {
                     self.name = airport.name
                     self.choice = self.icao
+                    Settings.shared.notice(lastAirportIdent: self.icao)
                 }
             }
         }
