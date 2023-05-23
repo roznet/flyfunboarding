@@ -50,7 +50,7 @@ struct AirlineView: View {
                 AircraftListView()
                     .tabItem {
                         Image(systemName: "airplane")
-                        Text(NSLocalizedString("Airplanes", comment: "tabItem"))
+                        Text(NSLocalizedString("Aircraft", comment: "tabItem"))
                     }
                 ScanTicketView()
                     .tabItem {
