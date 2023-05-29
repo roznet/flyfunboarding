@@ -106,6 +106,9 @@ if( isset($_GET['ticket']) && preg_match('/^[a-zA-Z0-9]+/',$_GET['ticket']) ){
         $pass_url = $path;
         $airlineName = Airline::$current->airline_name;
         $get_pass = true;
+        $passBackgroundColor = Airline::$current->backgroundColor();
+        $passForegroundColor = Airline::$current->foregroundColor();
+        $passLabelColor = Airline::$current->labelColor();
     }
 }
 ?>
@@ -209,7 +212,7 @@ label {
 }
 
 .boarding-header {
-    background-color: rgba(189,144,71,1.0);
+    background-color: <?php print($passBackgroundColor); ?>;
     padding: 10px;
     display: flex;
     justify-content: space-between;
@@ -227,7 +230,7 @@ label {
 
 .boarding-body {
     padding: 10px;
-    background-color: rgba(189,144,71,1.0);
+    background-color: <?php print($passBackgroundColor); ?>;
     border-top-left-radius: 9px; /* Add this line */
     border-top-right-radius: 9px; /* Add this line */
     position: relative;
@@ -240,7 +243,7 @@ label {
 
 .boarding-qrcode {
     display: flex;
-    background-color: rgba(189,144,71,1.0);
+    background-color: <?php print($passBackgroundColor); ?>;
     justify-content: center;
     align-items: center;
     padding: 20px;
@@ -271,6 +274,7 @@ label {
 .airline-name {
     font-size: 18px;
     font-weight: bold;
+    color: <?php print($passForegroundColor); ?>;
 }
 
 .plane-icon {
@@ -289,17 +293,19 @@ label {
     display: block;
     text-transform: uppercase;
     font-size: 10px;
-    color: #ccc;
+    color: <?php print($passLabelColor); ?>;
 }
 
 .value {
     font-size: 14px;
     font-weight: bold;
+    color: <?php print($passForegroundColor); ?>;
 }
 
 .value-large {
     font-size: 24px;
     font-weight: bold;
+    color: <?php print($passForegroundColor); ?>;
 }
 
 .info-column {

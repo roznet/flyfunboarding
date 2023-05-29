@@ -174,12 +174,16 @@ class BoardingPass {
             'teamIdentifier' => 'M7QSSF3624',
 
             'backgroundColor' => 'rgb(189,144,71)',
+            'foregroundColor' => 'rgb(255,255,255)',
+            'labelColor' => 'rgb(255,255,255)',
+            'logoText' => 'FlyFun Airline',
             'relevantDate' => $this->flight->scheduledDepartureDate->format('Y-m-d\TH:i:sP'),
         ];
         if( Airline::$current !== null){
             $data['logoText'] = Airline::$current->airline_name;
-        } else {
-            $data['logoText'] = 'FlyFun Airline';
+            $data['backgroundColor'] = Airline::$current->backgroundColor();
+            $data['foregroundColor'] = Airline::$current->foregroundColor();
+            $data['labelColor'] = Airline::$current->labelColor();
         }
         $boardingpass = $this->boardingPassData();
 

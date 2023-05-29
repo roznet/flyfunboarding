@@ -33,7 +33,7 @@ struct AccountAndSettingsView: View {
     @Environment(\.dismiss) var dismiss
     @State private var isPresentingConfirm : Bool = false
     @StateObject var airlineViewModel = AirlineViewModel(airline: Settings.shared.currentAirline ?? Airline())
-    
+    @State private var bgColor = Color(red: 189.0/255.0, green: 144.0/255.0, blue: 71.0/255.0)
     var body : some View {
         VStack {
             HStack {
@@ -54,6 +54,9 @@ struct AccountAndSettingsView: View {
                 VStack {
                     Text("Edit your airline's Name")
                     ToggledTextField(text: $airlineViewModel.airlineName, image: nil, action: update)
+                }.padding()
+                VStack {
+                    ColorPicker("Boarding Pass Color", selection: $bgColor)
                 }.padding()
             }
             Spacer()

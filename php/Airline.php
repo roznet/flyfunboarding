@@ -11,6 +11,17 @@ class Airline {
     static array $jsonKeys = ['airline_name' => 'string', 'apple_identifier' => 'string', 'airline_id' => 'integer', 'airline_identifier' => 'string'];
     static array $jsonValuesOptionalDefaults = ['airline_id' => -1, 'airline_identifier' => ''];
 
+
+    function backgroundColor() {
+        return 'rgb(189,144,71)';
+    }
+    function foregroundColor() {
+        return 'rgb(0,0,0)';
+    }
+    function labelColor() {
+        return 'rgb(255,255,255)';
+    }
+
     function toJson() {
         return JsonHelper::toJson($this);
     }
