@@ -34,17 +34,21 @@ struct AccountAndSettingsView: View {
     @State private var isPresentingConfirm : Bool = false
     @StateObject var airlineViewModel = AirlineViewModel(airline: Settings.shared.currentAirline ?? Airline())
     @State private var bgColor = Color(red: 189.0/255.0, green: 144.0/255.0, blue: 71.0/255.0)
+    @State private var labelColor = Color(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0)
+    @State private var textColor = Color(red: 0.0/255.0, green: 0.0/255.0, blue: 0.0/255.0)
     var body : some View {
         VStack {
             HStack {
                 Spacer()
                 Button("Done") {
                     dismiss()
-                }.padding(.trailing)
+                }.padding([.top,.trailing])
             }
             VStack {
                 Image("FlyFunLogo")
-                    .imageScale(.large)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 150, height: 150)
                     .foregroundColor(.accentColor)
                 Text(NSLocalizedString("Welcome to FlyFun Boarding", comment: ""))
                     .font(.title)
@@ -57,6 +61,8 @@ struct AccountAndSettingsView: View {
                 }.padding()
                 VStack {
                     ColorPicker("Boarding Pass Color", selection: $bgColor)
+                    ColorPicker("Label Color", selection: $labelColor)
+                    ColorPicker("Text Color", selection: $textColor)
                 }.padding()
             }
             Spacer()
@@ -81,6 +87,16 @@ struct AccountAndSettingsView: View {
                 }
                 Spacer()
             }
+            HStack {
+                VStack {
+                    Text("Label").foregroundColor(self.labelColor)
+                    Text("Name").foregroundColor(self.textColor)
+                }
+            }
+            .padding()
+            .background(self.bgColor)
+            .cornerRadius(15)
+            Spacer()
         }
     }
     
