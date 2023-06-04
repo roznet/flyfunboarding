@@ -67,18 +67,20 @@ struct TicketEditView: View {
     }
     
     func boardingPassButtons() -> some View{
-       return
-            HStack(alignment: .center) {
+            return HStack(alignment: .center) {
                 Spacer()
-                Button(action: boardingPassLink) {
-                    Text("Download Pass")
-                }.standardButton()
+                if let url = ticket.disclaimerUrl {
+                    ShareLink(item: url) {
+                        Label("Share", systemImage:"square.and.arrow.up")
+                    }.padding(.trailing)
+                }
+            
                 Button(action: boardingPassFile) {
-                    Text("Pass in Safari")
-                }.standardButton().padding(.leading)
+                    Label("Open", systemImage: "safari")
+                }
                 Spacer()
             }
-            .padding(.top)
+            .padding([.top,.bottom])
     }
     
     
