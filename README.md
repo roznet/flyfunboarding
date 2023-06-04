@@ -20,6 +20,9 @@ MySql 8.0
 
 ## Installation
 
+### App Store
+This app is available for free on the [app store](https://apps.apple.com/us/app/flyfunboarding/id6446208594). You can also check out the [help page](https://ro-z.net/blog/flyfun-boarding-pass/).
+
 ### App
 The app is located under the `app` directory. You will need to edit the `secrets.json` file with information on your server.
 
