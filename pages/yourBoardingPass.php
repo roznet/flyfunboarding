@@ -2,14 +2,19 @@
 include_once( '../php/autoload.php' );
 
 // Array with language codes corresponding to the country codes
+// Array with language codes corresponding to the country codes
 $languages_codes = array(
-    'en' => ['US','GB','AU','CA','NZ'],
-    'fr' => ['FR','BE','CA','CH','LU','MC','SN','TD','TG','TN','YT']
+    'en' => ['US', 'GB', 'AU', 'CA', 'NZ'],
+    'fr' => ['FR', 'BE', 'CA', 'CH', 'LU', 'MC', 'SN', 'TD', 'TG', 'TN', 'YT'],
+    'de' => ['DE', 'AT', 'CH', 'LI', 'LU', 'BE'], // German-speaking countries
+    'es' => ['ES', 'MX', 'GT', 'HN', 'SV', 'NI', 'CR', 'PA', 'VE', 'CO', 'EC', 'PE', 'BO', 'PY', 'UY', 'AR', 'PR', 'CU', 'DO', 'CL'] // Spanish-speaking countries
 );
 
-$languages_text = array( 
+$languages_text = array(
     'en' => 'English',
-    'fr' => 'Français'
+    'fr' => 'Français',
+    'de' => 'Deutsch',
+    'es' => 'Español'
 );
 
 class Label {

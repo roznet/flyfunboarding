@@ -44,7 +44,7 @@ class BoardingPass {
 
     function localeStrings($language) : array {
         $defs = [
-            'fr' => [ 
+            'fr' => [
                 'Flight' => 'Vol',
                 'Aircraft' => 'Avion',
                 'Gate' => 'Porte',
@@ -63,6 +63,26 @@ class BoardingPass {
                 'Passenger' => 'Passenger',
                 'Seat' => 'Seat',
                 'I agree to the terms and conditions below' => 'I agree to the terms and conditions below',
+            ],
+            'de' => [
+                'Flight' => 'Flug',
+                'Aircraft' => 'Flugzeug',
+                'Gate' => 'Tor',
+                'Departs' => 'Abflug',
+                'Arrives' => 'Ankunft',
+                'Passenger' => 'Passagier',
+                'Seat' => 'Sitz',
+                'I agree to the terms and conditions below' => 'Ich stimme den unten stehenden Bedingungen zu',
+            ],
+            'es' => [
+                'Flight' => 'Vuelo',
+                'Aircraft' => 'Avión',
+                'Gate' => 'Puerta',
+                'Departs' => 'Sale',
+                'Arrives' => 'Llega',
+                'Passenger' => 'Pasajero',
+                'Seat' => 'Asiento',
+                'I agree to the terms and conditions below' => 'Acepto los términos y condiciones a continuación',
             ],
         ];
         if( isset($defs[$language]) ) {
