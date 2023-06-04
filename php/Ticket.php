@@ -70,21 +70,4 @@ class Ticket {
         return $rv;
     }
 
-    function rgbColorFromHex(string $hex) : array {
-        $hex = str_replace('#', '', $hex);
-        if(strlen($hex) == 3) {
-            $hex = $hex[0] . $hex[0] . $hex[1] . $hex[1] . $hex[2] . $hex[2];
-        }
-        $rgb = array_map('hexdec', str_split($hex, 2));
-        return $rgb;
-    }
-
-    function hexFromRgbColor(array $rgb) : string {
-        $hex = '#';
-        foreach($rgb as $value) {
-            $hex .= str_pad(dechex($value), 2, '0', STR_PAD_LEFT);
-        }
-        return $hex;
-    }
-
 }

@@ -26,11 +26,15 @@
 
 import Foundation
 import OSLog
+import SwiftUI
 
 
 class AirlineViewModel : ObservableObject {
     @Published var airline : Airline
-    
+    @Published var bgColor = Color(red: 189.0/255.0, green: 144.0/255.0, blue: 71.0/255.0)
+    @Published var labelColor = Color(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0)
+    @Published var textColor = Color(red: 0.0/255.0, green: 0.0/255.0, blue: 0.0/255.0)
+
     var airlineName : String {
         get { return self.airline.airlineName }
         set {
@@ -56,6 +60,16 @@ class AirlineViewModel : ObservableObject {
                 DispatchQueue.main.async {
                     self.airline = airline
                     RemoteService.shared.retrieveAndCheckCurrentAirlineKeys()
+                    RemoteService.shared.retrieveAirlineSettings() {
+                        settings in
+                        if let settings = settings {
+                            DispatchQueue.main.async {
+                                self.bgColor = settings.backgroundColor
+                                self.labelColor = settings.labelColor
+                                self.textColor = settings.foregroundcolor
+                            }
+                        }
+                    }
                 }
             }else{
                 Logger.net.error("Failed to retrieved current Airline")
@@ -73,5 +87,9 @@ class AirlineViewModel : ObservableObject {
                 }
             }
         }
+    }
+    
+    func colorChanged() {
+        Logger.ui.info("Color changed")
     }
 }

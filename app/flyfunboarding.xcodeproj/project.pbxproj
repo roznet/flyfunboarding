@@ -95,6 +95,8 @@
 		42D940C629CEF31F00622CF3 /* Stats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D940C529CEF31F00622CF3 /* Stats.swift */; };
 		42D940C829CEF5AB00622CF3 /* PassengerRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D940C729CEF5AB00622CF3 /* PassengerRowView.swift */; };
 		42D940CA29CEF86F00622CF3 /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D940C929CEF86F00622CF3 /* StatsView.swift */; };
+		42DBF7EB2A2D2C7B005E0857 /* AirlineSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DBF7EA2A2D2C7B005E0857 /* AirlineSettings.swift */; };
+		42DDABB72A2D11E80030E792 /* ColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DDABB62A2D11E80030E792 /* ColorExtensions.swift */; };
 		42E58E1929BFD45000185971 /* airports.db in Resources */ = {isa = PBXBuildFile; fileRef = 42E58E1829BFD45000185971 /* airports.db */; };
 		42E58E1B29BFE36900185971 /* Flight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E58E1A29BFE36900185971 /* Flight.swift */; };
 		42E58E1D29BFE67100185971 /* Ticket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E58E1C29BFE67100185971 /* Ticket.swift */; };
@@ -188,6 +190,8 @@
 		42D940C529CEF31F00622CF3 /* Stats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Stats.swift; path = Source/Stats.swift; sourceTree = "<group>"; };
 		42D940C729CEF5AB00622CF3 /* PassengerRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PassengerRowView.swift; path = Source/PassengerRowView.swift; sourceTree = "<group>"; };
 		42D940C929CEF86F00622CF3 /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StatsView.swift; path = Source/StatsView.swift; sourceTree = "<group>"; };
+		42DBF7EA2A2D2C7B005E0857 /* AirlineSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AirlineSettings.swift; path = Source/AirlineSettings.swift; sourceTree = "<group>"; };
+		42DDABB62A2D11E80030E792 /* ColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ColorExtensions.swift; path = Source/ColorExtensions.swift; sourceTree = "<group>"; };
 		42E58E1829BFD45000185971 /* airports.db */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = airports.db; path = python/airports.db; sourceTree = "<group>"; };
 		42E58E1A29BFE36900185971 /* Flight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Flight.swift; path = Source/Flight.swift; sourceTree = "<group>"; };
 		42E58E1C29BFE67100185971 /* Ticket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Ticket.swift; path = Source/Ticket.swift; sourceTree = "<group>"; };
@@ -303,6 +307,7 @@
 				42D940BB29CCDD6F00622CF3 /* CryptoExtensions.swift */,
 				42D940C129CCFCD800622CF3 /* PassengerPicker.swift */,
 				42D940C329CE354900622CF3 /* IconWithBadge.swift */,
+				42DDABB62A2D11E80030E792 /* ColorExtensions.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -416,6 +421,7 @@
 				42E58E1C29BFE67100185971 /* Ticket.swift */,
 				42D940C529CEF31F00622CF3 /* Stats.swift */,
 				4215044129E29B95006D9B4C /* SignatureVerifier.swift */,
+				42DBF7EA2A2D2C7B005E0857 /* AirlineSettings.swift */,
 			);
 			name = DataModels;
 			sourceTree = "<group>";
@@ -635,6 +641,7 @@
 				4269B43E29BCB1E6009891C6 /* RemoteService.swift in Sources */,
 				42D9406829C3C35B00622CF3 /* FlightEditView.swift in Sources */,
 				42D9407929C6617200622CF3 /* SwiftStringScore.swift in Sources */,
+				42DBF7EB2A2D2C7B005E0857 /* AirlineSettings.swift in Sources */,
 				4260044729BDD127003E0433 /* TicketListView.swift in Sources */,
 				4260044129BDCAF8003E0433 /* Passenger.swift in Sources */,
 				42D9407329C3D37A00622CF3 /* TicketRowView.swift in Sources */,
@@ -666,6 +673,7 @@
 				42D940CA29CEF86F00622CF3 /* StatsView.swift in Sources */,
 				42D940B329CA28C900622CF3 /* ScanTicketView.swift in Sources */,
 				4260042F29BCF415003E0433 /* AccountModel.swift in Sources */,
+				42DDABB72A2D11E80030E792 /* ColorExtensions.swift in Sources */,
 				42D9406F29C3C87B00622CF3 /* FlightViewModel.swift in Sources */,
 				4260044929BDD40E003E0433 /* AccountAndSettingsView.swift in Sources */,
 				42D9407129C3D0B700622CF3 /* TicketListViewModel.swift in Sources */,

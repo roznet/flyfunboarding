@@ -73,6 +73,7 @@ class MyFlyFunDb {
         // refactor current function to create tables from an array of string of queries
         $queries = [];
         $queries = [ "CREATE TABLE IF NOT EXISTS Airlines (airline_id INT NOT NULL AUTO_INCREMENT, json_data JSON, airline_identifier VARCHAR(255) UNIQUE, modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, PRIMARY KEY (airline_id))" ];
+        $queries[] = "CREATE TABLE IF NOT EXISTS Settings ( airline_id INT PRIMARY KEY, json_data JSON, FOREIGN KEY (airline_id) REFERENCES Airlines(airline_id) ON DELETE CASCADE)";
         foreach (MyFlyFunDb::$tableCreationOrder as $table) {
             $tableInfo = MyFlyFunDb::$standardTables[$table];
             // generate id name: lowercase table name without the last character if it's an s
@@ -482,6 +483,37 @@ class MyFlyFunDb {
         $this->addIdentifiers('Airlines', $object, $row);
         return $object;
     }
+
+    public function getAirlineSettings($airline_id) : Settings{
+        $sql = "SELECT json_data FROM Settings WHERE airline_id = ?";
+        $stmt = mysqli_prepare($this->db, $sql);
+        $stmt->bind_param("i", $airline_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows == 0) {
+            return new Settings([]);
+        }
+        $row = $result->fetch_assoc();
+        if( isset( $row['json_data'] ) ) {
+            $json = json_decode($row['json_data'], true);
+            return new Settings($json);
+        }
+        return new Settings([]);
+    }
+
+    public function updateAirlineSettings($airline_id, array $json) : Settings {
+        # build a settings object from the json to make sure it has minimum and defaults
+        $settings = $this->getAirlineSettings($airline_id);
+        $settings->update($json);
+        $sql = "INSERT INTO Settings (airline_id, json_data) VALUES (?, ?) ON DUPLICATE KEY UPDATE json_data = VALUES(json_data)";
+        $stmt = mysqli_prepare($this->db, $sql);
+        $json_str = json_encode($settings->json);
+        $stmt->bind_param("is", $airline_id, $json_str);
+        $stmt->execute();
+        $this->checkNoErrorOrDie($sql);
+        return $settings;
+    }
+
 
     // Aircrafts
     //

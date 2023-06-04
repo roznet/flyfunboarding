@@ -258,6 +258,12 @@ class RemoteService {
         else { completion(false); return }
         self.deleteObject(point: "airline/\(airlineIdentifier)", completion: completion)
     }
+    func retrieveAirlineSettings(completion: @escaping (Airline.Settings?) -> Void){
+        guard let airline = Settings.shared.currentAirline,
+              let airlineIdentifier = airline.airlineIdentifier
+        else { completion(Airline.Settings()); return }
+        self.retrieveObject(point: "airline/\(airlineIdentifier)/settings", completion: completion)
+    }
    
     //MARK: - Aircrafts
     func retrieveAircraftList(completion : @escaping ([Aircraft]?) -> Void) {

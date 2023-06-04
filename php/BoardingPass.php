@@ -26,13 +26,6 @@ class BoardingPass {
             'value' => $value,
         ];
     }
-    private function dateField(string $key, string $label, DateTime $value) {
-        return [
-            'key' => $key,
-            'label' => $label,
-            'value' => $value->format("D M d, H:i"),
-        ];
-    }
 
     function dateIntervalField(string $key, string $label, DateInterval $value) {
         return [
@@ -200,10 +193,11 @@ class BoardingPass {
             'relevantDate' => $this->flight->scheduledDepartureDate->format('Y-m-d\TH:i:sP'),
         ];
         if( Airline::$current !== null){
+            $settings = Airline::$current->settings();
             $data['logoText'] = Airline::$current->airline_name;
-            $data['backgroundColor'] = Airline::$current->backgroundColor();
-            $data['foregroundColor'] = Airline::$current->foregroundColor();
-            $data['labelColor'] = Airline::$current->labelColor();
+            $data['backgroundColor'] = $settings->backgroundColor();
+            $data['foregroundColor'] = $settings->foregroundColor();
+            $data['labelColor'] = $settings->labelColor();
         }
         $boardingpass = $this->boardingPassData();
 

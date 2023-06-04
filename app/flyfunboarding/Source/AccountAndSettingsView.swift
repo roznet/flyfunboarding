@@ -33,9 +33,6 @@ struct AccountAndSettingsView: View {
     @Environment(\.dismiss) var dismiss
     @State private var isPresentingConfirm : Bool = false
     @StateObject var airlineViewModel = AirlineViewModel(airline: Settings.shared.currentAirline ?? Airline())
-    @State private var bgColor = Color(red: 189.0/255.0, green: 144.0/255.0, blue: 71.0/255.0)
-    @State private var labelColor = Color(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0)
-    @State private var textColor = Color(red: 0.0/255.0, green: 0.0/255.0, blue: 0.0/255.0)
     var body : some View {
         VStack {
             HStack {
@@ -60,9 +57,21 @@ struct AccountAndSettingsView: View {
                     ToggledTextField(text: $airlineViewModel.airlineName, image: nil, action: update)
                 }.padding()
                 VStack {
-                    ColorPicker("Boarding Pass Color", selection: $bgColor)
-                    ColorPicker("Label Color", selection: $labelColor)
-                    ColorPicker("Text Color", selection: $textColor)
+                    ColorPicker("Boarding Pass Color", selection: $airlineViewModel.bgColor)
+                        .onChange(of: airlineViewModel.bgColor) {
+                            _ in
+                            self.airlineViewModel.colorChanged()
+                        }
+                    ColorPicker("Label Color", selection: $airlineViewModel.labelColor)
+                        .onChange(of: airlineViewModel.labelColor) {
+                            _ in
+                            self.airlineViewModel.colorChanged()
+                        }
+                    ColorPicker("Text Color", selection: $airlineViewModel.textColor)
+                        .onChange(of: airlineViewModel.textColor) {
+                            _ in
+                            self.airlineViewModel.colorChanged()
+                        }
                 }.padding()
             }
             Spacer()
@@ -89,12 +98,12 @@ struct AccountAndSettingsView: View {
             }
             HStack {
                 VStack {
-                    Text("Label").foregroundColor(self.labelColor)
-                    Text("Name").foregroundColor(self.textColor)
+                    Text("Label").foregroundColor(self.airlineViewModel.labelColor)
+                    Text("Name").foregroundColor(self.airlineViewModel.textColor)
                 }
             }
             .padding()
-            .background(self.bgColor)
+            .background(self.airlineViewModel.bgColor)
             .cornerRadius(15)
             Spacer()
         }
