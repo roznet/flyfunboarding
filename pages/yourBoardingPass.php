@@ -111,9 +111,9 @@ if( isset($_GET['ticket']) && preg_match('/^[a-zA-Z0-9]+/',$_GET['ticket']) ){
         $pass_url = $path;
         $airlineName = Airline::$current->airline_name;
         $get_pass = true;
-        $passBackgroundColor = Airline::$current->backgroundColor();
-        $passForegroundColor = Airline::$current->foregroundColor();
-        $passLabelColor = Airline::$current->labelColor();
+        $passBackgroundColor = Airline::$current->settings()->backgroundColor();
+        $passForegroundColor = Airline::$current->settings()->foregroundColor();
+        $passLabelColor = Airline::$current->settings()->labelColor();
     }
 }
 ?>

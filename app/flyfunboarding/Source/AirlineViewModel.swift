@@ -49,6 +49,7 @@ class AirlineViewModel : ObservableObject {
    
     init(airline : Airline) {
         self.airline = airline
+        self.updateColors()
     }
     
     init() {
@@ -60,20 +61,24 @@ class AirlineViewModel : ObservableObject {
                 DispatchQueue.main.async {
                     self.airline = airline
                     RemoteService.shared.retrieveAndCheckCurrentAirlineKeys()
-                    RemoteService.shared.retrieveAirlineSettings() {
-                        settings in
-                        if let settings = settings {
-                            DispatchQueue.main.async {
-                                self.bgColor = settings.backgroundColor
-                                self.labelColor = settings.labelColor
-                                self.textColor = settings.foregroundcolor
-                            }
-                        }
-                    }
+                    self.updateColors()
                 }
             }else{
                 Logger.net.error("Failed to retrieved current Airline")
                 Settings.shared.currentAirline = nil
+            }
+        }
+    }
+    
+    func updateColors() {
+        RemoteService.shared.retrieveAirlineSettings() {
+            settings in
+            if let settings = settings {
+                DispatchQueue.main.async {
+                    self.bgColor = settings.backgroundColor
+                    self.labelColor = settings.labelColor
+                    self.textColor = settings.foregroundcolor
+                }
             }
         }
     }
@@ -91,5 +96,12 @@ class AirlineViewModel : ObservableObject {
     
     func colorChanged() {
         Logger.ui.info("Color changed")
+        let settings = Airline.Settings(backgroundColor: self.bgColor, foregroundColor: self.textColor, labelColor: self.labelColor)
+        RemoteService.shared.updateAirlineSettings(settings: settings) {
+            got in
+            if let got = got {
+                Logger.net.info("Updated settings \(got)")
+            }
+        }
     }
 }
