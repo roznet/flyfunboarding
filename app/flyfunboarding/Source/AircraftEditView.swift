@@ -56,13 +56,16 @@ struct AircraftEditView: View {
                     .standardStyle()
                     .withClearButton()
             }
+            .padding([.trailing,.leading])
             HStack {
                 Text(NSLocalizedString("Type", comment: "Aircraft"))
                     .standardFieldLabel()
                 TextField("Type", text: $aircraftModel.type)
                     .standardStyle()
                     .withClearButton()
+                    
             }
+            .padding([.trailing,.leading])
             if !self.editIsDisabled {
                 StandardEditButtons(mode: self.aircraftModel.mode,
                                     submit: self.aircraftModel.submitText,
