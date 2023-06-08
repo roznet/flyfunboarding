@@ -43,25 +43,29 @@ struct TicketEditView: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading) {
-            PassengerRowView(passenger: ticketModel.passenger, highlightName: true)
-            .padding([.bottom,.leading,.trailing])
-            
-            HStack(alignment: .firstTextBaseline) {
-                Text("Seat Number").standardFieldLabel()
-                TextField("Seat Number", text: $ticketModel.seatNumber).standardStyle()
-            }
-            .padding(.horizontal)
-            StandardEditButtons(mode: ticketModel.mode,
-                                submit: ticketModel.submitText,
-                                delete: "Delete", submitAction: issue, deleteAction: delete)
-            Divider()
-            FlightEditView(flight: ticketModel.flight,
-                           mode: .edit
-            ).disabled(true)
-            Spacer()
-            if self.ticketModel.mode == .edit {
-                self.boardingPassButtons()
+        ScrollView {
+            VStack(alignment: .leading) {
+                PassengerRowView(passenger: ticketModel.passenger, highlightName: true)
+                    .padding([.bottom,.leading,.trailing])
+                
+                HStack(alignment: .firstTextBaseline) {
+                    Text("Seat Number").standardFieldLabel()
+                    TextField("Seat Number", text: $ticketModel.seatNumber)
+                        .standardStyle()
+                        .withClearButton()
+                }
+                .padding(.horizontal)
+                StandardEditButtons(mode: ticketModel.mode,
+                                    submit: ticketModel.submitText,
+                                    delete: "Delete", submitAction: issue, deleteAction: delete)
+                Divider()
+                FlightEditView(flight: ticketModel.flight,
+                               mode: .edit
+                ).disabled(true)
+                Spacer()
+                if self.ticketModel.mode == .edit {
+                    self.boardingPassButtons()
+                }
             }
         }
     }

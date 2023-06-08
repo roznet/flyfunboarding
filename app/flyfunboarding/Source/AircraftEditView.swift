@@ -54,12 +54,14 @@ struct AircraftEditView: View {
                     .standardFieldLabel()
                 TextField("Registration", text: $aircraftModel.registration)
                     .standardStyle()
+                    .withClearButton()
             }
             HStack {
                 Text(NSLocalizedString("Type", comment: "Aircraft"))
                     .standardFieldLabel()
                 TextField("Type", text: $aircraftModel.type)
                     .standardStyle()
+                    .withClearButton()
             }
             if !self.editIsDisabled {
                 StandardEditButtons(mode: self.aircraftModel.mode,

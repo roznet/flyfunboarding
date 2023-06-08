@@ -59,7 +59,9 @@ struct PassengerEditView: View {
             
             HStack {
                 Text("Display as").standardFieldLabel()
-                TextField("name", text: $passengerModel.displayName).standardStyle()
+                TextField("name", text: $passengerModel.displayName)
+                    .standardStyle()
+                    .withClearButton()
             }
             .padding(.horizontal)
             

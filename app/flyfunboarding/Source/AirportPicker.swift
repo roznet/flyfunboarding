@@ -53,8 +53,10 @@ struct AirportPicker: View {
                     }
                     .onAppear(){
                         self.matchedAiports.autocomplete(search)
+                        UITextField.appearance().clearButtonMode = .whileEditing
                     }
             }
+            .padding([.leading,.trailing])
             List(matchedAiports.suggestions) { suggestion in
                 VStack(alignment: .leading) {
                     HStack(alignment: .firstTextBaseline) {

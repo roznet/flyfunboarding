@@ -37,6 +37,7 @@ struct ToggledTextField: View {
         if self.isEditing {
             TextField("Airline Name", text: $text)
                 .textFieldStyle(.roundedBorder)
+                .withClearButton()
         }else{
             TextField("Airline Name", text: $text)
                 .textFieldStyle(.plain)

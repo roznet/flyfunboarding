@@ -49,44 +49,47 @@ struct FlightEditView: View {
     }
     var body: some View {
         VStack {
-            VStack {
-                AircraftField(aircraft: $flightModel.aircraft)
-                    .disabled(self.flightModel.mode == .edit)
-                HStack {
-                    Text("Departure Date").standardFieldLabel()
-                    DatePicker("", selection: $flightModel.scheduledDepartureDate)
-                }
-                if self.flightModel.mode == .create {
+            ScrollView {
+                VStack {
+                    AircraftField(aircraft: $flightModel.aircraft)
+                        .disabled(self.flightModel.mode == .edit)
                     HStack {
-                        VStack {
-                            AirportField(labelText: "Departure", icao: $flightModel.origin)
-                            AirportField(labelText: "Destination", icao: $flightModel.destination)
-                        }
-                        Button(action: swapAirports){
-                            Image(systemName: "arrow.up.arrow.down")
-                                .resizable()
-                                .frame(width: 20,height: 20)
-                        }
+                        Text("Departure Date").standardFieldLabel()
+                        DatePicker("", selection: $flightModel.scheduledDepartureDate)
                     }
-                }else{
-                    AirportField(labelText: "Departure", icao: $flightModel.origin)
-                    AirportField(labelText: "Destination", icao: $flightModel.destination)
+                    if self.flightModel.mode == .create {
+                        HStack {
+                            VStack {
+                                AirportField(labelText: "Departure", icao: $flightModel.origin)
+                                AirportField(labelText: "Destination", icao: $flightModel.destination)
+                            }
+                            Button(action: swapAirports){
+                                Image(systemName: "arrow.up.arrow.down")
+                                    .resizable()
+                                    .frame(width: 20,height: 20)
+                            }
+                        }
+                    }else{
+                        AirportField(labelText: "Departure", icao: $flightModel.origin)
+                        AirportField(labelText: "Destination", icao: $flightModel.destination)
+                    }
+                    HStack {
+                        Text("Gate")
+                            .standardFieldLabel()
+                        TextField("Gate", text: $flightModel.gate)
+                            .standardStyle()
+                            .withClearButton()
+                    }
+                    HStack {
+                        Text("Flight Number")
+                            .standardFieldLabel()
+                        TextField("Flight Number", text: $flightModel.flightNumber)
+                            .standardStyle()
+                            .withClearButton()
+                        
+                    }
                 }
-                HStack {
-                    Text("Gate")
-                        .standardFieldLabel()
-                    TextField("Gate", text: $flightModel.gate)
-                        .standardStyle()
-                }
-                HStack {
-                    Text("Flight Number")
-                        .standardFieldLabel()
-                    TextField("Flight Number", text: $flightModel.flightNumber)
-                        .standardStyle()
-                    
-                }
-            }
-            .padding(.horizontal)
+            }.padding(.horizontal)
         
             if isEnabled {
                 StandardEditButtons(mode: self.flightModel.mode,

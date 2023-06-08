@@ -78,6 +78,11 @@ extension View {
     func standardNavigationBarTitle(_ text : String) -> some View {
         return self.navigationBarTitle(text, displayMode: .inline)
     }
+    func withClearButton() -> some View {
+        return self.onAppear(){
+            UITextField.appearance().clearButtonMode = .whileEditing
+        }
+    }
 }
 extension Color {
     static let secondarySystemBackground = Color(uiColor: .secondarySystemBackground)
