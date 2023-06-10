@@ -36,7 +36,7 @@ class Ticket {
         'flight_id' => -1,
         'passenger_id' => -1,
         'ticket_identifier' => '',
-        'customLabelValue' => '1'
+        'customLabelValue' => ''
 
     ];
     public function toJson() : array {

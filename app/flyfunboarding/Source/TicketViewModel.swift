@@ -34,6 +34,7 @@ class TicketViewModel : ObservableObject {
     @Published var flight : Flight
     @Published var passenger : Passenger
     @Published var seatNumber : String
+    @Published var customLabelValue : String
     var mode : Mode
     var submitText : String {
         switch mode {
@@ -45,13 +46,14 @@ class TicketViewModel : ObservableObject {
     }
     var ticket : Ticket {
         get {
-            return self.originalTicket.with(seatNumber: self.seatNumber)
+            return self.originalTicket.with(seatNumber: self.seatNumber, customLabelValue: self.customLabelValue)
         }
         set {
             self.originalTicket = newValue
             self.flight = newValue.flight
             self.passenger = newValue.passenger
             self.seatNumber = newValue.seatNumber
+            self.customLabelValue = newValue.customLabelValue ?? ""
         }
     }
     private var originalTicket : Ticket
@@ -63,6 +65,7 @@ class TicketViewModel : ObservableObject {
         self.passenger = ticket.passenger
         self.originalTicket = ticket
         self.seatNumber =  ticket.seatNumber
+        self.customLabelValue = ticket.customLabelValue ?? ""
         self.mode = mode
     }
 }

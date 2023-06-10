@@ -47,6 +47,7 @@ struct Settings {
         case airline_public_key = "airline_public_key"
         case last_airports_ident = "last_airports_ident"
         case last_aircraft_ident = "last_aircraft_ident"
+        case airline_settings = "airline_settings"
         
     }
   
@@ -76,6 +77,9 @@ struct Settings {
     @CodableSecureStorage(key: Key.airline_identifier, service: Self.service)
     var airlineIdentifier : String?
     
+    @CodableStorage(key: Key.airline_settings)
+    var currentAirlineSettings : Airline.Settings?
+        
     var currentAirline : Airline? {
         get {
             guard

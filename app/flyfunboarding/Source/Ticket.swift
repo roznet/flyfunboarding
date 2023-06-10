@@ -34,6 +34,7 @@ struct Ticket : Codable, Identifiable, Hashable, Equatable {
     var passenger : Passenger
     var flight : Flight
     var seatNumber : String
+    var customLabelValue : String?
     var ticket_id : Int?
     var ticket_identifier : String?
     
@@ -44,7 +45,7 @@ struct Ticket : Codable, Identifiable, Hashable, Equatable {
     var id = UUID()
     
     enum CodingKeys: String, CodingKey {
-        case passenger, flight, seatNumber, ticket_id, ticket_identifier;
+        case passenger, flight, seatNumber, ticket_id, ticket_identifier, customLabelValue;
     }
     
     func hash(into hasher: inout Hasher) {
@@ -56,11 +57,11 @@ struct Ticket : Codable, Identifiable, Hashable, Equatable {
     }
     
     static var defaultTicket : Ticket = {
-        return Ticket(passenger: Passenger.defaultPassenger, flight: Flight.defaultFlight, seatNumber: "")
+        return Ticket(passenger: Passenger.defaultPassenger, flight: Flight.defaultFlight, seatNumber: "", customLabelValue: "")
     }()
     
-    func with(seatNumber : String) -> Ticket {
-        return Ticket(passenger: self.passenger, flight: self.flight, seatNumber: seatNumber, ticket_id: self.ticket_id, ticket_identifier: self.ticket_identifier)
+    func with(seatNumber : String, customLabelValue: String) -> Ticket {
+        return Ticket(passenger: self.passenger, flight: self.flight, seatNumber: seatNumber, customLabelValue: customLabelValue, ticket_id: self.ticket_id, ticket_identifier: self.ticket_identifier)
     }
     var downloadPassUrl : URL? {
         if let identifier = ticket_identifier {

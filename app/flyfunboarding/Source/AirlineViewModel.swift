@@ -69,7 +69,7 @@ class AirlineViewModel : ObservableObject {
    
     init(airline : Airline) {
         self.airline = airline
-        self.updateSettings()
+        self.retrieveSettings()
     }
     
     init() {
@@ -81,7 +81,7 @@ class AirlineViewModel : ObservableObject {
                 DispatchQueue.main.async {
                     self.airline = airline
                     RemoteService.shared.retrieveAndCheckCurrentAirlineKeys()
-                    self.updateSettings()
+                    self.retrieveSettings()
                 }
             }else{
                 Logger.net.error("Failed to retrieved current Airline")
@@ -90,12 +90,13 @@ class AirlineViewModel : ObservableObject {
         }
     }
     
-    func updateSettings() {
+    func retrieveSettings() {
         RemoteService.shared.retrieveAirlineSettings() {
             settings in
             if let settings = settings {
                 DispatchQueue.main.async {
                     self.settings = settings
+                    Settings.shared.currentAirlineSettings = settings
                 }
             }
         }
@@ -104,10 +105,14 @@ class AirlineViewModel : ObservableObject {
     func settingsChanged() {
         Logger.ui.info("Settings changed")
         let settings = self.settings
+        
         RemoteService.shared.updateAirlineSettings(settings: settings) {
             got in
             if let got = got {
+                Settings.shared.currentAirlineSettings = got
                 Logger.net.info("Updated settings \(got)")
+            }else{
+                Logger.net.error("Failed to update settings")
             }
         }
     }

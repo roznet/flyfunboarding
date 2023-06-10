@@ -93,7 +93,7 @@ struct TicketListView: View {
     }
     
     func newTicket() -> some View {
-        let ticket = Ticket(passenger: self.ticketListViewModel.passenger, flight: self.ticketListViewModel.flight, seatNumber: "")
+        let ticket = Ticket(passenger: self.ticketListViewModel.passenger, flight: self.ticketListViewModel.flight, seatNumber: "", customLabelValue: "")
         return TicketEditView(ticket: ticket, mode: .create)
     }
     

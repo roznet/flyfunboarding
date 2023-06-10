@@ -55,6 +55,15 @@ struct TicketEditView: View {
                         .withClearButton()
                 }
                 .padding(.horizontal)
+                if let settings = Settings.shared.currentAirlineSettings, settings.customLabelEnabled {
+                    HStack(alignment: .firstTextBaseline) {
+                        Text(settings.customLabel).standardFieldLabel()
+                        TextField(settings.customLabel, text: $ticketModel.customLabelValue)
+                            .standardStyle()
+                            .withClearButton()
+                    }
+                    .padding(.horizontal)
+                }
                 StandardEditButtons(mode: ticketModel.mode,
                                     submit: ticketModel.submitText,
                                     delete: "Delete", submitAction: issue, deleteAction: delete)

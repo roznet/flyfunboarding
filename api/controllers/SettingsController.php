@@ -15,7 +15,7 @@ class SettingsController extends Controller {
 
         $airline = Airline::$current;
         $updated = MyFlyFunDb::$shared->updateAirlineSettings($airline->airline_id, $json);
-        echo json_encode($updated);
+        echo json_encode($updated->json);
     }
 }
 
