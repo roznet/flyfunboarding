@@ -4,6 +4,7 @@ class Ticket {
     public Passenger $passenger;
     public Flight $flight;
     public string $seatNumber;
+    public string $customLabelValue = '1';
     // this is calculated from the flight and passenger
     public int $ticket_id = -1;
     public int $flight_id = -1;
@@ -24,6 +25,7 @@ class Ticket {
         'passenger' => 'Passenger',
         'flight' => 'Flight',
         'seatNumber' => 'string',
+        'customLabelValue' => 'string',
         'ticket_id' => 'integer',
         'flight_id' => 'integer',
         'passenger_id' => 'integer',
@@ -33,7 +35,9 @@ class Ticket {
         'ticket_id' => -1,
         'flight_id' => -1,
         'passenger_id' => -1,
-        'ticket_identifier' => ''
+        'ticket_identifier' => '',
+        'customLabelValue' => '1'
+
     ];
     public function toJson() : array {
         return JsonHelper::toJson($this);

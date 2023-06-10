@@ -33,6 +33,8 @@ extension Airline {
         var background : String
         var foreground : String
         var label : String
+        var customLabelEnabled : Bool
+        var customLabel : String
         
         var backgroundColor : Color {
             get { return Color(rgb: self.background) }
@@ -53,18 +55,24 @@ extension Airline {
             case background = "backgroundColor"
             case foreground = "foregroundColor"
             case label = "labelColor"
+            case customLabelEnabled = "customLabelEnabled"
+            case customLabel = "customLabel"
         }
         
         init() {
             self.background = "rgb(189,144,71)"
             self.label = "rgb(255,255,255)"
             self.foreground = "rgb(0,0,0)"
+            self.customLabel = "Boarding Group"
+            self.customLabelEnabled = true
         }
-        
-        init(backgroundColor: Color, foregroundColor: Color, labelColor: Color) {
+       
+        init(backgroundColor: Color, foregroundColor: Color, labelColor: Color, customLabel: String, customLabelEnabled: Bool) {
             self.background = backgroundColor.rgb
             self.foreground = foregroundColor.rgb
             self.label = labelColor.rgb
+            self.customLabel = customLabel
+            self.customLabelEnabled = customLabelEnabled
         }
     }
 }

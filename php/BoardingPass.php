@@ -115,10 +115,19 @@ class BoardingPass {
         $boardingpass['auxiliaryFields'] = [
             $this->textField('date', 'Departs', $this->flight->formatScheduledDepartureDate()),
         ];
-        if( $this->flight->hasFlightNumber()){
+
+        $hasCustom = false;
+        if( Airline::$current !== null){
+            $settings = Airline::$current->settings();
+            if( $settings->customLabelEnabled() ){
+                $boardingpass['auxiliaryFields'][] = $this->textField('custom-label', $settings->customLabel(), $this->ticket->customLabelValue);
+                $hasCustom = true;
+            }
+        }
+        
+        if( !$hasCustom && $this->flight->hasFlightNumber()){
             $boardingpass['auxiliaryFields'][] = $this->textField('aircraft', 'Aircraft', $this->flight->aircraft->registration);
         }
-
         $boardingpass['backFields'] = [
             $this->textField('passenger-name', 'Passenger', $this->passenger->formattedName),
         ];

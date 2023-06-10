@@ -8,9 +8,20 @@ class Settings {
         $this->json = [ 
             'backgroundColor' => 'rgb(189,144,71)', 
             'foregroundColor' => 'rgb(0,0,0)', 
-            'labelColor' => 'rgb(255,255,255)' 
+            'labelColor' => 'rgb(255,255,255)',
+            'customLabel' => 'Boarding Group',
+            'customLabelEnabled' => true
+
         ];
         $this->update($info);
+    }
+
+    function customLabelEnabled() {
+        return $this->json['customLabelEnabled'];
+    }
+
+    function customLabel() {
+        return $this->json['customLabel'];
     }
 
     function update(array $info) {

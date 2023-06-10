@@ -34,6 +34,8 @@ class AirlineViewModel : ObservableObject {
     @Published var bgColor = Color(red: 189.0/255.0, green: 144.0/255.0, blue: 71.0/255.0)
     @Published var labelColor = Color(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0)
     @Published var textColor = Color(red: 0.0/255.0, green: 0.0/255.0, blue: 0.0/255.0)
+    @Published var customLabelEnabled : Bool = false
+    @Published var customLabel : String = "Boarding Group"
 
     var airlineName : String {
         get { return self.airline.airlineName }
@@ -46,10 +48,28 @@ class AirlineViewModel : ObservableObject {
     var appleIdentifier : String {
         get { return self.airline.appleIdentifier }
     }
+    
+    var settings : Airline.Settings {
+        get {
+            return Airline.Settings(backgroundColor: self.bgColor,
+                                    foregroundColor: self.textColor,
+                                    labelColor: self.labelColor,
+                                    customLabel: self.customLabel,
+                                    customLabelEnabled: self.customLabelEnabled)
+        }
+        set {
+            self.bgColor = newValue.backgroundColor
+            self.textColor = newValue.foregroundcolor
+            self.labelColor = newValue.labelColor
+            self.customLabel = newValue.customLabel
+            self.customLabelEnabled = newValue.customLabelEnabled
+        }
+    }
+    
    
     init(airline : Airline) {
         self.airline = airline
-        self.updateColors()
+        self.updateSettings()
     }
     
     init() {
@@ -61,7 +81,7 @@ class AirlineViewModel : ObservableObject {
                 DispatchQueue.main.async {
                     self.airline = airline
                     RemoteService.shared.retrieveAndCheckCurrentAirlineKeys()
-                    self.updateColors()
+                    self.updateSettings()
                 }
             }else{
                 Logger.net.error("Failed to retrieved current Airline")
@@ -70,15 +90,24 @@ class AirlineViewModel : ObservableObject {
         }
     }
     
-    func updateColors() {
+    func updateSettings() {
         RemoteService.shared.retrieveAirlineSettings() {
             settings in
             if let settings = settings {
                 DispatchQueue.main.async {
-                    self.bgColor = settings.backgroundColor
-                    self.labelColor = settings.labelColor
-                    self.textColor = settings.foregroundcolor
+                    self.settings = settings
                 }
+            }
+        }
+    }
+   
+    func settingsChanged() {
+        Logger.ui.info("Settings changed")
+        let settings = self.settings
+        RemoteService.shared.updateAirlineSettings(settings: settings) {
+            got in
+            if let got = got {
+                Logger.net.info("Updated settings \(got)")
             }
         }
     }
@@ -94,14 +123,4 @@ class AirlineViewModel : ObservableObject {
         }
     }
     
-    func colorChanged() {
-        Logger.ui.info("Color changed")
-        let settings = Airline.Settings(backgroundColor: self.bgColor, foregroundColor: self.textColor, labelColor: self.labelColor)
-        RemoteService.shared.updateAirlineSettings(settings: settings) {
-            got in
-            if let got = got {
-                Logger.net.info("Updated settings \(got)")
-            }
-        }
-    }
 }

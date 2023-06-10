@@ -41,71 +41,94 @@ struct AccountAndSettingsView: View {
                     dismiss()
                 }.padding([.top,.trailing])
             }
-            VStack {
-                Image("FlyFunLogo")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 150, height: 150)
-                    .foregroundColor(.accentColor)
-                Text(NSLocalizedString("Welcome to FlyFun Boarding", comment: ""))
-                    .font(.title)
-                    .bold()
-                    .multilineTextAlignment(.center)
-                
+            ScrollView {
                 VStack {
-                    Text("Edit your airline's Name")
-                    ToggledTextField(text: $airlineViewModel.airlineName, image: nil, action: update)
-                }.padding()
-                VStack {
-                    ColorPicker("Boarding Pass Color", selection: $airlineViewModel.bgColor)
-                        .onChange(of: airlineViewModel.bgColor) {
+                    Image("FlyFunLogo")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 150, height: 150)
+                        .foregroundColor(.accentColor)
+                    Text(NSLocalizedString("Welcome to FlyFun Boarding", comment: ""))
+                        .font(.title)
+                        .bold()
+                        .multilineTextAlignment(.center)
+                    
+                    VStack {
+                        Text("Edit your airline's Name")
+                        ToggledTextField(text: $airlineViewModel.airlineName, image: nil, action: update)
+                    }.padding()
+                    HStack {
+                        Toggle(isOn: $airlineViewModel.customLabelEnabled){
+                            HStack {
+                                Text("Custom Label")
+                                TextField("Custom Label", text: $airlineViewModel.customLabel)
+                                    .standardStyle()
+                                    .onChange(of: airlineViewModel.customLabel) {
+                                        _ in
+                                        self.airlineViewModel.settingsChanged()
+                                    }
+                            
+                            }
+                            .foregroundColor(self.airlineViewModel.customLabelEnabled ? .primary : .secondary)
+                            .disabled(!self.airlineViewModel.customLabelEnabled)
+                        }
+                        .onChange(of: airlineViewModel.customLabelEnabled){
                             _ in
-                            self.airlineViewModel.colorChanged()
+                            self.airlineViewModel.settingsChanged()
                         }
-                    ColorPicker("Label Color", selection: $airlineViewModel.labelColor)
-                        .onChange(of: airlineViewModel.labelColor) {
-                            _ in
-                            self.airlineViewModel.colorChanged()
-                        }
-                    ColorPicker("Text Color", selection: $airlineViewModel.textColor)
-                        .onChange(of: airlineViewModel.textColor) {
-                            _ in
-                            self.airlineViewModel.colorChanged()
-                        }
-                }.padding()
-            }
-            Spacer()
-            VStack {
-                Text(NSLocalizedString("You can sign out or delete your airline and all its data. Deleting your data can't be undone.", comment: "")).multilineTextAlignment(.center)
-                HStack {
-                    Spacer()
-                    Button("Delete Airline", role: .destructive) {
-                        self.isPresentingConfirm = true
-                    }
-                    .standardButton()
-                    .padding(.trailing)
-                    .confirmationDialog("Are you sure?", isPresented: $isPresentingConfirm){
-                        Button("Delete all your Data", role: .destructive) {
-                            deleteAction()
-                        }
-                    } message: {
-                        Text( "Are you sure? This can't be undone")
-                    }
-                    Button("Signout", action: signOut).standardButton()
-                    Spacer()
+                            
+                    }.padding([.trailing,.leading])
+                    VStack {
+                        ColorPicker("Boarding Pass Color", selection: $airlineViewModel.bgColor)
+                            .onChange(of: airlineViewModel.bgColor) {
+                                _ in
+                                self.airlineViewModel.settingsChanged()
+                            }
+                        ColorPicker("Label Color", selection: $airlineViewModel.labelColor)
+                            .onChange(of: airlineViewModel.labelColor) {
+                                _ in
+                                self.airlineViewModel.settingsChanged()
+                            }
+                        ColorPicker("Text Color", selection: $airlineViewModel.textColor)
+                            .onChange(of: airlineViewModel.textColor) {
+                                _ in
+                                self.airlineViewModel.settingsChanged()
+                            }
+                    }.padding()
                 }
                 Spacer()
-            }
-            HStack {
                 VStack {
-                    Text("Label").foregroundColor(self.airlineViewModel.labelColor)
-                    Text("Name").foregroundColor(self.airlineViewModel.textColor)
+                    Text(NSLocalizedString("You can sign out or delete your airline and all its data. Deleting your data can't be undone.", comment: "")).multilineTextAlignment(.center)
+                    HStack {
+                        Spacer()
+                        Button("Delete Airline", role: .destructive) {
+                            self.isPresentingConfirm = true
+                        }
+                        .standardButton()
+                        .padding(.trailing)
+                        .confirmationDialog("Are you sure?", isPresented: $isPresentingConfirm){
+                            Button("Delete all your Data", role: .destructive) {
+                                deleteAction()
+                            }
+                        } message: {
+                            Text( "Are you sure? This can't be undone")
+                        }
+                        Button("Signout", action: signOut).standardButton()
+                        Spacer()
+                    }
+                    Spacer()
                 }
+                HStack {
+                    VStack {
+                        Text("Label").foregroundColor(self.airlineViewModel.labelColor)
+                        Text("Name").foregroundColor(self.airlineViewModel.textColor)
+                    }
+                }
+                .padding()
+                .background(self.airlineViewModel.bgColor)
+                .cornerRadius(15)
+                Spacer()
             }
-            .padding()
-            .background(self.airlineViewModel.bgColor)
-            .cornerRadius(15)
-            Spacer()
         }
     }
     
