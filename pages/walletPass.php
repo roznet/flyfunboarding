@@ -47,7 +47,7 @@ if( isset($ticket) && isset($label)) {
             </div>
         </div>
         <div class="info-column">
-            <?php if( Airline::$current->settings()->customLabelEnabled()) { ?>
+            <?php if( $ticket->hasCustomLabel()) { ?>
             <div>  
             <span class="label"><?php $label->for(Airline::$current->settings()->customLabel())?></span>
                 <span class="value"><?php print($ticket->customLabelValue)?></span>

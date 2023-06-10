@@ -51,6 +51,17 @@ class Ticket {
         ];
     }
 
+    public function hasCustomLabel() : bool {
+        $hasCustom = false;
+        if( Airline::$current !== null){
+            $settings = Airline::$current->settings();
+            if( $settings->customLabelEnabled() ){
+                $hasCustom = true;
+            }
+        }
+        return $hasCustom && $this->customLabelValue !== '';
+    }
+
     public function verify(array $payload) : bool {
         if( isset($payload['signatureDigest']) ) {
             $signature = $payload['signatureDigest'];
