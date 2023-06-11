@@ -1,5 +1,5 @@
 [
-	{
+{
     "formattedName": "Mr John T Doe",
     "firstName": "John",
     "middleName": "T",
@@ -11,6 +11,17 @@
     "firstName": "Jane",
     "middleName": "C",
     "lastName": "Smith",
-    "apple_identifier": "jcs",
+    "apple_identifier": "jcs"
+},
+{
+  "apple_identifier": "jtd",
+  "stats": [
+    {
+      "count": 3,
+      "table": "Tickets",
+      "last": "2023-06-10T11:36:27Z"
+    }
+  ],
+  "formattedName": "John the Dude"
 }
 ]
