@@ -16,7 +16,7 @@ class Passenger {
         'passenger_id' => 'integer',
         'apple_identifier' => 'string',
         'passenger_identifier' => 'string',
-        'stats' => 'array'
+        'stats' => 'array<Stats>'
     ];
     public static $jsonValuesOptionalDefaults = [
         'passenger_id' => -1,

@@ -16,10 +16,16 @@ class JsonHelper {
             $rv = new DateTime($json[$key]);
         }else if( $type == "DateInterval" ){
             $rv = new DateInterval($json[$key]);
-        }else if( $type == 'array' ){
-            $rv = [];
-            foreach ($json[$key] as $item) {
-                $rv[] = JsonHelper::fromJson($item, $type);
+        }else if( str_starts_with($type, 'array') ){
+            // type can be array or array<type> 
+            if( preg_match('/array<(.*)>/', $type, $matches) && class_exists($matches[1]) ){
+                $subtype = $matches[1];
+                $rv = [];
+                foreach ($json[$key] as $item) {
+                    $rv[] = JsonHelper::fromJson($item, $subtype);
+                }
+            }else{// no type, just use array
+                $rv = $json[$key];
             }
         }else if( class_exists($type) ) {
             $rv = JsonHelper::fromJson($json[$key], $type);
@@ -38,10 +44,14 @@ class JsonHelper {
             $rv =  $obj->$key->format('c');
         }else if( $type == "DateInterval" ){
             $rv = $obj->$key->format('PT%hH%iM%sS');
-        }else if( $type == 'array' ){
-            $rv = [];
-            foreach ($obj->$key as $item) {
-                $rv[] = JsonHelper::toJson($item);
+        }else if( str_starts_with($type, 'array') ){
+            if( preg_match('/array<(.*)>/', $type, $matches) && class_exists($matches[1]) ){
+                $rv = [];
+                foreach ($obj->$key as $item) {
+                    $rv[] = JsonHelper::toJson($item);
+                }
+            }else{// no type, just use array
+                $rv = $obj->$key;
             }
         }else if( class_exists($type) ){
             $rv = JsonHelper::toJson($obj->$key);

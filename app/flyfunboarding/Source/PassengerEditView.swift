@@ -62,6 +62,10 @@ struct PassengerEditView: View {
                 TextField("name", text: $passengerModel.displayName)
                     .standardStyle()
                     .withClearButton()
+                    .onSubmit {
+                        self.passengerModel.updatePassenger()
+                    }
+                    .submitLabel(.done)
             }
             .padding(.horizontal)
             

@@ -29,6 +29,7 @@ import Foundation
 import Contacts
 import UIKit
 import SwiftUI
+import OSLog
 
 class PassengerViewModel : ObservableObject {
     private var passenger : Passenger
@@ -50,6 +51,16 @@ class PassengerViewModel : ObservableObject {
             
             self.contactFormattedName = formatter.string(from: contact) ?? "No name"
             self.thumbnail = self.passenger.retrieveImage()
+        }
+    }
+    
+    func updatePassenger() {
+        let newPassenger = self.passenger.with(newFormattedName: self.displayName)
+        RemoteService.shared.registerPassenger(passenger: newPassenger){
+            (passenger) in
+            if let passenger = passenger {
+                self.passenger = passenger
+            }
         }
     }
 }

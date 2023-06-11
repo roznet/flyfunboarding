@@ -40,6 +40,17 @@ struct Passenger : Codable, Identifiable, Hashable, Equatable {
     }
     
     var formattedName : String
+    var contactFormattedName : String {
+        get {
+            if let contact = self.retrieveContact() {
+                let formatter = CNContactFormatter()
+                formatter.style = .fullName
+                return formatter.string(from: contact) ?? self.formattedName
+            }
+            return self.formattedName
+        }
+    }
+    
     var passenger_id : Int?
     var apple_identifier : String
     var passenger_identifier : String?
@@ -71,6 +82,13 @@ struct Passenger : Codable, Identifiable, Hashable, Equatable {
         self.formattedName = formatter.string(from: contact) ?? "No Name"
     }
 
+    func with(newFormattedName: String) -> Passenger {
+        var rv = self
+        rv.formattedName = newFormattedName
+        rv.id = UUID()
+        return rv
+    }
+    
     mutating func syncWithContact() {
         if let contact = self.retrieveContact() {
             let formatter = CNContactFormatter()

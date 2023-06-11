@@ -62,12 +62,18 @@ struct PassengerRowView: View {
                         .frame(width: 50, height: 50)
                         .foregroundColor(.secondarySystemBackground)
                 }
-                if self.highlightName {
-                    Text(passenger.formattedName)
-                        .standardFieldLabel()
-                }else{
-                    Text(passenger.formattedName)
-                        .standardFieldValue()
+                VStack {
+                    if self.highlightName {
+                        Text(passenger.formattedName)
+                            .standardFieldLabel()
+                    }else{
+                        Text(passenger.formattedName)
+                            .standardFieldValue()
+                    }
+                    if self.passenger.contactFormattedName != self.passenger.formattedName {
+                        Text(self.passenger.contactFormattedName)
+                            .standardInfo()
+                    }
                 }
                 if let first = self.passenger.stats?.first {
                     Spacer()
