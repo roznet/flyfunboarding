@@ -35,7 +35,6 @@ extension Notification.Name {
     static let airportWasPicked = Notification.Name("airportWasPicked")
 }
 struct AirportPicker: View {
-    typealias AirportCoord = KnownAirports.AirportCoord
     
     @StateObject var matchedAiports = MatchedAirport()
     @Binding var icao : String
@@ -60,13 +59,13 @@ struct AirportPicker: View {
             List(matchedAiports.suggestions) { suggestion in
                 VStack(alignment: .leading) {
                     HStack(alignment: .firstTextBaseline) {
-                        Text(suggestion.ident).font(.headline)
+                        Text(suggestion.icao).font(.headline)
                         Spacer()
                         Text(self.formatDistance(suggestion: suggestion)).font(.footnote).foregroundColor(.secondary).padding(.trailing)
                     }
                     Text(suggestion.name).font(.footnote)
                 }.onTapGesture {
-                    self.icao = suggestion.ident
+                    self.icao = suggestion.icao
                     NotificationCenter.default.post(name: .airportWasPicked, object: nil)
                     self.dismiss()
                     
@@ -76,7 +75,7 @@ struct AirportPicker: View {
         }
     }
 
-    func formatDistance(suggestion : MatchedAirport.AirportCoord) -> String{
+    func formatDistance(suggestion : Airport) -> String{
         let dist = suggestion.distance(to: matchedAiports.coord)
         let measure = Measurement(value: dist, unit: UnitLength.meters)
         let formatter = MeasurementFormatter()

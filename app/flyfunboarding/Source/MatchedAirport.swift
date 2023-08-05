@@ -29,6 +29,7 @@ import Foundation
 import SwiftUI
 import CoreLocation
 import OSLog
+import RZFlight
 
 
 class MatchedAirport : ObservableObject {
@@ -54,9 +55,7 @@ class MatchedAirport : ObservableObject {
         }
     }
     
-    typealias AirportCoord = KnownAirports.AirportCoord
-    
-    @Published var suggestions : [AirportCoord] = []
+    @Published var suggestions : [Airport] = []
     
     var coord : CLLocationCoordinate2D
     private var locationRequest : LocationRequest = LocationRequest()
@@ -69,8 +68,8 @@ class MatchedAirport : ObservableObject {
             self.coord = c
             Settings.shared.lastLatitude = c.latitude
             Settings.shared.lastLongitude = c.longitude
-            if let found = FlyFunBoardingApp.knownAirports?.nearestIdent(coord: self.coord) {
-                cb(found)
+            if let found = FlyFunBoardingApp.knownAirports?.nearestAirport(coord: self.coord) {
+                cb(found.icao)
             }
             
         }
