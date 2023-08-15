@@ -85,7 +85,9 @@ if(count(array_keys($alt_fields))){
 } else {
     $alt_fields = null;
 }
-foreach ($countries as $c => $f) {
+$sortedcountries = array_keys($countries);
+sort($sortedcountries);
+foreach ($sortedcountries as $c) {
     print("<a href=\"?country={$c}\">{$c}</a>".PHP_EOL);
 }
 print('<table class="styled-table">'.PHP_EOL);
