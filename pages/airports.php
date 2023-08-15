@@ -130,15 +130,29 @@ if (isset($_GET['which'])) {
 } else {
     $which = 'customs';
 }
-if( $which == 'customs' ){
-    $where = "%Immigr%";
-} else if ( $which == 'restaurants' ){
-    $where = "%Restau%";
-} else if ( $which == 'fuel' ){
-    $where = "%Fuel%types";
-}else{
+$whereDefs = [
+    'customs' => "%Immigr%",
+    'restaurants' => "%Restau%",
+    'fuel' => "%Fuel%types",
+    'hotels' => "%Hotel%",
+];
+if (array_key_exists($which,$whereDefs)) {
+    $where = $whereDefs[$which];
+} else {
     $where = "%Immigr%";
 }
+$url = $_SERVER['REQUEST_URI'];
+print("<p>");
+foreach ($whereDefs as $key => $value) {
+    if( $key != $which ){
+        $target = str_replace("/{$which}?","/{$key}?",$url);
+    }
+    else {
+        $target = $url;
+    }
+    print("<a href=\"$target\">{$key}</a>".PHP_EOL);
+}
+print("</p>");
 $custom = new Custom($where);
 $custom->display();
 ?>
