@@ -1,6 +1,77 @@
 <?php
 include_once('../php/autoload.php');
 
+
+class Procedures {
+    public $result;
+    public $countries;
+    public $country;
+
+    public function __construct()
+    {
+        $sql = "SELECT * FROM runways r, runways_procedures p, airports a WHERE r.id = p.id AND r.airport_ident = a.ident ORDER BY ident";
+        $dbpath = Config::$shared['airport_db_path'];
+        $db = new PDO("sqlite:$dbpath");
+        $countries = $db->prepare($sql);
+        $countries->execute();
+        $this->result = $countries->fetchAll(PDO::FETCH_ASSOC);
+        $this->countries = [];
+        
+        foreach ($this->result as $row) {
+            $iso_country = $row['iso_country'];
+            $this->countries[$iso_country] = 1;
+        }
+        if (isset($_GET['country'])) {
+            $this->country = $_GET['country'];
+        } else {
+            $this->country = 'FR';
+        }
+    }
+    public function display(){
+        $country = $this->country;
+        $sortedcountries = array_keys($this->countries);
+        sort($sortedcountries);
+        foreach ($sortedcountries as $c) {
+            print("<a href=\"?country={$c}\">{$c}</a>".PHP_EOL);
+        }
+        print('<table class="styled-table">'.PHP_EOL);
+        print('<thead>'.PHP_EOL);
+        print('<tr>'.PHP_EOL);
+        print('<th>ICAO</th>'.PHP_EOL);
+        print('<th>Airport</th>'.PHP_EOL);
+        print("<th>Runway</th>".PHP_EOL);
+        print("<th>Direction</th>".PHP_EOL);
+        print("<th>Instrument Procedures</th>".PHP_EOL);
+        print('</tr>'.PHP_EOL);
+        print('</thead>'.PHP_EOL);
+        print('<tbody>'.PHP_EOL);
+        foreach ($this->result as $row) {
+            if ($row['iso_country'] != $country) {
+                continue;
+            }
+            foreach (["le","he"] as $prefix){
+                print('<tr>'.PHP_EOL);
+                if ($prefix == "le") {
+                    $runway = "{$row['length_ft']}x{$row['width_ft']} {$row['surface']}";
+                    print("<td rowspan=2>{$row['ident']}</td>".PHP_EOL);
+                    print("<td rowspan=2>{$row['name']}</td>".PHP_EOL);
+                    print("<td rowspan=2>{$runway}</td>".PHP_EOL);
+                }
+                $f_i = "{$prefix}_ident";
+                $f_p = "{$prefix}_procedures";
+
+                $runway = "{$row[$f_i]}";
+                print("<td>{$runway}</td>".PHP_EOL);
+                $json = $row[$f_p];
+                $procs = implode('<br>',json_decode($json));
+                print("<td>{$procs}</td>".PHP_EOL);
+                print('</tr>'.PHP_EOL);
+            }
+        }
+        print('</tbody>'.PHP_EOL);
+        print('</table>'.PHP_EOL);
+    }
+}
 class Custom {
     public $result;
     public $countries;
@@ -135,11 +206,12 @@ $whereDefs = [
     'restaurants' => "%Restau%",
     'fuel' => "%Fuel%types",
     'hotels' => "H_tel%",
+    'procedures' => null,
 ];
 if (array_key_exists($which,$whereDefs)) {
     $where = $whereDefs[$which];
 } else {
-    $where = "%Immigr%";
+    $where = null;
 }
 $url = $_SERVER['REQUEST_URI'];
 print("<p>");
@@ -153,8 +225,13 @@ foreach ($whereDefs as $key => $value) {
     print("<a href=\"$target\">{$key}</a>".PHP_EOL);
 }
 print("</p>");
-$custom = new Custom($where);
-$custom->display();
+if ($where) {
+    $custom = new Custom($where);
+    $custom->display();
+}else if ($which == 'procedures'){
+    $procedures = new Procedures();
+    $procedures->display();
+}
 ?>
 
 </body>
