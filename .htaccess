@@ -13,6 +13,11 @@ RewriteRule ^pages/yourBoardingPass/([-a-zA-Z0-9]*)$ pages/yourBoardingPass.php?
 # redirect pages to php file
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^airports/([a-zA-Z0-9]*)$ pages/airports.php?which=$1 [QSA,L]
+
+# redirect pages to php file
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^pages/(.*)$ pages/$1.php [NC,L]
 
 
