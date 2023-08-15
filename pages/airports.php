@@ -134,7 +134,7 @@ $whereDefs = [
     'customs' => "%Immigr%",
     'restaurants' => "%Restau%",
     'fuel' => "%Fuel%types",
-    'hotels' => "%Hotel%",
+    'hotels' => "H_tel%",
 ];
 if (array_key_exists($which,$whereDefs)) {
     $where = $whereDefs[$which];
