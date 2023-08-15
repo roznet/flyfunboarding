@@ -1,35 +1,83 @@
 <?php
 include_once('../php/autoload.php');
-$config = Config::$shared;
-$sql = "SELECT * FROM airports_aip_details d, airports a WHERE a.ident = d.ident AND value IS NOT NULL AND value != '' AND value != 'NIL' AND (field LIKE '%Immigr%' OR alt_field LIKE '%Immigr%') ORDER BY ident";
-$dbpath = Config::$shared['airport_db_path'];
-$db = new PDO("sqlite:$dbpath");
-$countries = $db->prepare($sql);
-$countries->execute();
-$result = $countries->fetchAll(PDO::FETCH_ASSOC);
 
-$countries = [];
-$fields = [];
-$alt_fields = [];
-foreach ($result as $row) {
-    $iso_country = $row['iso_country'];
-    $field = $row['field'];
-    $value = $row['value'];
-    $alt_field = $row['alt_field'];
-    $alt_value = $row['alt_value'];
-    if (array_key_exists($iso_country,$countries)) {
-        $countries[$iso_country] = ['fields' => [$field=>1],
-            'alt_fields' => [$alt_field=>1]];
-    } else {
-        $countries[$iso_country]['fields'][$field] = 1;
-        $countries[$iso_country]['alt_fields'][$alt_field] = 1;
+class Custom {
+    public $result;
+    public $countries;
+    public $country;
+
+    public function __construct($where = "%Immigr%") {
+        $sql = "SELECT * FROM airports_aip_details d, airports a WHERE a.ident = d.ident AND value IS NOT NULL AND value != '' AND value != 'NIL' AND (field LIKE '{$where}' OR alt_field LIKE '{$where}') ORDER BY ident";
+        $dbpath = Config::$shared['airport_db_path'];
+        $db = new PDO("sqlite:$dbpath");
+        $countries = $db->prepare($sql);
+        $countries->execute();
+        $this->result = $countries->fetchAll(PDO::FETCH_ASSOC);
+
+        $this->countries = [];
+        foreach ($this->result as $row) {
+            $iso_country = $row['iso_country'];
+            $field = $row['field'];
+            $alt_field = $row['alt_field'];
+            if (array_key_exists($iso_country,$this->countries)) {
+                $this->countries[$iso_country] = ['fields' => [$field=>1],
+                    'alt_fields' => [$alt_field=>1]];
+            } else {
+                $this->countries[$iso_country]['fields'][$field] = 1;
+                $this->countries[$iso_country]['alt_fields'][$alt_field] = 1;
+            }
+        }
+        if (isset($_GET['country'])) {
+            $this->country = $_GET['country'];
+        } else {
+            $this->country = 'FR';
+        }
+    }
+    function display() {
+        $country = $this->country;
+        $fields = $this->countries[$country]['fields'];
+        $fields = array_keys($fields)[0];
+        $alt_fields = $this->countries[$country]['alt_fields'];
+        if(count(array_keys($alt_fields))){
+            $alt_fields = array_keys($alt_fields)[0];
+        } else {
+            $alt_fields = null;
+        }
+        $sortedcountries = array_keys($this->countries);
+        sort($sortedcountries);
+        foreach ($sortedcountries as $c) {
+            print("<a href=\"?country={$c}\">{$c}</a>".PHP_EOL);
+        }
+        print('<table class="styled-table">'.PHP_EOL);
+        print('<thead>'.PHP_EOL);
+        print('<tr>'.PHP_EOL);
+        print('<th>ICAO</th>'.PHP_EOL);
+        print('<th>Airport</th>'.PHP_EOL);
+        print("<th>{$fields}</th>".PHP_EOL);
+        if( $alt_fields ){
+            print("<th>{$alt_fields}</th>".PHP_EOL);
+        }
+        print('</tr>'.PHP_EOL);
+        print('</thead>'.PHP_EOL);
+        print('<tbody>'.PHP_EOL);
+        foreach ($this->result as $row) {
+            if ($row['iso_country'] != $country) {
+                continue;
+            }
+            print('<tr>'.PHP_EOL);
+            print("<td>{$row['ident']}</td>".PHP_EOL);
+            print("<td>{$row['name']}</td>".PHP_EOL);
+            print("<td>{$row['value']}</td>".PHP_EOL);
+            if( $alt_fields ){
+                print("<td>{$row['alt_value']}</td>".PHP_EOL);
+            }
+            print('</tr>'.PHP_EOL);
+        }
+        print('</tbody>'.PHP_EOL);
+        print('</table>'.PHP_EOL);
     }
 }
-if (isset($_GET['country'])) {
-    $country = $_GET['country'];
-} else {
-    $country = 'FR';
-}
+
 ?>
 
 <!DOCTYPE html>
@@ -77,46 +125,22 @@ if (isset($_GET['country'])) {
 ?>
 </pre>
 <?php
-$fields = $countries[$country]['fields'];
-$fields = array_keys($fields)[0];
-$alt_fields = $countries[$country]['alt_fields'];
-if(count(array_keys($alt_fields))){
-    $alt_fields = array_keys($alt_fields)[0];
+if (isset($_GET['which'])) {
+    $which = $_GET['which'];
 } else {
-    $alt_fields = null;
+    $which = 'customs';
 }
-$sortedcountries = array_keys($countries);
-sort($sortedcountries);
-foreach ($sortedcountries as $c) {
-    print("<a href=\"?country={$c}\">{$c}</a>".PHP_EOL);
+if( $which == 'customs' ){
+    $where = "%Immigr%";
+} else if ( $which == 'restaurants' ){
+    $where = "%Restau%";
+} else if ( $which == 'fuel' ){
+    $where = "%Fuel%types";
+}else{
+    $where = "%Immigr%";
 }
-print('<table class="styled-table">'.PHP_EOL);
-print('<thead>'.PHP_EOL);
-print('<tr>'.PHP_EOL);
-print('<th>ICAO</th>'.PHP_EOL);
-print('<th>Airport</th>'.PHP_EOL);
-print("<th>{$fields}</th>".PHP_EOL);
-if( $alt_fields ){
-    print("<th>{$alt_fields}</th>".PHP_EOL);
-}
-print('</tr>'.PHP_EOL);
-print('</thead>'.PHP_EOL);
-print('<tbody>'.PHP_EOL);
-foreach ($result as $row) {
-    if ($row['iso_country'] != $country) {
-        continue;
-    }
-    print('<tr>'.PHP_EOL);
-    print("<td>{$row['ident']}</td>".PHP_EOL);
-    print("<td>{$row['name']}</td>".PHP_EOL);
-    print("<td>{$row['value']}</td>".PHP_EOL);
-    if( $alt_fields ){
-        print("<td>{$row['alt_value']}</td>".PHP_EOL);
-    }
-    print('</tr>'.PHP_EOL);
-}
-print('</tbody>'.PHP_EOL);
-print('</table>'.PHP_EOL);
+$custom = new Custom($where);
+$custom->display();
 ?>
 
 </body>
