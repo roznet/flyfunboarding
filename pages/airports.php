@@ -14,25 +14,34 @@ class Procedures {
         $db = new PDO("sqlite:$dbpath");
         $countries = $db->prepare($sql);
         $countries->execute();
-        $this->result = $countries->fetchAll(PDO::FETCH_ASSOC);
+        $result = $countries->fetchAll(PDO::FETCH_ASSOC);
         $this->countries = [];
-        
-        foreach ($this->result as $row) {
-            $iso_country = $row['iso_country'];
-            $this->countries[$iso_country] = 1;
-        }
+        $this->result = [];
         if (isset($_GET['country'])) {
             $this->country = $_GET['country'];
         } else {
             $this->country = 'FR';
+        }
+        foreach ($result as $row) {
+            $iso_country = $row['iso_country'];
+            $this->countries[$iso_country] = 1;
+            if($iso_country == $this->country){
+                array_push($this->result,$row);
+            }
         }
     }
     public function display(){
         $country = $this->country;
         $sortedcountries = array_keys($this->countries);
         sort($sortedcountries);
+        print('<p>Country: '.PHP_EOL); 
         foreach ($sortedcountries as $c) {
             print("<a href=\"?country={$c}\">{$c}</a>".PHP_EOL);
+        }
+        print('</p>'.PHP_EOL);
+        if(count($this->result) == 0){
+            print("<p>No results for {$this->country}</p>");
+            return;
         }
         print('<table class="styled-table">'.PHP_EOL);
         print('<thead>'.PHP_EOL);
@@ -83,10 +92,16 @@ class Custom {
         $db = new PDO("sqlite:$dbpath");
         $countries = $db->prepare($sql);
         $countries->execute();
-        $this->result = $countries->fetchAll(PDO::FETCH_ASSOC);
+        $result = $countries->fetchAll(PDO::FETCH_ASSOC);
 
         $this->countries = [];
-        foreach ($this->result as $row) {
+        $this->result = [];
+        if (isset($_GET['country'])) {
+            $this->country = $_GET['country'];
+        } else {
+            $this->country = 'FR';
+        }
+        foreach ($result as $row) {
             $iso_country = $row['iso_country'];
             $field = $row['field'];
             $alt_field = $row['alt_field'];
@@ -97,15 +112,23 @@ class Custom {
                 $this->countries[$iso_country]['fields'][$field] = 1;
                 $this->countries[$iso_country]['alt_fields'][$alt_field] = 1;
             }
-        }
-        if (isset($_GET['country'])) {
-            $this->country = $_GET['country'];
-        } else {
-            $this->country = 'FR';
+            if($iso_country == $this->country){
+                array_push($this->result,$row);
+            }
         }
     }
     function display() {
         $country = $this->country;
+        $sortedcountries = array_keys($this->countries);
+        sort($sortedcountries);
+        print('<p>Country: '.PHP_EOL); 
+        foreach ($sortedcountries as $c) {
+            print("<a href=\"?country={$c}\">{$c}</a>".PHP_EOL);
+        }
+        if(count($this->result) == 0){
+            print("<p>No results for {$country}</p>");
+            return;
+        }
         $fields = $this->countries[$country]['fields'];
         $fields = array_keys($fields)[0];
         $alt_fields = $this->countries[$country]['alt_fields'];
@@ -114,11 +137,7 @@ class Custom {
         } else {
             $alt_fields = null;
         }
-        $sortedcountries = array_keys($this->countries);
-        sort($sortedcountries);
-        foreach ($sortedcountries as $c) {
-            print("<a href=\"?country={$c}\">{$c}</a>".PHP_EOL);
-        }
+        print('</p>'.PHP_EOL);
         print('<table class="styled-table">'.PHP_EOL);
         print('<thead>'.PHP_EOL);
         print('<tr>'.PHP_EOL);
@@ -159,6 +178,10 @@ class Custom {
     <link rel="stylesheet" href="css/style.css">
 </head>
 <style>
+p {
+    font-family: sans-serif;
+    font-size: 0.9em;
+}
 .styled-table {
     border-collapse: collapse;
     margin: 25px 0;
@@ -189,6 +212,7 @@ class Custom {
 }
 </style>
 <body>
+<h3>Information from AIPs</h3>
 <pre>
 <?php
 #print_r($countries[$country]);
@@ -214,7 +238,7 @@ if (array_key_exists($which,$whereDefs)) {
     $where = null;
 }
 $url = $_SERVER['REQUEST_URI'];
-print("<p>");
+print("<p>Field: ");
 foreach ($whereDefs as $key => $value) {
     if( $key != $which ){
         $target = str_replace("/{$which}?","/{$key}?",$url);
