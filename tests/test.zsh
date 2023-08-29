@@ -1,6 +1,9 @@
 samples="app/flyfunboarding/Preview Content"
 
 
+curl                                             -H ${auth}                                 https://${baseurl}/db/setup
+
+
 curl -X POST -H 'Content-Type: application/json' -H ${auth} -d @${samples}/sample_airline.json https://${baseurl}/airline/create
 curl                                             -H ${auth}                                 https://${baseurl}/airline/${airline}
 curl                                             -H ${auth}                                 https://${baseurl}/airline/${airline}/keys
