@@ -7,6 +7,7 @@ class Link {
     private $controller;
     private $which;
     private $where;
+    public $franceSpecialCase;
     private
         $whereDefs = [
             'customs' => "%Immigr%",
@@ -21,6 +22,7 @@ class Link {
         $this->url = $_SERVER['REQUEST_URI'];
         $this->info = parse_url($this->url);
         $this->which = 'customs';
+        $this->franceSpecialCase = false;
 
         if (isset($_GET['which'])) {
             $this->which = $_GET['which'];
@@ -28,6 +30,9 @@ class Link {
         if (array_key_exists($this->which,$this->whereDefs)) {
             $this->where = $this->whereDefs[$this->which];
             $this->controller = 'AIPTable';  
+            if ($this->which == 'customs' && $this->country() == 'FR') {
+                $this->franceSpecialCase = true;
+            }
         } else if ($this->which == 'procedures') {
             $this->controller = 'Procedures';
             $this->where = null;
@@ -196,6 +201,9 @@ class AIPTable {
     public function __construct() {
         $where = Link::$current->where();
         $sql = "SELECT * FROM airports_aip_details d, airports a WHERE a.ident = d.ident AND value IS NOT NULL AND value != '' AND value != 'NIL' AND (field LIKE '{$where}' OR alt_field LIKE '{$where}') ORDER BY ident";
+        if( Link::$current->franceSpecialCase ){
+            $sql = "SELECT * FROM airports_aip_details d, airports a, frppf p WHERE p.ident = d.ident AND a.ident = d.ident AND value IS NOT NULL AND value != '' AND value != 'NIL' AND (field LIKE '{$where}' OR alt_field LIKE '{$where}') ORDER BY rank";
+        }
         $dbpath = Config::$shared['airport_db_path'];
         $db = new PDO("sqlite:$dbpath");
         $countries = $db->prepare($sql);
