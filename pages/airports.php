@@ -201,14 +201,11 @@ class AIPTable {
     public function __construct() {
         $where = Link::$current->where();
         $sql = "SELECT * FROM airports_aip_details d, airports a WHERE a.ident = d.ident AND value IS NOT NULL AND value != '' AND value != 'NIL' AND (field LIKE '{$where}' OR alt_field LIKE '{$where}') ORDER BY ident";
-        if( Link::$current->franceSpecialCase ){
-            $sql = "SELECT * FROM airports_aip_details d, airports a, frppf p WHERE p.ident = d.ident AND a.ident = d.ident AND value IS NOT NULL AND value != '' AND value != 'NIL' AND (field LIKE '{$where}' OR alt_field LIKE '{$where}') ORDER BY rank";
-        }
         $dbpath = Config::$shared['airport_db_path'];
         $db = new PDO("sqlite:$dbpath");
-        $countries = $db->prepare($sql);
-        $countries->execute();
-        $result = $countries->fetchAll(PDO::FETCH_ASSOC);
+        $res = $db->prepare($sql);
+        $res->execute();
+        $result = $res->fetchAll(PDO::FETCH_ASSOC);
 
         $this->countries = [];
         $this->result = [];
@@ -227,6 +224,29 @@ class AIPTable {
             if($iso_country == $this->country){
                 array_push($this->result,$row);
             }
+        }
+        if( Link::$current->franceSpecialCase ){
+            $sql = "SELECT * FROM frppf ";
+            $res = $db->prepare($sql);
+            $res->execute();
+            $result = $res->fetchAll(PDO::FETCH_ASSOC);
+            $ppf = []; 
+            foreach ($result as $row) {
+                $ppf[$row['ident']] = $row;
+            }
+            $rv = [];
+            foreach ($this->result as $row) {
+                $ident = $row['ident'];
+                if(array_key_exists($ident,$ppf)){
+                    array_push($rv,$row);
+                }
+            }
+            usort($rv, function($a, $b) use ($ppf) {
+                $ra = $ppf[$a['ident']]['rank'];
+                $rb = $ppf[$b['ident']]['rank'];
+                return $ra - $rb;
+            });
+            $this->result = $rv;
         }
     }
     function display() {
