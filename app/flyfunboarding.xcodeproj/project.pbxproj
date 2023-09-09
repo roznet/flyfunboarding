@@ -32,6 +32,9 @@
 		4215044829EAFA54006D9B4C /* sample_keys.json in Resources */ = {isa = PBXBuildFile; fileRef = 4215044529EAFA54006D9B4C /* sample_keys.json */; };
 		4215044929EAFA54006D9B4C /* sample_validate_new.json in Resources */ = {isa = PBXBuildFile; fileRef = 4215044629EAFA54006D9B4C /* sample_validate_new.json */; };
 		4215044A29EAFA54006D9B4C /* sample_validate_old.json in Resources */ = {isa = PBXBuildFile; fileRef = 4215044729EAFA54006D9B4C /* sample_validate_old.json */; };
+		422120B22AAB542500927780 /* AirportIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422120B12AAB542500927780 /* AirportIcon.swift */; };
+		422120B42AAB573600927780 /* AirportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422120B32AAB573600927780 /* AirportView.swift */; };
+		422120B62AAB592D00927780 /* AirportModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422120B52AAB592D00927780 /* AirportModel.swift */; };
 		4245DB1929BCBDB6004B9953 /* secrets.json in Resources */ = {isa = PBXBuildFile; fileRef = 4245DB1829BCBDB5004B9953 /* secrets.json */; };
 		4245DB1C29BCBE40004B9953 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4245DB1B29BCBE40004B9953 /* Secrets.swift */; };
 		4247B9AC29D22CDF00B312AC /* RZExternalUniversal in Frameworks */ = {isa = PBXBuildFile; productRef = 4247B9AB29D22CDF00B312AC /* RZExternalUniversal */; };
@@ -96,6 +99,21 @@
 		42D940CA29CEF86F00622CF3 /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D940C929CEF86F00622CF3 /* StatsView.swift */; };
 		42DBF7EB2A2D2C7B005E0857 /* AirlineSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DBF7EA2A2D2C7B005E0857 /* AirlineSettings.swift */; };
 		42DDABB72A2D11E80030E792 /* ColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DDABB62A2D11E80030E792 /* ColorExtensions.swift */; };
+		42E4DFB62AAB2653007B93FC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 42E4DFB52AAB2653007B93FC /* Assets.xcassets */; };
+		42E4DFBA2AAB2653007B93FC /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 42E4DFB92AAB2653007B93FC /* Preview Assets.xcassets */; };
+		42E4DFC42AAB2653007B93FC /* flyfunairportsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E4DFC32AAB2653007B93FC /* flyfunairportsTests.swift */; };
+		42E4DFCE2AAB2653007B93FC /* flyfunairportsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E4DFCD2AAB2653007B93FC /* flyfunairportsUITests.swift */; };
+		42E4DFD02AAB2653007B93FC /* flyfunairportsUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E4DFCF2AAB2653007B93FC /* flyfunairportsUITestsLaunchTests.swift */; };
+		42E4DFDE2AAB26D0007B93FC /* FlyFunAirportsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E4DFDD2AAB26D0007B93FC /* FlyFunAirportsApp.swift */; };
+		42E4DFE02AAB2706007B93FC /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E4DFDF2AAB2706007B93FC /* MainView.swift */; };
+		42E4DFE32AAB2BB1007B93FC /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E4DFE22AAB2BB1007B93FC /* MapView.swift */; };
+		42E4DFE52AAB2BF9007B93FC /* RZFlight in Frameworks */ = {isa = PBXBuildFile; productRef = 42E4DFE42AAB2BF9007B93FC /* RZFlight */; };
+		42E4DFE72AAB2BF9007B93FC /* RZUtils in Frameworks */ = {isa = PBXBuildFile; productRef = 42E4DFE62AAB2BF9007B93FC /* RZUtils */; };
+		42E4DFE92AAB2BF9007B93FC /* RZUtilsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 42E4DFE82AAB2BF9007B93FC /* RZUtilsSwift */; };
+		42E4DFEB2AAB2BF9007B93FC /* KDTree in Frameworks */ = {isa = PBXBuildFile; productRef = 42E4DFEA2AAB2BF9007B93FC /* KDTree */; };
+		42E4DFED2AAB2BF9007B93FC /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 42E4DFEC2AAB2BF9007B93FC /* CodeScanner */; };
+		42E4DFEF2AAB2C80007B93FC /* RZExternalUniversal in Frameworks */ = {isa = PBXBuildFile; productRef = 42E4DFEE2AAB2C80007B93FC /* RZExternalUniversal */; };
+		42E4DFF02AAB3113007B93FC /* airports.db in Resources */ = {isa = PBXBuildFile; fileRef = 42E58E1829BFD45000185971 /* airports.db */; };
 		42E58E1929BFD45000185971 /* airports.db in Resources */ = {isa = PBXBuildFile; fileRef = 42E58E1829BFD45000185971 /* airports.db */; };
 		42E58E1B29BFE36900185971 /* Flight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E58E1A29BFE36900185971 /* Flight.swift */; };
 		42E58E1D29BFE67100185971 /* Ticket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E58E1C29BFE67100185971 /* Ticket.swift */; };
@@ -110,6 +128,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = 4269B3E129BBC84C009891C6;
 			remoteInfo = flyfunboarding;
+		};
+		42E4DFC02AAB2653007B93FC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4269B3DA29BBC84C009891C6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 42E4DFAE2AAB2651007B93FC;
+			remoteInfo = flyfunairports;
+		};
+		42E4DFCA2AAB2653007B93FC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4269B3DA29BBC84C009891C6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 42E4DFAE2AAB2651007B93FC;
+			remoteInfo = flyfunairports;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -126,6 +158,9 @@
 		4215044529EAFA54006D9B4C /* sample_keys.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = sample_keys.json; sourceTree = "<group>"; };
 		4215044629EAFA54006D9B4C /* sample_validate_new.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = sample_validate_new.json; sourceTree = "<group>"; };
 		4215044729EAFA54006D9B4C /* sample_validate_old.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = sample_validate_old.json; sourceTree = "<group>"; };
+		422120B12AAB542500927780 /* AirportIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AirportIcon.swift; path = Source/AirportIcon.swift; sourceTree = "<group>"; };
+		422120B32AAB573600927780 /* AirportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AirportView.swift; path = Source/AirportView.swift; sourceTree = "<group>"; };
+		422120B52AAB592D00927780 /* AirportModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AirportModel.swift; path = Source/AirportModel.swift; sourceTree = "<group>"; };
 		4245DB1829BCBDB5004B9953 /* secrets.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = secrets.json; sourceTree = "<group>"; };
 		4245DB1B29BCBE40004B9953 /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Secrets.swift; path = Source/Secrets.swift; sourceTree = "<group>"; };
 		4247B9AE29D2310000B312AC /* combined-shapefile.dbf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "combined-shapefile.dbf"; path = "python/timezones/combined-shapefile.dbf"; sourceTree = "<group>"; };
@@ -191,6 +226,19 @@
 		42DBF7EA2A2D2C7B005E0857 /* AirlineSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AirlineSettings.swift; path = Source/AirlineSettings.swift; sourceTree = "<group>"; };
 		42DDABB62A2D11E80030E792 /* ColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ColorExtensions.swift; path = Source/ColorExtensions.swift; sourceTree = "<group>"; };
 		42DF60882A7E4550005760C6 /* rzflight */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = rzflight; path = ../../../public/rzflight; sourceTree = "<group>"; };
+		42E4DFAF2AAB2651007B93FC /* flyfunairports.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = flyfunairports.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		42E4DFB52AAB2653007B93FC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		42E4DFB72AAB2653007B93FC /* flyfunairports.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = flyfunairports.entitlements; sourceTree = "<group>"; };
+		42E4DFB92AAB2653007B93FC /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		42E4DFBF2AAB2653007B93FC /* flyfunairportsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = flyfunairportsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		42E4DFC32AAB2653007B93FC /* flyfunairportsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = flyfunairportsTests.swift; sourceTree = "<group>"; };
+		42E4DFC92AAB2653007B93FC /* flyfunairportsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = flyfunairportsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		42E4DFCD2AAB2653007B93FC /* flyfunairportsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = flyfunairportsUITests.swift; sourceTree = "<group>"; };
+		42E4DFCF2AAB2653007B93FC /* flyfunairportsUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = flyfunairportsUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		42E4DFDC2AAB26D0007B93FC /* flyfunairports-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "flyfunairports-Bridging-Header.h"; sourceTree = "<group>"; };
+		42E4DFDD2AAB26D0007B93FC /* FlyFunAirportsApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FlyFunAirportsApp.swift; path = Source/FlyFunAirportsApp.swift; sourceTree = "<group>"; };
+		42E4DFDF2AAB2706007B93FC /* MainView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainView.swift; path = Source/MainView.swift; sourceTree = "<group>"; };
+		42E4DFE22AAB2BB1007B93FC /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MapView.swift; path = Source/MapView.swift; sourceTree = "<group>"; };
 		42E58E1829BFD45000185971 /* airports.db */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = airports.db; path = python/airports.db; sourceTree = "<group>"; };
 		42E58E1A29BFE36900185971 /* Flight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Flight.swift; path = Source/Flight.swift; sourceTree = "<group>"; };
 		42E58E1C29BFE67100185971 /* Ticket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Ticket.swift; path = Source/Ticket.swift; sourceTree = "<group>"; };
@@ -229,6 +277,33 @@
 				4207276C29D767D400D966CA /* RZFlight in Frameworks */,
 				4207276629D767D400D966CA /* RZUtilsSwift in Frameworks */,
 				4207276E29D767D400D966CA /* KDTree in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42E4DFAC2AAB2651007B93FC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				42E4DFE72AAB2BF9007B93FC /* RZUtils in Frameworks */,
+				42E4DFEB2AAB2BF9007B93FC /* KDTree in Frameworks */,
+				42E4DFE52AAB2BF9007B93FC /* RZFlight in Frameworks */,
+				42E4DFEF2AAB2C80007B93FC /* RZExternalUniversal in Frameworks */,
+				42E4DFE92AAB2BF9007B93FC /* RZUtilsSwift in Frameworks */,
+				42E4DFED2AAB2BF9007B93FC /* CodeScanner in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42E4DFBC2AAB2653007B93FC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42E4DFC62AAB2653007B93FC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -342,6 +417,9 @@
 				42DF60882A7E4550005760C6 /* rzflight */,
 				4269B3E429BBC84C009891C6 /* flyfunboarding */,
 				4269B3F529BBC84D009891C6 /* flyfunboardingTests */,
+				42E4DFB02AAB2651007B93FC /* flyfunairports */,
+				42E4DFC22AAB2653007B93FC /* flyfunairportsTests */,
+				42E4DFCC2AAB2653007B93FC /* flyfunairportsUITests */,
 				4269B3E329BBC84C009891C6 /* Products */,
 				4207276029D767C000D966CA /* Frameworks */,
 			);
@@ -352,6 +430,9 @@
 			children = (
 				4269B3E229BBC84C009891C6 /* flyfunboarding.app */,
 				4269B3F229BBC84D009891C6 /* flyfunboardingTests.xctest */,
+				42E4DFAF2AAB2651007B93FC /* flyfunairports.app */,
+				42E4DFBF2AAB2653007B93FC /* flyfunairportsTests.xctest */,
+				42E4DFC92AAB2653007B93FC /* flyfunairportsUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -443,6 +524,72 @@
 			name = RemoteService;
 			sourceTree = "<group>";
 		};
+		42E4DFB02AAB2651007B93FC /* flyfunairports */ = {
+			isa = PBXGroup;
+			children = (
+				42E4DFE12AAB2B93007B93FC /* DataModels */,
+				42E4DFDB2AAB26AE007B93FC /* UserInterface */,
+				42E4DFDA2AAB2674007B93FC /* App */,
+				42E4DFB52AAB2653007B93FC /* Assets.xcassets */,
+				42E4DFB72AAB2653007B93FC /* flyfunairports.entitlements */,
+				42E4DFB82AAB2653007B93FC /* Preview Content */,
+			);
+			path = flyfunairports;
+			sourceTree = "<group>";
+		};
+		42E4DFB82AAB2653007B93FC /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				42E4DFB92AAB2653007B93FC /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		42E4DFC22AAB2653007B93FC /* flyfunairportsTests */ = {
+			isa = PBXGroup;
+			children = (
+				42E4DFC32AAB2653007B93FC /* flyfunairportsTests.swift */,
+			);
+			path = flyfunairportsTests;
+			sourceTree = "<group>";
+		};
+		42E4DFCC2AAB2653007B93FC /* flyfunairportsUITests */ = {
+			isa = PBXGroup;
+			children = (
+				42E4DFCD2AAB2653007B93FC /* flyfunairportsUITests.swift */,
+				42E4DFCF2AAB2653007B93FC /* flyfunairportsUITestsLaunchTests.swift */,
+			);
+			path = flyfunairportsUITests;
+			sourceTree = "<group>";
+		};
+		42E4DFDA2AAB2674007B93FC /* App */ = {
+			isa = PBXGroup;
+			children = (
+				42E4DFDD2AAB26D0007B93FC /* FlyFunAirportsApp.swift */,
+				42E4DFDC2AAB26D0007B93FC /* flyfunairports-Bridging-Header.h */,
+			);
+			name = App;
+			sourceTree = "<group>";
+		};
+		42E4DFDB2AAB26AE007B93FC /* UserInterface */ = {
+			isa = PBXGroup;
+			children = (
+				42E4DFDF2AAB2706007B93FC /* MainView.swift */,
+				42E4DFE22AAB2BB1007B93FC /* MapView.swift */,
+				422120B12AAB542500927780 /* AirportIcon.swift */,
+				422120B32AAB573600927780 /* AirportView.swift */,
+			);
+			name = UserInterface;
+			sourceTree = "<group>";
+		};
+		42E4DFE12AAB2B93007B93FC /* DataModels */ = {
+			isa = PBXGroup;
+			children = (
+				422120B52AAB592D00927780 /* AirportModel.swift */,
+			);
+			name = DataModels;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -505,6 +652,67 @@
 			productReference = 4269B3F229BBC84D009891C6 /* flyfunboardingTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		42E4DFAE2AAB2651007B93FC /* flyfunairports */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 42E4DFD72AAB2653007B93FC /* Build configuration list for PBXNativeTarget "flyfunairports" */;
+			buildPhases = (
+				42E4DFAB2AAB2651007B93FC /* Sources */,
+				42E4DFAC2AAB2651007B93FC /* Frameworks */,
+				42E4DFAD2AAB2651007B93FC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = flyfunairports;
+			packageProductDependencies = (
+				42E4DFE42AAB2BF9007B93FC /* RZFlight */,
+				42E4DFE62AAB2BF9007B93FC /* RZUtils */,
+				42E4DFE82AAB2BF9007B93FC /* RZUtilsSwift */,
+				42E4DFEA2AAB2BF9007B93FC /* KDTree */,
+				42E4DFEC2AAB2BF9007B93FC /* CodeScanner */,
+				42E4DFEE2AAB2C80007B93FC /* RZExternalUniversal */,
+			);
+			productName = flyfunairports;
+			productReference = 42E4DFAF2AAB2651007B93FC /* flyfunairports.app */;
+			productType = "com.apple.product-type.application";
+		};
+		42E4DFBE2AAB2653007B93FC /* flyfunairportsTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 42E4DFD82AAB2653007B93FC /* Build configuration list for PBXNativeTarget "flyfunairportsTests" */;
+			buildPhases = (
+				42E4DFBB2AAB2653007B93FC /* Sources */,
+				42E4DFBC2AAB2653007B93FC /* Frameworks */,
+				42E4DFBD2AAB2653007B93FC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				42E4DFC12AAB2653007B93FC /* PBXTargetDependency */,
+			);
+			name = flyfunairportsTests;
+			productName = flyfunairportsTests;
+			productReference = 42E4DFBF2AAB2653007B93FC /* flyfunairportsTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		42E4DFC82AAB2653007B93FC /* flyfunairportsUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 42E4DFD92AAB2653007B93FC /* Build configuration list for PBXNativeTarget "flyfunairportsUITests" */;
+			buildPhases = (
+				42E4DFC52AAB2653007B93FC /* Sources */,
+				42E4DFC62AAB2653007B93FC /* Frameworks */,
+				42E4DFC72AAB2653007B93FC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				42E4DFCB2AAB2653007B93FC /* PBXTargetDependency */,
+			);
+			name = flyfunairportsUITests;
+			productName = flyfunairportsUITests;
+			productReference = 42E4DFC92AAB2653007B93FC /* flyfunairportsUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -512,7 +720,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1420;
+				LastSwiftUpdateCheck = 1430;
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					4269B3E129BBC84C009891C6 = {
@@ -522,6 +730,18 @@
 					4269B3F129BBC84D009891C6 = {
 						CreatedOnToolsVersion = 14.2;
 						TestTargetID = 4269B3E129BBC84C009891C6;
+					};
+					42E4DFAE2AAB2651007B93FC = {
+						CreatedOnToolsVersion = 14.3.1;
+						LastSwiftMigration = 1430;
+					};
+					42E4DFBE2AAB2653007B93FC = {
+						CreatedOnToolsVersion = 14.3.1;
+						TestTargetID = 42E4DFAE2AAB2651007B93FC;
+					};
+					42E4DFC82AAB2653007B93FC = {
+						CreatedOnToolsVersion = 14.3.1;
+						TestTargetID = 42E4DFAE2AAB2651007B93FC;
 					};
 				};
 			};
@@ -549,6 +769,9 @@
 			targets = (
 				4269B3E129BBC84C009891C6 /* flyfunboarding */,
 				4269B3F129BBC84D009891C6 /* flyfunboardingTests */,
+				42E4DFAE2AAB2651007B93FC /* flyfunairports */,
+				42E4DFBE2AAB2653007B93FC /* flyfunairportsTests */,
+				42E4DFC82AAB2653007B93FC /* flyfunairportsUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -582,6 +805,30 @@
 				4215044A29EAFA54006D9B4C /* sample_validate_old.json in Resources */,
 				4215044929EAFA54006D9B4C /* sample_validate_new.json in Resources */,
 				4215044829EAFA54006D9B4C /* sample_keys.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42E4DFAD2AAB2651007B93FC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				42E4DFF02AAB3113007B93FC /* airports.db in Resources */,
+				42E4DFBA2AAB2653007B93FC /* Preview Assets.xcassets in Resources */,
+				42E4DFB62AAB2653007B93FC /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42E4DFBD2AAB2653007B93FC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42E4DFC72AAB2653007B93FC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -702,6 +949,36 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		42E4DFAB2AAB2651007B93FC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				42E4DFDE2AAB26D0007B93FC /* FlyFunAirportsApp.swift in Sources */,
+				42E4DFE32AAB2BB1007B93FC /* MapView.swift in Sources */,
+				422120B42AAB573600927780 /* AirportView.swift in Sources */,
+				422120B62AAB592D00927780 /* AirportModel.swift in Sources */,
+				422120B22AAB542500927780 /* AirportIcon.swift in Sources */,
+				42E4DFE02AAB2706007B93FC /* MainView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42E4DFBB2AAB2653007B93FC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				42E4DFC42AAB2653007B93FC /* flyfunairportsTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42E4DFC52AAB2653007B93FC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				42E4DFD02AAB2653007B93FC /* flyfunairportsUITestsLaunchTests.swift in Sources */,
+				42E4DFCE2AAB2653007B93FC /* flyfunairportsUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -709,6 +986,16 @@
 			isa = PBXTargetDependency;
 			target = 4269B3E129BBC84C009891C6 /* flyfunboarding */;
 			targetProxy = 4269B3F329BBC84D009891C6 /* PBXContainerItemProxy */;
+		};
+		42E4DFC12AAB2653007B93FC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 42E4DFAE2AAB2651007B93FC /* flyfunairports */;
+			targetProxy = 42E4DFC02AAB2653007B93FC /* PBXContainerItemProxy */;
+		};
+		42E4DFCB2AAB2653007B93FC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 42E4DFAE2AAB2651007B93FC /* flyfunairports */;
+			targetProxy = 42E4DFCA2AAB2653007B93FC /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -962,6 +1249,177 @@
 			};
 			name = Release;
 		};
+		42E4DFD12AAB2653007B93FC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = flyfunairports/flyfunairports.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"flyfunairports/Preview Content\"";
+				DEVELOPMENT_TEAM = M7QSSF3624;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "net.ro-z.flyfunairports";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "flyfunairports/flyfunairports-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		42E4DFD22AAB2653007B93FC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = flyfunairports/flyfunairports.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"flyfunairports/Preview Content\"";
+				DEVELOPMENT_TEAM = M7QSSF3624;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "net.ro-z.flyfunairports";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "flyfunairports/flyfunairports-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		42E4DFD32AAB2653007B93FC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M7QSSF3624;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "net.ro-z.flyfunairportsTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/flyfunairports.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/flyfunairports";
+			};
+			name = Debug;
+		};
+		42E4DFD42AAB2653007B93FC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M7QSSF3624;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "net.ro-z.flyfunairportsTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/flyfunairports.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/flyfunairports";
+			};
+			name = Release;
+		};
+		42E4DFD52AAB2653007B93FC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M7QSSF3624;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "net.ro-z.flyfunairportsUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = flyfunairports;
+			};
+			name = Debug;
+		};
+		42E4DFD62AAB2653007B93FC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M7QSSF3624;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "net.ro-z.flyfunairportsUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = flyfunairports;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -988,6 +1446,33 @@
 			buildConfigurations = (
 				4269B40A29BBC84D009891C6 /* Debug */,
 				4269B40B29BBC84D009891C6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		42E4DFD72AAB2653007B93FC /* Build configuration list for PBXNativeTarget "flyfunairports" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				42E4DFD12AAB2653007B93FC /* Debug */,
+				42E4DFD22AAB2653007B93FC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		42E4DFD82AAB2653007B93FC /* Build configuration list for PBXNativeTarget "flyfunairportsTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				42E4DFD32AAB2653007B93FC /* Debug */,
+				42E4DFD42AAB2653007B93FC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		42E4DFD92AAB2653007B93FC /* Build configuration list for PBXNativeTarget "flyfunairportsUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				42E4DFD52AAB2653007B93FC /* Debug */,
+				42E4DFD62AAB2653007B93FC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1135,6 +1620,35 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4269B42129BC75CA009891C6 /* XCRemoteSwiftPackageReference "rzutils" */;
 			productName = RZUtilsUniversal;
+		};
+		42E4DFE42AAB2BF9007B93FC /* RZFlight */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = RZFlight;
+		};
+		42E4DFE62AAB2BF9007B93FC /* RZUtils */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4269B42129BC75CA009891C6 /* XCRemoteSwiftPackageReference "rzutils" */;
+			productName = RZUtils;
+		};
+		42E4DFE82AAB2BF9007B93FC /* RZUtilsSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4269B42129BC75CA009891C6 /* XCRemoteSwiftPackageReference "rzutils" */;
+			productName = RZUtilsSwift;
+		};
+		42E4DFEA2AAB2BF9007B93FC /* KDTree */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4208E4C329BE5CB300E2A5FC /* XCRemoteSwiftPackageReference "KDTree" */;
+			productName = KDTree;
+		};
+		42E4DFEC2AAB2BF9007B93FC /* CodeScanner */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4207277529D80A9100D966CA /* XCRemoteSwiftPackageReference "CodeScanner" */;
+			productName = CodeScanner;
+		};
+		42E4DFEE2AAB2C80007B93FC /* RZExternalUniversal */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4247B9AA29D22CDF00B312AC /* XCRemoteSwiftPackageReference "rzexternal" */;
+			productName = RZExternalUniversal;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
