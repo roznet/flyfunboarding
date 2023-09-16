@@ -26,7 +26,7 @@
 
 import SwiftUI
 import OSLog
-
+import RZUtilsSwiftUI
 
 
 struct AirlineView: View {

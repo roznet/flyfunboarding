@@ -1,6 +1,6 @@
 //  MIT License
 //
-//  Created on 08/09/2023 for flyfunairports
+//  Created on 09/09/2023 for flyfunairports
 //
 //  Copyright (c) 2023 Brice Rosenzweig
 //
@@ -25,27 +25,30 @@
 
 
 
-import SwiftUI
-import RZFlight
+import Foundation
+import RZUtilsSwift
+import OSLog
+import CoreLocation
 
-struct AirportView: View {
-    var airport : Airport? = nil
-    var body: some View {
-        if let airport = self.airport {
-            VStack {
-                Text(airport.icao)
-                AirportIcon(airport: airport)
-            }
-        }else{
-            Text("Pending")
-                .background(Color.white)
-        }
+struct Settings {
+    static let shared = Settings()
+    
+    enum Key : String {
+        case last_latitude = "last_latitude"
+        case last_longitude = "last_longitude"
+        case last_airport_ident = "last_airport_ident"
     }
-}
-
-struct AirportView_Previews: PreviewProvider {
-    static var previews: some View {
-        let airports = AirportIcon_Previews.samples()
-        AirportView(airport: airports.first!)
+  
+    @UserStorage(key: Key.last_latitude, defaultValue: 51.50)
+    var lastLatitude : Double
+    @UserStorage(key: Key.last_longitude, defaultValue: 0.12)
+    var lastLongitude : Double
+    
+    @UserStorage(key: Key.last_airport_ident, defaultValue: "EGTF")
+    var lastAirportIdent : String
+    
+    var lastCoordinate : CLLocationCoordinate2D {
+        get { return CLLocationCoordinate2D(latitude: self.lastLatitude, longitude: self.lastLongitude) }
+        set { self.lastLatitude = newValue.latitude; self.lastLongitude = newValue.longitude }
     }
 }

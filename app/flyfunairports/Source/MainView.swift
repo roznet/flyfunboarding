@@ -27,15 +27,72 @@
 
 import SwiftUI
 import RZFlight
+import RZUtilsSwiftUI
+import OSLog
+
 
 struct MainView: View {
     var airport : Airport? = nil
+    
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    
     var body: some View {
+        switch horizontalSizeClass {
+        case .regular:
+            zStack
+        case .compact,.none:
+            zStack
+        case .some(_):
+            vStack
+        }
+    }
+    
+    var zStack : some View {
+        NavigationSplitView {
+            VStack {
+                SearchView()
+                //Spacer()
+                AirportView(airport: airport)
+                Spacer()
+            }
+        } detail: {
+            MapView()
+                .frame(maxWidth: .infinity)
+                .toolbar() {
+                    ToolbarItemGroup {
+                        Button {
+                            Logger.app.info("HIDE")
+                        } label: {
+                            Image(systemName: "eye.slash")
+                        }
+                        Button {
+                            Logger.app.info("CUSTOM")
+                        } label: {
+                            Image(systemName: "person.badge.shield.checkmark")
+                        }
+                    }
+                }
+        }
+    }
+    
+    var hStack : some View {
         HStack {
             AirportView(airport: airport)
-            .padding()
+                .frame(maxWidth: .infinity)
+                .padding()
             MapView()
+                .frame(maxWidth: .infinity)
         }
+    }
+    var vStack : some View {
+        VStack {
+            AirportView(airport: airport)
+                .frame(maxWidth: .infinity)
+                .padding()
+            MapView()
+                .frame(maxWidth: .infinity)
+        }
+
     }
 }
 

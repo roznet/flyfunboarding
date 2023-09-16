@@ -27,6 +27,7 @@ import SwiftUI
 
 struct ToggledTextField: View {
     @Binding var text : String
+    var title : String = ""
     @State private var isEditing: Bool = false
 
     var image : Image?
@@ -35,11 +36,11 @@ struct ToggledTextField: View {
     @ViewBuilder
     var textfield : some View {
         if self.isEditing {
-            TextField("Airline Name", text: $text)
+            TextField(title, text: $text)
                 .textFieldStyle(.roundedBorder)
                 .withClearButton()
         }else{
-            TextField("Airline Name", text: $text)
+            TextField(title, text: $text)
                 .textFieldStyle(.plain)
                 .disabled(true)
         }

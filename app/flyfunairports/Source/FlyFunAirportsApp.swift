@@ -31,6 +31,11 @@ import RZUtilsSwift
 import RZFlight
 import FMDB
 import RZExternalUniversal
+
+extension Notification.Name {
+    static let airportLoaded = Notification.Name("airportLoaded")
+}
+
 extension Airport {
     static func find(icao : String) -> Airport? {
         return try? Airport(db: FlyFunAirportsApp.db, ident: icao)
@@ -49,6 +54,7 @@ struct FlyFunAirportsApp : App {
         FlyFunAirportsApp.db.open()
         FlyFunAirportsApp.worker.async {
             FlyFunAirportsApp.knownAirports = KnownAirports(db: FlyFunAirportsApp.db)
+            NotificationCenter.default.post(name: .airportLoaded, object: nil)
         }
     }
     var body: some Scene {

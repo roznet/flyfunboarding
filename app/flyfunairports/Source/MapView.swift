@@ -27,34 +27,68 @@
 
 import SwiftUI
 import MapKit
+import OSLog
 import RZFlight
 
 struct MapView: View {
     @State var airport : Airport? = nil
+    @State var showAirports : [Airport] = []
     @State var region : MKCoordinateRegion = MKCoordinateRegion()
     var body: some View {
         VStack {
             if let airport = self.airport {
-                Map(coordinateRegion: $region )
+                Map(interactionModes: .all) {
+                    Annotation("EGTF", coordinate: airport.coord) {
+                        ZStack {
+                            AirportIcon(airport: airport)
+                                .frame(width: 50,height: 50)
+                        }
+                    }
+                    ForEach( self.showAirports ) { one in
+                        Annotation(one.icao, coordinate: one.coord) {
+                            ZStack {
+                                AirportIcon(airport: one)
+                                    .frame(width: 50, height: 50)
+                                    .onTapGesture {
+                                        Logger.app.info("Tapped \(one)")
+                                    }
+                            
+                            }
+                            
+                        }
+                    }
+                }
+                .mapControlVisibility(.visible)
                 
             }else {
                 Text("hi")
             }
         }.onAppear() {
             FlyFunAirportsApp.worker.async {
-                let found = FlyFunAirportsApp.knownAirports?.airport(icao: "EGTF")
-                if let found = found{
-                    DispatchQueue.main.async {
-                        self.changeAirport(airport: found)
-                    }
+                NotificationCenter.default.addObserver(forName: .airportLoaded, object: nil, queue: nil){ _ in
+                    let found = FlyFunAirportsApp.knownAirports?.airport(icao: Settings.shared.lastAirportIdent, ensureRunway: true)
+                    self.changeAirport(airport: found)
                 }
+                let found = FlyFunAirportsApp.knownAirports?.airport(icao: Settings.shared.lastAirportIdent, ensureRunway: true)
+                self.changeAirport(airport: found)
             }
         }
     }
     
-    func changeAirport(airport : Airport) {
-        self.airport = airport
-        self.region = MKCoordinateRegion(center: airport.coord, span: MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5))
+    func changeAirport(airport : Airport?) {
+        if let airport = airport {
+            DispatchQueue.main.async {
+                self.airport = airport
+                self.region = MKCoordinateRegion(center: airport.coord, span: MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5))
+            }
+            FlyFunAirportsApp.worker.async {
+                if let ppf = FlyFunAirportsApp.knownAirports?.frenchPPL() {
+                    DispatchQueue.main.async {
+                        self.showAirports = ppf
+                    }
+                }
+            }
+        }
     }
 }
 

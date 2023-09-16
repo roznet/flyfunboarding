@@ -1,6 +1,6 @@
 //  MIT License
 //
-//  Created on 08/09/2023 for flyfunairports
+//  Created on 16/09/2023 for flyfunairports
 //
 //  Copyright (c) 2023 Brice Rosenzweig
 //
@@ -25,27 +25,13 @@
 
 
 
-import SwiftUI
-import RZFlight
+import Foundation
+import OSLog
+import RZUtilsSwift
 
-struct AirportView: View {
-    var airport : Airport? = nil
-    var body: some View {
-        if let airport = self.airport {
-            VStack {
-                Text(airport.icao)
-                AirportIcon(airport: airport)
-            }
-        }else{
-            Text("Pending")
-                .background(Color.white)
-        }
-    }
-}
-
-struct AirportView_Previews: PreviewProvider {
-    static var previews: some View {
-        let airports = AirportIcon_Previews.samples()
-        AirportView(airport: airports.first!)
-    }
+extension Logger {
+    public static let app = RZLogger(subsystem: Bundle.main.bundleIdentifier!, category: "app")
+    public static let ui = RZLogger(subsystem: Bundle.main.bundleIdentifier!, category: "ui")
+    public static let sync = RZLogger(subsystem: Bundle.main.bundleIdentifier!, category: "sync")
+    public static let net = RZLogger(subsystem: Bundle.main.bundleIdentifier!, category: "net")
 }
