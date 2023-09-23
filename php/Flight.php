@@ -17,7 +17,7 @@ class Flight {
         'destination' => 'Airport',
         'gate' => 'string',
         'flightNumber'  => 'string',
-        'stats' => 'array',
+        'stats' => 'array<Stats>',
         'aircraft' => 'Aircraft',
         'scheduledDepartureDate' => 'DateTime',
         'flight_id' => 'integer',

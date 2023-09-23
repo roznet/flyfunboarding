@@ -10,7 +10,7 @@ class Aircraft {
     static array $jsonKeys = [
         'registration' => 'string', 
         'type' => 'string', 
-        'stats' => 'array',
+        'stats' => 'array<Stats>',
         'aircraft_id' => 'integer',
         'aircraft_identifier' => 'string'
     ];
