@@ -47,6 +47,15 @@
         }
       },
       {
+        "package": "RZUtils",
+        "repositoryURL": "https://github.com/roznet/rzutils",
+        "state": {
+          "branch": "master",
+          "revision": "10932a037c56f24704aab6ca3ad528f02ae69a0d",
+          "version": null
+        }
+      },
+      {
         "package": "SwiftUIKit",
         "repositoryURL": "https://github.com/youjinp/SwiftUIKit.git",
         "state": {

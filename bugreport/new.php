@@ -77,11 +77,11 @@ include_once('autoload.php');
 				}
 
 				//----------OUTPUT Main Message ConnectStats---------------------------------------//
-				function output_connectstats_main(){
+				function output_connectstats_main($bugreport){
 				?>
 						<p class="remark">Please fill in the form below to report your issue.</p>
-                    <p class="remark"> You can follow on the <a href="https://ro-z.net/blog">blog</a>, on twitter <a href="https://twitter.com/connectstats">@connectstats</a> or on <a href="https://www.facebook.com/Connectstats/">facebook</a> for updates on new issues.</p>
-						<p class="remark">Please also check the <a href="https://ro-z.net/blog/connectstats/troubleshoot/">troubleshooting section</a> of the help.</p>
+                    <p class="remark"> You can follow on the <a href="https://ro-z.net/blog">blog</a> for updates on new issues.</p>
+                    <p class="remark">Please also check the <a href="<?php print($bugreport->blog_section)?>">dedicated section</a> of the help.</p>
 
 				<?php   
 				}
@@ -91,7 +91,7 @@ include_once('autoload.php');
 				?>
                     <h3>Attention</h3>
                     <p class="remark"><?php print( $bugreport->message ) ?></p>
-                    <p class="remark">You can get updates on the <a href="https://ro-z.net/blog">blog</a>, follow on twitter <a href="https://twitter.com/ConnectStats">@connectstats</a> or on <a href="https://www.facebook.com/Connectstats/">facebook</a>  for updates.</p>
+                    <p class="remark">You can get updates on the <a href="https://ro-z.net/blog">blog</a> </p>
                     <p class="remark">Bug reporting was disabled on <?php print( $bugreport->message_date ) ?> and will be re-enabled when the situation is resolved</p>
 				<?php
 				}

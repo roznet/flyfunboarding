@@ -10,6 +10,7 @@ class bugreport
     public $debug = false;
     public $table_prefix;
     public $defaultApplicationName;
+    public $blog_section;
 
     var $table_status;
     var $table_minimum_version;
@@ -173,6 +174,8 @@ class bugreport
         $this->list_url = sprintf('https://%s/%s', $_SERVER['HTTP_HOST'], str_replace('new.php', 'list.php', $_SERVER['REQUEST_URI']));
         $this->updated = false;
 
+        $this->blog_section = $bug_config['blog_section'];
+
         if ($this->debug) {
             $this->verbose = true;
             print('DEBUG END</pre>' . PHP_EOL);
@@ -183,8 +186,6 @@ class bugreport
     {
         if ($this->debug) {
             $this->build_debug_row();
-            print_r(array_keys($_FILES));
-            print_r($_POST);
         }
 
         if (isset($_FILES['file'])) {
@@ -263,7 +264,6 @@ class bugreport
         $upload_dir = dirname( $full_file_path );
         if (!is_dir($upload_dir)) {
             if (!mkdir($upload_dir, 0777, true)) {
-                print($full_file_path);
                 die( sprintf('Internal misconfiguration, cannot make dir %s',$upload_dir) );
             }
         }
@@ -283,7 +283,6 @@ class bugreport
             if ($error == UPLOAD_ERR_OK) {
                 $tmp_name = $file["tmp_name"];
                 $saved_file_name = $this->saved_file_name( sprintf("bugreport_%s_%d.zip", $this->update_time->format("Ymd"), $this->new_id) );
-                print($saved_file_name);
                 $v = move_uploaded_file($tmp_name, $this->saved_file_full_path( $saved_file_name ));
                 if (!$v) {
                     $saved_file_name = sprintf('ERROR: Failed to save %s to %s', $tmp_name, $saved_file_name);
