@@ -153,7 +153,7 @@ if( $bugreport->updated ){
     }elseif($bugreport->disabled){
         output_connectstats_disabled($bugreport);
     }else{
-        output_connectstats_main();
+        output_connectstats_main($bugreport);
         output_form($bugreport);
     }
 }
