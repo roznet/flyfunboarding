@@ -16,6 +16,7 @@ class bugreport
     var $table_minimum_version;
     var $table_bugreports;
     var $email_bug_to;
+    var $email_bug_from;
 
     var $minimum_app_version;
     var $minimum_system_version;
@@ -79,10 +80,12 @@ class bugreport
         $this->sql = new sql_helper();
 
         $this->bug_data_directory = $bug_config['bug_data_directory'];
-        if (isset($bug_config['email_bug_to'])) {
+        if (isset($bug_config['email_bug_to']) && isset($bug_config['email_bug_from'])) {
             $this->email_bug_to = $bug_config['email_bug_to'];
+            $this->email_bug_from = $bug_config['email_bug_from'];
         } else {
             $this->email_bug_to = NULL;
+            $this->email_bug_from = NULL;
         }
 
         $this->verbose = isset($_GET['verbose']);
@@ -366,7 +369,8 @@ class bugreport
                     $msg .= sprintf("File Failed to save %s" . PHP_EOL, $row['filename']);
                 }
                 $subject = $this->application . " BugReport";
-                $headers = 'From: ConnectStats <bugreport@connectstats.app>' . "\r\n";
+
+                $headers = "From: {$this->application} <{$this->email_bug_from}>" . "\r\n";
                 if (strpos($row['email'], '@') === false) {
                     $subject = "$this->application Anonymous BugReport";
                 } else {
