@@ -152,7 +152,6 @@
 
 /* Begin PBXFileReference section */
 		4206701B2AAC554B000A08A2 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Settings.swift; path = Source/Settings.swift; sourceTree = "<group>"; };
-		4206701D2AAC58A3000A08A2 /* rzutils */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = rzutils; path = ../../../public/rzutils; sourceTree = "<group>"; };
 		420670202AADF004000A08A2 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchView.swift; path = Source/SearchView.swift; sourceTree = "<group>"; };
 		4207277829D85B7700D966CA /* PassengerEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PassengerEditView.swift; path = Source/PassengerEditView.swift; sourceTree = "<group>"; };
 		4207277A29D85BEC00D966CA /* PassengerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PassengerViewModel.swift; path = Source/PassengerViewModel.swift; sourceTree = "<group>"; };
@@ -234,7 +233,6 @@
 		42D940C729CEF5AB00622CF3 /* PassengerRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PassengerRowView.swift; path = Source/PassengerRowView.swift; sourceTree = "<group>"; };
 		42D940C929CEF86F00622CF3 /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StatsView.swift; path = Source/StatsView.swift; sourceTree = "<group>"; };
 		42DBF7EA2A2D2C7B005E0857 /* AirlineSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AirlineSettings.swift; path = Source/AirlineSettings.swift; sourceTree = "<group>"; };
-		42DF60882A7E4550005760C6 /* rzflight */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = rzflight; path = ../../../public/rzflight; sourceTree = "<group>"; };
 		42E4DFAF2AAB2651007B93FC /* flyfunairports.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = flyfunairports.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		42E4DFB52AAB2653007B93FC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		42E4DFB72AAB2653007B93FC /* flyfunairports.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = flyfunairports.entitlements; sourceTree = "<group>"; };
@@ -422,8 +420,6 @@
 		4269B3D929BBC84C009891C6 = {
 			isa = PBXGroup;
 			children = (
-				4206701D2AAC58A3000A08A2 /* rzutils */,
-				42DF60882A7E4550005760C6 /* rzflight */,
 				4269B3E429BBC84C009891C6 /* flyfunboarding */,
 				4269B3F529BBC84D009891C6 /* flyfunboardingTests */,
 				42E4DFB02AAB2651007B93FC /* flyfunairports */,

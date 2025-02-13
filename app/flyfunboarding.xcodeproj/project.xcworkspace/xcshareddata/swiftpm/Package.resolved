@@ -1,70 +1,78 @@
 {
-  "object": {
-    "pins": [
-      {
-        "package": "CodeScanner",
-        "repositoryURL": "https://github.com/twostraws/CodeScanner",
-        "state": {
-          "branch": "main",
-          "revision": "a147b225529e2c4183f89c773d797bc0edd1fdd8",
-          "version": null
-        }
-      },
-      {
-        "package": "FMDB",
-        "repositoryURL": "https://github.com/ccgus/fmdb",
-        "state": {
-          "branch": null,
-          "revision": "61e51fde7f7aab6554f30ab061cc588b28a97d04",
-          "version": "2.7.7"
-        }
-      },
-      {
-        "package": "Geomagnetism",
-        "repositoryURL": "https://github.com/roznet/Geomagnetism",
-        "state": {
-          "branch": null,
-          "revision": "74049c87ab58b6e004342a64de2884c60b0c4734",
-          "version": "1.0.0"
-        }
-      },
-      {
-        "package": "KDTree",
-        "repositoryURL": "https://github.com/Bersaelor/KDTree.git",
-        "state": {
-          "branch": null,
-          "revision": "490df2848e3f497bdc2edf61667f4ab669cff26e",
-          "version": "1.4.1"
-        }
-      },
-      {
-        "package": "RZExternal",
-        "repositoryURL": "https://github.com/roznet/rzexternal",
-        "state": {
-          "branch": "master",
-          "revision": "fcd1b1c083c0f24a1abb04c0e9f0d104a133b9eb",
-          "version": null
-        }
-      },
-      {
-        "package": "RZUtils",
-        "repositoryURL": "https://github.com/roznet/rzutils",
-        "state": {
-          "branch": "master",
-          "revision": "79386e111f1036c7827e555df047ba9e416e73b9",
-          "version": null
-        }
-      },
-      {
-        "package": "SwiftUIKit",
-        "repositoryURL": "https://github.com/youjinp/SwiftUIKit.git",
-        "state": {
-          "branch": "master",
-          "revision": "a83aedd996bcb59ca846346bb507f090a7350e34",
-          "version": null
-        }
+  "originHash" : "557367881b3b768bd5459fb09bad3c71ab8c8ad7e8433da193da40b60746ec5e",
+  "pins" : [
+    {
+      "identity" : "codescanner",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/twostraws/CodeScanner",
+      "state" : {
+        "branch" : "main",
+        "revision" : "a147b225529e2c4183f89c773d797bc0edd1fdd8"
       }
-    ]
-  },
-  "version": 1
+    },
+    {
+      "identity" : "fmdb",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ccgus/fmdb",
+      "state" : {
+        "revision" : "61e51fde7f7aab6554f30ab061cc588b28a97d04",
+        "version" : "2.7.7"
+      }
+    },
+    {
+      "identity" : "geomagnetism",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/roznet/Geomagnetism",
+      "state" : {
+        "revision" : "74049c87ab58b6e004342a64de2884c60b0c4734",
+        "version" : "1.0.0"
+      }
+    },
+    {
+      "identity" : "kdtree",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Bersaelor/KDTree.git",
+      "state" : {
+        "revision" : "490df2848e3f497bdc2edf61667f4ab669cff26e",
+        "version" : "1.4.1"
+      }
+    },
+    {
+      "identity" : "rzexternal",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/roznet/rzexternal",
+      "state" : {
+        "branch" : "master",
+        "revision" : "fcd1b1c083c0f24a1abb04c0e9f0d104a133b9eb"
+      }
+    },
+    {
+      "identity" : "rzflight",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/roznet/rzflight",
+      "state" : {
+        "branch" : "main",
+        "revision" : "25f9d1406ab94a9783cc3f37694060dcba1a4168"
+      }
+    },
+    {
+      "identity" : "rzutils",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/roznet/rzutils",
+      "state" : {
+        "branch" : "master",
+        "revision" : "4ddf6c0ae146b801b5fd62d1baed77caa7193c96"
+      }
+    },
+    {
+      "identity" : "swiftuikit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/youjinp/SwiftUIKit.git",
+      "state" : {
+        "branch" : "master",
+        "revision" : "a83aedd996bcb59ca846346bb507f090a7350e34"
+      }
+    }
+  ],
+  "version" : 3
 }

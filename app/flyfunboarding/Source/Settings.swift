@@ -68,7 +68,7 @@ struct Settings {
     @UserStorage(key: Key.airline_public_key, defaultValue: "")
     var airlinePublicKey : String
    
-    @CodableStorage(key: Key.user_full_name)
+    @CodableStorage(key: Key.user_full_name, defaultValue: nil)
     var userFullName : PersonNameComponents?
     
     @CodableSecureStorage(key: Key.user_identifier, service: Self.service)
@@ -77,7 +77,7 @@ struct Settings {
     @CodableSecureStorage(key: Key.airline_identifier, service: Self.service)
     var airlineIdentifier : String?
     
-    @CodableStorage(key: Key.airline_settings)
+    @CodableStorage(key: Key.airline_settings, defaultValue: nil)
     var currentAirlineSettings : Airline.Settings?
         
     var currentAirline : Airline? {
