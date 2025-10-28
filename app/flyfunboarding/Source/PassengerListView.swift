@@ -51,10 +51,8 @@ struct PassengerListView: View {
                 .toolbar {
                     ToolbarItemGroup(placement: .navigationBarTrailing) {
                         Button(action:add) {
-                            VStack {
-                                Image(systemName: "plus.circle")
-                                Text("Add")
-                            }
+                            Label("Add", systemImage: "plus.circle")
+                                .labelStyle(.titleAndIcon)
                         }
                     }
                 }
