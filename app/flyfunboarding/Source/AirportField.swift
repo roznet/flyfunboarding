@@ -61,6 +61,7 @@ struct AirportField: View {
             NotificationCenter.default.addObserver(forName: .airportWasPicked, object: nil, queue: nil){ _ in
                 DispatchQueue.main.async {
                     self.icao = self.choice
+                    self.sync()
                 }
             }
             NotificationCenter.default.addObserver(forName: .airportSourceChanged, object: nil, queue: nil){

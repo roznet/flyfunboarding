@@ -47,7 +47,7 @@ struct AirportPicker: View {
                 Text("Search Airport")
                 TextField("Search", text: $search)
                     .standardStyle()
-                    .onChange(of: search){ newValue in
+                    .onChange(of: search) { _, newValue in
                         self.matchedAiports.autocomplete(newValue)
                     }
                     .onAppear(){
@@ -84,3 +84,4 @@ struct AirportPicker: View {
         
     }
 }
+

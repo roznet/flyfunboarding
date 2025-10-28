@@ -65,7 +65,7 @@ struct AccountAndSettingsView: View {
                                 TextField("Custom Label", text: $airlineViewModel.customLabel)
                                     .standardStyle()
                                     .onChange(of: airlineViewModel.customLabel) {
-                                        _ in
+                                        _,_ in
                                         self.airlineViewModel.settingsChanged()
                                     }
                             
@@ -74,7 +74,7 @@ struct AccountAndSettingsView: View {
                             .disabled(!self.airlineViewModel.customLabelEnabled)
                         }
                         .onChange(of: airlineViewModel.customLabelEnabled){
-                            _ in
+                            _,_ in
                             self.airlineViewModel.settingsChanged()
                         }
                             
@@ -82,17 +82,17 @@ struct AccountAndSettingsView: View {
                     VStack {
                         ColorPicker("Boarding Pass Color", selection: $airlineViewModel.bgColor)
                             .onChange(of: airlineViewModel.bgColor) {
-                                _ in
+                                _,_ in
                                 self.airlineViewModel.settingsChanged()
                             }
                         ColorPicker("Label Color", selection: $airlineViewModel.labelColor)
                             .onChange(of: airlineViewModel.labelColor) {
-                                _ in
+                                _,_ in
                                 self.airlineViewModel.settingsChanged()
                             }
                         ColorPicker("Text Color", selection: $airlineViewModel.textColor)
                             .onChange(of: airlineViewModel.textColor) {
-                                _ in
+                                _,_ in
                                 self.airlineViewModel.settingsChanged()
                             }
                     }.padding()

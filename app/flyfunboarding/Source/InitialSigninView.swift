@@ -56,7 +56,7 @@ struct InitialSigninView: View {
                     TextField(NSLocalizedString("My Airline", comment: ""), text: $airlineName)
                         .textFieldStyle(.roundedBorder)
                         .onChange(of: airlineName) {
-                            value in
+                            _,value in
                             isTextFieldEmpty = value.isEmpty
                         }
                 }

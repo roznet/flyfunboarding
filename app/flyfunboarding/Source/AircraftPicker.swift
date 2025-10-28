@@ -45,7 +45,7 @@ struct AircraftPicker: View {
                     .standardFieldLabel()
                 TextField("Search", text: $search )
                     .standardStyle()
-                    .onChange(of: search) { newValue in
+                    .onChange(of: search) { _,newValue in
                         matchedAircrafts.autocomplete(newValue)
                     }
             }
