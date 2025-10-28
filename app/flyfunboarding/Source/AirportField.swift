@@ -77,12 +77,13 @@ struct AirportField: View {
     }
     
     func sync(){
+        let currentICAO = self.icao
         FlyFunBoardingApp.worker.async {
-            if let airport = Airport.find(icao: self.icao) {
+            if let airport = Airport.find(icao: currentICAO) {
                 DispatchQueue.main.async {
                     self.name = airport.name
                     self.choice = self.icao
-                    Settings.shared.notice(lastAirportIdent: self.icao)
+                    Settings.shared.notice(lastAirportIdent: currentICAO)
                 }
             }
         }
