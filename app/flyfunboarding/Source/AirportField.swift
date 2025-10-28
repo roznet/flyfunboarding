@@ -50,6 +50,7 @@ struct AirportField: View {
                 VStack {
                     TextField("ICAO", text: $choice)
                         .standardStyle()
+                        .disabled(true)
                     Text(name)
                         .standardInfo()
                 }

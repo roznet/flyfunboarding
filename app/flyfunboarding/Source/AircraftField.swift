@@ -39,6 +39,7 @@ struct AircraftField: View {
             NavigationLink(destination: AircraftPicker(aircraft: $choice)) {
                 TextField("Registration", text: $reg)
                     .standardStyle()
+                    .disabled(true)
             }
         }.onAppear() {
             reg = aircraft.registration
