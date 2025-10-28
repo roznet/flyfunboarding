@@ -59,10 +59,8 @@ struct TicketListView: View {
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button(action: issue) {
-                        VStack {
-                            Image(systemName: "plus.circle")
-                            Text("New")
-                        }
+                        Label("Add", systemImage: "plus.circle")
+                            .labelStyle(.titleAndIcon)
                     }
                 }
             }
