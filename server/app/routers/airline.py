@@ -114,10 +114,23 @@ async def get_airline_keys(
     Get airline's public keys.
 
     Matches PHP: GET /v1/airline/{airline_identifier}/keys
+    Returns array of public key objects.
     """
-    # TODO: Implement signature service and return public keys
-    # For now, return empty array to match structure
-    return []
+    from app.services.signature_service import SignatureService
+    
+    # Get apple_identifier from airline data
+    apple_identifier = airline.airline_data.get("apple_identifier")
+    if not apple_identifier:
+        return []
+    
+    # Retrieve or create signature service for this airline
+    signer = SignatureService.retrieve_or_create(apple_identifier)
+    
+    # Export public keys (returns dict with 'baseName' and 'publicKey')
+    public_keys = signer.export_public_keys()
+    
+    # Return as array (matching PHP structure)
+    return [public_keys]
 
 
 @router.delete("/{airline_identifier}", status_code=status.HTTP_200_OK)

@@ -31,7 +31,14 @@ class BaseRepository(Generic[T]):
         self, identifier: str, airline_id: int, db: AsyncSession
     ) -> T | None:
         """Get entity by identifier (scoped to airline)."""
-        query = select(self.table).where(
+        # Explicitly select only the columns that exist in the table
+        query = select(
+            self.table.c[self._id_column],
+            self.table.c[self._identifier_column],
+            self.table.c.json_data,
+            self.table.c.airline_id,
+            self.table.c.modified,
+        ).where(
             self.table.c[self._identifier_column] == identifier,
             self.table.c.airline_id == airline_id,
         )
@@ -48,7 +55,14 @@ class BaseRepository(Generic[T]):
         Used for public endpoints (e.g., boarding pass display).
         Matches PHP directGet() pattern.
         """
-        query = select(self.table).where(
+        # Explicitly select only the columns that exist in the table
+        query = select(
+            self.table.c[self._id_column],
+            self.table.c[self._identifier_column],
+            self.table.c.json_data,
+            self.table.c.airline_id,
+            self.table.c.modified,
+        ).where(
             self.table.c[self._identifier_column] == identifier
         )
         result = await db.execute(query)
@@ -59,7 +73,14 @@ class BaseRepository(Generic[T]):
         self, airline_id: int, db: AsyncSession
     ) -> list[T]:
         """List all entities for airline."""
-        query = select(self.table).where(
+        # Explicitly select only the columns that exist in the table
+        query = select(
+            self.table.c[self._id_column],
+            self.table.c[self._identifier_column],
+            self.table.c.json_data,
+            self.table.c.airline_id,
+            self.table.c.modified,
+        ).where(
             self.table.c.airline_id == airline_id
         )
         result = await db.execute(query)
@@ -74,7 +95,14 @@ class BaseRepository(Generic[T]):
         Matches PHP listStats() pattern.
         """
         table_ref = self.table
-        select_cols = [table_ref]
+        # Explicitly select only the columns that exist in the table
+        select_cols = [
+            table_ref.c[self._id_column],
+            table_ref.c[self._identifier_column],
+            table_ref.c.json_data,
+            table_ref.c.airline_id,
+            table_ref.c.modified,
+        ]
 
         joins = []
         for join_table in join_tables:
@@ -156,11 +184,23 @@ class BaseRepository(Generic[T]):
         return self.model_class.model_validate(json_data)
 
 
-# Concrete repositories will be created as models are implemented
-# Example:
-# class AircraftRepository(BaseRepository["Aircraft"]):
-#     def __init__(self):
-#         from app.database.tables import aircrafts
-#         from app.models.aircraft import Aircraft
-#         super().__init__(aircrafts, Aircraft)
+# Concrete repositories
+class AircraftRepository(BaseRepository):
+    """Repository for Aircraft entities."""
+    pass
+
+
+class PassengerRepository(BaseRepository):
+    """Repository for Passenger entities."""
+    pass
+
+
+class FlightRepository(BaseRepository):
+    """Repository for Flight entities."""
+    pass
+
+
+class TicketRepository(BaseRepository):
+    """Repository for Ticket entities."""
+    pass
 
