@@ -10,7 +10,7 @@ from app.schemas.flight import FlightResponse
 class TicketCreate(BaseModel):
     """Schema for creating a ticket."""
     seat_number: str = Field(..., alias="seatNumber")
-    custom_label_value: Optional[str] = Field(None, alias="customLabelValue", default="")
+    custom_label_value: Optional[str] = Field(default="1", alias="customLabelValue")
 
     class Config:
         populate_by_name = True

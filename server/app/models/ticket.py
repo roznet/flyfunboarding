@@ -4,6 +4,7 @@ Ticket domain model.
 Matches PHP Ticket class structure and JSON serialization.
 """
 from typing import Optional
+from pydantic import Field
 from app.models.base import BaseJsonModel
 from app.models.passenger import Passenger
 from app.models.flight import Flight
@@ -25,14 +26,14 @@ class Ticket(BaseJsonModel):
     """
     passenger: Passenger
     flight: Flight
-    seat_number: str
+    seat_number: str = Field(..., alias="seatNumber")
 
     # Fields with defaults (excluded from JSON)
-    ticket_id: int = -1
-    flight_id: int = -1
-    passenger_id: int = -1
-    ticket_identifier: str = ""
-    custom_label_value: str = ""
+    ticket_id: int = Field(-1, alias="ticketId")
+    flight_id: int = Field(-1, alias="flightId")
+    passenger_id: int = Field(-1, alias="passengerId")
+    ticket_identifier: str = Field("", alias="ticketIdentifier")
+    custom_label_value: str = Field("1", alias="customLabelValue")
 
     def unique_identifier(self) -> dict:
         """Add ticket identifiers to JSON output if not default."""

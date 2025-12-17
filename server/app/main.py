@@ -35,7 +35,7 @@ register_exception_handlers(app)
 # Note: CORS not needed - iOS app doesn't use CORS, web pages are same-origin
 
 # Include routers
-from app.routers import airline, aircraft, passenger, flight
+from app.routers import airline, aircraft, passenger, flight, ticket, settings
 
 app.include_router(airline.router, prefix="/v1/airline", tags=["airline"])
 
@@ -54,6 +54,16 @@ app.include_router(
     flight.router,
     prefix="/v1/airline/{airline_identifier}/flight",
     tags=["flight"],
+)
+app.include_router(
+    ticket.router,
+    prefix="/v1/airline/{airline_identifier}/ticket",
+    tags=["ticket"],
+)
+app.include_router(
+    settings.router,
+    prefix="/v1/airline/{airline_identifier}/settings",
+    tags=["settings"],
 )
 
 # TODO: Add remaining routers as they are implemented

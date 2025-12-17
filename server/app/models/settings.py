@@ -4,6 +4,7 @@ Settings domain model.
 Matches PHP Settings class structure and JSON serialization.
 """
 from typing import Optional
+from pydantic import Field
 from app.models.base import BaseJsonModel
 
 
@@ -18,11 +19,11 @@ class Settings(BaseJsonModel):
     - customLabel: str (default 'Boarding Group')
     - customLabelEnabled: bool (default True)
     """
-    background_color: str = "rgb(189,144,71)"
-    foreground_color: str = "rgb(0,0,0)"
-    label_color: str = "rgb(255,255,255)"
-    custom_label: str = "Boarding Group"
-    custom_label_enabled: bool = True
+    background_color: str = Field("rgb(189,144,71)", alias="backgroundColor")
+    foreground_color: str = Field("rgb(0,0,0)", alias="foregroundColor")
+    label_color: str = Field("rgb(255,255,255)", alias="labelColor")
+    custom_label: str = Field("Boarding Group", alias="customLabel")
+    custom_label_enabled: bool = Field(True, alias="customLabelEnabled")
 
     def to_hex(self, color: str) -> Optional[str]:
         """
