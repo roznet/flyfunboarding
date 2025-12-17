@@ -5,6 +5,7 @@ Matches PHP Flight class structure and JSON serialization.
 """
 from datetime import datetime
 from typing import Optional
+from pydantic import Field
 from app.models.base import BaseJsonModel
 from app.models.airport import Airport
 from app.models.aircraft import Aircraft
@@ -29,15 +30,15 @@ class Flight(BaseJsonModel):
     origin: Airport
     destination: Airport
     gate: str
-    flight_number: str
+    flight_number: str = Field(..., alias="flightNumber")
     aircraft: Aircraft
-    scheduled_departure_date: datetime
+    scheduled_departure_date: datetime = Field(..., alias="scheduledDepartureDate")
 
     # Fields with defaults (excluded from JSON)
-    flight_id: int = -1
-    flight_identifier: str = ""
-    aircraft_id: int = -1
-    stats: list[Stats] = []
+    flight_id: int = Field(-1, alias="flightId")
+    flight_identifier: str = Field("", alias="flightIdentifier")
+    aircraft_id: int = Field(-1, alias="aircraftId")
+    stats: list[Stats] = Field([], alias="stats")
 
     def unique_identifier(self) -> dict:
         """Add flight identifiers to JSON output if not default."""

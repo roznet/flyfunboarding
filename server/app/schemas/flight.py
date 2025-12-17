@@ -14,8 +14,8 @@ class FlightCreate(BaseModel):
     destination: AirportSchema
     gate: str
     flight_number: str = Field(..., alias="flightNumber")
-    aircraft: AircraftResponse
     scheduled_departure_date: datetime = Field(..., alias="scheduledDepartureDate")
+    # Note: aircraft is not in the request body - it comes from the path parameter
 
     class Config:
         populate_by_name = True
