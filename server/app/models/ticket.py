@@ -57,11 +57,11 @@ class Ticket(BaseJsonModel):
         Matches PHP: Ticket->hasCustomLabel()
         
         Args:
-            airline_settings: Settings object (if None, returns False)
+            airline_settings: Settings dict (if None, returns False)
         """
         if airline_settings is None:
             return False
-        return airline_settings.custom_label_enabled and self.custom_label_value != ""
+        return airline_settings.get('customLabelEnabled', False) and bool(self.custom_label_value)
 
     def signature(self, signature_service) -> dict:
         """

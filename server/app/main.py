@@ -106,6 +106,10 @@ app.include_router(
 # # Web pages (user-facing HTML - no auth required)
 # app.include_router(pages.router, tags=["pages"])
 
+# Web pages (user-facing HTML - no auth required)
+from app.routers import pages
+app.include_router(pages.router, prefix="/pages", tags=["pages"])
+
 # Static files (images, CSS, JS)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
