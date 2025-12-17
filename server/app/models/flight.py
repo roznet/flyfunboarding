@@ -53,3 +53,42 @@ class Flight(BaseJsonModel):
             result["stats"] = [stat.to_json() for stat in self.stats]
         return result
 
+    def has_flight_number(self) -> bool:
+        """
+        Check if flight has a valid flight number.
+        
+        Matches PHP: Flight->hasFlightNumber()
+        """
+        return (
+            self.flight_number is not None
+            and self.flight_number != ""
+            and self.flight_number != self.aircraft.registration
+        )
+
+    def format_scheduled_departure_date(self) -> str:
+        """
+        Format scheduled departure date with timezone.
+        
+        Matches PHP: Flight->formatScheduledDepartureDate()
+        Returns: 'D M d, H:i' format (e.g., 'Wed Jun 19, 08:00')
+        """
+        from datetime import timezone
+        from zoneinfo import ZoneInfo
+        
+        date_to_display = self.scheduled_departure_date
+        
+        # Apply timezone if origin has timezone_identifier
+        if self.origin.timezone_identifier:
+            try:
+                tz = ZoneInfo(self.origin.timezone_identifier)
+                # Convert to timezone-aware if needed
+                if date_to_display.tzinfo is None:
+                    date_to_display = date_to_display.replace(tzinfo=timezone.utc)
+                date_to_display = date_to_display.astimezone(tz)
+            except Exception:
+                # If timezone is invalid, use as-is
+                pass
+        
+        # Format: 'D M d, H:i' (e.g., 'Wed Jun 19, 08:00')
+        return date_to_display.strftime('%a %b %d, %H:%M')
+

@@ -35,9 +35,29 @@ register_exception_handlers(app)
 # Note: CORS not needed - iOS app doesn't use CORS, web pages are same-origin
 
 # Include routers
-from app.routers import airline, aircraft, passenger, flight, ticket, settings
+from app.routers import airline, aircraft, passenger, flight, ticket, settings, status
 
 app.include_router(airline.router, prefix="/v1/airline", tags=["airline"])
+
+# System-level routers (no airline prefix)
+app.include_router(status.router, prefix="/v1/status", tags=["status"])
+
+# Airport router (public, no auth required)
+from app.routers import airport
+app.include_router(airport.router, prefix="/v1/airport", tags=["airport"])
+
+# Boarding Pass routers
+from app.routers import boarding_pass
+app.include_router(
+    boarding_pass.router,
+    prefix="/v1/airline/{airline_identifier}/boardingpass",
+    tags=["boardingpass"],
+)
+app.include_router(
+    boarding_pass.public_router,
+    prefix="/v1/boardingpass",
+    tags=["boardingpass"],
+)
 
 # Airline-scoped routers (require airline_identifier in path)
 app.include_router(

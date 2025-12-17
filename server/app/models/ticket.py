@@ -50,3 +50,31 @@ class Ticket(BaseJsonModel):
             result["customLabelValue"] = self.custom_label_value
         return result
 
+    def has_custom_label(self, airline_settings: Optional[dict] = None) -> bool:
+        """
+        Check if ticket has custom label enabled.
+        
+        Matches PHP: Ticket->hasCustomLabel()
+        
+        Args:
+            airline_settings: Settings object (if None, returns False)
+        """
+        if airline_settings is None:
+            return False
+        return airline_settings.custom_label_enabled and self.custom_label_value != ""
+
+    def signature(self, signature_service) -> dict:
+        """
+        Get ticket signature for barcode.
+        
+        Matches PHP: Ticket->signature()
+        
+        Args:
+            signature_service: SignatureService instance for the airline
+        """
+        signature_digest = signature_service.signature_digest(self.ticket_identifier)
+        return {
+            'ticket': self.ticket_identifier,
+            'signatureDigest': signature_digest
+        }
+
