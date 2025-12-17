@@ -44,7 +44,7 @@ This document outlines the design for migrating the Fly Fun Boarding server from
 - FastAPI framework
 - MySQL 8.0 database (maintained)
 - **Database Approach**: SQLAlchemy Core (query building) + raw SQL for complex queries
-- PKPass library: `passes-rs-py` (confirmed)
+- PKPass library: `passes-rs-py` ✅
 - `cryptography` library for OpenSSL operations
 - `pydantic` for data validation and serialization
 - Async/await support for better performance
@@ -146,103 +146,150 @@ CREATE TABLE {Entity}s (
 
 ```
 server/
-├── main.py                 # FastAPI app entry point
+├── pyproject.toml          # Modern Python packaging (replaces requirements.txt)
 ├── .env                    # Environment variables (not in git)
 ├── .env.sample             # Environment variables template
-├── config.py               # Configuration loader (uses pydantic-settings)
-├── database.py            # Database connection and session management
-├── requirements.txt        # Python dependencies
-├── README.md              # Setup and development instructions
-├── .gitignore            # Git ignore rules
-├── Dockerfile             # Docker container definition
-├── docker-compose.yml     # Docker Compose configuration (optional)
-├── Caddyfile              # Caddy reverse proxy configuration
-├── models/
+├── README.md               # Setup and development instructions
+├── .gitignore              # Git ignore rules
+├── Dockerfile              # Docker container definition
+├── docker-compose.yml      # Docker Compose configuration (optional)
+├── Caddyfile               # Caddy reverse proxy configuration
+│
+├── app/                    # Application package
 │   ├── __init__.py
-│   ├── aircraft.py
-│   ├── airline.py
-│   ├── airport.py
-│   ├── flight.py
-│   ├── passenger.py
-│   ├── ticket.py
-│   └── settings.py
-├── schemas/
-│   ├── __init__.py
-│   ├── aircraft.py        # Pydantic schemas for request/response
-│   ├── airline.py
-│   ├── flight.py
-│   ├── passenger.py
-│   └── ticket.py
-├── routers/
-│   ├── __init__.py
-│   ├── aircraft.py
-│   ├── airline.py
-│   ├── airport.py
-│   ├── boarding_pass.py
-│   ├── flight.py
-│   ├── passenger.py
-│   ├── ticket.py
-│   ├── settings.py
-│   ├── status.py
-│   ├── db.py
-│   └── pages.py              # Web pages (HTML) for user-facing boarding pass display
-├── services/
-│   ├── __init__.py
-│   ├── database_service.py    # Database operations
-│   ├── pkpass_service.py      # PKPass generation
-│   ├── signature_service.py   # Cryptographic operations
-│   └── auth_service.py        # Authentication logic
-├── middleware/
-│   ├── __init__.py
-│   └── airline_auth.py        # Airline authentication middleware
-└── utils/
+│   ├── main.py             # FastAPI app entry point
+│   ├── config.py           # Configuration loader (pydantic-settings)
+│   ├── dependencies.py     # Shared FastAPI dependencies (airline auth, db session)
+│   │
+│   ├── database/           # Database layer
+│   │   ├── __init__.py
+│   │   ├── connection.py   # Engine, async session factory
+│   │   ├── tables.py       # SQLAlchemy Core table definitions
+│   │   └── repository.py   # Generic CRUD repository pattern
+│   │
+│   ├── models/             # Domain models (Pydantic BaseModels)
+│   │   ├── __init__.py
+│   │   ├── base.py         # BaseJsonModel with PHP-compatible serialization
+│   │   ├── aircraft.py
+│   │   ├── airline.py
+│   │   ├── flight.py
+│   │   ├── passenger.py
+│   │   ├── ticket.py
+│   │   ├── settings.py
+│   │   └── stats.py
+│   │
+│   ├── schemas/            # API request/response schemas
+│   │   ├── __init__.py
+│   │   ├── aircraft.py
+│   │   ├── airline.py
+│   │   ├── flight.py
+│   │   ├── passenger.py
+│   │   ├── ticket.py
+│   │   └── common.py       # Shared response schemas (errors, pagination)
+│   │
+│   ├── routers/            # API route handlers
+│   │   ├── __init__.py
+│   │   ├── aircraft.py
+│   │   ├── airline.py
+│   │   ├── airport.py
+│   │   ├── boarding_pass.py
+│   │   ├── flight.py
+│   │   ├── passenger.py
+│   │   ├── ticket.py
+│   │   ├── settings.py
+│   │   ├── status.py
+│   │   ├── db.py
+│   │   └── pages.py        # Web pages (HTML) for boarding pass display
+│   │
+│   ├── services/           # Business logic layer
+│   │   ├── __init__.py
+│   │   ├── pkpass_service.py     # PKPass generation
+│   │   ├── signature_service.py  # Cryptographic operations
+│   │   └── airport_service.py    # Airport data via euro_aip
+│   │
+│   └── core/               # Core utilities
+│       ├── __init__.py
+│       ├── exceptions.py   # Custom HTTP exceptions
+│       ├── json_helper.py  # PHP-compatible JSON serialization
+│       └── localization.py # Language detection (babel)
+│
+├── templates/              # Jinja2 HTML templates
+│   ├── base.html
+│   ├── boarding_pass.html
+│   ├── boarding_pass_card.html
+│   └── disclaimers/
+│       ├── disclaimer_en.html
+│       ├── disclaimer_fr.html
+│       ├── disclaimer_de.html
+│       └── disclaimer_es.html
+│
+├── static/                 # Static files (served by FastAPI)
+│   ├── css/
+│   ├── js/
+│   │   └── qrcode.min.js
+│   └── images/
+│       ├── logo.png
+│       ├── logo@2x.png
+│       ├── icon.png
+│       ├── icon@2x.png
+│       └── AddToApple/
+│           ├── en/
+│           ├── fr/
+│           ├── de/
+│           └── es/
+│
+└── tests/                  # Test suite
     ├── __init__.py
-    ├── json_helper.py         # JSON serialization utilities
-    └── localization.py         # Language detection and localization helpers
-└── templates/                  # Jinja2 HTML templates
-    ├── boarding_pass.html      # Main boarding pass page
-    ├── boarding_pass_card.html # Boarding pass card component
-    └── base.html               # Base template
-└── static/                     # Static files (served by FastAPI)
-    ├── css/
-    ├── js/
-    │   └── qrcode.min.js      # QR code generation library (or use CDN)
-    └── images/                 # Images copied from ../images/
-        ├── logo.png
-        ├── logo@2x.png
-        ├── icon.png
-        ├── icon@2x.png
-        ├── airplane@2x.png
-        └── AddToApple/         # Language-specific badges
-            ├── en/
-            ├── fr/
-            ├── de/
-            └── es/
+    ├── conftest.py         # Pytest fixtures
+    ├── test_airline.py
+    ├── test_aircraft.py
+    ├── test_flight.py
+    ├── test_passenger.py
+    ├── test_ticket.py
+    └── test_boarding_pass.py
 ```
 
 ### 2. FastAPI Implementation Details
 
-#### 2.1 Main Application (`main.py`)
+#### 2.1 Main Application (`app/main.py`)
 
 ```python
-from fastapi import FastAPI, Request
+from contextlib import asynccontextmanager
+from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-from routers import (
+
+from app.config import settings
+from app.database.connection import engine
+from app.routers import (
     aircraft, airline, airport, boarding_pass,
-    flight, passenger, ticket, settings, status, db, pages
+    flight, passenger, ticket, settings as settings_router,
+    status, db, pages
 )
-from middleware.airline_auth import AirlineAuthMiddleware
+from app.core.exceptions import register_exception_handlers
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Application lifespan - startup and shutdown events."""
+    # Startup: verify database connection
+    async with engine.begin() as conn:
+        await conn.execute("SELECT 1")
+    yield
+    # Shutdown: dispose engine
+    await engine.dispose()
+
 
 app = FastAPI(
     title="Fly Fun Boarding API",
     version="1.0.0",
-    description="API for Fly Fun Boarding app"
+    description="API for Fly Fun Boarding app",
+    lifespan=lifespan,
 )
 
-# Note: CORS not needed - iOS app doesn't use CORS, web pages are same-origin
+# Register custom exception handlers
+register_exception_handlers(app)
 
-# Airline authentication middleware
-app.add_middleware(AirlineAuthMiddleware)
+# Note: CORS not needed - iOS app doesn't use CORS, web pages are same-origin
 
 # Include routers
 # Note: Using path-based routing directly (iOS app already uses paths, Apache was remapping to query params)
@@ -252,16 +299,25 @@ app.include_router(flight.router, prefix="/v1/airline/{airline_identifier}/fligh
 app.include_router(passenger.router, prefix="/v1/airline/{airline_identifier}/passenger", tags=["passenger"])
 app.include_router(ticket.router, prefix="/v1/airline/{airline_identifier}/ticket", tags=["ticket"])
 app.include_router(boarding_pass.router, prefix="/v1/airline/{airline_identifier}/boardingpass", tags=["boardingpass"])
-app.include_router(settings.router, prefix="/v1/airline/{airline_identifier}/settings", tags=["settings"])
+app.include_router(settings_router.router, prefix="/v1/airline/{airline_identifier}/settings", tags=["settings"])
 app.include_router(airport.router, prefix="/v1/airport", tags=["airport"])
 app.include_router(status.router, prefix="/v1/status", tags=["status"])
 app.include_router(db.router, prefix="/v1/db", tags=["db"])
 
-# Web pages (user-facing HTML)
+# Direct boarding pass access (no airline prefix - determines airline from ticket)
+app.include_router(boarding_pass.public_router, prefix="/v1/boardingpass", tags=["boardingpass"])
+
+# Web pages (user-facing HTML - no auth required)
 app.include_router(pages.router, tags=["pages"])
 
 # Static files (images, CSS, JS)
 app.mount("/static", StaticFiles(directory="static"), name="static")
+
+
+@app.get("/health")
+async def health_check():
+    """Health check endpoint for load balancers and monitoring."""
+    return {"status": "healthy"}
 ```
 
 #### 2.2 Database Layer
@@ -315,42 +371,140 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 - Still allows raw SQL when needed (via `text()`)
 - Matches your use case: fixed schema, JSON storage, explicit control
 
-#### 2.3 Authentication Middleware
+#### 2.3 Authentication via Dependency Injection (Recommended)
+
+**Why Dependency Injection over Middleware:**
+- ✅ Type-safe: IDE autocomplete and type checking
+- ✅ Testable: Easy to mock in unit tests
+- ✅ Explicit: Clear which endpoints require auth
+- ✅ Flexible: Different auth requirements per endpoint
 
 ```python
-# middleware/airline_auth.py
-from fastapi import Request, HTTPException, status
-from typing import Optional
-from services.auth_service import AuthService
+# app/dependencies.py
+from typing import Annotated
+from fastapi import Depends, Header, Path, HTTPException, status
+from sqlalchemy.ext.asyncio import AsyncSession
 
-class AirlineAuthMiddleware:
-    async def __call__(self, request: Request, call_next):
-        # Extract airline_identifier from path if present
-        path_parts = request.url.path.split('/')
-        
-        if 'airline' in path_parts:
-            airline_idx = path_parts.index('airline')
-            if airline_idx + 1 < len(path_parts):
-                airline_identifier = path_parts[airline_idx + 1]
-                
-                # Validate airline and bearer token
-                airline = await AuthService.validate_airline(
-                    airline_identifier,
-                    request.headers.get("Authorization")
-                )
-                
-                if not airline:
-                    raise HTTPException(
-                        status_code=401,
-                        detail="Invalid Bearer Token"
-                    )
-                
-                # Store airline in request state
-                request.state.airline = airline
-                request.state.airline_id = airline.airline_id
-        
-        response = await call_next(request)
-        return response
+from app.database.connection import get_db
+from app.database.repository import AirlineRepository
+from app.models.airline import Airline
+
+
+class AirlineContext:
+    """Authenticated airline context for request."""
+    def __init__(self, airline: Airline, airline_id: int):
+        self.airline = airline
+        self.airline_id = airline_id
+
+
+async def get_airline_context(
+    airline_identifier: Annotated[str, Path(description="Airline identifier from URL")],
+    authorization: Annotated[str | None, Header()] = None,
+    db: Annotated[AsyncSession, Depends(get_db)] = None,
+) -> AirlineContext:
+    """
+    Dependency that validates airline authentication.
+    Extracts airline_identifier from path and validates Bearer token.
+    """
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid Bearer Token"
+        )
+
+    token = authorization.removeprefix("Bearer ")
+
+    repo = AirlineRepository(db)
+    airline = await repo.get_by_identifier(airline_identifier)
+
+    if not airline:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Airline not found"
+        )
+
+    if airline.apple_identifier != token:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid Bearer Token"
+        )
+
+    return AirlineContext(airline, airline.airline_id)
+
+
+async def get_system_auth(
+    authorization: Annotated[str | None, Header()] = None,
+) -> bool:
+    """Dependency for system-level authentication (db setup, etc.)."""
+    from app.config import settings
+
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="System authentication required")
+
+    token = authorization.removeprefix("Bearer ")
+    if token != settings.SECRET:
+        raise HTTPException(status_code=401, detail="Invalid system token")
+
+    return True
+
+
+# Type aliases for cleaner router signatures
+CurrentAirline = Annotated[AirlineContext, Depends(get_airline_context)]
+SystemAuth = Annotated[bool, Depends(get_system_auth)]
+DbSession = Annotated[AsyncSession, Depends(get_db)]
+```
+
+**Usage in Routers:**
+```python
+# app/routers/aircraft.py
+from fastapi import APIRouter
+from app.dependencies import CurrentAirline, DbSession
+from app.schemas.aircraft import AircraftCreate, AircraftResponse
+
+router = APIRouter()
+
+@router.post("/create", response_model=AircraftResponse)
+async def create_aircraft(
+    aircraft_data: AircraftCreate,
+    airline: CurrentAirline,  # Auth happens automatically via dependency
+    db: DbSession,
+):
+    """Create a new aircraft for the authenticated airline."""
+    # airline.airline_id is available here
+    # airline.airline is the full Airline object
+    ...
+
+@router.get("/list", response_model=list[AircraftResponse])
+async def list_aircraft(
+    airline: CurrentAirline,
+    db: DbSession,
+):
+    """List all aircraft for the authenticated airline."""
+    ...
+```
+
+**Public Endpoints (No Auth):**
+```python
+# app/routers/boarding_pass.py
+from fastapi import APIRouter
+
+router = APIRouter()  # Authenticated routes
+public_router = APIRouter()  # Public routes (no auth)
+
+@public_router.get("/{ticket_identifier}")
+async def get_public_boarding_pass(
+    ticket_identifier: str,
+    db: DbSession,
+):
+    """
+    Public boarding pass endpoint - no airline auth required.
+    Airline is determined from the ticket itself (directGet pattern).
+    """
+    # Use directGet pattern - bypasses airline_id filtering
+    ticket = await ticket_repo.direct_get_by_identifier(ticket_identifier, db)
+    if not ticket:
+        raise HTTPException(status_code=404, detail="Ticket not found")
+    ...
 ```
 
 #### 2.4 Model Definitions
@@ -562,7 +716,7 @@ async def your_boarding_pass(
     
     # Detect language (from query param, Accept-Language header, or IP geolocation)
     # Implementation: Use Accept-Language header primarily, with optional IP geolocation fallback
-    # Use modern library like `babel` or `accept-language-parser` for header parsing
+    # Use babel.core.Locale.negotiate() for header parsing
     language = get_language(lang, request)
     
     # Get localized strings
@@ -646,9 +800,9 @@ async def airports_page(
 ```
 
 **Key Features**:
-- ✅ **Language Detection**: 
+- ✅ **Language Detection**:
   - Primary: Query parameter (`?lang=en`)
-  - Secondary: `Accept-Language` HTTP header (use `accept-language-parser` or `babel` library)
+  - Secondary: `Accept-Language` HTTP header (use `babel.core.Locale.negotiate()`)
   - Optional fallback: IP geolocation (use modern service like `ipapi.co` or `ip-api.com` with `httpx`)
 - ✅ **Localization**: Multi-language support (en, fr, de, es) matching PHP implementation
 - ✅ **QR Code Generation**: Client-side using `qrcode.min.js` (same as PHP)
@@ -705,12 +859,98 @@ async def airports_page(
 - Ensure DateTime serialization matches PHP's `'c'` format exactly
 - Test JSON output matches PHP output byte-for-byte for compatibility
 
-**Pythonic Abstraction**:
-- Implement a shared `JsonModel` base class (in `utils/json_helper.py`) that:
-  - Subclasses `pydantic.BaseModel` and sets JSON encoders for `datetime` and duration types.
-  - Wraps `model_dump(exclude_defaults=True, by_alias=True)` so every model gets PHP-compatible omission of default values without duplicating this logic.
-  - Optionally supports a `unique_identifier()` hook that merges extra fields into the JSON payload, mirroring PHP’s `uniqueIdentifier()` pattern.
-- All API-facing schemas and internal models that must stay JSON-compatible with the iOS client should derive from this base instead of re-implementing serialization rules per model.
+**Pythonic Abstraction** (`app/models/base.py`):
+```python
+from datetime import datetime, timedelta
+from typing import Any
+from pydantic import BaseModel, ConfigDict
+
+
+def timedelta_to_iso8601(td: timedelta) -> str:
+    """Convert Python timedelta to ISO 8601 duration format (PT2H30M0S)."""
+    total_seconds = int(td.total_seconds())
+    hours = total_seconds // 3600
+    minutes = (total_seconds % 3600) // 60
+    seconds = total_seconds % 60
+    return f"PT{hours}H{minutes}M{seconds}S"
+
+
+def iso8601_to_timedelta(duration: str) -> timedelta:
+    """Parse ISO 8601 duration (PT2H30M0S) to timedelta."""
+    import re
+    match = re.match(r'PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?', duration)
+    if not match:
+        raise ValueError(f"Invalid ISO 8601 duration: {duration}")
+    hours = int(match.group(1) or 0)
+    minutes = int(match.group(2) or 0)
+    seconds = int(match.group(3) or 0)
+    return timedelta(hours=hours, minutes=minutes, seconds=seconds)
+
+
+class BaseJsonModel(BaseModel):
+    """
+    Base model with PHP-compatible JSON serialization.
+
+    Key behaviors matching PHP JsonHelper:
+    - Excludes fields that match their default values
+    - DateTime serialized as ISO 8601 ('c' format in PHP)
+    - DateInterval serialized as ISO 8601 duration (PT2H30M0S)
+    - Supports uniqueIdentifier() pattern for extra fields
+    """
+
+    model_config = ConfigDict(
+        populate_by_name=True,  # Allow both field name and alias
+        use_enum_values=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat() if v else None,
+            timedelta: timedelta_to_iso8601,
+        },
+    )
+
+    def to_json(self) -> dict[str, Any]:
+        """
+        PHP-compatible JSON serialization.
+        Matches behavior of PHP's JsonHelper::toJson().
+        """
+        # Exclude defaults to match PHP behavior
+        data = self.model_dump(
+            exclude_defaults=True,
+            by_alias=True,
+            mode='json',  # Use JSON-compatible types
+        )
+
+        # Merge unique_identifier fields if method exists
+        if hasattr(self, 'unique_identifier'):
+            data.update(self.unique_identifier())
+
+        return data
+
+    def unique_identifier(self) -> dict[str, Any]:
+        """
+        Override in subclasses to add extra fields to JSON output.
+        Matches PHP's uniqueIdentifier() pattern.
+        """
+        return {}
+
+
+# Example usage
+class Aircraft(BaseJsonModel):
+    registration: str
+    type: str
+    aircraft_id: int = -1  # Default -1, will be excluded from JSON
+    aircraft_identifier: str = ""  # Default "", will be excluded from JSON
+    stats: list["Stats"] = []
+
+    def unique_identifier(self) -> dict[str, Any]:
+        """Add computed fields to JSON output."""
+        return {"display_name": f"{self.registration} ({self.type})"}
+```
+
+**Key Implementation Notes:**
+- `exclude_defaults=True` matches PHP's behavior of omitting fields with default values
+- `by_alias=True` uses field aliases if defined (e.g., `seatNumber` vs `seat_number`)
+- `mode='json'` ensures datetime/timedelta are serialized using custom encoders
+- Override `unique_identifier()` for PHP's `uniqueIdentifier()` pattern
 
 **Example PHP JSON Output**:
 ```json
@@ -780,7 +1020,7 @@ class Aircraft(BaseModel):
   - A small metadata map (table → links, identifier field, id field) that replaces the PHP `$standardTables` / `$tableCreationOrder` logic.
   - Generic helpers for `create_or_update`, `list`, `list_stats`, `get_by_identifier`, `get_by_id`, and `delete`, parameterized by table.
   - A single implementation of the “stats” pattern (`COUNT` + `MAX(modified)` joins) used by `listStats` in PHP, instead of re-writing those queries per router.
-- Maintain `airline_id` scoping through request state (set once in middleware) and pass it into repository calls so that every query is automatically airline-scoped, avoiding duplication of `WHERE airline_id = ...` logic.
+- Maintain `airline_id` scoping through dependency injection (via `CurrentAirline` dependency) and pass it into repository calls so that every query is automatically airline-scoped, avoiding duplication of `WHERE airline_id = ...` logic.
 
 **SQLAlchemy Core Example** (what this looks like in practice):
 
@@ -955,29 +1195,287 @@ if ticket_identifier:
 - **SQLAlchemy Core**: Python code that looks SQL-like, converts to SQL automatically. Type-safe, composable, IDE-friendly.
 - **Raw aiomysql**: Write SQL strings directly. Full control, but no type safety, more boilerplate, easier to make mistakes.
 
+#### 3.3.1 Generic Repository Pattern
+
+Port the PHP `$standardTables` pattern to a reusable Python repository:
+
+**Table Definitions** (`app/database/tables.py`):
+```python
+from sqlalchemy import Table, Column, Integer, String, JSON, ForeignKey, TIMESTAMP, MetaData
+from sqlalchemy.sql import func
+
+metadata = MetaData()
+
+# Table configuration matching PHP $standardTables
+TABLE_CONFIG = {
+    "Aircrafts": {"links": []},
+    "Passengers": {"links": []},
+    "Flights": {"links": ["Aircrafts"]},
+    "Tickets": {"links": ["Passengers", "Flights"]},
+}
+
+airlines = Table(
+    "Airlines", metadata,
+    Column("airline_id", Integer, primary_key=True, autoincrement=True),
+    Column("airline_identifier", String(255), unique=True),
+    Column("json_data", JSON),
+    Column("modified", TIMESTAMP, server_default=func.now(), onupdate=func.now()),
+)
+
+settings = Table(
+    "Settings", metadata,
+    Column("airline_id", Integer, ForeignKey("Airlines.airline_id", ondelete="CASCADE"), primary_key=True),
+    Column("json_data", JSON),
+)
+
+aircrafts = Table(
+    "Aircrafts", metadata,
+    Column("aircraft_id", Integer, primary_key=True, autoincrement=True),
+    Column("aircraft_identifier", String(36), unique=True, server_default=func.uuid()),
+    Column("json_data", JSON),
+    Column("airline_id", Integer, ForeignKey("Airlines.airline_id", ondelete="CASCADE"), nullable=False),
+    Column("modified", TIMESTAMP, server_default=func.now(), onupdate=func.now()),
+)
+
+passengers = Table(
+    "Passengers", metadata,
+    Column("passenger_id", Integer, primary_key=True, autoincrement=True),
+    Column("passenger_identifier", String(36), unique=True, server_default=func.uuid()),
+    Column("json_data", JSON),
+    Column("airline_id", Integer, ForeignKey("Airlines.airline_id", ondelete="CASCADE"), nullable=False),
+    Column("modified", TIMESTAMP, server_default=func.now(), onupdate=func.now()),
+)
+
+flights = Table(
+    "Flights", metadata,
+    Column("flight_id", Integer, primary_key=True, autoincrement=True),
+    Column("flight_identifier", String(36), unique=True, server_default=func.uuid()),
+    Column("aircraft_id", Integer, ForeignKey("Aircrafts.aircraft_id", ondelete="CASCADE"), nullable=False),
+    Column("json_data", JSON),
+    Column("airline_id", Integer, ForeignKey("Airlines.airline_id", ondelete="CASCADE"), nullable=False),
+    Column("modified", TIMESTAMP, server_default=func.now(), onupdate=func.now()),
+)
+
+tickets = Table(
+    "Tickets", metadata,
+    Column("ticket_id", Integer, primary_key=True, autoincrement=True),
+    Column("ticket_identifier", String(36), unique=True, server_default=func.uuid()),
+    Column("passenger_id", Integer, ForeignKey("Passengers.passenger_id", ondelete="CASCADE"), nullable=False),
+    Column("flight_id", Integer, ForeignKey("Flights.flight_id", ondelete="CASCADE"), nullable=False),
+    Column("json_data", JSON),
+    Column("airline_id", Integer, ForeignKey("Airlines.airline_id", ondelete="CASCADE"), nullable=False),
+    Column("modified", TIMESTAMP, server_default=func.now(), onupdate=func.now()),
+)
+```
+
+**Generic Repository** (`app/database/repository.py`):
+```python
+from typing import TypeVar, Generic, Any
+from sqlalchemy import Table, select, insert, delete, func as sql_func
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.dialects.mysql import insert as mysql_insert
+
+T = TypeVar("T")
+
+
+class BaseRepository(Generic[T]):
+    """
+    Generic repository implementing PHP MyFlyFunDb patterns.
+    Provides CRUD operations with airline scoping.
+    """
+
+    def __init__(self, table: Table, model_class: type[T]):
+        self.table = table
+        self.model_class = model_class
+        self._table_name = table.name
+        self._id_column = f"{table.name[:-1].lower()}_id"  # e.g., "aircraft_id"
+        self._identifier_column = f"{table.name[:-1].lower()}_identifier"  # e.g., "aircraft_identifier"
+
+    async def get_by_identifier(
+        self, identifier: str, airline_id: int, db: AsyncSession
+    ) -> T | None:
+        """Get entity by identifier (scoped to airline)."""
+        query = select(self.table).where(
+            self.table.c[self._identifier_column] == identifier,
+            self.table.c.airline_id == airline_id,
+        )
+        result = await db.execute(query)
+        row = result.fetchone()
+        return self._row_to_model(row) if row else None
+
+    async def direct_get_by_identifier(
+        self, identifier: str, db: AsyncSession
+    ) -> T | None:
+        """
+        Get entity by identifier WITHOUT airline scoping.
+        Used for public endpoints (e.g., boarding pass display).
+        Matches PHP directGet() pattern.
+        """
+        query = select(self.table).where(
+            self.table.c[self._identifier_column] == identifier
+        )
+        result = await db.execute(query)
+        row = result.fetchone()
+        return self._row_to_model(row) if row else None
+
+    async def list_all(
+        self, airline_id: int, db: AsyncSession
+    ) -> list[T]:
+        """List all entities for airline."""
+        query = select(self.table).where(
+            self.table.c.airline_id == airline_id
+        )
+        result = await db.execute(query)
+        return [self._row_to_model(row) for row in result.fetchall()]
+
+    async def list_with_stats(
+        self, airline_id: int, db: AsyncSession, join_tables: list[Table]
+    ) -> list[dict[str, Any]]:
+        """
+        List entities with COUNT and MAX(modified) stats from related tables.
+        Matches PHP listStats() pattern.
+        """
+        table_ref = self.table
+        select_cols = [table_ref]
+
+        joins = []
+        for join_table in join_tables:
+            join_id = f"{join_table.name[:-1].lower()}_id"
+            count_alias = f"{join_table.name.lower()}_count"
+            last_alias = f"{join_table.name.lower()}_last"
+
+            select_cols.extend([
+                sql_func.count(join_table.c[join_id]).label(count_alias),
+                sql_func.max(join_table.c.modified).label(last_alias),
+            ])
+            joins.append((join_table, table_ref.c[self._id_column] == join_table.c[self._id_column]))
+
+        query = select(*select_cols).select_from(table_ref)
+        for join_table, condition in joins:
+            query = query.outerjoin(join_table, condition)
+
+        query = query.where(table_ref.c.airline_id == airline_id)
+        query = query.group_by(table_ref.c[self._id_column])
+
+        result = await db.execute(query)
+        return [dict(row._mapping) for row in result.fetchall()]
+
+    async def create_or_update(
+        self, data: dict[str, Any], airline_id: int, db: AsyncSession
+    ) -> T:
+        """
+        Create or update entity (upsert).
+        Matches PHP createOrUpdate() pattern.
+        """
+        insert_data = {
+            "json_data": data,
+            "airline_id": airline_id,
+        }
+
+        # Add identifier if provided
+        if self._identifier_column in data:
+            insert_data[self._identifier_column] = data[self._identifier_column]
+
+        # MySQL INSERT ... ON DUPLICATE KEY UPDATE
+        stmt = mysql_insert(self.table).values(**insert_data)
+        stmt = stmt.on_duplicate_key_update(json_data=data)
+
+        await db.execute(stmt)
+        await db.commit()
+
+        # Retrieve the created/updated entity
+        identifier = data.get(self._identifier_column)
+        if identifier:
+            return await self.get_by_identifier(identifier, airline_id, db)
+        return None
+
+    async def delete_by_identifier(
+        self, identifier: str, airline_id: int, db: AsyncSession
+    ) -> bool:
+        """Delete entity by identifier."""
+        stmt = delete(self.table).where(
+            self.table.c[self._identifier_column] == identifier,
+            self.table.c.airline_id == airline_id,
+        )
+        result = await db.execute(stmt)
+        await db.commit()
+        return result.rowcount > 0
+
+    def _row_to_model(self, row) -> T:
+        """Convert database row to model instance."""
+        if row is None:
+            return None
+        row_dict = dict(row._mapping)
+        json_data = row_dict.get("json_data", {})
+        # Merge identifiers into json_data
+        json_data[self._id_column] = row_dict.get(self._id_column)
+        json_data[self._identifier_column] = row_dict.get(self._identifier_column)
+        return self.model_class.model_validate(json_data)
+
+
+# Concrete repositories
+class AircraftRepository(BaseRepository["Aircraft"]):
+    def __init__(self):
+        from app.database.tables import aircrafts
+        from app.models.aircraft import Aircraft
+        super().__init__(aircrafts, Aircraft)
+
+
+class PassengerRepository(BaseRepository["Passenger"]):
+    def __init__(self):
+        from app.database.tables import passengers
+        from app.models.passenger import Passenger
+        super().__init__(passengers, Passenger)
+
+
+class FlightRepository(BaseRepository["Flight"]):
+    def __init__(self):
+        from app.database.tables import flights
+        from app.models.flight import Flight
+        super().__init__(flights, Flight)
+
+
+class TicketRepository(BaseRepository["Ticket"]):
+    def __init__(self):
+        from app.database.tables import tickets
+        from app.models.ticket import Ticket
+        super().__init__(tickets, Ticket)
+```
+
+**Usage in Routers:**
+```python
+from app.database.repository import AircraftRepository
+from app.database.tables import flights
+
+@router.get("/list")
+async def list_aircraft(airline: CurrentAirline, db: DbSession):
+    repo = AircraftRepository()
+    # List with flight count and last flight date
+    return await repo.list_with_stats(airline.airline_id, db, [flights])
+```
+
 #### 3.4 PKPass Generation
 
 **Challenge**: PHP PKPass library needs Python equivalent.
 
 **Solution Options**:
 
-1. **`passes-rs-py`** (Recommended):
-   - Rust-based library with Python bindings
-   - High performance due to Rust backend
-   - Comprehensive features: read, parse, build, sign, package `.pkpass` files
+1. **`passes-rs-py`** (Recommended) ✅:
+   - Rust-based library with Python bindings (high performance)
+   - Comprehensive: read, parse, build, sign, package `.pkpass` files
    - Supports all Wallet Pass standard features
    - Well-documented with examples and API references
    - Install: `pip install passes-rs-py`
-   - **Pros**: Fast, feature-complete, actively maintained
+   - **Pros**: Fast, feature-complete, actively maintained, high performance
    - **Cons**: Requires Rust runtime (handled by pip install)
 
-2. **`py-pkpass`**:
-   - Pure Python solution
+2. **`py-pkpass`** (Alternative):
+   - Pure Python solution available on PyPI
    - Direct pass generation without filesystem storage
    - Supports password-less keys
    - Includes validation of fields and passes
-   - Install: `git clone https://github.com/NafieAlhilaly/py-pkpass.git`
-   - **Pros**: Pure Python, no external dependencies, simple API
+   - Install: `pip install py-pkpass`
+   - **Pros**: Pure Python, simple API, no external dependencies
    - **Cons**: May have fewer features, less performance
 
 3. **Custom Implementation**:
@@ -989,7 +1487,7 @@ if ticket_identifier:
    - **Pros**: Full control, matches PHP behavior exactly
    - **Cons**: More maintenance, need to implement all features
 
-**Recommendation**: Start with `passes-rs-py` for best performance and feature completeness. If it doesn't meet specific needs, evaluate `py-pkpass` or consider custom implementation.
+**Recommendation**: Use `passes-rs-py` for best performance and feature completeness. If it doesn't meet specific needs, evaluate `py-pkpass` or consider custom implementation.
 
 #### 3.5 Signature/Cryptography
 
@@ -1009,12 +1507,33 @@ if ticket_identifier:
 
 **Current**: PHP reads from SQLite `airports.db` file directly using PDO.
 
-**Solution**: 
+**Solution**:
 - **DO NOT read `airports.db` directly** - use the `euro_aip` library instead
 - The `euro_aip` library provides a modern query API for airport data
 - All airport information, runways, procedures, AIP data, and border crossings should come from `EuroAipModel`
 - Library location: `~/Developer/public/rzflight/euro_aip/`
 - Documentation: See `~/Developer/public/rzflight/euro_aip/designs/models_query_api_documentation.md`
+
+**Installation** (local library - not on PyPI):
+```bash
+# Option 1: Install as editable package (recommended for development)
+pip install -e ~/Developer/public/rzflight/euro_aip/
+
+# Option 2: Add to pyproject.toml as path dependency
+# [project]
+# dependencies = [
+#     "euro-aip @ file:///Users/brice/Developer/public/rzflight/euro_aip"
+# ]
+
+# Option 3: For Docker deployment, copy or mount the library
+# COPY --from=euro_aip /app /app/euro_aip
+# Or use git submodule in the server directory
+```
+
+**Note**: Since `euro_aip` is a local/private library, ensure it's available in the deployment environment. Consider:
+- Publishing to a private PyPI server
+- Using git submodules
+- Bundling the library code in the Docker image
 
 **Implementation**:
 ```python
@@ -1050,15 +1569,16 @@ if airport:
 **Current**: Bearer token = Apple identifier, validated per request.
 
 **Solution**:
-- Implement middleware to extract airline_identifier from URL
-- Validate bearer token matches airline's apple_identifier
-- Store airline in request state for downstream use
-- Provide a small `AuthService` abstraction so the middleware and routers both depend on a shared, testable API (e.g., `AuthService.validate_airline(airline_identifier, bearer_header)`), rather than each router re-implementing header parsing or airline lookup.
-- **Middleware should skip authentication for**:
+- Use FastAPI dependency injection (see Section 2.3) - `get_airline_context()` dependency
+- Dependency extracts airline_identifier from URL path parameter
+- Validates bearer token matches airline's apple_identifier
+- Returns `AirlineContext` object with airline and airline_id
+- **Public endpoints** (no auth dependency):
   - `/health` endpoint
   - `/v1/status` endpoint
   - `/pages/*` routes (web pages are public, read-only)
   - `/static/*` routes (static files)
+  - `/v1/boardingpass/{ticket_id}` (public router, determines airline from ticket)
 
 ### 4. Migration Strategy
 
@@ -1070,11 +1590,12 @@ if airport:
 5. Create database table definitions (SQLAlchemy Core - Table objects, not ORM models)
 
 #### Phase 2: Core Services
-1. Implement authentication service
-2. Implement database service layer
-3. Implement signature service
-4. Implement PKPass service
-5. Create middleware for airline authentication
+1. Implement dependency injection for airline authentication (`app/dependencies.py`)
+2. Implement database connection and table definitions (`app/database/`)
+3. Implement generic repository pattern (`app/database/repository.py`)
+4. Implement signature service (`app/services/signature_service.py`)
+5. Implement PKPass service (`app/services/pkpass_service.py`)
+6. Implement airport service using euro_aip (`app/services/airport_service.py`)
 
 #### Phase 3: API Endpoints (Develop in Parallel)
 1. **Airline endpoints** (critical for auth)
@@ -1131,7 +1652,7 @@ if airport:
 
 #### 5.3 PKPass Library
 - **Chosen**: `passes-rs-py` ✅
-- **Why**: 
+- **Why**:
   - Rust-based with Python bindings (high performance)
   - Comprehensive: read, parse, build, sign, package `.pkpass` files
   - Supports all Wallet Pass standard features
@@ -1230,22 +1751,22 @@ if airport:
 #### Challenge 3: PKPass Generation
 - **Issue**: Need Python library for Apple Wallet PKPass generation
 - **Solution Options**:
-  1. **`passes-rs-py`** (Recommended):
+  1. **`passes-rs-py`** (Recommended) ✅:
      - Rust-based with Python bindings (high performance)
      - Comprehensive: read, parse, build, sign, package `.pkpass` files
      - Supports all Wallet Pass features
      - Well-documented with examples
      - Install: `pip install passes-rs-py`
-  2. **`py-pkpass`**:
-     - Pure Python solution
+  2. **`py-pkpass`** (Alternative):
+     - Pure Python solution available on PyPI
      - Direct pass generation without filesystem storage
-     - Supports password-less keys
-     - Validation of fields and passes
-     - Install: `git clone https://github.com/NafieAlhilaly/py-pkpass.git`
+     - Supports password-less keys and validation
+     - Simple, well-documented API
+     - Install: `pip install py-pkpass`
   3. **Custom Implementation**:
      - Port PHP PKPass library logic
      - Full control but more maintenance
-- **Recommendation**: Start with `passes-rs-py` for performance and features. If it doesn't meet needs, consider `py-pkpass` or custom implementation.
+- **Recommendation**: Start with `passes-rs-py` for best performance and feature completeness. If it doesn't meet specific needs, evaluate `py-pkpass` or consider custom implementation.
 
 #### Challenge 4: Database Connection Pooling
 - **Issue**: PHP uses persistent connections, Python needs pooling
@@ -1290,6 +1811,103 @@ if airport:
    ```json
    {"detail": "Error message", "status_code": 400}
    ```
+
+#### 9.1 Error Handling Implementation
+
+**Custom Exception Classes** (`app/core/exceptions.py`):
+```python
+from fastapi import FastAPI, Request, HTTPException
+from fastapi.responses import JSONResponse
+from fastapi.exceptions import RequestValidationError
+from pydantic import ValidationError
+
+
+class APIError(Exception):
+    """Base API error with status code and detail."""
+    def __init__(self, status_code: int, detail: str):
+        self.status_code = status_code
+        self.detail = detail
+
+
+class NotFoundError(APIError):
+    """Resource not found (404)."""
+    def __init__(self, resource: str, identifier: str):
+        super().__init__(404, f"{resource} '{identifier}' not found")
+
+
+class AuthenticationError(APIError):
+    """Authentication failed (401)."""
+    def __init__(self, detail: str = "Invalid Bearer Token"):
+        super().__init__(401, detail)
+
+
+class AuthorizationError(APIError):
+    """Authorization failed (403)."""
+    def __init__(self, detail: str = "Access denied"):
+        super().__init__(403, detail)
+
+
+def register_exception_handlers(app: FastAPI) -> None:
+    """Register custom exception handlers for consistent error responses."""
+
+    @app.exception_handler(APIError)
+    async def api_error_handler(request: Request, exc: APIError) -> JSONResponse:
+        return JSONResponse(
+            status_code=exc.status_code,
+            content={"detail": exc.detail, "status_code": exc.status_code}
+        )
+
+    @app.exception_handler(HTTPException)
+    async def http_exception_handler(request: Request, exc: HTTPException) -> JSONResponse:
+        return JSONResponse(
+            status_code=exc.status_code,
+            content={"detail": exc.detail, "status_code": exc.status_code}
+        )
+
+    @app.exception_handler(RequestValidationError)
+    async def validation_exception_handler(
+        request: Request, exc: RequestValidationError
+    ) -> JSONResponse:
+        """Handle Pydantic validation errors with user-friendly messages."""
+        errors = []
+        for error in exc.errors():
+            field = ".".join(str(x) for x in error["loc"][1:])  # Skip 'body' prefix
+            errors.append(f"{field}: {error['msg']}")
+        return JSONResponse(
+            status_code=422,
+            content={
+                "detail": "; ".join(errors),
+                "status_code": 422,
+                "errors": exc.errors()  # Include full error details for debugging
+            }
+        )
+
+    @app.exception_handler(Exception)
+    async def generic_exception_handler(request: Request, exc: Exception) -> JSONResponse:
+        """Catch-all for unexpected errors."""
+        import logging
+        logging.exception("Unhandled exception")
+        return JSONResponse(
+            status_code=500,
+            content={"detail": "Internal server error", "status_code": 500}
+        )
+```
+
+**Usage in Routers:**
+```python
+from app.core.exceptions import NotFoundError, AuthenticationError
+
+@router.get("/{aircraft_identifier}")
+async def get_aircraft(
+    aircraft_identifier: str,
+    airline: CurrentAirline,
+    db: DbSession,
+):
+    aircraft = await repo.get_by_identifier(aircraft_identifier, airline.airline_id, db)
+    if not aircraft:
+        raise NotFoundError("Aircraft", aircraft_identifier)
+    return aircraft
+```
 
 ### 10. Testing Strategy
 
@@ -1490,41 +2108,108 @@ async def test_issue_ticket(airline_id, flight_id, passenger_id):
 
 ## Appendix
 
-### A. Dependencies (requirements.txt)
+### A. Dependencies (`pyproject.toml`)
 
+**Modern Python packaging** using `pyproject.toml` (PEP 621) instead of `requirements.txt`:
+
+```toml
+[project]
+name = "flyfun-boarding-api"
+version = "1.0.0"
+description = "Fly Fun Boarding API - FastAPI backend"
+readme = "README.md"
+requires-python = ">=3.13"
+license = {text = "MIT"}
+authors = [
+    {name = "Your Name", email = "you@example.com"}
+]
+
+dependencies = [
+    # Web Framework
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.32.0",
+
+    # Database
+    "sqlalchemy>=2.0.36",     # Using SQLAlchemy Core (query building), not full ORM
+    "aiomysql>=0.2.0",        # Async MySQL driver
+
+    # Data Validation & Serialization
+    "pydantic>=2.10.0",
+    "pydantic-settings>=2.6.0",
+
+    # PKPass Generation
+    "passes-rs-py>=0.1.0",    # Rust-based, high-performance PKPass library
+
+    # Cryptography
+    "cryptography>=44.0.0",
+
+    # Utilities
+    "python-multipart>=0.0.12",
+    "python-dotenv>=1.0.0",
+
+    # Language Detection & Templates
+    "babel>=2.16.0",          # Internationalization with Accept-Language parsing
+    "jinja2>=3.1.4",          # HTML template engine for web pages
+
+    # HTTP Client (for health checks, external APIs)
+    "httpx>=0.28.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3.0",
+    "pytest-asyncio>=0.24.0",
+    "httpx>=0.28.0",          # For async testing
+    "ruff>=0.8.0",            # Fast Python linter
+    "mypy>=1.13.0",           # Type checking
+]
+
+[project.scripts]
+# Optional: CLI entry point
+flyfun-api = "app.main:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["app"]
+
+[tool.ruff]
+target-version = "py313"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]  # Common rules + import sorting
+
+[tool.mypy]
+python_version = "3.13"
+strict = true
+plugins = ["pydantic.mypy"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
 ```
-# Web Framework
-fastapi==0.104.1
-uvicorn[standard]==0.24.0
 
-# Database
-sqlalchemy==2.0.23  # Using SQLAlchemy Core (query building), not full ORM
-aiomysql==0.2.0     # Async MySQL driver for SQLAlchemy
+**Installation:**
+```bash
+# Development install (editable)
+pip install -e ".[dev]"
 
-# Data Validation & Serialization
-pydantic==2.5.0
-pydantic-settings==2.1.0
+# Production install
+pip install .
 
-# PKPass Generation (choose one)
-passes-rs-py>=0.1.0  # Recommended: Rust-based, high performance
-# py-pkpass  # Alternative: Pure Python (install from git)
-
-# Cryptography
-cryptography==41.0.7
-
-# Utilities
-python-multipart==0.0.6
-
-# Language Detection (for web pages)
-accept-language-parser==1.5.0  # Modern library for parsing Accept-Language header
-python-dotenv==1.0.0  # For loading .env files (pydantic-settings uses it)
-jinja2==3.1.2  # HTML template engine for web pages
-
-# Testing
-pytest==7.4.3
-pytest-asyncio==0.21.1
-httpx==0.25.2
+# Or using uv (faster)
+uv pip install -e ".[dev]"
 ```
+
+**Benefits of `pyproject.toml`:**
+- ✅ Single source of truth for project metadata
+- ✅ PEP 621 standard (works with pip, uv, poetry, hatch)
+- ✅ Optional dependencies for dev/test
+- ✅ Tool configuration (ruff, mypy, pytest) in one file
+- ✅ Proper package structure for imports (`from app.config import settings`)
 
 ### B. Configuration
 
@@ -1695,61 +2380,138 @@ FROM python:3.13-slim
 
 WORKDIR /app
 
-# Install system dependencies if needed
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     gcc \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements and install Python dependencies
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# Install uv for faster package installation (optional)
+# RUN pip install uv
 
-# Copy application code
-COPY . .
+# Copy project files
+COPY pyproject.toml .
+COPY app/ ./app/
+
+# Install dependencies
+RUN pip install --no-cache-dir .
+
+# Copy static files and templates
+COPY static/ ./static/
+COPY templates/ ./templates/
 
 # Expose port
 EXPOSE 8000
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD python -c "import requests; requests.get('http://localhost:8000/health')"
+# Health check using curl (more reliable than Python import)
+HEALTHCHECK --interval=30s --timeout=10s --start-period=10s --retries=3 \
+    CMD curl -f http://localhost:8000/health || exit 1
 
-# Run application
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Run application with production settings
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "4"]
 ```
 
-**docker-compose.yml** (optional, for local development):
-```yaml
-version: '3.8'
+**Multi-stage build for smaller image** (optional):
+```dockerfile
+# Build stage
+FROM python:3.13-slim AS builder
 
+WORKDIR /app
+COPY pyproject.toml .
+RUN pip install --no-cache-dir build && python -m build --wheel
+
+# Runtime stage
+FROM python:3.13-slim
+
+WORKDIR /app
+
+# Install only runtime dependencies
+COPY --from=builder /app/dist/*.whl .
+RUN pip install --no-cache-dir *.whl && rm *.whl
+
+# Copy static files
+COPY static/ ./static/
+COPY templates/ ./templates/
+
+EXPOSE 8000
+HEALTHCHECK --interval=30s --timeout=10s --start-period=10s --retries=3 \
+    CMD curl -f http://localhost:8000/health || exit 1
+
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "4"]
+```
+
+**docker-compose.yml** (for local development):
+```yaml
 services:
   api:
-    build: ./server
+    build:
+      context: ./server
+      dockerfile: Dockerfile
     ports:
       - "8000:8000"
     volumes:
+      # Development: mount source for hot reload
+      - ./server/app:/app/app:ro
+      - ./server/static:/app/static:ro
+      - ./server/templates:/app/templates:ro
+      # Certificates and keys (read-only)
       - ./certs:/app/certs:ro
       - ./keys:/app/keys:ro
-      - ./images:/app/images:ro
       - ./data:/app/data:ro
-      - ./server/.env:/app/.env:ro  # Mount .env file (optional - can use env_file instead)
     env_file:
-      - ./server/.env  # Docker Compose automatically reads .env files
-    # Or explicitly set environment variables:
-    # environment:
-    #   - DB_HOST=${DB_HOST}
-    #   - DB_PORT=${DB_PORT}
-    #   - DB_USER=${DB_USER}
-    #   - DB_PASSWORD=${DB_PASSWORD}
-    #   - DB_NAME=${DB_NAME}
-    #   - SECRET=${SECRET}
+      - ./server/.env
+    environment:
+      # Override for development
+      - DEBUG=true
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8000/health')"]
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 40s
+      start_period: 15s
+    # For development with auto-reload:
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+```
+
+**docker-compose.prod.yml** (for production):
+```yaml
+services:
+  api:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    expose:
+      - "8000"  # Only expose to caddy, not externally
+    env_file:
+      - ./server/.env
+    volumes:
+      - ./certs:/app/certs:ro
+      - ./keys:/app/keys:ro
+      - ./data:/app/data:ro
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 512M
+
+  caddy:
+    image: caddy:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./server/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - api
+    restart: always
+
+volumes:
+  caddy_data:
+  caddy_config:
 ```
 
 ### E. Caddy Configuration
