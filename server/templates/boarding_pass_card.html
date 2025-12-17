@@ -1,0 +1,86 @@
+{% if ticket and boarding_pass_service %}
+<div class="boarding-section">
+<div class="boarding-pass">
+    <div class="boarding-header">
+        <div class="header-row-1">
+        <img class="logo" src="{{ root_path }}/static/images/logo.png" alt="Logo" />
+            <span class="airline-name">{{ airline_name }}</span>
+            <div class="flight-info">
+                <div>
+                    {% if flight.has_flight_number() %}
+                    <span class="label">{{ localized_strings.get('Flight', 'FLIGHT') }}</span>
+                    <span class="value">{{ flight.flight_number }}</span>
+                    {% else %}
+                    <span class="label">{{ localized_strings.get('Aircraft', 'AIRCRAFT') }}</span>
+                    <span class="value">{{ flight.aircraft.registration }}</span>
+                    {% endif %}
+                </div>
+                <div>
+                <span class="label">{{ localized_strings.get('Seat', 'SEAT') }}</span>
+                    <span class="value">{{ ticket.seat_number }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="header-row-2">
+            <div>
+            <span class="label">{{ flight.origin.fit_name(20) }}</span>
+            <span class="value-large">{{ flight.origin.icao }}</span>
+            </div>
+            <div class="plane-icon"><img src="{{ root_path }}/static/images/airplane@2x.png" alt="plane icon"></div>
+            <div>
+            <span class="label">{{ flight.destination.fit_name(20) }}</span>
+            <span class="value-large">{{ flight.destination.icao }}</span>
+            </div>
+        </div>
+    </div>
+    <div class="boarding-body">
+        <div class="info-column">
+            <div>
+            <span class="label">{{ localized_strings.get('Departs', 'DEPARTS') }}</span>
+                <span class="value">{{ flight.format_scheduled_departure_date() if flight else '' }}</span>
+            </div>
+            <div>
+            <span class="label">{{ localized_strings.get('Passenger', 'PASSENGER') }}</span>
+                <span class="value">{{ ticket.passenger.formatted_name or '' }}</span>
+            </div>
+        </div>
+        <div class="info-column">
+            {% if ticket and airline_settings %}
+            {% if ticket.has_custom_label(airline_settings) %}
+            <div>  
+            <span class="label">{{ airline_settings.get('customLabel', 'CUSTOM') }}</span>
+                <span class="value">{{ ticket.custom_label_value }}</span>
+            </div>
+            {% elif flight and flight.has_flight_number() %}
+            <div>  
+            <span class="label">{{ localized_strings.get('Aircraft', 'AIRCRAFT') }}</span>
+                <span class="value">{{ flight.aircraft.registration }}</span>
+            </div>
+            {% endif %}
+            <div>
+            <span class="label">{{ localized_strings.get('Gate', 'GATE') }}</span>
+                <span class="value">{{ flight.gate }}</span>
+            </div>
+        </div>
+    </div>
+    <div class="boarding-qrcode">
+        <div id="signature-qrcode"></div>
+            <script>
+            var qrData = {{ ticket_signature|tojson }};
+            var qrCodeElement = document.getElementById("signature-qrcode");
+
+            var qrCode = new QRCode(qrCodeElement, {
+                text: JSON.stringify(qrData),
+                width: 128,
+                height: 128,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+
+            </script>
+        </div>
+    </div>
+</div>
+{% endif %}
+
