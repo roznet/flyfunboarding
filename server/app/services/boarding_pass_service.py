@@ -282,22 +282,19 @@ class BoardingPassService:
         Returns:
             bytes of .pkpass file
         """
-        from passes_rs_py import generate_pass, PyPassConfig
+        from passes_rs_py import generate_pass
         
         pass_data = self.get_pass_data()
         
-        # Create PyPassConfig for basic config
-        config = PyPassConfig(
-            organization_name=pass_data['organizationName'],
-            description=pass_data['description'],
-            pass_type_identifier=pass_data['passTypeIdentifier'],
-            team_identifier=pass_data['teamIdentifier'],
-            serial_number=pass_data['serialNumber']
-        )
-        
-        # Create JSON string with remaining pass data (excluding config fields)
+        # Create complete pass JSON string - passes-rs-py expects config as JSON string
+        # Include all pass data fields
         pass_json = {
             'formatVersion': pass_data['formatVersion'],
+            'passTypeIdentifier': pass_data['passTypeIdentifier'],
+            'organizationName': pass_data['organizationName'],
+            'teamIdentifier': pass_data['teamIdentifier'],
+            'serialNumber': pass_data['serialNumber'],
+            'description': pass_data['description'],
             'backgroundColor': pass_data['backgroundColor'],
             'foregroundColor': pass_data['foregroundColor'],
             'labelColor': pass_data['labelColor'],
@@ -328,24 +325,9 @@ class BoardingPassService:
             tmp_path = None
         
         try:
-            # Generate pass - try PyPassConfig first, fallback to JSON string
-            try:
-                generate_pass(
-                    config=config,
-                    cert_path=str(cert_path),
-                    key_path=str(key_path),
-                    output_path=str(output_path),
-                    icon_path=str(icon_path) if icon_path else None,
-                    icon2x_path=str(icon2x_path) if icon2x_path else None,
-                    logo_path=str(logo_path) if logo_path else None,
-                )
-            except Exception as e:
-                # If both fail, raise the error
-                raise
-            except (TypeError, AttributeError):
-                # Fallback: try with JSON string
-                generate_pass(
-                    config=pass_json_str,
+            # Generate pass - passes-rs-py expects config as JSON string
+            generate_pass(
+                config=pass_json_str,
                 cert_path=str(cert_path),
                 key_path=str(key_path),
                 output_path=str(output_path),
@@ -406,7 +388,7 @@ class BoardingPassService:
         """
         Format relevantDate for PKPass.
         
-        Matches PHP: $this->flight->scheduledDepartureDate->format('Y-m-d\TH:i:sP')
+        Matches PHP: $this->flight->scheduledDepartureDate->format('Y-m-d\\TH:i:sP')
         Returns ISO 8601 format with timezone offset (e.g., '2024-06-19T08:00:00+01:00')
         """
         from datetime import timezone
