@@ -32,6 +32,7 @@ curl -X DELETE                                   -H ${auth}                     
 jq '.[0]' samples/sample_flights.json | curl -X POST -H 'Content-Type: application/json' -H ${auth} -d @- "${HTTP}://${baseurl}/airline/${airline}/flight/check/${flight}"
 
 curl                                             -H ${auth}                                 ${HTTP}://${baseurl}/airline/${airline}/ticket/${ticket}
+curl -X POST -H 'Content-Type: application/json' -H ${auth} -d @{samples}/sample_ticket_issue.json ${HTTP}://${baseurl}/airline/${airline}/ticket/issue/${flight}/${passenger}
 curl -X DELETE                                   -H ${auth}                                 ${HTTP}://${baseurl}/airline/${airline}/ticket/${ticket}
 curl -X POST -H 'Content-Type: application/json' -H ${auth} -d @${samples}/sample_validate.json "${HTTP}://${baseurl}/airline/${airline}/ticket/verify"
 

@@ -22,7 +22,7 @@ class AirportService:
     - Get airport information (name, location, country, etc.)
     - Get map URLs
     
-    Uses DatabaseSource from euro_aip for read-only access to airports.db.
+    Uses DatabaseSource from euro_aip.sources for read-only access to airports.db.
     """
     
     _source = None  # Cached DatabaseSource instance
@@ -37,7 +37,8 @@ class AirportService:
         """
         if cls._source is None:
             try:
-                from euro_aip import DatabaseSource
+                # Import from euro_aip.sources (where DatabaseSource is actually defined)
+                from euro_aip.sources import DatabaseSource
                 
                 airport_db_path = Path(settings.AIRPORT_DB_PATH)
                 if not airport_db_path.exists():
