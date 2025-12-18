@@ -47,7 +47,23 @@ async def plan_flight(
     
     # Get the aircraft
     aircraft_repo = AircraftRepository(aircrafts, Aircraft)
-    aircraft = await aircraft_repo.get_by_identifier(aircraft_identifier, airline.airline_id, db)
+    # First try by identifier (Python tests / new clients)
+    aircraft = await aircraft_repo.get_by_identifier(
+        aircraft_identifier, airline.airline_id, db
+    )
+
+    # For backwards compatibility with PHP, also support numeric aircraft_id
+    # used in the original /flight/plan/{aircraft_id} endpoint.
+    if not aircraft:
+        try:
+            aircraft_id = int(aircraft_identifier)
+        except ValueError:
+            aircraft_id = None
+
+        if aircraft_id is not None:
+            aircraft = await aircraft_repo.get_by_id(
+                aircraft_id, airline.airline_id, db
+            )
     
     if not aircraft:
         raise NotFoundError("Aircraft", aircraft_identifier)

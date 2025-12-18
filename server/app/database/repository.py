@@ -23,9 +23,33 @@ class BaseRepository(Generic[T]):
         self.model_class = model_class
         self._table_name = table.name
         # Derive column names from table name (e.g., "Aircrafts" -> "aircraft_id", "aircraft_identifier")
-        table_singular = table.name[:-1].lower()  # Remove 's' and lowercase
+        table_singular = table.name[:-1].lower()  # Remove trailing 's' and lowercase
         self._id_column = f"{table_singular}_id"
         self._identifier_column = f"{table_singular}_identifier"
+
+    async def get_by_id(
+        self, entity_id: int, airline_id: int, db: AsyncSession
+    ) -> T | None:
+        """
+        Get entity by numeric primary key (scoped to airline).
+
+        This matches PHP MyFlyFunDb::getXxx($id) behaviour, where routes
+        sometimes pass a numeric ID instead of an identifier.
+        """
+        # Explicitly select only the columns that exist in the table
+        query = select(
+            self.table.c[self._id_column],
+            self.table.c[self._identifier_column],
+            self.table.c.json_data,
+            self.table.c.airline_id,
+            self.table.c.modified,
+        ).where(
+            self.table.c[self._id_column] == entity_id,
+            self.table.c.airline_id == airline_id,
+        )
+        result = await db.execute(query)
+        row = result.fetchone()
+        return self._row_to_model(row) if row else None
 
     async def get_by_identifier(
         self, identifier: str, airline_id: int, db: AsyncSession

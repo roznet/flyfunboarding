@@ -2,6 +2,8 @@
 Fly Fun Boarding API - FastAPI Application Entry Point
 """
 from contextlib import asynccontextmanager
+from pathlib import Path
+
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
@@ -111,7 +113,12 @@ from app.routers import pages
 app.include_router(pages.router, prefix="/pages", tags=["pages"])
 
 # Static files (images, CSS, JS)
-app.mount("/static", StaticFiles(directory="static"), name="static")
+# Resolve the "static" directory relative to this file so it works regardless
+# of current working directory (pytest discovery, uvicorn from project root, etc).
+BASE_DIR = Path(__file__).resolve().parent.parent  # server/app -> server
+STATIC_DIR = BASE_DIR / "static"
+if STATIC_DIR.exists():
+    app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 
 
 @app.get("/health")
