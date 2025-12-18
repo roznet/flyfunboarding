@@ -57,11 +57,18 @@ class Ticket(BaseJsonModel):
         Matches PHP: Ticket->hasCustomLabel()
         
         Args:
-            airline_settings: Settings dict (if None, returns False)
+            airline_settings: Settings dict or Settings model (if None, returns False)
         """
         if airline_settings is None:
             return False
-        return airline_settings.get('customLabelEnabled', False) and bool(self.custom_label_value)
+
+        # Support both raw dict (PHP-style) and Settings Pydantic model
+        if hasattr(airline_settings, "custom_label_enabled"):
+            enabled = bool(getattr(airline_settings, "custom_label_enabled", False))
+        else:
+            enabled = bool(airline_settings.get("customLabelEnabled", False))
+
+        return enabled and bool(self.custom_label_value)
 
     def signature(self, signature_service) -> dict:
         """
