@@ -19,7 +19,7 @@ async def test_get_settings_defaults(client: AsyncClient):
     
     # Create airline
     airline_response = await client.post(
-        "/v1/airline/create",
+        "/api/v1/airline/create",
         json={
             "apple_identifier": "test.settings.defaults.123",
             "airline_name": "Settings Defaults Test Airline"
@@ -35,7 +35,7 @@ async def test_get_settings_defaults(client: AsyncClient):
     
     # Get settings (should return defaults)
     response = await client.get(
-        f"/v1/airline/{airline_identifier}/settings",
+        f"/api/v1/airline/{airline_identifier}/settings",
         headers={"Authorization": f"Bearer {apple_identifier}"}
     )
     
@@ -59,7 +59,7 @@ async def test_update_settings(client: AsyncClient):
     
     # Create airline
     airline_response = await client.post(
-        "/v1/airline/create",
+        "/api/v1/airline/create",
         json={
             "apple_identifier": "test.update.settings.123",
             "airline_name": "Update Settings Test Airline"
@@ -75,7 +75,7 @@ async def test_update_settings(client: AsyncClient):
     
     # Update settings
     response = await client.post(
-        f"/v1/airline/{airline_identifier}/settings",
+        f"/api/v1/airline/{airline_identifier}/settings",
         json={
             "backgroundColor": "rgb(255,0,0)",
             "customLabel": "Priority Boarding",
@@ -96,7 +96,7 @@ async def test_update_settings(client: AsyncClient):
     
     # Verify by getting settings again
     get_response = await client.get(
-        f"/v1/airline/{airline_identifier}/settings",
+        f"/api/v1/airline/{airline_identifier}/settings",
         headers={"Authorization": f"Bearer {apple_identifier}"}
     )
     
@@ -118,7 +118,7 @@ async def test_update_settings_partial(client: AsyncClient):
     
     # Create airline
     airline_response = await client.post(
-        "/v1/airline/create",
+        "/api/v1/airline/create",
         json={
             "apple_identifier": "test.partial.settings.123",
             "airline_name": "Partial Settings Test Airline"
@@ -134,7 +134,7 @@ async def test_update_settings_partial(client: AsyncClient):
     
     # First, set some custom values
     await client.post(
-        f"/v1/airline/{airline_identifier}/settings",
+        f"/api/v1/airline/{airline_identifier}/settings",
         json={
             "backgroundColor": "rgb(0,255,0)",
             "foregroundColor": "rgb(255,255,255)",
@@ -145,7 +145,7 @@ async def test_update_settings_partial(client: AsyncClient):
     
     # Then update only one field
     response = await client.post(
-        f"/v1/airline/{airline_identifier}/settings",
+        f"/api/v1/airline/{airline_identifier}/settings",
         json={
             "customLabel": "Updated VIP"
         },
@@ -175,7 +175,7 @@ async def test_settings_authentication_failure(client: AsyncClient):
     
     # Create airline
     airline_response = await client.post(
-        "/v1/airline/create",
+        "/api/v1/airline/create",
         json={
             "apple_identifier": "test.auth.settings.123",
             "airline_name": "Auth Settings Test Airline"
@@ -190,7 +190,7 @@ async def test_settings_authentication_failure(client: AsyncClient):
     
     # Try to access with invalid token
     response = await client.get(
-        f"/v1/airline/{airline_identifier}/settings",
+        f"/api/v1/airline/{airline_identifier}/settings",
         headers={"Authorization": "Bearer wrong_token"}
     )
     

@@ -29,14 +29,29 @@ import RZUtilsSwift
 import OSLog
 
 extension Secrets {
-    public var flyfunBaseUrl : URL {
+    private var flyfunBaseUrlString : String {
         #if targetEnvironment(simulator)
         #warning("Using local website in the simulator")
-        return URL(string: self["flyfun_api_url_simulator"] ?? "")!
+        return self["flyfun_base_url_simulator"] ?? self["flyfun_base_url"] ?? ""
         #else
-        return URL(string: self["flyfun_api_url"] ?? "")!
+        return self["flyfun_base_url"] ?? ""
         #endif
-        
-        
+    }
+
+    private var flyfunApiVersion : String {
+        return self["flyfun_api_version"] ?? "v1"
+    }
+
+    public var flyfunApiUrl : URL {
+        return URL(string: "\(flyfunBaseUrlString)/api/\(flyfunApiVersion)/")!
+    }
+
+    public var flyfunPagesUrl : URL {
+        return URL(string: "\(flyfunBaseUrlString)/pages/")!
+    }
+
+    // Legacy accessor for compatibility during migration
+    public var flyfunBaseUrl : URL {
+        return flyfunApiUrl
     }
 }

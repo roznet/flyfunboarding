@@ -21,7 +21,7 @@ async def test_get_boarding_pass_debug(client: AsyncClient):
     
     # Create airline
     airline_response = await client.post(
-        "/v1/airline/create",
+        "/api/v1/airline/create",
         json={
             "apple_identifier": "test.boardingpass.debug.123",
             "airline_name": "Boarding Pass Debug Test Airline"
@@ -37,7 +37,7 @@ async def test_get_boarding_pass_debug(client: AsyncClient):
     
     # Create aircraft
     aircraft_response = await client.post(
-        f"/v1/airline/{airline_identifier}/aircraft/create",
+        f"/api/v1/airline/{airline_identifier}/aircraft/create",
         json={
             "registration": "N12345",
             "type": "Cessna 172"
@@ -53,7 +53,7 @@ async def test_get_boarding_pass_debug(client: AsyncClient):
     # Create flight
     scheduled_date = (datetime.now() + timedelta(days=1)).isoformat()
     flight_response = await client.post(
-        f"/v1/airline/{airline_identifier}/flight/plan/{aircraft_identifier}",
+        f"/api/v1/airline/{airline_identifier}/flight/plan/{aircraft_identifier}",
         json={
             "origin": {
                 "icao": "EGLL",
@@ -77,7 +77,7 @@ async def test_get_boarding_pass_debug(client: AsyncClient):
     
     # Create passenger
     passenger_response = await client.post(
-        f"/v1/airline/{airline_identifier}/passenger/create",
+        f"/api/v1/airline/{airline_identifier}/passenger/create",
         json={
             "formattedName": "John Doe",
             "firstName": "John",
@@ -94,7 +94,7 @@ async def test_get_boarding_pass_debug(client: AsyncClient):
     
     # Issue ticket
     ticket_response = await client.post(
-        f"/v1/airline/{airline_identifier}/ticket/issue/{flight_identifier}/{passenger_identifier}",
+        f"/api/v1/airline/{airline_identifier}/ticket/issue/{flight_identifier}/{passenger_identifier}",
         json={
             "seatNumber": "12A",
             "customLabelValue": "1"
@@ -109,7 +109,7 @@ async def test_get_boarding_pass_debug(client: AsyncClient):
     
     # Get boarding pass in debug mode
     response = await client.get(
-        f"/v1/airline/{airline_identifier}/boardingpass/{ticket_identifier}",
+        f"/api/v1/airline/{airline_identifier}/boardingpass/{ticket_identifier}",
         params={"debug": True},
         headers={"Authorization": f"Bearer {apple_identifier}"}
     )
@@ -157,7 +157,7 @@ async def test_get_boarding_pass_pkpass(client: AsyncClient):
     
     # Create airline
     airline_response = await client.post(
-        "/v1/airline/create",
+        "/api/v1/airline/create",
         json={
             "apple_identifier": "test.boardingpass.pkpass.123",
             "airline_name": "Boarding Pass PKPass Test Airline"
@@ -173,7 +173,7 @@ async def test_get_boarding_pass_pkpass(client: AsyncClient):
     
     # Create aircraft
     aircraft_response = await client.post(
-        f"/v1/airline/{airline_identifier}/aircraft/create",
+        f"/api/v1/airline/{airline_identifier}/aircraft/create",
         json={
             "registration": "N99999",
             "type": "Piper PA-28"
@@ -189,7 +189,7 @@ async def test_get_boarding_pass_pkpass(client: AsyncClient):
     # Create flight
     scheduled_date = (datetime.now() + timedelta(days=1)).isoformat()
     flight_response = await client.post(
-        f"/v1/airline/{airline_identifier}/flight/plan/{aircraft_identifier}",
+        f"/api/v1/airline/{airline_identifier}/flight/plan/{aircraft_identifier}",
         json={
             "origin": {
                 "icao": "EGLL",
@@ -213,7 +213,7 @@ async def test_get_boarding_pass_pkpass(client: AsyncClient):
     
     # Create passenger
     passenger_response = await client.post(
-        f"/v1/airline/{airline_identifier}/passenger/create",
+        f"/api/v1/airline/{airline_identifier}/passenger/create",
         json={
             "formattedName": "Jane Smith",
             "firstName": "Jane",
@@ -230,7 +230,7 @@ async def test_get_boarding_pass_pkpass(client: AsyncClient):
     
     # Issue ticket
     ticket_response = await client.post(
-        f"/v1/airline/{airline_identifier}/ticket/issue/{flight_identifier}/{passenger_identifier}",
+        f"/api/v1/airline/{airline_identifier}/ticket/issue/{flight_identifier}/{passenger_identifier}",
         json={
             "seatNumber": "15B",
             "customLabelValue": "2"
@@ -245,7 +245,7 @@ async def test_get_boarding_pass_pkpass(client: AsyncClient):
     
     # Get boarding pass as PKPass file
     response = await client.get(
-        f"/v1/airline/{airline_identifier}/boardingpass/{ticket_identifier}",
+        f"/api/v1/airline/{airline_identifier}/boardingpass/{ticket_identifier}",
         headers={"Authorization": f"Bearer {apple_identifier}"}
     )
     
@@ -273,7 +273,7 @@ async def test_get_public_boarding_pass(client: AsyncClient):
     
     # Create airline
     airline_response = await client.post(
-        "/v1/airline/create",
+        "/api/v1/airline/create",
         json={
             "apple_identifier": "test.public.boardingpass.123",
             "airline_name": "Public Boarding Pass Test Airline"
@@ -289,7 +289,7 @@ async def test_get_public_boarding_pass(client: AsyncClient):
     
     # Create aircraft, flight, passenger, and ticket
     aircraft_response = await client.post(
-        f"/v1/airline/{airline_identifier}/aircraft/create",
+        f"/api/v1/airline/{airline_identifier}/aircraft/create",
         json={
             "registration": "N77777",
             "type": "Beechcraft Bonanza"
@@ -304,7 +304,7 @@ async def test_get_public_boarding_pass(client: AsyncClient):
     
     scheduled_date = (datetime.now() + timedelta(days=1)).isoformat()
     flight_response = await client.post(
-        f"/v1/airline/{airline_identifier}/flight/plan/{aircraft_identifier}",
+        f"/api/v1/airline/{airline_identifier}/flight/plan/{aircraft_identifier}",
         json={
             "origin": {
                 "icao": "EGLL",
@@ -327,7 +327,7 @@ async def test_get_public_boarding_pass(client: AsyncClient):
     flight_identifier = flight_response.json()["flight_identifier"]
     
     passenger_response = await client.post(
-        f"/v1/airline/{airline_identifier}/passenger/create",
+        f"/api/v1/airline/{airline_identifier}/passenger/create",
         json={
             "formattedName": "Bob Johnson",
             "firstName": "Bob",
@@ -343,7 +343,7 @@ async def test_get_public_boarding_pass(client: AsyncClient):
     passenger_identifier = passenger_response.json()["passenger_identifier"]
     
     ticket_response = await client.post(
-        f"/v1/airline/{airline_identifier}/ticket/issue/{flight_identifier}/{passenger_identifier}",
+        f"/api/v1/airline/{airline_identifier}/ticket/issue/{flight_identifier}/{passenger_identifier}",
         json={
             "seatNumber": "20C",
             "customLabelValue": "3"
@@ -358,7 +358,7 @@ async def test_get_public_boarding_pass(client: AsyncClient):
     
     # Get public boarding pass (no auth header)
     response = await client.get(
-        f"/v1/boardingpass/{ticket_identifier}",
+        f"/api/v1/boardingpass/{ticket_identifier}",
         params={"debug": True}  # Use debug mode to avoid cert issues
     )
     
@@ -380,7 +380,7 @@ async def test_get_boarding_pass_not_found(client: AsyncClient):
     
     # Create airline
     airline_response = await client.post(
-        "/v1/airline/create",
+        "/api/v1/airline/create",
         json={
             "apple_identifier": "test.boardingpass.notfound.123",
             "airline_name": "Boarding Pass Not Found Test Airline"
@@ -396,7 +396,7 @@ async def test_get_boarding_pass_not_found(client: AsyncClient):
     
     # Try to get boarding pass for non-existent ticket
     response = await client.get(
-        f"/v1/airline/{airline_identifier}/boardingpass/nonexistent123",
+        f"/api/v1/airline/{airline_identifier}/boardingpass/nonexistent123",
         headers={"Authorization": f"Bearer {apple_identifier}"}
     )
     
@@ -416,7 +416,7 @@ async def test_boarding_pass_authentication_failure(client: AsyncClient):
     
     # Create airline
     airline_response = await client.post(
-        "/v1/airline/create",
+        "/api/v1/airline/create",
         json={
             "apple_identifier": "test.boardingpass.auth.123",
             "airline_name": "Boarding Pass Auth Test Airline"
@@ -431,7 +431,7 @@ async def test_boarding_pass_authentication_failure(client: AsyncClient):
     
     # Try to access with invalid token
     response = await client.get(
-        f"/v1/airline/{airline_identifier}/boardingpass/someticket123",
+        f"/api/v1/airline/{airline_identifier}/boardingpass/someticket123",
         headers={"Authorization": "Bearer wrong_token"}
     )
     

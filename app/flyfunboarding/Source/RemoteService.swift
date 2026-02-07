@@ -45,7 +45,7 @@ class RemoteService {
     static let shared = RemoteService()
    
     init() {
-        Logger.net.info("Connected to \(Secrets.shared.flyfunBaseUrl) ")
+        Logger.net.info("Connected to \(Secrets.shared.flyfunApiUrl) ")
     }
     static let decoder : JSONDecoder = {
         let rv = JSONDecoder()
@@ -71,7 +71,7 @@ class RemoteService {
     }
     
     private func url(point : String, queryItems : [URLQueryItem] = []) -> URL? {
-        let baseUrl = Secrets.shared.flyfunBaseUrl
+        let baseUrl = Secrets.shared.flyfunApiUrl
         if let url = URL(string: point, relativeTo: baseUrl ),
            var components = URLComponents(url: url, resolvingAgainstBaseURL: true) {
             if queryItems.count > 0 {

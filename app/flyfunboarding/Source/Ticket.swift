@@ -65,7 +65,7 @@ struct Ticket : Codable, Identifiable, Hashable, Equatable {
     }
     var downloadPassUrl : URL? {
         if let identifier = ticket_identifier {
-            let baseUrl = Secrets.shared.flyfunBaseUrl
+            let baseUrl = Secrets.shared.flyfunApiUrl
             let point = "boardingPass/\(identifier)"
             if let url = URL(string: point, relativeTo: baseUrl ) {
                 Logger.app.info("Sharing \(url.absoluteURL)")
@@ -77,9 +77,9 @@ struct Ticket : Codable, Identifiable, Hashable, Equatable {
 
     var disclaimerUrl : URL? {
         if let identifier = ticket_identifier {
-            let baseUrl = Secrets.shared.flyfunBaseUrl.absoluteString.replacing("/api", with: "/pages")
+            let baseUrl = Secrets.shared.flyfunPagesUrl
             let point = "yourBoardingPass/\(identifier)"
-            if let url = URL(string: point, relativeTo: URL(string: baseUrl) ) {
+            if let url = URL(string: point, relativeTo: baseUrl) {
                 Logger.app.info("Sharing \(url.absoluteURL)")
                 return url.absoluteURL
             }

@@ -30,7 +30,7 @@ async def test_create_airline(client: AsyncClient):
     
     # Create airline
     response = await client.post(
-        "/v1/airline/create",
+        "/api/v1/airline/create",
         json={
             "apple_identifier": "test.apple.id.123",
             "airline_name": "Test Airline"
@@ -55,7 +55,7 @@ async def test_get_airline(client: AsyncClient):
     
     # First create an airline
     create_response = await client.post(
-        "/v1/airline/create",
+        "/api/v1/airline/create",
         json={
             "apple_identifier": "test.get.airline.123",
             "airline_name": "Get Test Airline"
@@ -71,7 +71,7 @@ async def test_get_airline(client: AsyncClient):
     
     # Now get it
     response = await client.get(
-        f"/v1/airline/{airline_identifier}",
+        f"/api/v1/airline/{airline_identifier}",
         headers={"Authorization": f"Bearer {apple_identifier}"}
     )
     
@@ -92,7 +92,7 @@ async def test_get_airline_keys(client: AsyncClient):
     
     # Create airline first
     create_response = await client.post(
-        "/v1/airline/create",
+        "/api/v1/airline/create",
         json={
             "apple_identifier": "test.keys.airline.123",
             "airline_name": "Keys Test Airline"
@@ -108,7 +108,7 @@ async def test_get_airline_keys(client: AsyncClient):
     
     # Get keys
     response = await client.get(
-        f"/v1/airline/{airline_identifier}/keys",
+        f"/api/v1/airline/{airline_identifier}/keys",
         headers={"Authorization": f"Bearer {apple_identifier}"}
     )
     
@@ -129,7 +129,7 @@ async def test_airline_authentication_failure(client: AsyncClient):
 
     # First create a valid airline
     create_response = await client.post(
-        "/v1/airline/create",
+        "/api/v1/airline/create",
         json={
             "apple_identifier": "test.auth.failure.123",
             "airline_name": "Auth Failure Test Airline"
@@ -144,7 +144,7 @@ async def test_airline_authentication_failure(client: AsyncClient):
 
     # Now try to access it with an INVALID token
     response = await client.get(
-        f"/v1/airline/{airline_identifier}",
+        f"/api/v1/airline/{airline_identifier}",
         headers={"Authorization": "Bearer wrong_token"}
     )
 

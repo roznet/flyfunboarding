@@ -1,0 +1,48 @@
+# Production config - use with: docker compose -f docker-compose.prod.yml up -d
+# Bound to localhost:8001 - system Caddy handles external traffic
+
+services:
+  flyfunboarding-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: flyfunboarding-api
+    restart: unless-stopped
+    environment:
+      DB_HOST: shared-mysql
+      DB_PORT: 3306
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME:-flyfunboarding}
+
+      SECRET: ${SECRET}
+      USE_PUBLIC_KEY_SIGNATURE: ${USE_PUBLIC_KEY_SIGNATURE:-true}
+
+      CERTIFICATE_PATH: /app/certs/certificate.pem
+      CERTIFICATE_PASSWORD: ${CERTIFICATE_PASSWORD:-}
+      WWDR_PATH: /app/certs/AppleWWDRCA.pem
+
+      KEYS_PATH: /app/keys
+      IMAGES_PATH: /app/images
+
+      DEBUG: "false"
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      CORS_ORIGINS: ${CORS_ORIGINS:-*}
+    volumes:
+      - ../certs:/app/certs:ro
+      - ../keys:/app/keys:ro
+      - ../images:/app/images:ro
+    ports:
+      - "127.0.0.1:8001:8000"  # Localhost 8001 → container 8000; Caddy handles external traffic
+    networks:
+      - shared-services
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+networks:
+  shared-services:
+    external: true

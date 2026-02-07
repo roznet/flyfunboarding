@@ -46,6 +46,11 @@ class Settings(BaseSettings):
     API_VERSION: str = "v1"
     DEBUG: bool = False
 
+    @property
+    def api_prefix(self) -> str:
+        """API route prefix: /api/v1, /api/v2, etc."""
+        return f"/api/{self.API_VERSION}"
+
     # CORS Configuration
     CORS_ORIGINS: str = "*"  # Comma-separated list, or "*" for all
 

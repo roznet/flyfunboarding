@@ -21,7 +21,7 @@ async def test_create_passenger(client: AsyncClient):
     
     # First create an airline
     airline_response = await client.post(
-        "/v1/airline/create",
+        "/api/v1/airline/create",
         json={
             "apple_identifier": "test.passenger.airline.123",
             "airline_name": "Passenger Test Airline"
@@ -37,7 +37,7 @@ async def test_create_passenger(client: AsyncClient):
     
     # Create passenger
     response = await client.post(
-        f"/v1/airline/{airline_identifier}/passenger/create",
+        f"/api/v1/airline/{airline_identifier}/passenger/create",
         json={
             "formattedName": "John Doe",
             "firstName": "John",
@@ -65,7 +65,7 @@ async def test_list_passengers(client: AsyncClient):
     
     # Create airline
     airline_response = await client.post(
-        "/v1/airline/create",
+        "/api/v1/airline/create",
         json={
             "apple_identifier": "test.list.passengers.123",
             "airline_name": "List Passengers Test Airline"
@@ -82,7 +82,7 @@ async def test_list_passengers(client: AsyncClient):
     # Create a couple of passengers
     for i in range(2):
         await client.post(
-            f"/v1/airline/{airline_identifier}/passenger/create",
+            f"/api/v1/airline/{airline_identifier}/passenger/create",
             json={
                 "formattedName": f"Passenger {i+1}",
                 "firstName": f"First{i+1}",
@@ -94,7 +94,7 @@ async def test_list_passengers(client: AsyncClient):
     
     # List passengers
     response = await client.get(
-        f"/v1/airline/{airline_identifier}/passenger/list",
+        f"/api/v1/airline/{airline_identifier}/passenger/list",
         headers={"Authorization": f"Bearer {apple_identifier}"}
     )
     
@@ -115,7 +115,7 @@ async def test_get_passenger(client: AsyncClient):
     
     # Create airline
     airline_response = await client.post(
-        "/v1/airline/create",
+        "/api/v1/airline/create",
         json={
             "apple_identifier": "test.get.passenger.123",
             "airline_name": "Get Passenger Test Airline"
@@ -131,7 +131,7 @@ async def test_get_passenger(client: AsyncClient):
     
     # Create passenger
     create_response = await client.post(
-        f"/v1/airline/{airline_identifier}/passenger/create",
+        f"/api/v1/airline/{airline_identifier}/passenger/create",
         json={
             "formattedName": "Jane Smith",
             "firstName": "Jane",
@@ -149,7 +149,7 @@ async def test_get_passenger(client: AsyncClient):
     
     # Get passenger
     response = await client.get(
-        f"/v1/airline/{airline_identifier}/passenger/{passenger_identifier}",
+        f"/api/v1/airline/{airline_identifier}/passenger/{passenger_identifier}",
         headers={"Authorization": f"Bearer {apple_identifier}"}
     )
     
@@ -172,7 +172,7 @@ async def test_get_passenger_not_found(client: AsyncClient):
     
     # Create airline
     airline_response = await client.post(
-        "/v1/airline/create",
+        "/api/v1/airline/create",
         json={
             "apple_identifier": "test.notfound.passenger.123",
             "airline_name": "Not Found Test Airline"
@@ -188,7 +188,7 @@ async def test_get_passenger_not_found(client: AsyncClient):
     
     # Try to get non-existent passenger
     response = await client.get(
-        f"/v1/airline/{airline_identifier}/passenger/nonexistent123",
+        f"/api/v1/airline/{airline_identifier}/passenger/nonexistent123",
         headers={"Authorization": f"Bearer {apple_identifier}"}
     )
     
@@ -208,7 +208,7 @@ async def test_list_passenger_tickets(client: AsyncClient):
     
     # Create airline
     airline_response = await client.post(
-        "/v1/airline/create",
+        "/api/v1/airline/create",
         json={
             "apple_identifier": "test.passenger.tickets.123",
             "airline_name": "Passenger Tickets Test Airline"
@@ -224,7 +224,7 @@ async def test_list_passenger_tickets(client: AsyncClient):
     
     # Create passenger
     passenger_response = await client.post(
-        f"/v1/airline/{airline_identifier}/passenger/create",
+        f"/api/v1/airline/{airline_identifier}/passenger/create",
         json={
             "formattedName": "Ticket Holder",
             "firstName": "Ticket",
@@ -241,7 +241,7 @@ async def test_list_passenger_tickets(client: AsyncClient):
     
     # List tickets (should be empty for now)
     response = await client.get(
-        f"/v1/airline/{airline_identifier}/passenger/{passenger_identifier}/tickets",
+        f"/api/v1/airline/{airline_identifier}/passenger/{passenger_identifier}/tickets",
         headers={"Authorization": f"Bearer {apple_identifier}"}
     )
     
@@ -263,7 +263,7 @@ async def test_passenger_authentication_failure(client: AsyncClient):
     
     # Create airline
     airline_response = await client.post(
-        "/v1/airline/create",
+        "/api/v1/airline/create",
         json={
             "apple_identifier": "test.auth.passenger.123",
             "airline_name": "Auth Passenger Test Airline"
@@ -278,7 +278,7 @@ async def test_passenger_authentication_failure(client: AsyncClient):
     
     # Try to access with invalid token
     response = await client.get(
-        f"/v1/airline/{airline_identifier}/passenger/list",
+        f"/api/v1/airline/{airline_identifier}/passenger/list",
         headers={"Authorization": "Bearer wrong_token"}
     )
     

@@ -11,7 +11,7 @@ from httpx import AsyncClient
 @pytest.mark.asyncio
 async def test_get_status(client: AsyncClient):
     """Test getting database status."""
-    response = await client.get("/v1/status")
+    response = await client.get("/api/v1/status")
     
     # Should return 200 if database is accessible
     assert response.status_code == 200
@@ -26,7 +26,7 @@ async def test_get_status(client: AsyncClient):
 @pytest.mark.asyncio
 async def test_status_returns_correct_format(client: AsyncClient):
     """Test that status returns the correct JSON format."""
-    response = await client.get("/v1/status")
+    response = await client.get("/api/v1/status")
     
     assert response.status_code == 200
     data = response.json()

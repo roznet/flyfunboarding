@@ -1,0 +1,53 @@
+services:
+  flyfunboarding-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: flyfunboarding-api
+    restart: unless-stopped
+    environment:
+      # Database - connect to shared MySQL via network name
+      DB_HOST: shared-mysql
+      DB_PORT: 3306
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME:-flyfunboarding}
+
+      # Security
+      SECRET: ${SECRET}
+      USE_PUBLIC_KEY_SIGNATURE: ${USE_PUBLIC_KEY_SIGNATURE:-true}
+
+      # PKPass - paths inside container
+      CERTIFICATE_PATH: /app/certs/certificate.pem
+      CERTIFICATE_PASSWORD: ${CERTIFICATE_PASSWORD:-}
+      WWDR_PATH: /app/certs/AppleWWDRCA.pem
+
+      # File paths inside container
+      KEYS_PATH: /app/keys
+      IMAGES_PATH: /app/images
+
+      # API Config
+      DEBUG: ${DEBUG:-false}
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      CORS_ORIGINS: ${CORS_ORIGINS:-*}
+    volumes:
+      # Mount secrets/data from parent directory (repo root)
+      - ../certs:/app/certs:ro
+      - ../keys:/app/keys:ro
+      - ../images:/app/images:ro
+    ports:
+      - "8000:8000"
+    networks:
+      - shared-services
+    # Note: depends_on doesn't work across compose files
+    # Make sure shared-infra MySQL is running before starting this service
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+networks:
+  shared-services:
+    external: true  # This network is created by shared-infra

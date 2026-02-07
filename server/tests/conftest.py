@@ -8,7 +8,7 @@ from typing import AsyncGenerator
 
 from httpx import AsyncClient, ASGITransport
 
-from app.main import app
+from app.main import app, API
 
 
 @pytest.fixture(scope="session")
@@ -24,3 +24,9 @@ async def client() -> AsyncGenerator[AsyncClient, None]:
         base_url="http://test"
     ) as ac:
         yield ac
+
+
+@pytest.fixture(scope="session")
+def api() -> str:
+    """API route prefix (e.g. /api/v1) from app config."""
+    return API

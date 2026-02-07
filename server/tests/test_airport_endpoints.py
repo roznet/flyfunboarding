@@ -19,7 +19,7 @@ async def test_get_airport_by_query_param(client: AsyncClient):
         pytest.skip("Airport service not available (euro_aip library not installed or database not found)")
     
     # Test with a well-known airport (London Heathrow)
-    response = await client.get("/v1/airport", params={"icao": "EGLL"})
+    response = await client.get("/api/v1/airport", params={"icao": "EGLL"})
     
     assert response.status_code == 200
     data = response.json()
@@ -42,7 +42,7 @@ async def test_get_airport_by_path(client: AsyncClient):
         pytest.skip("Airport service not available (euro_aip library not installed or database not found)")
     
     # Test with another well-known airport (JFK)
-    response = await client.get("/v1/airport/info/KJFK")
+    response = await client.get("/api/v1/airport/info/KJFK")
     
     assert response.status_code == 200
     data = response.json()
@@ -55,7 +55,7 @@ async def test_get_airport_by_path(client: AsyncClient):
 @pytest.mark.asyncio
 async def test_get_airport_not_found_query(client: AsyncClient):
     """Test getting non-existent airport via query param."""
-    response = await client.get("/v1/airport", params={"icao": "XXXX"})
+    response = await client.get("/api/v1/airport", params={"icao": "XXXX"})
     
     assert response.status_code == 400
     data = response.json()
@@ -66,7 +66,7 @@ async def test_get_airport_not_found_query(client: AsyncClient):
 @pytest.mark.asyncio
 async def test_get_airport_not_found_path(client: AsyncClient):
     """Test getting non-existent airport via path."""
-    response = await client.get("/v1/airport/info/XXXX")
+    response = await client.get("/api/v1/airport/info/XXXX")
     
     assert response.status_code == 400
     data = response.json()
@@ -77,7 +77,7 @@ async def test_get_airport_not_found_path(client: AsyncClient):
 @pytest.mark.asyncio
 async def test_get_airport_missing_icao(client: AsyncClient):
     """Test getting airport without ICAO parameter."""
-    response = await client.get("/v1/airport")
+    response = await client.get("/api/v1/airport")
     
     assert response.status_code == 400
     data = response.json()
@@ -95,12 +95,12 @@ async def test_get_airport_case_insensitive(client: AsyncClient):
         pytest.skip("Airport service not available (euro_aip library not installed or database not found)")
     
     # Test with lowercase
-    response_lower = await client.get("/v1/airport/info/egll")
+    response_lower = await client.get("/api/v1/airport/info/egll")
     assert response_lower.status_code == 200
     data_lower = response_lower.json()
     
     # Test with uppercase
-    response_upper = await client.get("/v1/airport/info/EGLL")
+    response_upper = await client.get("/api/v1/airport/info/EGLL")
     assert response_upper.status_code == 200
     data_upper = response_upper.json()
     
