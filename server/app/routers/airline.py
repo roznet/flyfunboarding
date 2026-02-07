@@ -9,7 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.dialects.mysql import insert as mysql_insert
 import hashlib
 
-from app.dependencies import CurrentAirline, DbSession, SystemAuth
+from app.dependencies import CurrentAirline, DbSession
 from app.database.tables import airlines
 from app.schemas.airline import AirlineCreate, AirlineResponse
 from app.models.airline import Airline
@@ -31,13 +31,12 @@ def airline_identifier_from_apple_identifier(apple_identifier: str) -> str:
 async def create_airline(
     airline_data: AirlineCreate,
     db: DbSession,
-    system_auth: SystemAuth,
 ):
     """
     Create or update airline from Apple identifier.
 
     Matches PHP: POST /v1/airline/create
-    Requires system authentication (SECRET).
+    The apple_identifier itself serves as the credential (from Apple Sign In).
     """
     # Generate airline_identifier from apple_identifier
     airline_identifier = airline_identifier_from_apple_identifier(
