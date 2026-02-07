@@ -180,6 +180,13 @@ These are real issues encountered during the PHP-to-Python migration. Each one c
 **Fix**: Add path-based route `/yourBoardingPass/{ticket_identifier}` that delegates to the query-param handler.
 **Lesson**: Check how iOS constructs URLs (in `Ticket.swift`) and ensure the server has matching routes.
 
+### 8. USE_PUBLIC_KEY_SIGNATURE Must Match PHP Config
+
+**Symptom**: QR code on boarding pass is too dense for the scanner to read.
+**Cause**: Droplet `.env` had `USE_PUBLIC_KEY_SIGNATURE=true` (the default), but PHP production ran with `false`. With `true`, the QR payload is ~502 bytes (includes 344-char base64 RSA signature). With `false`, it's ~170 bytes (hash only).
+**Fix**: Set `USE_PUBLIC_KEY_SIGNATURE=false` in the droplet's `.env` and restart the container (`docker compose up -d` — no rebuild needed, env vars are runtime).
+**Lesson**: Match the PHP production config values, not the defaults. The simplified hash-only mode is sufficient and produces scannable QR codes.
+
 ## Health Checks
 
 - **Docker healthcheck**: `curl -f http://localhost:8000/health` (every 30s)
