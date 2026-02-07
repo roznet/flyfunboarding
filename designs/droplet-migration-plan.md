@@ -29,7 +29,8 @@ Migration of flyfunboarding from PHP on the old droplet (ro-z.net) to Python/Fas
 | Port | Service |
 |------|---------|
 | 8000 | maps.flyfun.aero |
-| 8001 | boarding.flyfun.aero |
+| 8001 | chromadb |
+| 8010 | boarding.flyfun.aero |
 | 8002 | mcp.flyfun.aero |
 | 8080 | ro-z.net (WordPress) |
 
