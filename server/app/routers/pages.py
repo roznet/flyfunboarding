@@ -30,10 +30,21 @@ TEMPLATES_DIR = Path(__file__).parent.parent.parent / "templates"
 templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
 
 
+@router.get("/yourBoardingPass/{ticket_identifier}", response_class=HTMLResponse)
+async def your_boarding_pass_by_path(
+    request: Request,
+    ticket_identifier: str,
+    lang: Optional[str] = Query(None, description="Language code"),
+    db: DbSession = None,
+):
+    """Path-based boarding pass page: /pages/yourBoardingPass/{ticket_identifier}"""
+    return await your_boarding_pass(request, ticket=ticket_identifier, lang=lang, db=db)
+
+
 @router.get("/yourBoardingPass", response_class=HTMLResponse)
 async def your_boarding_pass(
     request: Request,
-    ticket: Optional[str] = Query(None, regex="^[a-zA-Z0-9-]+$", description="Ticket identifier"),
+    ticket: Optional[str] = Query(None, pattern="^[a-zA-Z0-9-]+$", description="Ticket identifier"),
     lang: Optional[str] = Query(None, description="Language code"),
     db: DbSession = None,
 ):
