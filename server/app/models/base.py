@@ -45,7 +45,7 @@ class BaseJsonModel(BaseModel):
         populate_by_name=True,  # Allow both field name and alias
         use_enum_values=True,
         json_encoders={
-            datetime: lambda v: v.isoformat() if v else None,
+            datetime: lambda v: (v.isoformat() + "+00:00" if v.tzinfo is None else v.isoformat()) if v else None,
             timedelta: timedelta_to_iso8601,
         },
     )

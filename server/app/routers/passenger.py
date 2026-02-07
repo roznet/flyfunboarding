@@ -9,6 +9,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.dialects.mysql import insert as mysql_insert
 import uuid
 
+from datetime import datetime
+
 from app.dependencies import CurrentAirline, DbSession
 from app.database.tables import passengers, tickets
 from app.schemas.passenger import PassengerCreate, PassengerResponse
@@ -16,6 +18,13 @@ from app.models.passenger import Passenger
 from app.core.exceptions import NotFoundError
 
 router = APIRouter()
+
+
+def _format_iso8601(dt: datetime | None) -> str | None:
+    """Format datetime as ISO 8601 with timezone (matches PHP DateTime->format('c'))."""
+    if dt is None:
+        return None
+    return dt.isoformat() + "+00:00" if dt.tzinfo is None else dt.isoformat()
 
 
 def passenger_identifier_from_apple_identifier(apple_identifier: str) -> str:
@@ -115,7 +124,7 @@ async def list_passengers(
             stats.append({
                 "table": "Tickets",
                 "count": row_dict.get("tickets_count", 0),
-                "last": row_dict.get("tickets_last"),
+                "last": _format_iso8601(row_dict.get("tickets_last")),
             })
         json_data["stats"] = stats
         passenger = Passenger.model_validate(json_data)
