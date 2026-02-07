@@ -33,7 +33,7 @@ services:
       - ../keys:/app/keys:ro
       - ../images:/app/images:ro
     ports:
-      - "127.0.0.1:8001:8000"  # Localhost 8001 → container 8000; Caddy handles external traffic
+      - "127.0.0.1:8010:8000"  # Localhost 8010 → container 8000; Caddy handles external traffic
     networks:
       - shared-services
     healthcheck:
