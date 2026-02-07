@@ -1,6 +1,6 @@
 # ![icon](https://github.com/roznet/flyfunboarding/blob/ecda36f975109a8708dd4ea8d943c5064dde16d1/images/icon.png) Fly Fun Boarding App
 
-Welcome to Fly Fun Boarding, a Mini Airline Workflow for Private Pilots! This open-source application is designed to provide a fun and engaging way for private pilots to issue boarding passes to their friends and family for flights on small planes, such as Cirrus, Cessna, or Diamond aircraft. It is intended for non-commercial use and serves as a fun way to enhance the experience of flying with a private pilot. The app is built using SwiftUI with a PHP backend server.
+Welcome to Fly Fun Boarding, a Mini Airline Workflow for Private Pilots! This open-source application is designed to provide a fun and engaging way for private pilots to issue boarding passes to their friends and family for flights on small planes, such as Cirrus, Cessna, or Diamond aircraft. It is intended for non-commercial use and serves as a fun way to enhance the experience of flying with a private pilot. The app is built using SwiftUI with a Python/FastAPI backend server.
 
 ## Features
 
@@ -15,8 +15,8 @@ Welcome to Fly Fun Boarding, a Mini Airline Workflow for Private Pilots! This op
 
 Xcode 14 or later
 iOS 16 or later
-PHP 7.3 or later for the backend server
-MySql 8.0
+Python 3.13 or later for the backend server
+MySQL 8.0
 
 ## Installation
 
@@ -27,8 +27,8 @@ This app is available for free on the [app store](https://apps.apple.com/us/app/
 The app is located under the `app` directory. You will need to edit the `secrets.json` file with information on your server.
 
 ### Server
-Install the PHP backend server on your web server.
-You will need to update the `config.php` file with information to connect to your database and the different secrets and certificate files.
+The server is located under the `server` directory. It runs as a Docker container with FastAPI/uvicorn.
+You will need to create a `.env` file with your database credentials, secrets, and certificate paths. See `server/.env.docker.example` for reference.
 
 ## Usage
 
@@ -53,4 +53,4 @@ This application is intended for fun and non-commercial use only. It is not affi
 
 ## Acknowledgments
 
-This app was developed with extensive assistance from ChatGPT by OpenAI and GitHub Copilot, two AI-powered tools that provided valuable insights and code suggestions throughout the development process. Their contributions have made the development process much faster than is typical for such an application. We appreciate their support in making this project a success.
+This app was initially developed with extensive assistance from ChatGPT by OpenAI and GitHub Copilot, two AI-powered tools that provided valuable insights and code suggestions throughout the development process. The server was subsequently migrated from PHP to Python/FastAPI and significantly refactored and improved with Claude by Anthropic. Their contributions have made the development process much faster than is typical for such an application. We appreciate their support in making this project a success.
