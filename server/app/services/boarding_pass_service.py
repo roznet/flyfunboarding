@@ -266,8 +266,10 @@ class BoardingPassService:
         
         boardingpass = self.boarding_pass_data()
         data['boardingPass'] = boardingpass
-        data['barcode'] = self.get_barcode_data()
-        
+        barcode = self.get_barcode_data()
+        data['barcode'] = barcode
+        data['barcodes'] = [barcode]
+
         return data
 
     def create_pass(self, output_path: Optional[Path] = None) -> bytes:
@@ -302,6 +304,7 @@ class BoardingPassService:
             'relevantDate': pass_data['relevantDate'],
             'boardingPass': pass_data['boardingPass'],
             'barcode': pass_data['barcode'],
+            'barcodes': pass_data['barcodes'],
         }
         pass_json_str = json.dumps(pass_json)
         
