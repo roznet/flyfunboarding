@@ -67,9 +67,8 @@ async def your_boarding_pass(
     localized_strings = get_localized_strings(language)
     available_languages = get_available_languages()
     
-    # Get root path for static files (similar to PHP rootPath calculation)
-    # In FastAPI, we can use request.base_url or a configured base path
-    root_path = str(request.base_url).rstrip('/')
+    # Use root-relative paths for static files (works behind Caddy HTTPS proxy)
+    root_path = ""
     
     # Default values
     ticket_obj = None
@@ -156,7 +155,8 @@ async def your_boarding_pass(
                 ticket_signature = ticket_obj.signature(signature_service)
                 
                 # Build PKPass URL (public endpoint)
-                pkpass_url = f"{root_path}/v1/boardingpass/{ticket}"
+                from app.config import settings
+                pkpass_url = f"{settings.api_prefix}/boardingpass/{ticket}"
     
     # Load disclaimer content
     disclaimer_file = Path("templates/disclaimers") / f"disclaimer_{language}.html"
