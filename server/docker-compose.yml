@@ -36,7 +36,7 @@ services:
       - ../keys:/app/keys:ro
       - ../images:/app/images:ro
     ports:
-      - "8000:8000"
+      - "8010:8000"
     networks:
       - shared-services
     # Note: depends_on doesn't work across compose files
