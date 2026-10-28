@@ -127,6 +127,40 @@ openssl pkcs12 -in certificate.p12 -nocerts -nodes -out certificate.key
     └── docker-compose.prod.yml  # Mounts certs/keys/images as :ro volumes
 ```
 
+`Certificates.p12` may also sit in `certs/` as a backup bundle (cert + key) from the original Keychain export. The server does not read it: `CERTIFICATE_PATH` points at `certificate.pem`, and the P12 extraction path in `boarding_pass_service.py` only runs if `CERTIFICATE_PATH` ends in `.p12`.
+
+#### Renewing the Pass Type ID Certificate
+
+The Pass Type ID certificate (`pass.net.ro-z.flyfunboardingpass`) is valid for one year. Apple emails about 30 days before expiry. After it expires, newly generated passes fail to install in Wallet; passes already in Wallet keep working. Last renewed 2026-10-28, next expiry **2027-11-27**.
+
+Reuse the existing private key so only `certificate.pem` changes (no P12 re-export, no `CERTIFICATE_PASSWORD` change):
+
+```bash
+# 1. On the droplet: CSR from the existing key
+cd ~/flyfunboarding/certs
+openssl req -new -key certificate.key -out pass.csr \
+  -subj "/emailAddress=brice.rosenzweig@gmail.com/CN=Brice Rosenzweig/C=GB"
+```
+
+2. In the Apple Developer portal: Certificates → **+** → *Pass Type ID Certificate* → select `pass.net.ro-z.flyfunboardingpass` → upload `pass.csr` → download `pass.cer`.
+
+```bash
+# 3. Convert (Apple delivers DER) and verify it pairs with the key
+openssl x509 -inform DER -in pass.cer -out certificate.pem.new
+openssl x509 -in certificate.pem.new -noout -pubkey | openssl sha256
+openssl pkey -in certificate.key -pubout | openssl sha256      # must match
+openssl x509 -in certificate.pem.new -noout -subject -enddate
+
+# 4. Swap and restart
+cp -p certificate.pem certificate.pem.exp-<old-expiry-date>
+mv certificate.pem.new certificate.pem
+cd ../server && docker compose -f docker-compose.prod.yml restart
+```
+
+5. Test: generate a boarding pass from the iOS app and add it to Wallet.
+
+**WWDR intermediate**: the pass cert is issued by WWDR **G4**, while `AppleWWDRCA.pem` on the droplet is **G6**. Wallet accepts passes signed this way (verified 2026-10-28). If passes ever start failing after a renewal, first try replacing it with the G4 intermediate from `https://www.apple.com/certificateauthority/AppleWWDRCAG4.cer` (convert with `openssl x509 -inform DER`).
+
 ## Deployment Gotchas
 
 These are real issues encountered during the PHP-to-Python migration. Each one caused production failures.
