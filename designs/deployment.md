@@ -24,7 +24,7 @@ Infrastructure setup for the Python/FastAPI server on DigitalOcean, including Do
 ### Shared Infrastructure
 
 - **MySQL**: Runs in Docker container `shared-mysql` on `shared-services` network
-- **Caddy**: System service (`systemctl`), not containerized. Configs in `/etc/caddy/sites-enabled/`
+- **Caddy**: Docker container with host networking (`shared-infra/caddy/` in the private `digitalocean` repo). Site configs in that repo's `flyfun.aero/etc/caddy/sites-enabled/`
 - **Docker network**: `shared-services` (external) connects app containers to shared MySQL
 
 ## Docker Setup
@@ -67,7 +67,7 @@ docker compose -f docker-compose.prod.yml logs -f  # Check startup
 
 ## Caddy Configuration
 
-Per-site configs in `/etc/caddy/sites-enabled/`:
+Per-site configs in the private `digitalocean` repo, `flyfun.aero/etc/caddy/sites-enabled/`, mounted read-only into the Caddy container at `/etc/caddy/`:
 
 ```
 # boarding.flyfun.aero.caddy
@@ -83,17 +83,15 @@ import /etc/caddy/sites-enabled/*.caddy
 
 ### Reloading
 
+Validates, then reloads with no downtime. No sudo needed:
+
 ```bash
-sudo systemctl reload caddy
+cd ~/digitalocean && git pull && shared-infra/caddy/reload.sh
 ```
 
 ### Config Management
 
-Configs are maintained locally in `~/Developer/private/digitalocean/flyfun.aero/etc/caddy/sites-enabled/` and pushed to the droplet using `syncfiles`:
-
-```bash
-syncfiles push --execute  # Push configs and execute reload commands
-```
+Configs are edited locally in `~/Developer/private/digitalocean/flyfun.aero/etc/caddy/sites-enabled/`, committed and pushed, then deployed with the reload command above. `syncfiles` no longer deploys them.
 
 ## Certificate Setup
 
@@ -135,7 +133,7 @@ These are real issues encountered during the PHP-to-Python migration. Each one c
 
 **Symptom**: POST returns 405 with `chroma-trace-id` header.
 **Cause**: Caddy config still pointed to old port (8001 = chromadb) instead of new port (8010 = flyfunboarding).
-**Fix**: After changing port in docker-compose, must re-sync Caddy config AND reload (`sudo systemctl reload caddy`).
+**Fix**: After changing port in docker-compose, must update the Caddy config AND reload (`shared-infra/caddy/reload.sh`).
 **Lesson**: Always verify the response headers when debugging routing. A `chroma-trace-id` header means you're hitting ChromaDB, not your app.
 
 ### 2. Airline Registration Has No Auth
@@ -200,5 +198,5 @@ These are real issues encountered during the PHP-to-Python migration. Each one c
 docker compose -f docker-compose.prod.yml logs -f
 
 # Caddy logs
-sudo journalctl -u caddy -f
+docker logs -f caddy
 ```
