@@ -24,7 +24,7 @@ Infrastructure setup for the Python/FastAPI server on DigitalOcean, including Do
 ### Shared Infrastructure
 
 - **MySQL**: Runs in Docker container `shared-mysql` on `shared-services` network
-- **Caddy**: System service (`systemctl`), not containerized. Configs in `/etc/caddy/sites-enabled/`
+- **Caddy**: Docker container with host networking (`shared-infra/caddy/` in the private `digitalocean` repo). Site configs in that repo's `flyfun.aero/etc/caddy/sites-enabled/`
 - **Docker network**: `shared-services` (external) connects app containers to shared MySQL
 
 ## Docker Setup
@@ -60,14 +60,15 @@ Environment variables from `.env` file (not committed): `DB_USER`, `DB_PASSWORD`
 
 ```bash
 cd ~/flyfunboarding/server
-docker compose -f docker-compose.prod.yml build
-docker compose -f docker-compose.prod.yml up -d
+# secrets are in .env.secrets (sops-managed): compose must read both env files
+docker compose --env-file .env --env-file .env.secrets -f docker-compose.prod.yml build
+docker compose --env-file .env --env-file .env.secrets -f docker-compose.prod.yml up -d
 docker compose -f docker-compose.prod.yml logs -f  # Check startup
 ```
 
 ## Caddy Configuration
 
-Per-site configs in `/etc/caddy/sites-enabled/`:
+Per-site configs in the private `digitalocean` repo, `flyfun.aero/etc/caddy/sites-enabled/`, mounted read-only into the Caddy container at `/etc/caddy/`:
 
 ```
 # boarding.flyfun.aero.caddy
@@ -83,17 +84,15 @@ import /etc/caddy/sites-enabled/*.caddy
 
 ### Reloading
 
+Validates, then reloads with no downtime. No sudo needed:
+
 ```bash
-sudo systemctl reload caddy
+cd ~/digitalocean && git pull && shared-infra/caddy/reload.sh
 ```
 
 ### Config Management
 
-Configs are maintained locally in `~/Developer/private/digitalocean/flyfun.aero/etc/caddy/sites-enabled/` and pushed to the droplet using `syncfiles`:
-
-```bash
-syncfiles push --execute  # Push configs and execute reload commands
-```
+Configs are edited locally in `~/Developer/private/digitalocean/flyfun.aero/etc/caddy/sites-enabled/`, committed and pushed, then deployed with the reload command above. `syncfiles` no longer deploys them.
 
 ## Certificate Setup
 
@@ -169,7 +168,7 @@ These are real issues encountered during the PHP-to-Python migration. Each one c
 
 **Symptom**: POST returns 405 with `chroma-trace-id` header.
 **Cause**: Caddy config still pointed to old port (8001 = chromadb) instead of new port (8010 = flyfunboarding).
-**Fix**: After changing port in docker-compose, must re-sync Caddy config AND reload (`sudo systemctl reload caddy`).
+**Fix**: After changing port in docker-compose, must update the Caddy config AND reload (`shared-infra/caddy/reload.sh`).
 **Lesson**: Always verify the response headers when debugging routing. A `chroma-trace-id` header means you're hitting ChromaDB, not your app.
 
 ### 2. Airline Registration Has No Auth
@@ -218,7 +217,7 @@ These are real issues encountered during the PHP-to-Python migration. Each one c
 
 **Symptom**: QR code on boarding pass is too dense for the scanner to read.
 **Cause**: Droplet `.env` had `USE_PUBLIC_KEY_SIGNATURE=true` (the default), but PHP production ran with `false`. With `true`, the QR payload is ~502 bytes (includes 344-char base64 RSA signature). With `false`, it's ~170 bytes (hash only).
-**Fix**: Set `USE_PUBLIC_KEY_SIGNATURE=false` in the droplet's `.env` and restart the container (`docker compose up -d` — no rebuild needed, env vars are runtime).
+**Fix**: Set `USE_PUBLIC_KEY_SIGNATURE=false` in the droplet's `.env` and restart the container (`docker compose --env-file .env --env-file .env.secrets up -d` — no rebuild needed, env vars are runtime).
 **Lesson**: Match the PHP production config values, not the defaults. The simplified hash-only mode is sufficient and produces scannable QR codes.
 
 ## Health Checks
@@ -234,5 +233,5 @@ These are real issues encountered during the PHP-to-Python migration. Each one c
 docker compose -f docker-compose.prod.yml logs -f
 
 # Caddy logs
-sudo journalctl -u caddy -f
+docker logs -f caddy
 ```

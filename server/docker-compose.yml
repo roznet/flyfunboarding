@@ -5,12 +5,16 @@ services:
       dockerfile: Dockerfile
     container_name: flyfunboarding-api
     restart: unless-stopped
+    # Every value below is interpolated from the env files (no env_file: the host .env
+    # holds host paths that must not reach the container). Secrets live in .env.secrets,
+    # so once a host has one: docker compose --env-file .env --env-file .env.secrets ...
+    # (compose then reads both; without the flags it stops at the DB_PASSWORD guard).
     environment:
       # Database - connect to shared MySQL via network name
       DB_HOST: shared-mysql
       DB_PORT: 3306
       DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
+      DB_PASSWORD: "${DB_PASSWORD?DB_PASSWORD is not set - it lives in .env.secrets once split, run docker compose --env-file .env --env-file .env.secrets ...}"
       DB_NAME: ${DB_NAME:-flyfunboarding}
 
       # Security
