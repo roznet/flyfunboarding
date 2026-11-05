@@ -60,8 +60,9 @@ Environment variables from `.env` file (not committed): `DB_USER`, `DB_PASSWORD`
 
 ```bash
 cd ~/flyfunboarding/server
-docker compose -f docker-compose.prod.yml build
-docker compose -f docker-compose.prod.yml up -d
+# secrets are in .env.secrets (sops-managed): compose must read both env files
+docker compose --env-file .env --env-file .env.secrets -f docker-compose.prod.yml build
+docker compose --env-file .env --env-file .env.secrets -f docker-compose.prod.yml up -d
 docker compose -f docker-compose.prod.yml logs -f  # Check startup
 ```
 
@@ -182,7 +183,7 @@ These are real issues encountered during the PHP-to-Python migration. Each one c
 
 **Symptom**: QR code on boarding pass is too dense for the scanner to read.
 **Cause**: Droplet `.env` had `USE_PUBLIC_KEY_SIGNATURE=true` (the default), but PHP production ran with `false`. With `true`, the QR payload is ~502 bytes (includes 344-char base64 RSA signature). With `false`, it's ~170 bytes (hash only).
-**Fix**: Set `USE_PUBLIC_KEY_SIGNATURE=false` in the droplet's `.env` and restart the container (`docker compose up -d` — no rebuild needed, env vars are runtime).
+**Fix**: Set `USE_PUBLIC_KEY_SIGNATURE=false` in the droplet's `.env` and restart the container (`docker compose --env-file .env --env-file .env.secrets up -d` — no rebuild needed, env vars are runtime).
 **Lesson**: Match the PHP production config values, not the defaults. The simplified hash-only mode is sufficient and produces scannable QR codes.
 
 ## Health Checks

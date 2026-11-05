@@ -1,5 +1,9 @@
 # Environment variables
 .env
+.env.*
+!.env.sample
+!.env.secrets.sample
+!.env.docker.example
 .env.local
 .env.*.local
 
