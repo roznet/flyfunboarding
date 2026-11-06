@@ -15,7 +15,7 @@ dependencies = [
     "uvicorn[standard]>=0.32.0",
 
     # Database
-    "sqlalchemy>=2.0.36",     # Using SQLAlchemy Core (query building), not full ORM
+    "sqlalchemy[asyncio]>=2.0.36",     # Using SQLAlchemy Core (query building), not full ORM
     "aiomysql>=0.2.0",        # Async MySQL driver
 
     # Data Validation & Serialization
