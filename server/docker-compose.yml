@@ -37,7 +37,7 @@ services:
     volumes:
       # Mount secrets/data from parent directory (repo root)
       - ../certs:/app/certs:ro
-      - ../keys:/app/keys:ro
+      - ../keys:/app/keys
       - ../images:/app/images:ro
     ports:
       - "8010:8000"

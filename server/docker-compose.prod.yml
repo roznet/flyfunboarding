@@ -34,7 +34,7 @@ services:
       CORS_ORIGINS: ${CORS_ORIGINS:-*}
     volumes:
       - ../certs:/app/certs:ro
-      - ../keys:/app/keys:ro
+      - ../keys:/app/keys
       - ../images:/app/images:ro
     ports:
       - "127.0.0.1:8010:8000"  # Localhost 8010 → container 8000; Caddy handles external traffic
