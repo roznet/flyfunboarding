@@ -28,8 +28,10 @@ This is the Python/FastAPI implementation of the Fly Fun Boarding server, migrat
 
 3. **Configure environment**:
    ```bash
-   cp .env.sample .env
-   # Edit .env with your database credentials and paths
+   cp .env.sample .env                   # plain config and paths
+   cp .env.secrets.sample .env.secrets   # DB_PASSWORD, SECRET, CERTIFICATE_PASSWORD (single-quoted)
+   chmod 600 .env.secrets
+   # Both are read from server/ whatever the current directory; .env.secrets wins on duplicates
    ```
 
 4. **Install euro_aip library** (local dependency):

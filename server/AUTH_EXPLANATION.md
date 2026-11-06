@@ -4,8 +4,8 @@
 
 ### 1. System Authentication (SECRET)
 **When to use:** System-level operations
-**Token:** `SECRET` from `.env` file
-**Example:** `e8633ca0c72283dab6b86bf08bd7058e5273dc76604bac06dd8d28558bdaa625`
+**Token:** `SECRET` from `server/.env.secrets`
+**Example:** `<SECRET>`
 
 **Endpoints that use System Auth:**
 - `POST /v1/airline/create` - Create a new airline
@@ -15,14 +15,14 @@
 ```python
 # In app/dependencies.py -> get_system_auth()
 token = authorization.removeprefix("Bearer ")
-if token != settings.SECRET:  # Compare with .env SECRET
+if not settings.SECRET or not secrets.compare_digest(token.encode(), settings.SECRET.encode()):
     raise HTTPException(401, "Invalid system token")
 ```
 
 **Example curl:**
 ```bash
 curl -X POST http://localhost:8001/v1/airline/create \
-  -H "Authorization: Bearer e8633ca0c72283dab6b86bf08bd7058e5273dc76604bac06dd8d28558bdaa625" \
+  -H "Authorization: Bearer <SECRET>" \
   -H "Content-Type: application/json" \
   -d '{"apple_identifier": "test.airline.123", "airline_name": "Test Airline"}'
 ```
@@ -32,7 +32,7 @@ curl -X POST http://localhost:8001/v1/airline/create \
 ### 2. Airline Authentication (apple_identifier)
 **When to use:** Airline-scoped operations
 **Token:** The airline's `apple_identifier` (stored in database)
-**Example:** `001088.73b13a9e6be34ca89cf8b19628a87315.1521`
+**Example:** `<apple_identifier>`
 
 **Endpoints that use Airline Auth:**
 - `GET /v1/airline/{airline_identifier}/aircraft/list`
@@ -56,7 +56,7 @@ curl -X POST http://localhost:8001/v1/airline/create \
 # First, get the airline_identifier (SHA1 hash of apple_identifier)
 # Then use the apple_identifier as the Bearer token:
 curl -X GET http://localhost:8001/v1/airline/e8da4a10f16146e0fea48326c993594280c078c2/aircraft/list \
-  -H "Authorization: Bearer 001088.73b13a9e6be34ca89cf8b19628a87315.1521"
+  -H "Authorization: Bearer <apple_identifier>"
 ```
 
 ---
@@ -65,8 +65,8 @@ curl -X GET http://localhost:8001/v1/airline/e8da4a10f16146e0fea48326c993594280c
 
 ### System SECRET
 ```bash
-# Check .env file
-grep SECRET server/.env
+# Check .env.secrets file
+grep SECRET server/.env.secrets
 
 # Or check what Python loads:
 cd server && source ../venv/bin/activate
@@ -95,8 +95,8 @@ curl -X POST http://localhost:8001/v1/airline/create \
 
 | Endpoint Type | Auth Type | Token Source | Example Token |
 |--------------|-----------|--------------|---------------|
-| System operations | System SECRET | `.env` file | `e8633ca0c72283...` |
-| Airline operations | apple_identifier | Database (from airline creation) | `001088.73b13a9e...` |
+| System operations | System SECRET | `.env.secrets` file | `<SECRET>` |
+| Airline operations | apple_identifier | Database (from airline creation) | `<apple_identifier>` |
 
 ---
 

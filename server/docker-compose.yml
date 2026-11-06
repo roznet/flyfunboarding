@@ -1,3 +1,8 @@
+# The one compose file, used in production (~/flyfunboarding/server) and locally.
+# Deploy:  cd ~/flyfunboarding/server && git pull && docker compose up -d --build
+# No --env-file flags: compose reads .env automatically for the ${...} values below, and
+# the secrets reach the container through env_file, never through ${...} interpolation.
+
 services:
   flyfunboarding-api:
     build:
@@ -5,25 +10,27 @@ services:
       dockerfile: Dockerfile
     container_name: flyfunboarding-api
     restart: unless-stopped
-    # Every value below is interpolated from the env files (no env_file: the host .env
-    # holds host paths that must not reach the container). Secrets live in .env.secrets,
-    # so once a host has one: docker compose --env-file .env --env-file .env.secrets ...
-    # (compose then reads both; without the flags it stops at the DB_PASSWORD guard).
+    # Secrets (DB_PASSWORD, SECRET, CERTIFICATE_PASSWORD) go in verbatim from .env.secrets
+    # (sops-managed, mode 600). Only that file is passed whole: the host .env holds host
+    # paths (CERTIFICATE_PATH, KEYS_PATH, ...) that must not reach the container.
+    # Quote secret values with single quotes (see .env.secrets.sample).
+    env_file:
+      - path: .env.secrets
+        required: true
+    # Non-secret settings: container paths, plus plain values interpolated from .env.
+    # Do not add secrets here (environment: would also override env_file).
     environment:
       # Database - connect to shared MySQL via network name
       DB_HOST: shared-mysql
       DB_PORT: 3306
       DB_USER: ${DB_USER}
-      DB_PASSWORD: "${DB_PASSWORD?DB_PASSWORD is not set - it lives in .env.secrets once split, run docker compose --env-file .env --env-file .env.secrets ...}"
       DB_NAME: ${DB_NAME:-flyfunboarding}
 
       # Security
-      SECRET: ${SECRET}
       USE_PUBLIC_KEY_SIGNATURE: ${USE_PUBLIC_KEY_SIGNATURE:-true}
 
-      # PKPass - paths inside container
+      # PKPass - paths inside container (signing key: /app/certs/certificate.key)
       CERTIFICATE_PATH: /app/certs/certificate.pem
-      CERTIFICATE_PASSWORD: ${CERTIFICATE_PASSWORD:-}
       WWDR_PATH: /app/certs/AppleWWDRCA.pem
 
       # File paths inside container
@@ -37,10 +44,10 @@ services:
     volumes:
       # Mount secrets/data from parent directory (repo root)
       - ../certs:/app/certs:ro
-      - ../keys:/app/keys
+      - ../keys:/app/keys        # read-write: the server creates per-airline key pairs
       - ../images:/app/images:ro
     ports:
-      - "8010:8000"
+      - "127.0.0.1:8010:8000"  # localhost only; Caddy handles external traffic
     networks:
       - shared-services
     # Note: depends_on doesn't work across compose files

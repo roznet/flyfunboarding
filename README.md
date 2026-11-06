@@ -28,7 +28,14 @@ The app is located under the `app` directory. You will need to edit the `secrets
 
 ### Server
 The server is located under the `server` directory. It runs as a Docker container with FastAPI/uvicorn.
-You will need to create a `.env` file with your database credentials, secrets, and certificate paths. See `server/.env.docker.example` for reference.
+Configuration lives in two files in `server/`: `.env` holds plain settings (see `server/.env.docker.example` or `server/.env.sample`), and `.env.secrets` holds `DB_PASSWORD`, `SECRET` and `CERTIFICATE_PASSWORD` (see `server/.env.secrets.sample`; single-quote the values). Both files are gitignored. To deploy:
+
+```bash
+cd server
+docker compose up -d --build
+```
+
+No `--env-file` flags are needed: compose reads `.env` itself and passes `.env.secrets` to the container through `env_file`. See [designs/deployment.md](designs/deployment.md).
 
 ## Usage
 

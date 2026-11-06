@@ -19,6 +19,14 @@ API = settings.api_prefix
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Application lifespan - startup and shutdown events."""
+    # Startup: refuse to run without secrets (e.g. .env.secrets missing or not installed).
+    # An empty SECRET would also make system auth accept "Bearer " with no token.
+    missing = settings.missing_secrets()
+    if missing:
+        raise RuntimeError(
+            f"Required secrets are empty: {', '.join(missing)}. They come from "
+            "server/.env.secrets (docker compose passes it via env_file)."
+        )
     # Startup: verify database connection
     async with engine.begin() as conn:
         await conn.execute(text("SELECT 1"))

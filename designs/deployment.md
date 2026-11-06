@@ -39,32 +39,69 @@ Multi-stage build:
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
 ```
 
-### docker-compose.prod.yml
+### docker-compose.yml
+
+One compose file, `server/docker-compose.yml`, used in prod (`~/flyfunboarding/server`) and locally. There is no separate prod file.
 
 ```yaml
 services:
   flyfunboarding-api:
+    env_file:
+      - path: .env.secrets      # secrets, passed verbatim; compose fails if it is missing
+        required: true
+    environment:                # non-secret: container paths + ${...} from .env
+      DB_HOST: shared-mysql     # Docker DNS resolves to MySQL container
+      CERTIFICATE_PATH: /app/certs/certificate.pem
+      KEYS_PATH: /app/keys
+      # ... DB_USER, DB_NAME, DEBUG, LOG_LEVEL, CORS_ORIGINS, USE_PUBLIC_KEY_SIGNATURE
     ports: ["127.0.0.1:8010:8000"]  # Localhost only; Caddy handles external
     networks: [shared-services]
     volumes:
       - ../certs:/app/certs:ro
-      - ../keys:/app/keys:ro
+      - ../keys:/app/keys       # read-write: the server creates per-airline key pairs
       - ../images:/app/images:ro
-    environment:
-      DB_HOST: shared-mysql  # Docker DNS resolves to MySQL container
 ```
 
-Environment variables from `.env` file (not committed): `DB_USER`, `DB_PASSWORD`, `SECRET`, `CERTIFICATE_PASSWORD`.
+### Configuration and secrets
+
+Two files in `server/`, both gitignored and dockerignored:
+
+| File | Contents | How it reaches the container |
+|------|----------|------------------------------|
+| `.env` | Plain config (`DB_USER`, `DB_NAME`, `DEBUG`, `LOG_LEVEL`, `CORS_ORIGINS`, `USE_PUBLIC_KEY_SIGNATURE`) plus host paths for running outside Docker | Compose reads it automatically for the `${...}` values in `environment:`. Never passed whole: its host paths (`CERTIFICATE_PATH`, `KEYS_PATH`, ...) must not override the container paths |
+| `.env.secrets` | `DB_PASSWORD`, `SECRET`, `CERTIFICATE_PASSWORD`. Sops-encrypted in the config repo, installed mode 600 by syncfiles | `env_file:` (verbatim, no `${...}` interpolation in the compose file) |
+
+Rules:
+- **Never put a secret in `environment:` or behind `${...}`.** Interpolation only reads `.env`, so a secret there would need `--env-file` flags on every command, and without them it silently blanks.
+- **Single-quote secret values** in `.env.secrets` (`SECRET='...'`). Compose expands `$VAR`/`${VAR}` in unquoted and double-quoted `env_file` values. Don't escape with `$$` and don't use backslashes, because compose and python-dotenv disagree on both. Details are in `.env.secrets.sample`.
+- Outside Docker, `Settings` (`app/config.py`) reads `server/.env` and then `server/.env.secrets`, resolved from `server/` whatever the current directory. `.env.secrets` wins on duplicate keys, and real environment variables beat both. Dotenv interpolation is disabled, so `$` in a value is literal. Covered by `tests/test_config.py`.
+- The server refuses to start (lifespan check) if `DB_PASSWORD` or `SECRET` is empty, so a missing `.env.secrets` shows up as a crash loop in `docker compose logs`, not a silently insecure server. An empty `SECRET` would otherwise let `Bearer ` with no token pass system auth.
 
 ### Build & Deploy
 
 ```bash
 cd ~/flyfunboarding/server
-# secrets are in .env.secrets (sops-managed): compose must read both env files
-docker compose --env-file .env --env-file .env.secrets -f docker-compose.prod.yml build
-docker compose --env-file .env --env-file .env.secrets -f docker-compose.prod.yml up -d
-docker compose -f docker-compose.prod.yml logs -f  # Check startup
+git pull
+docker compose up -d --build
+docker compose logs -f  # Check startup
 ```
+
+No `--env-file` flags and no `-f`. A config-only change (`.env` or `.env.secrets`) needs `docker compose up -d` without `--build`. `restart` does not re-read env files.
+
+### Secret files read at runtime
+
+All of these must be encrypted in the config repo and backed up:
+
+| File (host) | Read by | Purpose |
+|-------------|---------|---------|
+| `server/.env.secrets` | compose `env_file` | `DB_PASSWORD`, `SECRET` (QR `secret_hash` + system Bearer token), `CERTIFICATE_PASSWORD` (only used for a `.p12`; empty in prod) |
+| `certs/certificate.key` | `boarding_pass_service._get_key_path()` | **Pass signing private key.** The key path is derived from `CERTIFICATE_PATH`: `certificate.pem` becomes `certificate.key` (it falls back to `certificate.pem` itself if no `.key` exists). It must be an unencrypted PEM, because `passes-rs-py` gets no password |
+| `certs/certificate.pem` | `_get_cert_path()` | Pass Type ID certificate (public, but needed) |
+| `certs/AppleWWDRCA.pem` | `WWDR_PATH` | Apple intermediate (public, re-downloadable) |
+| `keys/<apple_identifier>.pem` | `SignatureService` | Per-airline RSA private keys, **created by the server** at airline registration (hence the rw mount). Used for QR signatures when `USE_PUBLIC_KEY_SIGNATURE=true`. Losing them invalidates that airline's signatures |
+| `keys/<apple_identifier>.pub` | `SignatureService` | Matching public keys |
+
+`certs/Certificates.p12` is **not** read at runtime. It is only a backup of cert + key.
 
 ## Caddy Configuration
 
@@ -123,7 +160,7 @@ openssl pkcs12 -in certificate.p12 -nocerts -nodes -out certificate.key
 ├── keys/                  # RSA key pairs (auto-generated per airline)
 ├── images/                # PKPass icons and logos
 └── server/
-    └── docker-compose.prod.yml  # Mounts certs/keys/images as :ro volumes
+    └── docker-compose.yml  # Mounts certs/images :ro, keys/ rw
 ```
 
 `Certificates.p12` may also sit in `certs/` as a backup bundle (cert + key) from the original Keychain export. The server does not read it: `CERTIFICATE_PATH` points at `certificate.pem`, and the P12 extraction path in `boarding_pass_service.py` only runs if `CERTIFICATE_PATH` ends in `.p12`.
@@ -153,7 +190,7 @@ openssl x509 -in certificate.pem.new -noout -subject -enddate
 # 4. Swap and restart
 cp -p certificate.pem certificate.pem.exp-<old-expiry-date>
 mv certificate.pem.new certificate.pem
-cd ../server && docker compose -f docker-compose.prod.yml restart
+cd ../server && docker compose restart
 ```
 
 5. Test: generate a boarding pass from the iOS app and add it to Wallet.
@@ -217,7 +254,7 @@ These are real issues encountered during the PHP-to-Python migration. Each one c
 
 **Symptom**: QR code on boarding pass is too dense for the scanner to read.
 **Cause**: Droplet `.env` had `USE_PUBLIC_KEY_SIGNATURE=true` (the default), but PHP production ran with `false`. With `true`, the QR payload is ~502 bytes (includes 344-char base64 RSA signature). With `false`, it's ~170 bytes (hash only).
-**Fix**: Set `USE_PUBLIC_KEY_SIGNATURE=false` in the droplet's `.env` and restart the container (`docker compose --env-file .env --env-file .env.secrets up -d` — no rebuild needed, env vars are runtime).
+**Fix**: Set `USE_PUBLIC_KEY_SIGNATURE=false` in the droplet's `.env` and recreate the container (`docker compose up -d` — no rebuild needed, env vars are runtime).
 **Lesson**: Match the PHP production config values, not the defaults. The simplified hash-only mode is sufficient and produces scannable QR codes.
 
 ## Health Checks
@@ -230,7 +267,7 @@ These are real issues encountered during the PHP-to-Python migration. Each one c
 
 ```bash
 # Container logs
-docker compose -f docker-compose.prod.yml logs -f
+docker compose logs -f
 
 # Caddy logs
 docker logs -f caddy

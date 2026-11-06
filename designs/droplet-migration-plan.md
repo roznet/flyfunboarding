@@ -65,7 +65,7 @@ On **Mac**:
 1. Commit the flyfunboarding repo changes:
    - `server/app/config.py` - added `api_prefix` property
    - `server/app/main.py` - route prefixes from config, `/api` discovery endpoint
-   - `server/docker-compose.yml` / `docker-compose.prod.yml` - health checks, port binding
+   - `server/docker-compose.yml` (prod file since removed) - health checks, port binding
    - `server/Dockerfile` - health check uses `/health`
    - `server/tests/` - all paths updated to `/api/v1/`
    - `app/flyfunboarding/Source/Secrets.swift` - split URL config
@@ -159,7 +159,7 @@ Only `keys/` (gitignored) and `certs/` (not tracked) need manual copying.
 12. Build and start:
     ```bash
     cd ~/flyfunboarding/server
-    sudo docker compose -f docker-compose.prod.yml up -d --build
+    docker compose up -d --build   # (now: no prod file, secrets in .env.secrets - see deployment.md)
     ```
 
 13. Verify container is healthy:
@@ -228,7 +228,7 @@ Once the new server is validated:
 |------|---------|
 | `server/app/config.py` | `API_VERSION` setting, `api_prefix` property |
 | `server/app/main.py` | Route registration using `API` prefix variable |
-| `server/docker-compose.prod.yml` | Production container config (port 8001) |
+| `server/docker-compose.yml` | Container config, prod and local (127.0.0.1:8010; `docker-compose.prod.yml` was removed) |
 | `server/app/services/signature_service.py` | RSA key management (mirrors PHP `Signature.php`) |
 | `app/flyfunboarding/Source/Secrets.swift` | URL construction from config keys |
 | `flyfun.aero/etc/caddy/sites-enabled/boarding.flyfun.aero.caddy` | Caddy reverse proxy config |

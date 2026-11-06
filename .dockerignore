@@ -1,0 +1,16 @@
+# Nothing is built from the repo root today (the image builds from server/), but keep
+# secrets out of any context rooted here. The repo is public.
+**/.env
+**/.env.*
+!**/.env.sample
+!**/.env.secrets.sample
+!**/.env.docker.example
+certs/
+keys/
+**/*.p12
+**/*.pem
+**/*.key
+venv/
+**/venv/
+secrets.json
+secrets.zsh

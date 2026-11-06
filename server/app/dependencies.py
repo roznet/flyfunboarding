@@ -3,6 +3,7 @@ FastAPI dependencies for authentication and database sessions.
 
 Uses dependency injection instead of middleware for better type safety and testability.
 """
+import secrets
 from typing import Annotated
 from fastapi import Depends, Header, Path, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -82,7 +83,7 @@ async def get_system_auth(
         )
 
     token = authorization.removeprefix("Bearer ")
-    if token != settings.SECRET:
+    if not settings.SECRET or not secrets.compare_digest(token.encode(), settings.SECRET.encode()):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid system token",
