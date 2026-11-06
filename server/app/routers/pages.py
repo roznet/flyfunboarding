@@ -164,10 +164,11 @@ async def your_boarding_pass(
         disclaimer_content = disclaimer_file.read_text(encoding='utf-8')
     
     # Render template
+    # request first: Starlette 1.x removed TemplateResponse(name, {"request": ...})
     return templates.TemplateResponse(
+        request,
         "boarding_pass.html",
         {
-            "request": request,
             "language": language,
             "localized_strings": localized_strings,
             "available_languages": available_languages,
