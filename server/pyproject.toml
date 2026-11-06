@@ -20,7 +20,7 @@ dependencies = [
 
     # Data Validation & Serialization
     "pydantic>=2.10.0",
-    "pydantic-settings>=2.6.0",
+    "pydantic-settings>=2.6.0,<3",  # app/config.py subclasses DotEnvSettingsSource internals
 
     # PKPass Generation
     "passes-rs-py>=0.1.0",    # Rust-based, high-performance PKPass library
