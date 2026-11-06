@@ -10,34 +10,38 @@ authors = [
 ]
 
 dependencies = [
+    # Upper bounds: the next major above what prod runs (2026-11), so a rebuild can't
+    # silently pull a breaking release - the Docker build installs untested latest versions.
+    # Raise a bound deliberately after testing the new major.
     # Web Framework
-    "fastapi>=0.115.0",
-    "uvicorn[standard]>=0.32.0",
+    "fastapi>=0.115.0,<1",
+    "uvicorn[standard]>=0.32.0,<1",
+    "starlette>=1.0,<2",       # via fastapi; pages.py uses the 1.x TemplateResponse(request, ...) form
 
     # Database
-    "sqlalchemy[asyncio]>=2.0.36",     # Using SQLAlchemy Core (query building), not full ORM
-    "aiomysql>=0.2.0",        # Async MySQL driver
+    "sqlalchemy[asyncio]>=2.0.36,<3",     # Using SQLAlchemy Core (query building), not full ORM
+    "aiomysql>=0.2.0,<0.4",      # Async MySQL driver
 
     # Data Validation & Serialization
-    "pydantic>=2.10.0",
+    "pydantic>=2.10.0,<3",
     "pydantic-settings>=2.6.0,<3",  # app/config.py subclasses DotEnvSettingsSource internals
 
     # PKPass Generation
-    "passes-rs-py>=0.1.0",    # Rust-based, high-performance PKPass library
+    "passes-rs-py>=0.1.0,<5",    # Rust-based, high-performance PKPass library
 
     # Cryptography
-    "cryptography>=44.0.0",
+    "cryptography>=44.0.0,<51",
 
     # Utilities
-    "python-multipart>=0.0.12",
-    "python-dotenv>=1.0.0",
+    "python-multipart>=0.0.12,<0.1",
+    "python-dotenv>=1.0.0,<2",  # config.py calls dotenv_values(interpolate=False)
 
     # Language Detection & Templates
-    "babel>=2.16.0",          # Internationalization with Accept-Language parsing
-    "jinja2>=3.1.4",          # HTML template engine for web pages
+    "babel>=2.16.0,<3",          # Internationalization with Accept-Language parsing
+    "jinja2>=3.1.4,<4",          # HTML template engine for web pages
 
     # HTTP Client (for health checks, external APIs)
-    "httpx>=0.28.0",
+    "httpx>=0.28.0,<1",
 ]
 
 [project.optional-dependencies]
