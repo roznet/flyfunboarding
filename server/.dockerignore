@@ -1,0 +1,14 @@
+# Keep env files (secrets) and local junk out of the build context.
+# (Dockerfile only COPYs app/, static/, templates/ - this is defence in depth.)
+**/.env
+**/.env.*
+!.env.sample
+!.env.secrets.sample
+!.env.docker.example
+venv/
+**/__pycache__/
+.pytest_cache/
+tests/
+**/*.p12
+**/*.pem
+**/*.key

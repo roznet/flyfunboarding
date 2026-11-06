@@ -9,3 +9,9 @@ keys
 tmp
 etc
 bugreport
+# env files (server/.gitignore covers server/; this catches any other location)
+.env
+.env.*
+!.env.sample
+!.env.secrets.sample
+!.env.docker.example

@@ -32,7 +32,7 @@ core/*.py → Exceptions, localization
 
 ## Config (`app/config.py`)
 
-`Settings` extends `pydantic_settings.BaseSettings`, loaded from `.env`:
+`Settings` extends `pydantic_settings.BaseSettings`. Priority order: environment variables, then `server/.env.secrets` (secrets: `DB_PASSWORD`, `SECRET`, `CERTIFICATE_PASSWORD`), then `server/.env` (plain config). Both files are resolved from `server/`, not the current directory. A custom dotenv source turns off python-dotenv's `${VAR}` interpolation, so secret values are literal. The lifespan refuses to start if `DB_PASSWORD` or `SECRET` is empty (`Settings.missing_secrets()`). In Docker the secrets arrive as environment variables through compose `env_file:`; see [deployment.md](deployment.md).
 
 | Setting | Default | Purpose |
 |---------|---------|---------|
