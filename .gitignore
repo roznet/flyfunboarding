@@ -6,6 +6,7 @@ samples
 secrets.zsh
 secrets.json
 keys
+certs
 tmp
 etc
 bugreport
